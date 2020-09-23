@@ -1,4 +1,4 @@
 <div>test</div>
 
-<a href="test/">test link</a>
+<a href="?r=test">test link</a>
 <?php  ?>
