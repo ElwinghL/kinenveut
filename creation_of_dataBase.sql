@@ -59,5 +59,13 @@ AS SELECT 0 AS id, 'public' AS name
 UNION SELECT 1 AS id, 'privée' AS name
 UNION SELECT 2 AS id, 'confidentielle' AS name
 
---LOCK TABLES Race WRITE;
---UNLOCK TABLES;
+LOCK TABLES Categories WRITE;
+INSERT INTO Categories (`name`)
+VALUES
+('Non défni')
+,('Vêtements')
+,('Bijoux')
+,('Multimédia')
+,('Instruments de musique');
+UNLOCK TABLES;
+
