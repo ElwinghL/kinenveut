@@ -24,10 +24,10 @@ UNIQUE `Unicite_Name` (`name`)
 CREATE TABLE `kinenveut`.`Objects` (
 `id` INT NOT NULL AUTO_INCREMENT,
 `name` VARCHAR(255) NOT NULL,
-`description` VARCHAR(255) NOT NULL,
+`description` TEXT NOT NULL,
 `basePrice` INT NOT NULL,
 `reservePrice` INT NOT NULL,
-`pictureLink` VARCHAR(255) NOT NULL,
+`pictureLink` TEXT NOT NULL,
 `startDate` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 `endDate` DATETIME NOT NULL,
 `isCancelled` INT NULL,
