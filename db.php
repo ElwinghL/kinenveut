@@ -1,6 +1,6 @@
 <?php
 
-$db = new PDO("mysql:host=localhost;port=3307;dbname=test","root","");
+$db = new PDO("mysql:host=localhost;port=3306;dbname=kinenveut","root","");
 $db->exec("set search_path to framwhop");
 function db()
 {
