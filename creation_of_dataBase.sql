@@ -59,7 +59,7 @@ AS SELECT 0 AS id, 'public' AS name
 UNION SELECT 1 AS id, 'privée' AS name
 UNION SELECT 2 AS id, 'confidentielle' AS name;
 
-LOCK TABLES `kinenveut`.`Users` WRITE;
+LOCK TABLES kinenveut.Users WRITE;
 INSERT INTO `kinenveut`.`Users` (`firtName`,`lastName`,`email`,`birthDate`,`password`,`isAuthorised`,`isAdmin`)
 VALUES
 ('Admin','','admin@kinenveut.fr','1950-01-01','password',1,1);
