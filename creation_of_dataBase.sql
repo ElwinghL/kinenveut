@@ -57,10 +57,16 @@ INDEX ind_bidderId (bidderId)
 CREATE VIEW V_Privacy
 AS SELECT 0 AS id, 'public' AS name
 UNION SELECT 1 AS id, 'privée' AS name
-UNION SELECT 2 AS id, 'confidentielle' AS name
+UNION SELECT 2 AS id, 'confidentielle' AS name;
 
-LOCK TABLES Categories WRITE;
-INSERT INTO Categories (`name`)
+LOCK TABLES `kinenveut`.`Users` WRITE;
+INSERT INTO `kinenveut`.`Users` (`firtName`,`lastName`,`email`,`birthDate`,`password`,`isAuthorised`,`isAdmin`)
+VALUES
+('Admin','','admin@kinenveut.fr','1950-01-01','password',1,1);
+UNLOCK TABLES;
+
+LOCK TABLES `kinenveut`.`Categories` WRITE;
+INSERT INTO `kinenveut`.`Categories` (`name`)
 VALUES
 ('Non défni')
 ,('Vêtements')
