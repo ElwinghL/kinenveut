@@ -1,8 +1,9 @@
-<h2>Acceuil</h2>
+<h2>Accueil</h2>
 
 <div>
     <ul>
-        <li><a href="#">Acceuil</a></li>
+        <li><a href="?r=registration">Inscription</a></li>
+        <li><a href="?r=login">Connexion</a></li>
         <li><a href="#">Mon compte</a></li>
         <li><a href="#">Mes enchères</a></li>
         <li><a href="#">Mes ventes</a></li>
@@ -15,5 +16,4 @@
     </ul>
 </div>
 
-<a href="?r=test">test link</a>
 <?php  ?>

@@ -76,7 +76,7 @@ class Model
 				if (isset($value->$id))
 				{
 					$st = db()->prepare("update $table set id$table=:id");
-					$id substr($id, 1);
+					$id = substr($id, 1);
 					$st->binValue(":val", $value);
 				}
 				else
