@@ -1,6 +1,6 @@
 <?php
 
-class TestController extends Controller
+class LoginController extends Controller
 {
     public function __construct()
     {
@@ -9,10 +9,5 @@ class TestController extends Controller
     public function index()
     {
         $this->render("index");
-    }
-
-    public function about()
-    {
-        $this->render("about");
     }
 }

@@ -10,9 +10,4 @@ class SiteController extends Controller
     {
         $this->render("index");
     }
-
-    public function about()
-    {
-        $this->render("about");
-    }
 }

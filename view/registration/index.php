@@ -6,7 +6,7 @@
             <h3 class="card-title">Inscription</h3>
         </div>
         <div class="card-body">
-            <form action="" method="post">
+            <form action="?r=registration/register" method="post">
 
                 <div class="form-group col-md-10">
 
@@ -35,11 +35,9 @@
 
                     <br/>
 
-                    <input class="btn btn-primary" type="submit" name="suscribe" id="suscribe" value="S'inscrire"/>
+                    <input class="btn btn-primary" type="submit" name="register" id="register" value="S'inscrire"/>
                 </div>
-
             </form>
-            <small><a href="#">Se connecter</a></small>
         </div>
     </div>
 </div>
