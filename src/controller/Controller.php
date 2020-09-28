@@ -13,8 +13,8 @@ class Controller
         $controller = get_class($this);
         $model = substr($controller, 0, strpos($controller, "Controller"));
         $data = $d;
-        include_once "view/header.php";
-        include_once "view/" . strtolower($model) . "/" . $view . ".php";
-        include_once "view/footer.php";
+        include_once "src/view/header.php";
+        include_once "src/view/" . strtolower($model) . "/" . $view . ".php";
+        include_once "src/view/footer.php";
     }
 }

@@ -7,7 +7,7 @@ ini_set('display_errors', true);
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 
-include_once "db.php";
-include_once "tools.php";
+include_once "src/db.php";
+include_once "src/tools.php";
 session_start();
-include_once "controller/route.php";
+include_once "src/controller/route.php";
