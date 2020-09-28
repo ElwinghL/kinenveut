@@ -50,5 +50,4 @@ return PhpCsFixer\Config::create() ->setRules([
 ])
 ->setIndent("  ")
 ->setLineEnding("\n")
-->setUsingCache(false)
 ->setFinder($finder);
