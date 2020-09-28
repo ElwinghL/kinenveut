@@ -7,7 +7,6 @@
   },
   "scripts": {
     "fix-cs": [
-      "prettier --write .",
       "php-cs-fixer fix ."
     ]
   }
