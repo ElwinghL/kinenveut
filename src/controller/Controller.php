@@ -1,6 +1,8 @@
 <?php
 
-$data = null;class Controller
+$data = null;
+
+class Controller
 {
   public function check()
   {

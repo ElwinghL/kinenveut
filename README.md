@@ -12,18 +12,37 @@ kinenveut
 ├── README.md
 ├── src
 │   ├── controller
+│   │   ├── Controller.php
+│   │   ├── route.php
 │   │   ├── ...
 │   ├── css
 │   │   └── style.css
 │   ├── db.php
 │   ├── model
 │   │   ├── ...
+│   ├── service
+│   │   ├── bo
+│   │   │   ├── App_BoFactory.php
+│   │   │   ├── ...
+│   │   └── dao
+│   │       ├── App_DaoFactory.php
+│   │       ├── ...
 │   ├── test_js.php
 │   ├── tools.php
 │   └── view
 │       ├── ...
 └── test
 ```
+
+Explication des répertoires principaux du dossier `src` :
+
+- `controller` : contiens tous les contrôleurs ;
+- `model` : objet qui transit entre les contrôleurs, les bos et les daos ;
+- `service/bo` : bo signifie Business Object, elle traite toute la partie métier, elle peut être appelée par un contrôleur ou un autre bo ;
+- `service/dao` : traite toute la partie bdd, elle est appelée par un bo ;
+- `view` : contiens toutes les vues.
+
+Pour comprendre, regarde le contrôleur `RegistrationController` qui enregistre un utilisateur
 
 ## Installation de l'environnement de dev :
 
