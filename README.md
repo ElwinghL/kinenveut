@@ -4,10 +4,8 @@
 
 ### Pré requis :
 
-- npm
 - composer
 
-`npm install --global prettier @prettier/plugin-php`\
 `composer install`
 
 ### Définir le .env
@@ -17,4 +15,17 @@ Copier ce fichier et renommer le en `.env`, modifier les variables pour qu'elle 
 
 ## Script
 
-`composer fix-cs` lance manuellement prettier et php-cs-fixer
+`composer fix-cs` lance php-cs-fixer à chaque changement de fichier
+
+## composer.json
+
+modifier le fichier dans le cas de l'utilisation de prettier avec npm
+
+```
+  "scripts": {
+    "fix-cs": [
+      "prettier --write .",
+      "php-cs-fixer fix ."
+    ]
+  }
+```

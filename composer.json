@@ -7,7 +7,7 @@
   },
   "scripts": {
     "fix-cs": [
-      "php-cs-fixer fix ."
+      "watch php-cs-fixer fix ."
     ]
   }
 }
