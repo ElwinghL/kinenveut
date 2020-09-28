@@ -35,6 +35,6 @@ if (isset(parameters()['r'])) {
   $c = new $controller();
   $c->$action();
 } else {
-  $c = new SiteController();
+  $c = new HomeController();
   $c->index();
 }

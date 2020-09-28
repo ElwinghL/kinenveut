@@ -1,12 +1,70 @@
 <?php
 
-class UserModel extends Model
+class UserModel
 {
-  public function newUser($firstName, $lastName, $birthDate, $email, $password)
-  {
-    $request = db()->prepare('INSERT INTO Users(firstName, lastName, email, password, birthDate, isAdmin) VALUES (?, ?, ?, ?, ?, false)');
-    $success = $request->execute([$firstName, $lastName, $email, $password, $birthDate, ]);
+  private $firstName;
+  private $lastName;
+  private $birthDate;
+  private $email;
+  private $password;
 
-    return $success;
+  public function getPassword()
+  {
+    return $this->password;
+  }
+
+  public function setPassword($password)
+  {
+    $this->password = $password;
+
+    return $this;
+  }
+
+  public function getEmail()
+  {
+    return $this->email;
+  }
+
+  public function setEmail($email)
+  {
+    $this->email = $email;
+
+    return $this;
+  }
+
+  public function getBirthDate()
+  {
+    return $this->birthDate;
+  }
+
+  public function setBirthDate($birthDate)
+  {
+    $this->birthDate = $birthDate;
+
+    return $this;
+  }
+
+  public function getLastName()
+  {
+    return $this->lastName;
+  }
+
+  public function setLastName($lastName)
+  {
+    $this->lastName = $lastName;
+
+    return $this;
+  }
+
+  public function getFirstName()
+  {
+    return $this->firstName;
+  }
+
+  public function setFirstName($firstName)
+  {
+    $this->firstName = $firstName;
+
+    return $this;
   }
 }
