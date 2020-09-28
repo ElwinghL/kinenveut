@@ -10,5 +10,8 @@
     "format": [
       "watch php-cs-fixer fix"
     ]
+  },
+  "config": {
+    "process-timeout": 0
   }
 }
