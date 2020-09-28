@@ -2,8 +2,9 @@
 
 $data = null;class Controller
 {
-  public function __construct()
+  public function check()
   {
+    // need to override these method inside child class
   }
 
   public function render($view, $d = null)

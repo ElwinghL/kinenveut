@@ -2,8 +2,9 @@
 
 class RegistrationController extends Controller
 {
-  public function __construct()
+  public function check()
   {
+    // todo check la validités des données
   }
 
   public function index()

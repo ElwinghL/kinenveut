@@ -14,7 +14,7 @@ class Model
       $this->$field = $row[$field];
     } else {
       $st = db()->prepare("select * from $table where id$table=:id");
-      $st->binValue(':id', $id);
+      $st->bindValue(':id', $id);
       $st->execute();
       if ($st->rowCount() != 1) {
         throw new Exception('Not in table: ' . $table . ' id: ' . $id);
@@ -57,7 +57,7 @@ class Model
     if (property_exists(get_class($this), $varName)) {
       return $this->$varName;
     } else {
-      throw new Exception('Unknow variable: ' . $fieldName);
+      throw new Exception('Unknown variable: ' . $fieldName);
     }
   }
 
@@ -73,16 +73,16 @@ class Model
         if (isset($value->$id)) {
           $st = db()->prepare("update $table set id$table=:id");
           $id = substr($id, 1);
-          $st->binValue(':val', $value);
+          $st->bindValue(':val', $value);
         } else {
           $st = db()->prepare("update $table set $fieldName=:val where id$table=:id");
-          $st->binValue(':val', $value);
+          $st->bindValue(':val', $value);
         }
         $id = 'id' . $table;
-        $st->binValue(':id', $this->$id);
+        $st->bindValue(':id', $this->$id);
         $st->execute();
       } else {
-        throw new Exception('Unknow variable: ' . $fieldName);
+        throw new Exception('Unknown variable: ' . $fieldName);
       }
     }
   }
