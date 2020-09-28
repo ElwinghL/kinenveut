@@ -1,6 +1,5 @@
 <!--action :)-->
-
-<div>
+<div class="container">
     <div class="card">
         <div class="card-header">
             <h3 class="card-title">Connexion</h3>
