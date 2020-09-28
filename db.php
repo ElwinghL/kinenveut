@@ -1,8 +1,20 @@
 <?php
 
-$db = new PDO("mysql:host=localhost;port=3306;dbname=kinenveut","root","");
-$db->exec("set search_path to framwhop");
+$dotenv->required(['host', 'port', 'dbname', 'user', 'password']);
+
+$db = new PDO(
+    "mysql:host=" .
+        $_ENV['host'] .
+        ";port=" .
+        $_ENV['port'] .
+        ";dbname=" .
+        $_ENV['dbname'],
+    $_ENV['user'],
+    $_ENV['password']
+);
+
 function db()
 {
-	global $db; return $db;
+    global $db;
+    return $db;
 }

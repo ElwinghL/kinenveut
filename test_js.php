@@ -1,7 +1,6 @@
 <?php
 
-$ma_variable = "";
-?>
+$ma_variable = ""; ?>
 <div id="content"></div>
 <button onclick="displayJSONFromPHP()">Load JSON</button>
 <script>

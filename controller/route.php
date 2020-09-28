@@ -1,38 +1,39 @@
 <?php
 
-$parameters = array();
-if (isset($_POST))
-	foreach($_POST as $k=>$v)
-		$parameters[$k] = $v;
-if (isset($_GET))
-	foreach($_GET as $k=>$v)
-		$parameters[$k] = $v;
+$parameters = [];
+if (isset($_POST)) {
+    foreach ($_POST as $k => $v) {
+        $parameters[$k] = $v;
+    }
+}
+if (isset($_GET)) {
+    foreach ($_GET as $k => $v) {
+        $parameters[$k] = $v;
+    }
+}
 
 function parameters()
 {
-	global $parameters;
-	return $parameters;
+    global $parameters;
+    return $parameters;
 }
 
-if (isset(parameters()["r"]))
-{
-	$route = parameters()["r"];
-	if ("default"){
-
-        list($controller, $action) = array("site","error");
+if (isset(parameters()["r"])) {
+    $route = parameters()["r"];
+    if ("default") {
+        list($controller, $action) = ["site", "error"];
     }
 
-	if (strpos($route, "/") == FALSE ){
-        list($controller, $action) = array($route, "index");
-    }else
-		list($controller, $action) = explode("/", $route);
+    if (strpos($route, "/") == false) {
+        list($controller, $action) = [$route, "index"];
+    } else {
+        list($controller, $action) = explode("/", $route);
+    }
 
-	$controller = ucfirst($controller)."Controller";
-	$c = new $controller();
-	$c->$action();
-
-}else 
-{
-	$c = new SiteController();
-	$c->index();
+    $controller = ucfirst($controller) . "Controller";
+    $c = new $controller();
+    $c->$action();
+} else {
+    $c = new SiteController();
+    $c->index();
 }
