@@ -1,6 +1,6 @@
 <?php
 
-$ma_variable = ""; ?>
+$ma_variable = ''; ?>
 <div id="content"></div>
 <button onclick="displayJSONFromPHP()">Load JSON</button>
 <script>
@@ -9,4 +9,3 @@ $ma_variable = ""; ?>
         document.getElementById("content").innerText = JSON.stringify(variablePHP, null, 1);
     }
 </script>
-

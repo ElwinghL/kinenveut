@@ -7,8 +7,8 @@
     "vlucas/phpdotenv": "^5.2"
   },
   "scripts": {
-    "fix-cs": [
-      "watch php-cs-fixer fix ."
+    "format": [
+      "watch php-cs-fixer fix"
     ]
   }
 }

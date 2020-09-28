@@ -40,17 +40,8 @@ Copier ce fichier et renommer le en `.env`, modifier les variables pour qu'elle 
 
 ### Formatage
 
-`composer fix-cs` lance php-cs-fixer à chaque changement de fichier
+`composer format` lance php-cs-fixer à chaque changement de fichier
 
 ## Modification composer.json dans le cas d'utilisation de prettier avec npm
 
-modifier le fichier dans le cas de l'utilisation de prettier avec npm
-
-```
-  "scripts": {
-    "fix-cs": [
-      "prettier --write .",
-      "php-cs-fixer fix ."
-    ]
-  }
-```
+Ajouter dans `scripts.format` le code `prettier --write .`
