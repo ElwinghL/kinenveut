@@ -15,22 +15,23 @@ if (isset($_GET)) {
 function parameters()
 {
     global $parameters;
+
     return $parameters;
 }
 
-if (isset(parameters()["r"])) {
-    $route = parameters()["r"];
-    if ("default") {
-        list($controller, $action) = ["site", "error"];
+if (isset(parameters()['r'])) {
+    $route = parameters()['r'];
+    if ('default') {
+        list($controller, $action) = ['site', 'error'];
     }
 
-    if (strpos($route, "/") == false) {
-        list($controller, $action) = [$route, "index"];
+    if (strpos($route, '/') == false) {
+        list($controller, $action) = [$route, 'index'];
     } else {
-        list($controller, $action) = explode("/", $route);
+        list($controller, $action) = explode('/', $route);
     }
 
-    $controller = ucfirst($controller) . "Controller";
+    $controller = ucfirst($controller) . 'Controller';
     $c = new $controller();
     $c->$action();
 } else {

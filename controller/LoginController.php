@@ -8,6 +8,6 @@ class LoginController extends Controller
 
     public function index()
     {
-        $this->render("index");
+        $this->render('index');
     }
 }

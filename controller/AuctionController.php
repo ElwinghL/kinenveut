@@ -8,15 +8,16 @@ class AuctionController extends Controller
 
     public function index()
     {
-        $this->render("index");
+        $this->render('index');
     }
+
     public function myAuction()
     {
-        $this->render("myAuction");
+        $this->render('myAuction');
     }
-    
+
     public function alerte()
     {
-        $this->render("alerte");
+        $this->render('alerte');
     }
 }

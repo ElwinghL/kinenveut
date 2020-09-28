@@ -8,7 +8,7 @@ class RegistrationController extends Controller
 
     public function index()
     {
-        $this->render("index");
+        $this->render('index');
     }
 
     //TODO: gérer les erreurs et contrôler la validité des données avant envoi à la bdd
@@ -16,17 +16,17 @@ class RegistrationController extends Controller
     {
         $userModel = new UserModel();
         $user = $userModel->newUser(
-            $_POST["firstName"],
-            $_POST["lastName"],
-            $_POST["birthDate"],
-            $_POST["email"],
-            $_POST["password"]
+            $_POST['firstName'],
+            $_POST['lastName'],
+            $_POST['birthDate'],
+            $_POST['email'],
+            $_POST['password']
         );
         if ($user == true) {
             $loginController = new LoginController();
             $loginController->index();
         } else {
-            $this->render("index", $_POST);
+            $this->render('index', $_POST);
         }
     }
 }
