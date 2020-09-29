@@ -2,6 +2,7 @@
 
 class AuctionModel
 {
+    private $id;
     private $name;
     private $description;
     private $basePrice;
@@ -9,9 +10,20 @@ class AuctionModel
     private $pictureLink;
     private $startDate;
     private $endDate;
+    private $auctionState; //(null: attente d'acceptation, 0: EnchèreEnCours, 1: Annulée)
+    private $sellerId;
     private $privacyId;
     private $categoryId;
 
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    public function setId($id): void
+    {
+        $this->id = $id;
+    }
     public function getName()
     {
         return $this->name;
@@ -80,6 +92,25 @@ class AuctionModel
     public function setEndDate($endDate)
     {
         $this->endDate = $endDate;
+    }
+
+    public function getAuctionState()
+    {
+        return $this->auctionState;
+    }
+    public function setAuctionState($auctionState): void
+    {
+        $this->auctionState = $auctionState;
+    }
+
+    public function getSellerId()
+    {
+        return $this->sellerId;
+    }
+
+    public function setSellerId($sellerId): void
+    {
+        $this->sellerId = $sellerId;
     }
 
     public function getPrivacyId()
