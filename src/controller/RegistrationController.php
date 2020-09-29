@@ -12,19 +12,19 @@ class RegistrationController extends Controller
     $this->render('index');
   }
 
-  //TODO: gérer les erreurs et contrôler la validité des données avant envoi à la bdd
-  public function register()
-  {
-    // check()
+    //TODO: gérer les erreurs et contrôler la validité des données avant envoi à la bdd
+    public function register()
+    {
+        // check()
 
-    $userBo = App_BoFactory::getFactory()->getUserBo();
-    $user = new UserModel();
-    $user
-      ->setFirstName($_POST['firstName'])
-      ->setLastName($_POST['lastName'])
-      ->setBirthDate($_POST['birthDate'])
-      ->setEmail($_POST['email'])
-      ->setPassword($_POST['password']);
+        $userBo = App_BoFactory::getFactory()->getUserBo();
+        $user = new UserModel();
+        $user
+            ->setFirstName($_POST['firstName'])
+            ->setLastName($_POST['lastName'])
+            ->setBirthDate($_POST['birthDate'])
+            ->setEmail($_POST['email'])
+            ->setPassword($_POST['password']);
     $success = $userBo->insertUser($user);
 
     if ($success == true) {
