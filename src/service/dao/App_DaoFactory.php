@@ -22,4 +22,9 @@ class App_DaoFactory
   {
     return new UserDaoImpl();
   }
+
+  public function getAuctionDao()
+    {
+        return new AuctionDaoImpl();
+    }
 }

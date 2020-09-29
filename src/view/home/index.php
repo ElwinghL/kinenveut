@@ -7,6 +7,7 @@
         <li><a href="?r=login">Connexion</a></li>
         <li><a href="?r=account">Mon compte</a></li>
         <li><a href="?r=auction">Mes enchères</a></li>
+        <li><a href="?r=auction/create">Créer une enchère</a></li>
         <li><a href="?r=auction/myAuction">Mes ventes</a></li>
         <!--Si c'est un admin-->
         <li><a href="?r=user">Gestion des utilisateurs</a></li>
