@@ -13,7 +13,7 @@ class LoginController extends Controller
     $user = new UserModel();
     $user
           ->setEmail(htmlspecialchars($_POST['email']))
-          ->setPassword(($_POST['password']));//md5
+          ->setPassword(md5($_POST['password']));
 
     $user = $userBo->getUserByEmailAndPassword($user);
 
