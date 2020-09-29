@@ -19,4 +19,9 @@ class Controller
     include_once 'src/view/' . strtolower($model) . '/' . $view . '.php';
     include_once 'src/view/footer.php';
   }
+
+  public function redirect($path) {
+    header('Location: '.$path);
+    exit();
+  }
 }
