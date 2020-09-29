@@ -9,7 +9,8 @@
   "scripts": {
     "format": [
       "watch php-cs-fixer fix"
-    ]
+    ],
+    "test": "phpunit test"
   },
   "config": {
     "process-timeout": 0
