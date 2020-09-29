@@ -9,4 +9,12 @@ class AuctionBoImpl implements IAuctionBo
 
         return $success;
     }
+
+    public function selectAllAuctions()
+  {
+    $auctionDao = App_DaoFactory::getFactory()->getAuctionDao();
+    $auctions = $auctionDao->selectAllAuctions();
+
+    return $auctions;
+  }
 }
