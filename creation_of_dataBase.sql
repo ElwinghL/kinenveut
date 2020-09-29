@@ -30,7 +30,7 @@ CREATE TABLE `kinenveut`.`Objects` (
 `pictureLink` TEXT NOT NULL,
 `startDate` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 `endDate` DATETIME NOT NULL,
-`isCancelled` INT NULL,
+`auctionState` INT NULL,
 `sellerId` INT NOT NULL,
 `privacyId` INT NOT NULL,
 `categoryId` INT NOT NULL,
