@@ -29,7 +29,7 @@ CREATE TABLE `kinenveut`.`Objects` (
 `reservePrice` INT NOT NULL,
 `pictureLink` TEXT NOT NULL,
 `startDate` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-`endDate` DATETIME NOT NULL,
+`duration` TIME NOT NULL,
 `isCancelled` INT NULL,
 `sellerId` INT NOT NULL,
 `privacyId` INT NOT NULL,

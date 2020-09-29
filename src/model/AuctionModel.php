@@ -2,105 +2,148 @@
 
 class AuctionModel
 {
-    private $name;
-    private $description;
-    private $basePrice;
-    private $reservePrice;
-    private $pictureLink;
-    private $startDate;
-    private $endDate;
-    private $privacyId;
-    private $categoryId;
+  private $id;
+  private $name;
+  private $description;
+  private $basePrice;
+  private $reservePrice;
+  private $pictureLink;
+  private $startDate;
+  private $duration;
+  private $auctionState;
+  private $sellerId;
+  private $privacyId;
+  private $categoryId;
 
-    public function getName()
-    {
-        return $this->name;
-    }
+  public function getId()
+  {
+    return $this->id;
+  }
 
-    public function setName($name)
-    {
-        $this->name = $name;
-    }
+  public function setId($id): AuctionModel
+  {
+    $this->id = $id;
+      return $this;
+  }
 
-    public function getDescription()
-    {
-        return $this->description;
-    }
+  public function getName()
+  {
+    return $this->name;
+  }
 
-    public function setDescription($description)
-    {
-        $this->description = $description;
-    }
+  public function setName($name)
+  {
+    $this->name = $name;
+      return $this;
+  }
 
-    public function getBasePrice()
-    {
-        return $this->basePrice;
-    }
+  public function getDescription()
+  {
+    return $this->description;
+  }
 
-    public function setBasePrice($basePrice)
-    {
-        $this->basePrice = $basePrice;
-    }
+  public function setDescription($description)
+  {
+    $this->description = $description;
+      return $this;
+  }
 
-    public function getReservePrice()
-    {
-        return $this->reservePrice;
-    }
+  public function getBasePrice()
+  {
+    return $this->basePrice;
+  }
 
-    public function setReservePrice($reservePrice)
-    {
-        $this->reservePrice = $reservePrice;
-    }
+  public function setBasePrice($basePrice)
+  {
+    $this->basePrice = $basePrice;
+      return $this;
+  }
 
-    public function getPictureLink()
-    {
-        return $this->pictureLink;
-    }
+  public function getReservePrice()
+  {
+    return $this->reservePrice;
+  }
 
-    public function setPictureLink($pictureLink)
-    {
-        $this->pictureLink = $pictureLink;
-    }
+  public function setReservePrice($reservePrice)
+  {
+    $this->reservePrice = $reservePrice;
+      return $this;
+  }
 
-    public function getStartDate()
-    {
-        return $this->startDate;
-    }
+  public function getPictureLink()
+  {
+    return $this->pictureLink;
+  }
 
-    public function setStartDate($startDate)
-    {
-        $this->startDate = $startDate;
-    }
+  public function setPictureLink($pictureLink)
+  {
+    $this->pictureLink = $pictureLink;
+      return $this;
+  }
 
-    public function getEndDate()
-    {
-        return $this->endDate;
-    }
+  public function getStartDate()
+  {
+    return $this->startDate;
+  }
 
-    public function setEndDate($endDate)
-    {
-        $this->endDate = $endDate;
-    }
+  public function setStartDate($startDate)
+  {
+    $this->startDate = $startDate;
+      return $this;
+  }
 
-    public function getPrivacyId()
-    {
-        return $this->privacyId;
-    }
+  public function getDuration()
+  {
+    return $this->duration;
+  }
 
-    public function setPrivacyId($privacyId)
-    {
-        $this->privacyId = $privacyId;
-    }
+  public function setDuration($duration)
+  {
+    $this->duration = $duration;
+      return $this;
+  }
 
-    public function getCategoryId()
-    {
-        return $this->categoryId;
-    }
+  public function getAuctionState()
+  {
+    return $this->auctionState;
+  }
 
-    public function setCategoryId($categoryId)
-    {
-        $this->categoryId = $categoryId;
-    }
+  public function setAuctionState($auctionState): AuctionModel
+  {
+    $this->auctionState = $auctionState;
+      return $this;
+  }
 
+  public function getSellerId()
+  {
+    return $this->sellerId;
+  }
 
+  public function setSellerId($sellerId): AuctionModel
+  {
+    $this->sellerId = $sellerId;
+      return $this;
+  }
+
+  public function getPrivacyId()
+  {
+    return $this->privacyId;
+  }
+
+  public function setPrivacyId($privacyId)
+  {
+    $this->privacyId = $privacyId;
+      return $this;
+  }
+
+  public function getCategoryId()
+  {
+    return $this->categoryId;
+  }
+
+  public function setCategoryId($categoryId)
+  {
+    $this->categoryId = $categoryId;
+      return $this;
+  }
 }
