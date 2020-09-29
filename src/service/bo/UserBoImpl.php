@@ -9,4 +9,12 @@ class UserBoImpl implements IUserBo
 
     return $success;
   }
+
+  public function selectUser(String $email)
+  {
+    $userDao = App_DaoFactory::getFactory()->getUserDao();
+    $user = $userDao->selectUser($email);
+
+    return $user;
+  }
 }

@@ -9,4 +9,12 @@ class UserDaoImpl implements IUserDao
 
     return $success;
   }
+
+  public function selectUser(String $email) {
+    $request = db()->prepare('SELECT * FROM Users WHERE email=?');
+    $request->execute([$email]);
+    $user = $request->fetch();
+    return $user;
+  }
+
 }
