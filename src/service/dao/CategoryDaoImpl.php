@@ -2,7 +2,7 @@
 
 class CategoryDaoImpl implements ICategoryDao
 {
-  public function getAllCategories(): array
+  public function selectAllCategories(): array
   {
     $request = db()->query('SELECT id, name FROM Categories');
 

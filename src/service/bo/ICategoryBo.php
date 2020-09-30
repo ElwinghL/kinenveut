@@ -2,7 +2,7 @@
 
 interface ICategoryBo
 {
-  public function getAllCategories() : array;
+  public function selectAllCategories() : array;
 
   public function insertCategory(CategoryModel $categoryModel) : bool;
 }

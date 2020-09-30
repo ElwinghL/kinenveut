@@ -2,7 +2,7 @@
 
 interface IAuctionBo
 {
-  public function getAllAuctionsByAuctionState(int $auctionState) : array;
+  public function selectAllAuctionsByAuctionState(int $auctionState) : array;
 
   public function insertAuction(AuctionModel $auction);
 

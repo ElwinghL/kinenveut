@@ -2,7 +2,7 @@
 
 class AuctionDaoImpl implements IAuctionDao
 {
-  public function getAllAuctionsByAuctionState($auctionSate) : array
+  public function selectAllAuctionsByAuctionState($auctionSate) : array
   {
     $request = db()->prepare('SELECT objects.id AS objectId,name,description,basePrice,reservePrice,pictureLink,startDate,duration,auctionState,sellerId,privacyId,categoryId
                     ,v_BestBids.id AS bidId,v_BestBids.bidPrice,v_BestBids.bidDate,v_BestBids.bidderId
@@ -56,9 +56,10 @@ class AuctionDaoImpl implements IAuctionDao
   }*/
   public function insertAuction(AuctionModel $auction)
   {
-    $request = db()->prepare("INSERT INTO Objects(name, description, basePrice, reservePrice, pictureLink, startDate, endDate, isCancelled, sellerId, privacyId, categoryId) VALUES (?, ?, ?, ?, ' ', ?, ?, false, 2, ?, ?)");
-    $success = $request->execute([$auction->getName(), $auction->getDescription(), $auction->getBasePrice(), $auction->getReservePrice(), $auction->getStartDate(), $auction->getEndDate(), $auction->getPrivacyId(), $auction->getCategoryId()]);
+    $request = db()->prepare("INSERT INTO Objects(name, description, basePrice, reservePrice, pictureLink, startDate, duration, auctionState, sellerId, privacyId, categoryId) VALUES (?, ?, ?, ?, ' ', ?, ?, 0, ?, ?, ?)");
 
-    return $success;
+    $result = $request->execute([$auction->getName(), $auction->getDescription(), $auction->getBasePrice(), $auction->getReservePrice(), /*$auction->getPictureLink(),*/ $auction->getStartDate(), $auction->getDuration(), $auction->getSellerId(), $auction->getPrivacyId(), $auction->getCategoryId()]);
+
+    return $result;
   }
 }

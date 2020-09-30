@@ -7,7 +7,7 @@ class HomeController extends Controller
   public function index()
   {
     $auctionBo = App_BoFactory::getFactory()->getAuctionBo();
-    $auctionList = $auctionBo->getAllAuctionsByAuctionState(self::IS_ONLINE);
+    $auctionList = $auctionBo->selectAllAuctionsByAuctionState(self::IS_ONLINE);
     $data = ['auctionList' => $auctionList];
 
     $this->render('index', $data);
