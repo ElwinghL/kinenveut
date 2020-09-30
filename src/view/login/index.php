@@ -5,7 +5,9 @@
             <h3 class="card-title">Connexion</h3>
         </div>
         <div class="card-body">
-            <form action="" method="post">
+
+            <div class="row">
+            <form action="?r=login/login" method="post">
 
                 <div class="form-group col-md-10">
                     <label for="email">Email</label>
@@ -22,7 +24,11 @@
                 </div>
 
             </form>
-            <small>Mot de passe oubli&eacute;? | <a href="#">S'inscrire</a></small>
+            </div>
+            <div class="row">
+                <small>Mot de passe oubli&eacute;? | <a href="?r=registration">S'inscrire</a></small>
+            </div>
+
         </div>
     </div>
 </div>
