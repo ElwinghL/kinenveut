@@ -1,5 +1,3 @@
-
-
 <div class="container">
     <h2>Accueil</h2>
     <ul>
@@ -18,3 +16,67 @@
     </ul>
 </div>
 
+<div class="container">
+    <div class="row">
+        <h2>Recherche</h2>
+        <div id="custom-search-input">
+            <div class="input-group col-md-12">
+                <input type="text" class="  search-query form-control" placeholder="Smartphone, enceinte connectée, voiture..." />
+                <span class="input-group-btn">
+                    <button class="btn btn-danger" type="button">
+                        <span class=" glyphicon glyphicon-search"></span>
+                    </button>
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-12">
+        <strong class="col-lg-2">Catégorie</strong>
+        <div class="col-lg-4">
+            <select class="form-control">
+                <option>Toute catégorie</option>
+                <option>Smartphones</option>
+                <option>Voitures</option>
+                <option>Maisons</option>
+            </select>
+        </div>
+        <div class="col-lg-12">
+            <strong class="col-lg-2">Type d'offres</strong>
+            <div class="col-lg-4">
+                <select class="form-control">
+                    <option>Offres publiques</option>
+                    <option>Offres privées</option>
+                    <option>Offres confidentielles</option>
+                </select>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+	<div class="row">
+    	<!-- BEGIN PRODUCTS -->
+                <?php
+                    if (isset($data) && isset($data['auctions'])) {
+                        foreach($data['auctions'] as $auction) {
+                            echo '<div class="col-md-3 col-sm-6">',
+                                '<span class="thumbnail text-center">',
+                                    '<h4 class="text-danger">'.$auction['name'].'</h4>',
+                                    '<p>Expiration : '.$auction['endDate'],
+                                    '<hr class="line">',
+                                    '<div class="row">',
+                                        '<div class="col-md-6 col-sm-6">',
+                                            '<button type="button" class="btn btn-link">'.$auction['basePrice'].'€</button>',
+                                        '</div>',
+                                        '<div class="col-md-6 col-sm-6">',
+                                            '<button class="btn btn-danger right">Enchérir</button>',
+                                        '</div>',
+                                    '</div>',
+                                '</span>',
+                            '</div>';
+                        }
+                    }
+                ?>
+  		<!-- END PRODUCTS -->
+	</div>
+</div>
