@@ -25,4 +25,12 @@ class UserBoImpl implements IUserBo
 
     return $userId;
   }
+
+  public function deleteUser(int $userId) : bool
+  {
+    $userDao = App_DaoFactory::getFactory()->getUserDao();
+    $userId = $userDao->deleteUser($userId);
+
+    return $userId;
+  }
 }

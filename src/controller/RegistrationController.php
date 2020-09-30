@@ -61,7 +61,7 @@ class RegistrationController extends Controller
           ->setLastName($lastName)
           ->setBirthDate($birthDate)
           ->setEmail($email)
-          ->setPassword(md5($password));
+          ->setPassword($password);
       $userId = $userBo->insertUser($user);
       if ($userId !== null) {
         $this->redirect('http://localhost/kinenveut/?r=login');

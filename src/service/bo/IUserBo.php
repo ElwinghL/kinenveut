@@ -7,4 +7,6 @@ interface IUserBo
   public function selectUserByEmail(String $email) : ?UserModel;
 
   public function insertUser(UserModel $user) : ?int;
+
+  public function deleteUser(int $userId) : bool;
 }
