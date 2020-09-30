@@ -58,15 +58,15 @@
     	<!-- BEGIN PRODUCTS -->
                 <?php
                     if (isset($data) && isset($data['auctions'])) {
-                        foreach($data['auctions'] as $auction) {
-                            echo '<div class="col-md-3 col-sm-6">',
+                      foreach ($data['auctions'] as $auction) {
+                        echo '<div class="col-md-3 col-sm-6">',
                                 '<span class="thumbnail text-center">',
-                                    '<h4 class="text-danger">'.$auction['name'].'</h4>',
-                                    '<p>Expiration : '.$auction['endDate'],
+                                    '<h4 class="text-danger">' . $auction['name'] . '</h4>',
+                                    '<p>Expiration : ' . $auction['endDate'],
                                     '<hr class="line">',
                                     '<div class="row">',
                                         '<div class="col-md-6 col-sm-6">',
-                                            '<button type="button" class="btn btn-link">'.$auction['basePrice'].'€</button>',
+                                            '<button type="button" class="btn btn-link">' . $auction['basePrice'] . '€</button>',
                                         '</div>',
                                         '<div class="col-md-6 col-sm-6">',
                                             '<button class="btn btn-danger right">Enchérir</button>',
@@ -74,7 +74,7 @@
                                     '</div>',
                                 '</span>',
                             '</div>';
-                        }
+                      }
                     }
                 ?>
   		<!-- END PRODUCTS -->

@@ -61,6 +61,10 @@ Copier ce fichier et renommer le en `.env`, modifier les variables pour qu'elle 
 
 `composer format` lance php-cs-fixer à chaque changement de fichier
 
+### Les testes
+
+`composer test` lance les testes avec php unit
+
 ## Modification composer.json dans le cas d'utilisation de prettier avec npm
 
 Ajouter dans `scripts.format` le code `prettier --write .`

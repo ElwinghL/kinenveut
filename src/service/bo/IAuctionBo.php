@@ -2,6 +2,7 @@
 
 interface IAuctionBo
 {
-    public function insertAuction(AuctionModel $auction);
-    public function selectAllAuctions();
+  public function insertAuction(AuctionModel $auction);
+
+  public function selectAllAuctions();
 }

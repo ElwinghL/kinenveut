@@ -22,8 +22,9 @@ class App_BoFactory
   {
     return new UserBoImpl();
   }
+
   public function getAuctionBo()
-    {
-        return new AuctionBoImpl();
-    }
+  {
+    return new AuctionBoImpl();
+  }
 }
