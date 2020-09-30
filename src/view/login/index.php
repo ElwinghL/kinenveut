@@ -24,12 +24,12 @@
 
                 <div class="form-group col-md-10">
                     <label for="email">Email</label>
-                    <input class="form-control" type="email" name="email" value="" placeholder="" maxlength="255" required/>
+                    <input class="form-control" type="email" name="email" id="email" value="" placeholder="" maxlength="255" required/>
 
                     <br/>
 
                     <label for="password">Mot de passe</label>
-                    <input class="form-control" type="password" name="password"  value="" placeholder="" maxlength="255" required/>
+                    <input class="form-control" type="password" name="password" id="password" value="" placeholder="" maxlength="255" required/>
 
                     <br/>
 
