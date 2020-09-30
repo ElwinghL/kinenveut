@@ -8,6 +8,13 @@ class CategorieController extends Controller
 
   public function index()
   {
-    $this->render('index');
+    $categoryBo = App_BoFactory::getFactory()->getCategoryBo();
+    $categoryList = $categoryBo->getAllCategories();
+
+    $data = [
+      'categoryList'=> $categoryList
+    ];
+
+    $this->render('index', $data);
   }
 }

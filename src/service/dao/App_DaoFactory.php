@@ -24,7 +24,12 @@ class App_DaoFactory
   }
 
   public function getAuctionDao()
-    {
-        return new AuctionDaoImpl();
-    }
+  {
+    return new AuctionDaoImpl();
+  }
+
+  public function getCategoryDao()
+  {
+    return new CategoryDaoImpl();
+  }
 }
