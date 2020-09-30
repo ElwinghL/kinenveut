@@ -12,9 +12,9 @@ class CategoryBoImpl implements ICategoryBo
 
   public function insertCategory(CategoryModel $categoryModel): bool
   {
-      $categoryDao = App_DaoFactory::getFactory()->getCategoryDao();
-      $categoryList = $categoryDao->insertCategory($categoryModel);
+    $categoryDao = App_DaoFactory::getFactory()->getCategoryDao();
+    $categoryList = $categoryDao->insertCategory($categoryModel);
 
-      return $categoryList;
+    return $categoryList;
   }
 }

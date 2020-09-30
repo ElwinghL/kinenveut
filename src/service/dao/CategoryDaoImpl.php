@@ -25,6 +25,6 @@ class CategoryDaoImpl implements ICategoryDao
   public function insertCategory(CategoryModel $categoryModel): bool
   {
     // TODO: Implement insertCategory() method.
-      return true;
+    return true;
   }
 }
