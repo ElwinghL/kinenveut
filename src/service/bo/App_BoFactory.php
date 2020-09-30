@@ -27,4 +27,9 @@ class App_BoFactory
   {
     return new AuctionBoImpl();
   }
+
+  public function getCategoryBo()
+  {
+    return new CategoryBoImpl();
+  }
 }
