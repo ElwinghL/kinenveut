@@ -2,11 +2,54 @@
 
 class UserModel
 {
+  private $id;
   private $firstName;
   private $lastName;
   private $birthDate;
   private $email;
   private $password;
+  private $isAuthorised;
+  private $isAdmin;
+
+  public function __construct()
+  {
+  }
+
+  public function getId()
+  {
+    return $this->id;
+  }
+
+  public function setId($id): UserModel
+  {
+    $this->id = $id;
+
+    return $this;
+  }
+
+  public function getFirstName()
+  {
+    return $this->firstName;
+  }
+
+  public function setFirstName($firstName)
+  {
+    $this->firstName = $firstName;
+
+    return $this;
+  }
+
+  public function getLastName()
+  {
+    return $this->lastName;
+  }
+
+  public function setLastName($lastName)
+  {
+    $this->lastName = $lastName;
+
+    return $this;
+  }
 
   public function getPassword()
   {
@@ -44,26 +87,26 @@ class UserModel
     return $this;
   }
 
-  public function getLastName()
+  public function getIsAuthorised()
   {
-    return $this->lastName;
+    return $this->isAuthorised;
   }
 
-  public function setLastName($lastName)
+  public function setIsAuthorised($isAuthorised)
   {
-    $this->lastName = $lastName;
+    $this->isAuthorised = $isAuthorised;
 
     return $this;
   }
 
-  public function getFirstName()
+  public function getIsAdmin()
   {
-    return $this->firstName;
+    return $this->isAdmin;
   }
 
-  public function setFirstName($firstName)
+  public function setIsAdmin($isAdmin)
   {
-    $this->firstName = $firstName;
+    $this->isAdmin = $isAdmin;
 
     return $this;
   }

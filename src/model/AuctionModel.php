@@ -10,10 +10,12 @@ class AuctionModel
   private $pictureLink;
   private $startDate;
   private $duration;
-  private $auctionState;
+  private $auctionState; //(null: attente d'acceptation, 0: EnchèreEnCours, 1: Annulée)
   private $sellerId;
   private $privacyId;
   private $categoryId;
+
+  private $bestBid;
 
   public function getId()
   {
@@ -23,7 +25,8 @@ class AuctionModel
   public function setId($id): AuctionModel
   {
     $this->id = $id;
-      return $this;
+
+    return $this;
   }
 
   public function getName()
@@ -31,10 +34,11 @@ class AuctionModel
     return $this->name;
   }
 
-  public function setName($name)
+  public function setName($name): AuctionModel
   {
     $this->name = $name;
-      return $this;
+
+    return $this;
   }
 
   public function getDescription()
@@ -42,10 +46,11 @@ class AuctionModel
     return $this->description;
   }
 
-  public function setDescription($description)
+  public function setDescription($description): AuctionModel
   {
     $this->description = $description;
-      return $this;
+
+    return $this;
   }
 
   public function getBasePrice()
@@ -53,10 +58,11 @@ class AuctionModel
     return $this->basePrice;
   }
 
-  public function setBasePrice($basePrice)
+  public function setBasePrice($basePrice): AuctionModel
   {
     $this->basePrice = $basePrice;
-      return $this;
+
+    return $this;
   }
 
   public function getReservePrice()
@@ -64,10 +70,11 @@ class AuctionModel
     return $this->reservePrice;
   }
 
-  public function setReservePrice($reservePrice)
+  public function setReservePrice($reservePrice): AuctionModel
   {
     $this->reservePrice = $reservePrice;
-      return $this;
+
+    return $this;
   }
 
   public function getPictureLink()
@@ -75,10 +82,11 @@ class AuctionModel
     return $this->pictureLink;
   }
 
-  public function setPictureLink($pictureLink)
+  public function setPictureLink($pictureLink): AuctionModel
   {
     $this->pictureLink = $pictureLink;
-      return $this;
+
+    return $this;
   }
 
   public function getStartDate()
@@ -86,10 +94,11 @@ class AuctionModel
     return $this->startDate;
   }
 
-  public function setStartDate($startDate)
+  public function setStartDate($startDate): AuctionModel
   {
     $this->startDate = $startDate;
-      return $this;
+
+    return $this;
   }
 
   public function getDuration()
@@ -97,10 +106,11 @@ class AuctionModel
     return $this->duration;
   }
 
-  public function setDuration($duration)
+  public function setDuration($duration): AuctionModel
   {
     $this->duration = $duration;
-      return $this;
+
+    return $this;
   }
 
   public function getAuctionState()
@@ -111,7 +121,8 @@ class AuctionModel
   public function setAuctionState($auctionState): AuctionModel
   {
     $this->auctionState = $auctionState;
-      return $this;
+
+    return $this;
   }
 
   public function getSellerId()
@@ -122,7 +133,8 @@ class AuctionModel
   public function setSellerId($sellerId): AuctionModel
   {
     $this->sellerId = $sellerId;
-      return $this;
+
+    return $this;
   }
 
   public function getPrivacyId()
@@ -130,10 +142,11 @@ class AuctionModel
     return $this->privacyId;
   }
 
-  public function setPrivacyId($privacyId)
+  public function setPrivacyId($privacyId): AuctionModel
   {
     $this->privacyId = $privacyId;
-      return $this;
+
+    return $this;
   }
 
   public function getCategoryId()
@@ -141,9 +154,22 @@ class AuctionModel
     return $this->categoryId;
   }
 
-  public function setCategoryId($categoryId)
+  public function setCategoryId($categoryId): AuctionModel
   {
     $this->categoryId = $categoryId;
-      return $this;
+
+    return $this;
+  }
+
+  public function getBestBid()
+  {
+    return $this->bestBid;
+  }
+
+  public function setBestBid(BidModel $bestBid): AuctionModel
+  {
+    $this->bestBid = $bestBid;
+
+    return $this;
   }
 }

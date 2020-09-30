@@ -2,8 +2,14 @@
 
 class HomeController extends Controller
 {
+  protected const IS_ONLINE = 1;
+
   public function index()
   {
-    $this->render('index');
+    $auctionBo = App_BoFactory::getFactory()->getAuctionBo();
+    $auctionList = $auctionBo->getAllAuctionsByAuctionState(self::IS_ONLINE);
+    $data = ['auctionList' => $auctionList];
+
+    $this->render('index', $data);
   }
 }

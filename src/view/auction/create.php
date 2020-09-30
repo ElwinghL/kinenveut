@@ -6,7 +6,7 @@
             <h3 class="card-title">Créer une enchère</h3>
         </div>
         <div class="card-body">
-            <form action="?r=auction/saveObjectAuction" method="post">
+            <form action="?r=auction/create" method="post">
 
                 <div class="form-group col-md-10">
 
@@ -41,16 +41,16 @@
 
                     <br/>
 
-                    <label for="duration">Durée</label>
-                    <input class="form-control" type="time" name="duration" id="duration" value="" placeholder="Durée" required/>
+                    <label for="endDate">Date de fin</label>
+                    <input class="form-control" type="datetime-local" name="endDate" id="endDate" value="" placeholder="Date de fin" required/>
 
                     <br/>
 
                     <label for="privacyId">Confidentialité</label>
-                    <select class="form-control" name="privacyId" id="privacyId" required>
-                        <option value="1" selected>Libre</option>
-                        <option value="2">Privée</option>
-                        <option value="3" >Confidentielle</option>
+                    <select class="form-control" name="privacyId" id="privacyId" required/>
+                    <option value="1" selected>Libre</option>
+                    <option value="2">Privée</option>
+                    <option value="3" >Confidentielle</option>
                     </select>
 
                     <br/>
@@ -59,7 +59,7 @@
                     <select class="form-control" name="categoryId" id="categoryId">
                         <?php
                         $categories = new CategoryModel();
-                        $data = null;//$categories->getAllName();
+                        $data = $categories->getAllName();
                         foreach ($data as $r): ?>
                             <option value="<?= $r['id']; ?>"><?= $r['name']; ?></option>
                         <?php endforeach; ?>
