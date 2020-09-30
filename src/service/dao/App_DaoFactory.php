@@ -9,7 +9,7 @@ class App_DaoFactory
     self::$_instance = $f;
   }
 
-  public static function getFactory()
+  public static function getFactory() : App_DaoFactory
   {
     if (!self::$_instance) {
       self::$_instance = new self;
@@ -18,12 +18,12 @@ class App_DaoFactory
     return self::$_instance;
   }
 
-  public function getUserDao()
+  public function getUserDao() : UserDaoImpl
   {
     return new UserDaoImpl();
   }
 
-  public function getAuctionDao()
+  public function getAuctionDao() : AuctionDaoImpl
   {
     return new AuctionDaoImpl();
   }
