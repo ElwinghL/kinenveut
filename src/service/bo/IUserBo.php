@@ -2,7 +2,9 @@
 
 interface IUserBo
 {
-  public function insertUser(UserModel $user) : UserModel;
+  public function getUserByEmailAndPassword(UserModel $user);
+
+  public function insertUser(UserModel $user);
 
   public function selectUser(String $email);
 }

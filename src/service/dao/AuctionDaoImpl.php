@@ -9,4 +9,13 @@ class AuctionDaoImpl implements IAuctionDao
 
     return $success;
   }
+
+  public function selectAllAuctions()
+  {
+    $request = db()->prepare('SELECT * FROM Objects');
+    $request->execute();
+    $auctions = $request->fetchAll();
+
+    return $auctions;
+  }
 }
