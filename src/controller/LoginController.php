@@ -10,7 +10,7 @@ class LoginController extends Controller
   public function login()
   {
     $userBo = App_BoFactory::getFactory()->getUserBo();
-    $user = $userBo->selectUserByEmailAndPassword($_POST['email'], md5($_POST['password']));
+    $user = $userBo->selectUserByEmailAndPassword($_POST['email'], $_POST['password']);
     if ($user !== null) {
       $this->redirect('http://localhost/kinenveut/');
     } else {

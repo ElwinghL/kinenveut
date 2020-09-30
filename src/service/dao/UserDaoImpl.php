@@ -5,7 +5,7 @@ class UserDaoImpl implements IUserDao
   public function selectUserByEmailAndPassword(String $email, String $password) : ?UserModel
   {
     $request = db()->prepare('SELECT id, firstName, lastName, email, birthDate, isAuthorised, isAdmin FROM Users WHERE email=? AND password=?');
-    $params = [protectStringBeforeSQL($email), protectStringBeforeSQL($password)];
+    $params = [$email, md5($password)];
     $success = $request->execute($params);
     if ($success == false) {
       return null;
@@ -30,7 +30,7 @@ class UserDaoImpl implements IUserDao
   public function selectUserByEmail(String $email) : ?UserModel
   {
     $request = db()->prepare('SELECT * FROM Users WHERE email=?');
-    $success = $request->execute([protectStringBeforeSQL($email)]);
+    $success = $request->execute([$email]);
     if ($success == false) {
       return null;
     }
@@ -54,7 +54,7 @@ class UserDaoImpl implements IUserDao
   public function insertUser(UserModel $user) : ?int
   {
     $request = db()->prepare('INSERT INTO Users(firstName, lastName, email, password, birthDate, isAdmin) VALUES (?, ?, ?, ?, ?, false)');
-    $success = $request->execute([protectStringBeforeSQL($user->getFirstName()), protectStringBeforeSQL($user->getLastName()), protectStringBeforeSQL($user->getEmail()), protectStringBeforeSQL($user->getPassword()), $user->getBirthDate()]);
+    $success = $request->execute([$user->getFirstName(), $user->getLastName(), $user->getEmail(), md5($user->getPassword()), $user->getBirthDate()]);
     if ($success == false) {
       return null;
     }
