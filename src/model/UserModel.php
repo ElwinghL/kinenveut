@@ -2,6 +2,7 @@
 
 class UserModel
 {
+  private $id;
   private $firstName;
   private $lastName;
   private $birthDate;
@@ -64,6 +65,18 @@ class UserModel
   public function setFirstName($firstName)
   {
     $this->firstName = $firstName;
+
+    return $this;
+  }
+
+  public function getId()
+  {
+    return $this->id;
+  }
+
+  public function setId($id)
+  {
+    $this->id = $id;
 
     return $this;
   }

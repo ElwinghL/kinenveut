@@ -2,12 +2,12 @@
 
 class UserBoImpl implements IUserBo
 {
-  public function insertUser(UserModel $user)
+  public function insertUser(UserModel $user) : UserModel
   {
     $userDao = App_DaoFactory::getFactory()->getUserDao();
-    $success = $userDao->insertUser($user);
+    $user = $userDao->insertUser($user);
 
-    return $success;
+    return $user;
   }
 
   public function selectUser(String $email)

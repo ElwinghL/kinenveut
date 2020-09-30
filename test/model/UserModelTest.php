@@ -12,7 +12,7 @@ class UserModelTest extends TestCase
     $user = new UserModel();
     $firstName = 'Francis';
     $lastName = 'Dupont';
-    $birthDate = '13/01/2000';
+    $birthDate = '2000-01-13';
     $email = 'Francis.Dupont@gmail.com';
     $password = 'password';
 

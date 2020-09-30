@@ -2,11 +2,11 @@
 
 class AuctionDaoImpl implements IAuctionDao
 {
-    public function insertAuction(AuctionModel $auction)
-    {
+  public function insertAuction(AuctionModel $auction)
+  {
+    $request = db()->prepare("INSERT INTO Objects(name, description, basePrice, reservePrice, pictureLink, startDate, endDate, isCancelled, sellerId, privacyId, categoryId) VALUES (?, ?, ?, ?, ' ', ?, ?, false, 2, ?, ?)");
+    $success = $request->execute([$auction->getName(), $auction->getDescription(), $auction->getBasePrice(), $auction->getReservePrice(), $auction->getStartDate(), $auction->getEndDate(), $auction->getPrivacyId(), $auction->getCategoryId()]);
 
-        $request = db()->prepare("INSERT INTO Objects(name, description, basePrice, reservePrice, pictureLink, startDate, endDate, isCancelled, sellerId, privacyId, categoryId) VALUES (?, ?, ?, ?, ' ', ?, ?, false, 2, ?, ?)");
-        $success = $request->execute([$auction->getName(),$auction->getDescription(), $auction->getBasePrice(), $auction->getReservePrice(), $auction->getStartDate(), $auction->getEndDate(), $auction->getPrivacyId(), $auction->getCategoryId()]);
-        return $success;
-    }
+    return $success;
+  }
 }

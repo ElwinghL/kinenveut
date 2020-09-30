@@ -20,8 +20,9 @@ class Controller
     include_once 'src/view/footer.php';
   }
 
-  public function redirect($path) {
-    header('Location: '.$path);
+  public function redirect($path)
+  {
+    header('Location: ' . $path);
     exit();
   }
 }

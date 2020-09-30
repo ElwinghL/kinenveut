@@ -60,7 +60,7 @@
                         <?php
                         $categories = new CategoryModel();
                         $data = $categories->getAllName();
-                        foreach($data as $r): ?>
+                        foreach ($data as $r): ?>
                             <option value="<?= $r['id']; ?>"><?= $r['name']; ?></option>
                         <?php endforeach; ?>
                     </select>
