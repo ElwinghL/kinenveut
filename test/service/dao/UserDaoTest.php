@@ -33,11 +33,11 @@ class UserDaoTest extends TestCase
       ->setBirthDate($birthDate)
       ->setEmail($email)
       ->setPassword($password);
-    $user = $userDao->insertUser($user);
+    $userId = $userDao->insertUser($user);
 
-    $this->assertNotNull($user->getId());
+    $this->assertNotNull($userId);
 
-    $userDao->deleteUser($user);
+    $userDao->deleteUser($userId);
   }
 
   /** @test */

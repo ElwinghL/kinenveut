@@ -49,8 +49,8 @@ class RegistrationController extends Controller
       $errors['email'] = "L'adresse mail doit être valide";
     }
     $userBo = App_BoFactory::getFactory()->getUserBo();
-    $userWithSameEmail = $userBo->selectUser($email);
-    if ($userWithSameEmail !== false) {
+    $userWithSameEmail = $userBo->selectUserByEmail($email);
+    if ($userWithSameEmail !== null) {
       $errors['emailAlreadyInUse'] = "L'adresse mail renseignée est déjà utilisée par un autre utilisateur";
     }
 
@@ -62,8 +62,8 @@ class RegistrationController extends Controller
           ->setBirthDate($birthDate)
           ->setEmail($email)
           ->setPassword(md5($password));
-      $success = $userBo->insertUser($user);
-      if ($success == true) {
+      $userId = $userBo->insertUser($user);
+      if ($userId !== null) {
         $this->redirect('http://localhost/kinenveut/?r=login');
       } else {
         $errors['dbError'] = "Une erreur s'est produite avec la base de données";

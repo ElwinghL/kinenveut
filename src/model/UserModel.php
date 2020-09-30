@@ -15,25 +15,16 @@ class UserModel
   {
   }
 
-  public function __constructWithArguments($id, $firstName, $lastName, $birthDate, $email, $isAuthorised, $isAdmin)
-  {
-    $this->id = $id;
-    $this->firstName = $firstName;
-    $this->lastName = $lastName;
-    $this->birthDate = $birthDate;
-    $this->email = $email;
-    $this->isAuthorised = $isAuthorised;
-    $this->isAdmin = $isAdmin;
-  }
-
   public function getId()
   {
     return $this->id;
   }
 
-  public function setId($id)
+  public function setId($id): UserModel
   {
     $this->id = $id;
+
+    return $this;
   }
 
   public function getFirstName()
@@ -104,6 +95,8 @@ class UserModel
   public function setIsAuthorised($isAuthorised)
   {
     $this->isAuthorised = $isAuthorised;
+
+    return $this;
   }
 
   public function getIsAdmin()
@@ -114,18 +107,6 @@ class UserModel
   public function setIsAdmin($isAdmin)
   {
     $this->isAdmin = $isAdmin;
-
-    return $this;
-  }
-
-  public function getId()
-  {
-    return $this->id;
-  }
-
-  public function setId($id)
-  {
-    $this->id = $id;
 
     return $this;
   }
