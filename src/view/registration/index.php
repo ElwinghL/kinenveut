@@ -34,28 +34,28 @@
                     <br/>
 
                     <label for="lastName">Nom</label>
-                    <input class="form-control" name="lastName" type="text" value="<?php if (isset($lastName)) {
+                    <input class="form-control" name="lastName" id="lastName" type="text" value="<?php if (isset($lastName)) {
   echo $lastName;
 } echo(''); ?>" placeholder="" maxlength="100" required/>
 
                     <br/>
 
                     <label for="birthDate">Date de naissance</label>
-                    <input class="form-control" name="birthDate" type="date" value="<?php if (isset($birthDate)) {
+                    <input class="form-control" name="birthDate" id="birthDate" type="date" value="<?php if (isset($birthDate)) {
   echo $birthDate;
 } echo(''); ?>" placeholder="" maxlength="10" required/>
 
                     <br/>
 
                     <label for="email">Email</label>
-                    <input class="form-control" name="email" type="email" value="<?php if (isset($email)) {
+                    <input class="form-control" name="email" id="email" type="email" value="<?php if (isset($email)) {
   echo $email;
 } echo(''); ?>" placeholder="" maxlength="255" required/>
 
                     <br/>
 
                     <label for="password">Mot de passe</label>
-                    <input class="form-control" name="password" type="password" value="" placeholder="" maxlength="255" required/>
+                    <input class="form-control" name="password" id="password" type="password" value="" placeholder="" maxlength="255" required/>
 
                     <br/>
 

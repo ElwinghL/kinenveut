@@ -2,10 +2,10 @@
 
 class AuctionBoImpl implements IAuctionBo
 {
-  public function getAllAuctionsByAuctionState(int $auctionState) : array
+  public function selectAllAuctionsByAuctionState(int $auctionState) : array
   {
     $auctionDao = App_DaoFactory::getFactory()->getAuctionDao();
-    $auctionList = $auctionDao->getAllAuctionsByAuctionState($auctionState);
+    $auctionList = $auctionDao->selectAllAuctionsByAuctionState($auctionState);
 
     return $auctionList;
   }
