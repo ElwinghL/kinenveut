@@ -11,7 +11,7 @@ VALUES
     (1,'Admin','','admin@kinenveut.fr','1950-01-01','5f4dcc3b5aa765d61d8327deb882cf99',1,1) ##The password is : password
     ,(2,'Test','FamilyTest','test@kinenveut.fr','1975-01-01','05a671c66aefea124cc08b76ea6d30bb',1,0) ##The password is : testtest
      #BAN people
-    ,(3,'George','VSGCZDE','goerge@kinenveut.fr','1855-01-01','5f4dcc3b5aa765d61d8327deb882cf99',0,0) ##The password is : password, he is BAN
+    ,(3,'George','VSGCZDE','george@kinenveut.fr','1855-01-01','5f4dcc3b5aa765d61d8327deb882cf99',0,0) ##The password is : password, he is BAN
     ,(4,'BHEVCDGAZVGAVAG','VSGCZDE','ban@kinenveut.fr','1855-01-01','5f4dcc3b5aa765d61d8327deb882cf99',0,0) ##The password is : password, he is BAN
     #Authorized people
     ,(5,'Nathalia','Fratelli','nathalia@kinenveut.fr','1987-01-01','5f4dcc3b5aa765d61d8327deb882cf99',1,0) ##The password is : password
