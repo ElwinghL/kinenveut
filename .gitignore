@@ -172,7 +172,6 @@ modules.xml
 
 # PHPUnit
 /app/phpunit.xml
-/phpunit.xml
 
 # Build data
 /build/
@@ -194,3 +193,4 @@ modules.xml
 
 coverage.txt
 .php_cs.cache
+composer.lock
