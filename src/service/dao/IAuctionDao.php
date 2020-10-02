@@ -6,5 +6,5 @@ interface IAuctionDao
 
   public function insertAuction(AuctionModel $auction): ?int;
 
-  public function deleteAuctionById(int $id) : bool;
+  public function deleteAuctionById(int $auctionId) : bool;
 }

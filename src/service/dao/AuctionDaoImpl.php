@@ -50,15 +50,15 @@ class AuctionDaoImpl implements IAuctionDao
   {
     $request = db()->prepare("INSERT INTO Objects(name, description, basePrice, reservePrice, pictureLink, startDate, duration, auctionState, sellerId, privacyId, categoryId) VALUES (?, ?, ?, ?, ' ', ?, ?, 0, ?, ?, ?)");
 
-    $result = $request->execute([$auction->getName(), $auction->getDescription(), $auction->getBasePrice(), $auction->getReservePrice(), /*$auction->getPictureLink(),*/ $auction->getStartDate(), $auction->getDuration(), $auction->getSellerId(), $auction->getPrivacyId(), $auction->getCategoryId()]);
+    $auctionId = $request->execute([$auction->getName(), $auction->getDescription(), $auction->getBasePrice(), $auction->getReservePrice(), /*$auction->getPictureLink(),*/ $auction->getStartDate(), $auction->getDuration(), $auction->getSellerId(), $auction->getPrivacyId(), $auction->getCategoryId()]);
 
-    return $result;
+    return $auctionId;
   }
 
-  public function deleteAuctionById(int $objectId) : bool
+  public function deleteAuctionById(int $auctionId) : bool
   {
     $request = db()->prepare('DELETE FROM Objects WHERE id=?');
-    $success = $request->execute([$objectId]);
+    $success = $request->execute([$auctionId]);
 
     return $success;
   }
