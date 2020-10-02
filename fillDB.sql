@@ -1,4 +1,4 @@
-CREATE TABLE `kinenveut`.`Users` (
+CREATE TABLE `Users` (
                                      `id` INT NOT NULL AUTO_INCREMENT,
                                      `firstName` VARCHAR(100) NOT NULL,
                                      `lastName` VARCHAR(100) NOT NULL,
@@ -11,14 +11,14 @@ CREATE TABLE `kinenveut`.`Users` (
                                      UNIQUE `Unicite_Mail` (`email`)
 ) ENGINE = MyISAM;
 
-CREATE TABLE `kinenveut`.`Categories` (
+CREATE TABLE `Categories` (
                                           `id` SMALLINT NOT NULL AUTO_INCREMENT,
                                           `name` VARCHAR(100) NOT NULL,
                                           PRIMARY KEY (`id`),
                                           UNIQUE `Unicite_Name` (`name`)
 ) ENGINE = MyISAM;
 
-CREATE TABLE `kinenveut`.`Objects` (
+CREATE TABLE `Objects` (
                                        `id` INT NOT NULL AUTO_INCREMENT,
                                        `name` VARCHAR(255) NOT NULL,
                                        `description` TEXT NOT NULL,
@@ -41,7 +41,7 @@ CREATE TABLE `kinenveut`.`Objects` (
                                        INDEX ind_categoryId (categoryId)
 ) ENGINE = MyISAM;
 
-CREATE TABLE `kinenveut`.`BidHistory` (
+CREATE TABLE `BidHistory` (
                                           `id` INT NOT NULL AUTO_INCREMENT,
                                           `bidPrice` INT NOT NULL,
                                           `bidDate` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -67,14 +67,14 @@ FROM (SELECT * FROM bidhistory
 WHERE bidDate = (SELECT MIN(bidDate) FROM bidhistory)
 GROUP BY bidhistory.objectId;
 
-LOCK TABLES kinenveut.Users WRITE;
-INSERT INTO `kinenveut`.`Users` (`firstName`,`lastName`,`email`,`birthDate`,`password`,`isAuthorised`,`isAdmin`)
+LOCK TABLES Users WRITE;
+INSERT INTO `Users` (`firstName`,`lastName`,`email`,`birthDate`,`password`,`isAuthorised`,`isAdmin`)
 VALUES
 ('Admin','','admin@kinenveut.fr','1950-01-01','5f4dcc3b5aa765d61d8327deb882cf99',1,1); ##The password is : password
 UNLOCK TABLES;
 
-LOCK TABLES `kinenveut`.`Categories` WRITE;
-INSERT INTO `kinenveut`.`Categories` (`name`)
+LOCK TABLES `Categories` WRITE;
+INSERT INTO `Categories` (`name`)
 VALUES
     ('Non défini')
      ,('Vêtements')
