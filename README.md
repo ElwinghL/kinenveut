@@ -57,13 +57,12 @@ Une fois composer installé, lancer `composer install`
 À la racine du projet, il y a un fichier `.env.dev` qui est un exemple de fichier qui définis les différentes variables nécessaires pour la bdd. \
 Copier ce fichier et renommer le en `.env`, modifier les variables pour qu'elle corresponde à votre BDD
 
-### Formatage
+### Script composer
 
 `composer format` lance php-cs-fixer à chaque changement de fichier
-
-### Les testes
-
-`composer test` lance les testes avec php unit
+`composer test` lance les tests avec php unit \
+`composer coverage` lance la couverture des tests dans le terminal \
+`composer coverage-txt` lance la couverture des tests dans le fichier `/test/coverage.txt`
 
 ## Modification composer.json dans le cas d'utilisation de prettier avec npm
 

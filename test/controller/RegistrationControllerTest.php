@@ -6,7 +6,10 @@ include_once 'src/tools.php';
 
 class RegistrationControllerTest extends TestCase
 {
-  /** @test */
+  /**
+   * @test
+   * @covers
+  */
   public function registerTest()
   {
     // TODO
