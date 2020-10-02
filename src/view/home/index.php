@@ -1,7 +1,8 @@
 <?php
-  //$categoryList = $data['categoryList'];
-  $auctionList = $data['auctionList'];
+//$categoryList = $data['categoryList'];
+$auctionList = $data['auctionList'];
 ?>
+<img src="resources/logo.png" width="158" height="143">
 <div class="container">
     <h2>Accueil</h2>
     <ul>
@@ -56,14 +57,14 @@
 </div>
 
 <div class="container">
-	<div class="row">
-    	<!-- BEGIN PRODUCTS -->
-        <?php foreach ($auctionList as $auction):?>
+    <div class="row">
+        <!-- BEGIN PRODUCTS -->
+        <?php foreach ($auctionList as $auction) : ?>
             <div class="col-md-3 col-sm-6">
                 <div class="thumbnail text-center">
-                    <h4 class="text-danger"> <?php echo $auction->getName();?> </h4>
-                    <p>Expiration : <?php echo $auction->getDuration()?></p>
-                    <hr class="line"/>
+                    <h4 class="text-danger"> <?php echo $auction->getName(); ?> </h4>
+                    <p>Expiration : <?php echo $auction->getDuration() ?></p>
+                    <hr class="line" />
                     <div class="row">
                         <div class="col-md-6 col-sm-6">
                             <button type="button" class="btn btn-link"> <?php echo $auction->getBestBid()->getbidPrice(); ?> €</button>
@@ -74,7 +75,7 @@
                     </div>
                 </div>
             </div>
-        <?php endforeach;?>
-  		<!-- END PRODUCTS -->
-	</div>
+        <?php endforeach; ?>
+        <!-- END PRODUCTS -->
+    </div>
 </div>
