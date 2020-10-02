@@ -22,9 +22,20 @@ class CategoryDaoImpl implements ICategoryDao
     return $categoryList;
   }
 
-  public function insertCategory(CategoryModel $categoryModel): bool
+  public function insertCategory(CategoryModel $categoryModel): ?int
   {
-    // TODO: Implement insertCategory() method.
-    return true;
+    $request = db()->prepare('INSERT INTO Categories(name) VALUES (?)');
+
+    $result = $request->execute([$categoryModel->getName()]);
+
+    return $result;
+  }
+
+  public function deleteCategoryById(int $categoryId): bool
+  {
+    $request = db()->prepare('DELETE FROM Categories WHERE id=?');
+    $success = $request->execute([$categoryId]);
+
+    return $success;
   }
 }

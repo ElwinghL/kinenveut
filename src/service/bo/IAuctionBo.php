@@ -4,7 +4,7 @@ interface IAuctionBo
 {
   public function selectAllAuctionsByAuctionState(int $auctionState) : array;
 
-  public function insertAuction(AuctionModel $auction);
+  public function insertAuction(AuctionModel $auction) : ?int;
 
-  //public function selectAllAuctions();
+  public function deleteAuctionById(int $auctionId) : bool;
 }
