@@ -6,11 +6,11 @@ $auctionList = $data['auctionList'];
 <?php include_once 'src/view/page-header.php' ?>
 
 <div class="container">
-    <div class="row">
+    <div class="row search-bar-custom">
         <h2>Recherche</h2>
         <div id="custom-search-input">
             <div class="input-group col-md-12">
-                <input type="text" class="  search-query form-control" placeholder="Smartphone, enceinte connectée, voiture..." />
+                <input type="text" class="search-query form-control" placeholder="Smartphone, enceinte connectée, PS4..." />
                 <span class="input-group-btn">
                     <button class="btn btn-danger" type="button">
                         <span class=" glyphicon glyphicon-search"></span>
@@ -19,23 +19,24 @@ $auctionList = $data['auctionList'];
             </div>
         </div>
     </div>
-    <div class="col-md-3">
-        <div class="form-group">
-            <label for="category">Catégorie</label>
-            <select id="category" class="form-control">
-                <option>Toute catégorie</option>
-                <option>Smartphones</option>
-                <option>Voitures</option>
-                <option>Maisons</option>
-            </select>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="category">Catégorie</label>
+                <select id="category" class="form-control">
+                    <option>Toute catégorie</option>
+                </select>
+            </div>
         </div>
-        <div class="form-group">
-            <label for="privacy">Type d'offres</label>
-            <select id="category" class="form-control">
-                <option>Offres publiques</option>
-                <option>Offres privées</option>
-                <option>Offres confidentielles</option>
-            </select>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="privacy">Type d'offres</label>
+                <select id="category" class="form-control">
+                    <option>Offres publiques</option>
+                    <option>Offres privées</option>
+                    <option>Offres confidentielles</option>
+                </select>
+            </div>
         </div>
     </div>
 </div>
