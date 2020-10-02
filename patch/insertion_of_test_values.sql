@@ -1,12 +1,12 @@
 ##DO NOT ADD IT WHILE IN PRODUCTION
 ##File used to add test values in the data base of test
 
-##----- Users
+##----- User
 
-TRUNCATE TABLE Users;
+TRUNCATE TABLE User;
 
-LOCK TABLES Users WRITE;
-INSERT INTO `Users` (`id`,`firstName`,`lastName`,`email`,`birthDate`,`password`,`isAuthorised`,`isAdmin`)
+LOCK TABLES User WRITE;
+INSERT INTO `User` (`id`,`firstName`,`lastName`,`email`,`birthDate`,`password`,`isAuthorised`,`isAdmin`)
 VALUES
     (1,'Admin','','admin@kinenveut.fr','1950-01-01','5f4dcc3b5aa765d61d8327deb882cf99',1,1) ##The password is : password
     ,(2,'Test','FamilyTest','test@kinenveut.fr','1975-01-01','05a671c66aefea124cc08b76ea6d30bb',1,0) ##The password is : testtest
@@ -36,12 +36,12 @@ VALUES
 UNLOCK TABLES;
 
 
-##----- Categories
+##----- Category
 
-TRUNCATE TABLE Categories;
+TRUNCATE TABLE Category;
 
-LOCK TABLES `Categories` WRITE;
-INSERT INTO `Categories` (`id`,`name`)
+LOCK TABLES `Category` WRITE;
+INSERT INTO `Category` (`id`,`name`)
 VALUES
     (1,'Non défini')
      ,(2,'Vêtements')
@@ -50,14 +50,14 @@ VALUES
      ,(5,'Instruments de musique');
 UNLOCK TABLES;
 
-##----- Objects
+##----- Auction
 ##auctionState : -1-waiting for answer; 0-refused; 1-online; 2-canceled; 3-finished earlier
 ##privacyId : 0-public; 1-private; 2-confidential
 
-TRUNCATE TABLE Objects;
+TRUNCATE TABLE Auction;
 
-LOCK TABLES `Objects` WRITE;
-INSERT INTO `Objects` (id, name, description, basePrice, reservePrice, pictureLink, startDate, duration, auctionState, sellerId, privacyId, categoryId)
+LOCK TABLES `Auction` WRITE;
+INSERT INTO `Auction` (id, name, description, basePrice, reservePrice, pictureLink, startDate, duration, auctionState, sellerId, privacyId, categoryId)
 VALUES
 #Auction state : Finished/Finished earlier
      #Privacy : Public

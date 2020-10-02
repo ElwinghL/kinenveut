@@ -1,4 +1,4 @@
-CREATE TABLE `Users` (
+CREATE TABLE `User` (
                                      `id` INT NOT NULL AUTO_INCREMENT,
                                      `firstName` VARCHAR(100) NOT NULL,
                                      `lastName` VARCHAR(100) NOT NULL,
@@ -11,14 +11,14 @@ CREATE TABLE `Users` (
                                      UNIQUE `Unicite_Mail` (`email`)
 ) ENGINE = MyISAM;
 
-CREATE TABLE `Categories` (
+CREATE TABLE `Category` (
                                           `id` SMALLINT NOT NULL AUTO_INCREMENT,
                                           `name` VARCHAR(100) NOT NULL,
                                           PRIMARY KEY (`id`),
                                           UNIQUE `Unicite_Name` (`name`)
 ) ENGINE = MyISAM;
 
-CREATE TABLE `Objects` (
+CREATE TABLE `Auction` (
                                        `id` INT NOT NULL AUTO_INCREMENT,
                                        `name` VARCHAR(255) NOT NULL,
                                        `description` TEXT NOT NULL,
@@ -33,9 +33,9 @@ CREATE TABLE `Objects` (
                                        `privacyId` INT NOT NULL,
                                        `categoryId` INT NOT NULL,
                                        PRIMARY KEY (`id`),
-                                       FOREIGN KEY (sellerId) REFERENCES Users(id),
+                                       FOREIGN KEY (sellerId) REFERENCES User(id),
                                        FOREIGN KEY (privacyId) REFERENCES V_Privacy(id),
-                                       FOREIGN KEY (categoryId) REFERENCES Categories(id),
+                                       FOREIGN KEY (categoryId) REFERENCES Category(id),
                                        INDEX ind_name (name),
                                        INDEX ind_sellerId (sellerId),
                                        INDEX ind_categoryId (categoryId)
@@ -48,8 +48,8 @@ CREATE TABLE `BidHistory` (
                                           `objectId` INT NOT NULL,
                                           `bidderId` INT NOT NULL,
                                           PRIMARY KEY (`id`),
-                                          FOREIGN KEY (objectId) REFERENCES Objects(id),
-                                          FOREIGN KEY (bidderId) REFERENCES Users(id),
+                                          FOREIGN KEY (objectId) REFERENCES Auction(id),
+                                          FOREIGN KEY (bidderId) REFERENCES User(id),
                                           INDEX ind_bidderId (bidderId)
 ) ENGINE = MyISAM;
 
@@ -58,7 +58,7 @@ AS SELECT 0 AS id, 'public' AS name
    UNION SELECT 1 AS id, 'privée' AS name
    UNION SELECT 2 AS id, 'confidentielle' AS name;
 
-CREATE VIEW v_BestBids AS
+CREATE VIEW v_BestBid AS
 SELECT bidhistory.id,bidhistory.bidPrice,bidhistory.bidDate,bidhistory.objectId,bidhistory.bidderId
 FROM (SELECT * FROM bidhistory
       WHERE bidPrice = (SELECT MAX(bidPrice) FROM bidhistory)
@@ -67,14 +67,14 @@ FROM (SELECT * FROM bidhistory
 WHERE bidDate = (SELECT MIN(bidDate) FROM bidhistory)
 GROUP BY bidhistory.objectId;
 
-LOCK TABLES Users WRITE;
-INSERT INTO `Users` (`firstName`,`lastName`,`email`,`birthDate`,`password`,`isAuthorised`,`isAdmin`)
+LOCK TABLES User WRITE;
+INSERT INTO `User` (`firstName`,`lastName`,`email`,`birthDate`,`password`,`isAuthorised`,`isAdmin`)
 VALUES
 ('Admin','','admin@kinenveut.fr','1950-01-01','5f4dcc3b5aa765d61d8327deb882cf99',1,1); ##The password is : password
 UNLOCK TABLES;
 
-LOCK TABLES `Categories` WRITE;
-INSERT INTO `Categories` (`name`)
+LOCK TABLES `Category` WRITE;
+INSERT INTO `Category` (`name`)
 VALUES
     ('Non défini')
      ,('Vêtements')
