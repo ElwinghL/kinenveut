@@ -9,56 +9,88 @@ include_once 'src/tools.php';
 
 class AuctionDaoTest extends TestCase
 {
-  /** @before*/
-  public function setUp() : void
+  /** @before */
+  public function setUp(): void
   {
     parent::setUp();
 
     App_DaoFactory::setFactory(new App_DaoFactory());
   }
 
-  /**
-   * @test
-   * @covers
-  */
-  public function insertAuctionTest():void
+  /** @test */
+  public function insertAuctionTest(): void
   {
-    //todo
-    /*Creation of the AuctionModel
-    $auctionForTest = new AuctionModel();
-    $auctionForTest
-        ->setName('ObjetDeTest')
-        ->setDescription('Ma description de test')
-        ->setBasePrice(4)
-        ->setReservePrice(50)
-        ->setPictureLink('')
-        ->setStartDate('2020-09-30 12:00:00')
+    $auctionDao = App_DaoFactory::getFactory()->getAuctionDao();
+
+    $auctionTest = new AuctionModel();
+    $auctionTest
+            ->setName('Object Test')
+            ->setBasePrice(3)
+            ->setReservePrice(10)
+            //->setCreationDate(creationDate)
+            ->setStartDate('2020-01-01')
+            ->setDuration(7)
+            ->setSellerId(1)
+            ->setPrivacyId(0)
+            ->setCategoryId(1);
+
+    $auctionId = $auctionDao->insertAuction($auctionTest);
+
+    $this->assertNotNull($auctionId);
+
+    $auctionDao->deleteAuctionById($auctionId);
+  }
+
+  /** @test */
+  public function deleteAuctionTest(): void
+  {
+    $auctionDao = App_DaoFactory::getFactory()->getAuctionDao();
+    $auctionTest = new AuctionModel();
+    $auctionTest
+        ->setName('Object Test')
+        ->setBasePrice(3)
+        ->setReservePrice(10)
+        //->setCreationDate(creationDate)
+        ->setStartDate('2020-01-01')
         ->setDuration(7)
-        ->setAuctionState(-1)
         ->setSellerId(1)
         ->setPrivacyId(0)
         ->setCategoryId(1);
 
-    $auctionDao = App_DaoFactory::getFactory()->getAuctionDao();
-    $auction = $auctionDao->insertAuction($auctionForTest);
+    $auctionId = $auctionDao->insertAuction($auctionTest);
 
-    $this->assertNotNull($auction->getId());*/
+    $success = $auctionDao->deleteAuctionById($auctionId);
 
-    //$auctionDao->deleteAuction($auctionForTest);
-    $this->markTestIncomplete(
-      'This test has not been implemented yet.'
-    );
+    $this->assertTrue($success);
   }
 
-  /**
-   * @test
-   * @covers
-  */
-  public function deleteAuctionTest():void
+  /** @test */
+  public function selectAllAuctionsByAuctionStateTest(): void
   {
-    //todo
-    $this->markTestIncomplete(
-      'This test has not been implemented yet.'
-    );
+    $auctionDao = App_DaoFactory::getFactory()->getAuctionDao();
+
+    $auctionState = 1;
+
+    $auctionTest = new AuctionModel();
+    $auctionTest
+        ->setName('Object Test')
+        ->setBasePrice(3)
+        ->setReservePrice(10)
+        //->setCreationDate(creationDate)
+        ->setStartDate('2020-01-01')
+        ->setDuration(7)
+        ->setAuctionState($auctionState)
+        ->setSellerId(1)
+        ->setPrivacyId(0)
+        ->setCategoryId(1);
+
+    $auctionId = $auctionDao->insertAuction($auctionTest);
+
+    $AuctionsSelected = $auctionDao->selectAllAuctionsByAuctionState($auctionState);
+
+    $this->assertTrue(is_array($AuctionsSelected));
+    $this->assertNotNull($AuctionsSelected[0]->getName());
+
+    $auctionDao->deleteAuctionById($auctionId);
   }
 }

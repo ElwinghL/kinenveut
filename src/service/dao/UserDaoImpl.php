@@ -6,23 +6,24 @@ class UserDaoImpl implements IUserDao
   {
     $request = db()->prepare('SELECT id, firstName, lastName, email, birthDate, isAuthorised, isAdmin FROM Users WHERE email=? AND password=?');
     $params = [$email, md5($password)];
-    $success = $request->execute($params);
-    if ($success == false) {
-      return null;
-    }
-    $result = $request->fetch();
-    if ($result == false) {
+    $request->execute($params);
+    $firstUser = $request->fetch();
+
+    if (($firstUser == false)
+        || (is_array($firstUser) && ($firstUser['id'] == null || $firstUser['id'] < 1))
+    ) {
       return null;
     }
 
     $user = new UserModel();
-    $user->setId($result['id'])
-    ->setFirstName($result['firstName'])
-    ->setLastName($result['lastName'])
-    ->setEmail($result['email'])
-    ->setBirthDate($result['birthDate'])
-    ->setIsAuthorised($result['isAuthorised'])
-    ->setIsAdmin($result['isAdmin']);
+    $user
+        ->setId($firstUser['id'])
+        ->setFirstName($firstUser['firstName'])
+        ->setLastName($firstUser['lastName'])
+        ->setEmail($firstUser['email'])
+        ->setBirthDate($firstUser['birthDate'])
+        ->setIsAuthorised($firstUser['isAuthorised'])
+        ->setIsAdmin($firstUser['isAdmin']);
 
     return $user;
   }
@@ -30,23 +31,24 @@ class UserDaoImpl implements IUserDao
   public function selectUserByEmail(String $email) : ?UserModel
   {
     $request = db()->prepare('SELECT * FROM Users WHERE email=?');
-    $success = $request->execute([$email]);
-    if ($success == false) {
-      return null;
-    }
-    $result = $request->fetch();
-    if ($result == false) {
+    $request->execute([$email]);
+    $firstUser = $request->fetch();
+
+    if (($firstUser == false)
+          || (is_array($firstUser) && ($firstUser['id'] == null || $firstUser['id'] < 1))
+      ) {
       return null;
     }
 
     $user = new UserModel();
-    $user->setId($result['id'])
-    ->setFirstName($result['firstName'])
-    ->setLastName($result['lastName'])
-    ->setEmail($result['email'])
-    ->setBirthDate($result['birthDate'])
-    ->setIsAuthorised($result['isAuthorised'])
-    ->setIsAdmin($result['isAdmin']);
+    $user
+        ->setId($firstUser['id'])
+        ->setFirstName($firstUser['firstName'])
+        ->setLastName($firstUser['lastName'])
+        ->setEmail($firstUser['email'])
+        ->setBirthDate($firstUser['birthDate'])
+        ->setIsAuthorised($firstUser['isAuthorised'])
+        ->setIsAdmin($firstUser['isAdmin']);
 
     return $user;
   }
