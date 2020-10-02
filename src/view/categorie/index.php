@@ -1,6 +1,9 @@
 <?php
     $categoryList = $data['categoryList'];
 ?>
+
+<?php include_once 'src/view/page-header.php' ?>
+
 <div class="container">
     <h2>
         Gestion des catégories

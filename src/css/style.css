@@ -1,0 +1,13 @@
+/* GENERAL */
+
+.row-vertically-centered {
+    display: flex;
+    align-items: center;
+}
+
+/* PAGE HEADER */
+
+.page-header-custom {
+    border-bottom: 1px solid lightgrey;
+    margin-bottom: 10px;
+}
