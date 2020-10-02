@@ -13,11 +13,14 @@ class AuctionBoTest extends TestCase
     App_BoFactory::setFactory(new App_BoFactory());
   }
 
-  /** @test */
+  /**
+   * @test
+   * @covers
+  */
   public function insertAuctionTest() : void
   {
     //todo
-      /*
+    /*
     $auctionBo = App_BoFactory::getFactory()->getAuctionBo();
     $auctionMock = $this->createPartialMock(AuctionModel::class, []);
     $auctionDaoImpMock = $this->createPartialMock(AuctionDaoImpl::class, ['insertAuction']);
@@ -29,5 +32,8 @@ class AuctionBoTest extends TestCase
     $auction = $auctionBo->insertAuction($auctionMock);
 
     $this->assertSame($auction, $auctionMock);*/
+    $this->markTestIncomplete(
+      'This test has not been implemented yet.'
+    );
   }
 }

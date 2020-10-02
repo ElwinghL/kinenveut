@@ -16,7 +16,10 @@ class UserDaoTest extends TestCase
     App_DaoFactory::setFactory(new App_DaoFactory());
   }
 
-  /** @test */
+  /**
+   * @test
+   * @covers
+  */
   public function insertUserTest() : void
   {
     $userDao = App_DaoFactory::getFactory()->getUserDao();
@@ -40,7 +43,10 @@ class UserDaoTest extends TestCase
     $userDao->deleteUser($userId);
   }
 
-  /** @test */
+  /**
+   * @test
+   * @covers
+  */
   public function deleteUserTest() : void
   {
     $userDao = App_DaoFactory::getFactory()->getUserDao();
@@ -64,7 +70,10 @@ class UserDaoTest extends TestCase
     $this->assertTrue($success);
   }
 
-  /** @test */
+  /**
+   * @test
+   * @covers
+  */
   public function selectUserByEmailTest() : void
   {
     $userDao = App_DaoFactory::getFactory()->getUserDao();
@@ -96,7 +105,10 @@ class UserDaoTest extends TestCase
     $this->assertNull($userSelected);
   }
 
-  /** @test */
+  /**
+   * @test
+   * @covers
+  */
   public function selectUserByEmailAndPasswordTest() : void
   {
     $userDao = App_DaoFactory::getFactory()->getUserDao();
