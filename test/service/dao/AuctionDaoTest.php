@@ -17,7 +17,10 @@ class AuctionDaoTest extends TestCase
     App_DaoFactory::setFactory(new App_DaoFactory());
   }
 
-  /** @test */
+  /**
+   * @test
+   * @covers
+   */
   public function insertAuctionTest(): void
   {
     $auctionDao = App_DaoFactory::getFactory()->getAuctionDao();
@@ -25,7 +28,8 @@ class AuctionDaoTest extends TestCase
     $auctionTest = new AuctionModel();
     $auctionTest
             ->setName('Object Test')
-            ->setBasePrice(3)
+        ->setDescription('descr')
+        ->setBasePrice(3)
             ->setReservePrice(10)
             //->setCreationDate(creationDate)
             ->setStartDate('2020-01-01')
@@ -37,17 +41,22 @@ class AuctionDaoTest extends TestCase
     $auctionId = $auctionDao->insertAuction($auctionTest);
 
     $this->assertNotNull($auctionId);
+    $this->assertTrue($auctionId > 0);
 
     $auctionDao->deleteAuctionById($auctionId);
   }
 
-  /** @test */
+  /**
+   * @test
+   * @covers
+   */
   public function deleteAuctionTest(): void
   {
     $auctionDao = App_DaoFactory::getFactory()->getAuctionDao();
     $auctionTest = new AuctionModel();
     $auctionTest
         ->setName('Object Test')
+        ->setDescription('descr')
         ->setBasePrice(3)
         ->setReservePrice(10)
         //->setCreationDate(creationDate)
@@ -64,16 +73,20 @@ class AuctionDaoTest extends TestCase
     $this->assertTrue($success);
   }
 
-  /** @test */
+  /**
+   * @test
+   * @covers
+   */
   public function selectAllAuctionsByAuctionStateTest(): void
   {
     $auctionDao = App_DaoFactory::getFactory()->getAuctionDao();
 
-    $auctionState = 1;
+    $auctionState = 0;
 
     $auctionTest = new AuctionModel();
     $auctionTest
         ->setName('Object Test')
+        ->setDescription('descr')
         ->setBasePrice(3)
         ->setReservePrice(10)
         //->setCreationDate(creationDate)
