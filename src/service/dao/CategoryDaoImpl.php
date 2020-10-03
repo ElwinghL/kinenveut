@@ -4,7 +4,7 @@ class CategoryDaoImpl implements ICategoryDao
 {
   public function selectAllCategories(): array
   {
-    $request = db()->query('SELECT id, name FROM Categories');
+    $request = db()->query('SELECT id, name FROM Category');
 
     $categories = $request->fetchAll(PDO::FETCH_ASSOC);
 
@@ -24,7 +24,7 @@ class CategoryDaoImpl implements ICategoryDao
 
   public function insertCategory(CategoryModel $categoryModel): ?int
   {
-    $request = db()->prepare('INSERT INTO Categories(name) VALUES (?)');
+    $request = db()->prepare('INSERT INTO Category(name) VALUES (?)');
 
     $result = $request->execute([$categoryModel->getName()]);
 
@@ -33,7 +33,7 @@ class CategoryDaoImpl implements ICategoryDao
 
   public function deleteCategoryById(int $categoryId): bool
   {
-    $request = db()->prepare('DELETE FROM Categories WHERE id=?');
+    $request = db()->prepare('DELETE FROM Category WHERE id=?');
     $success = $request->execute([$categoryId]);
 
     return $success;

@@ -16,7 +16,10 @@ class CategoryDaoTest extends TestCase
     App_DaoFactory::setFactory(new App_DaoFactory());
   }
 
-  /** @test */
+  /**
+   * @test
+   * @covers
+   */
   public function insertCategoryTest() : void
   {
     $categoryDao = App_DaoFactory::getFactory()->getCategoryDao();
@@ -31,7 +34,10 @@ class CategoryDaoTest extends TestCase
     $categoryDao->deleteCategoryById($categoryId);
   }
 
-  /** @test */
+  /**
+   * @test
+   * @covers
+   */
   public function deleteCategoryTest() : void
   {
     $categoryDao = App_DaoFactory::getFactory()->getCategoryDao();
@@ -45,7 +51,10 @@ class CategoryDaoTest extends TestCase
     $this->assertTrue($success);
   }
 
-  /** @test */
+  /**
+   * @test
+   * @covers
+   */
   public function selectAllCategoriesTest() : void
   {
     $categoryDao = App_DaoFactory::getFactory()->getCategoryDao();
