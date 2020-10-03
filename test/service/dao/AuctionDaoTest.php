@@ -28,8 +28,8 @@ class AuctionDaoTest extends TestCase
     $auctionTest = new AuctionModel();
     $auctionTest
             ->setName('Object Test')
-        ->setDescription('descr')
-        ->setBasePrice(3)
+            ->setDescription('descr')
+            ->setBasePrice(3)
             ->setReservePrice(10)
             //->setCreationDate(creationDate)
             ->setStartDate('2020-01-01')
