@@ -26,9 +26,9 @@ class CategoryDaoImpl implements ICategoryDao
   {
     $request = db()->prepare('INSERT INTO Category(name) VALUES (?)');
 
-    $result = $request->execute([$categoryModel->getName()]);
+    $request->execute([$categoryModel->getName()]);
 
-    return $result;
+    return db()->lastInsertId();
   }
 
   public function deleteCategoryById(int $categoryId): bool
