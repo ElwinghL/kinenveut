@@ -32,4 +32,9 @@ class App_DaoFactory
   {
     return new CategoryDaoImpl();
   }
+
+  public function getBidHistoryDao()
+  {
+    return new BidHistoryDaoImpl();
+  }
 }
