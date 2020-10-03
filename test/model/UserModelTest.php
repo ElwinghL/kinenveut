@@ -6,7 +6,10 @@ include_once 'src/tools.php';
 
 class UserModelTest extends TestCase
 {
-  /** @test */
+  /**
+   * @test
+   * @covers
+  */
   public function getterSetterTest()
   {
     $user = new UserModel();

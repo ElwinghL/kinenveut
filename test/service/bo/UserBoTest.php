@@ -13,7 +13,10 @@ class UserBoTest extends TestCase
     App_BoFactory::setFactory(new App_BoFactory());
   }
 
-  /** @test */
+  /**
+   * @test
+   * @covers
+  */
   public function insertUserTest() : void
   {
     $expectedUserId = 42;
@@ -30,7 +33,10 @@ class UserBoTest extends TestCase
     $this->assertSame($expectedUserId, $userId);
   }
 
-  /** @test */
+  /**
+   * @test
+   * @covers
+  */
   public function deleteUserTest() : void
   {
     $expectedSuccess = true;
@@ -46,7 +52,10 @@ class UserBoTest extends TestCase
     $this->assertSame($expectedSuccess, $success);
   }
 
-  /** @test */
+  /**
+   * @test
+   * @covers
+  */
   public function selectUserByEmailTest() : void
   {
     $expectedUser = new UserModel();
@@ -68,7 +77,10 @@ class UserBoTest extends TestCase
     $this->assertSame($expectedUser, $user);
   }
 
-  /** @test */
+  /**
+   * @test
+   * @covers
+  */
   public function selectUserByEmailAndPasswordTest() : void
   {
     $expectedUser = new UserModel();

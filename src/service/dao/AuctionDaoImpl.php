@@ -2,12 +2,12 @@
 
 class AuctionDaoImpl implements IAuctionDao
 {
-  public function getAllAuctionsByAuctionState($auctionSate) : array
+  public function selectAllAuctionsByAuctionState($auctionSate) : array
   {
-    $request = db()->prepare('SELECT objects.id AS objectId,name,description,basePrice,reservePrice,pictureLink,startDate,duration,auctionState,sellerId,privacyId,categoryId
-                    ,v_BestBids.id AS bidId,v_BestBids.bidPrice,v_BestBids.bidDate,v_BestBids.bidderId
-                    FROM objects
-                    LEFT JOIN v_BestBids ON v_BestBids.objectId = objects.id
+    $request = db()->prepare('SELECT Auction.id AS objectId,name,description,basePrice,reservePrice,pictureLink,startDate,duration,auctionState,sellerId,privacyId,categoryId
+                    ,v_BestBid.id AS bidId,v_BestBid.bidPrice,v_BestBid.bidDate,v_BestBid.bidderId
+                    FROM Auction
+                    LEFT JOIN v_BestBid ON v_BestBid.objectId = Auction.id
                     WHERE auctionState = :auctionSate');
 
     $request->execute(['auctionSate'=>$auctionSate]);
@@ -46,18 +46,19 @@ class AuctionDaoImpl implements IAuctionDao
     return $auctionList;
   }
 
-  /*public function selectAllAuctions()
+  public function insertAuction(AuctionModel $auction):?int
   {
-      $request = db()->prepare('SELECT * FROM Objects');
-      $request->execute();
-      $auctions = $request->fetchAll();
+    $request = db()->prepare("INSERT INTO Auction(name, description, basePrice, reservePrice, pictureLink, startDate, duration, auctionState, sellerId, privacyId, categoryId) VALUES (?, ?, ?, ?, ' ', ?, ?, 0, ?, ?, ?)");
 
-      return $auctions;
-  }*/
-  public function insertAuction(AuctionModel $auction)
+    $request->execute([$auction->getName(), $auction->getDescription(), $auction->getBasePrice(), $auction->getReservePrice(), /*$auction->getPictureLink(),*/ $auction->getStartDate(), $auction->getDuration(), $auction->getSellerId(), $auction->getPrivacyId(), $auction->getCategoryId()]);
+
+    return db()->lastInsertId();
+  }
+
+  public function deleteAuctionById(int $auctionId) : bool
   {
-    $request = db()->prepare("INSERT INTO Objects(name, description, basePrice, reservePrice, pictureLink, startDate, endDate, isCancelled, sellerId, privacyId, categoryId) VALUES (?, ?, ?, ?, ' ', ?, ?, false, 2, ?, ?)");
-    $success = $request->execute([$auction->getName(), $auction->getDescription(), $auction->getBasePrice(), $auction->getReservePrice(), $auction->getStartDate(), $auction->getEndDate(), $auction->getPrivacyId(), $auction->getCategoryId()]);
+    $request = db()->prepare('DELETE FROM Auction WHERE id=?');
+    $success = $request->execute([$auctionId]);
 
     return $success;
   }

@@ -1,4 +1,5 @@
 <!--action :)-->
+<?php include_once 'src/view/page-header.php' ?>
 
 <div>
     <div class="card">
@@ -47,10 +48,10 @@
                     <br/>
 
                     <label for="privacyId">Confidentialité</label>
-                    <select class="form-control" name="privacyId" id="privacyId" required/>
-                    <option value="1" selected>Libre</option>
-                    <option value="2">Privée</option>
-                    <option value="3" >Confidentielle</option>
+                    <select class="form-control" name="privacyId" id="privacyId" required>
+                        <option value="1" selected>Libre</option>
+                        <option value="2">Privée</option>
+                        <option value="3">Confidentielle</option>
                     </select>
 
                     <br/>
@@ -59,7 +60,7 @@
                     <select class="form-control" name="categoryId" id="categoryId">
                         <?php
                         $categories = new CategoryModel();
-                        $data = $categories->getAllName();
+                        $data = [];//$categories->getAllName();
                         foreach ($data as $r): ?>
                             <option value="<?= $r['id']; ?>"><?= $r['name']; ?></option>
                         <?php endforeach; ?>

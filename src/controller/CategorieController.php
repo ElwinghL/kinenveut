@@ -9,7 +9,7 @@ class CategorieController extends Controller
   public function index()
   {
     $categoryBo = App_BoFactory::getFactory()->getCategoryBo();
-    $categoryList = $categoryBo->getAllCategories();
+    $categoryList = $categoryBo->selectAllCategories();
 
     $data = [
       'categoryList'=> $categoryList

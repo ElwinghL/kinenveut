@@ -16,7 +16,10 @@ class UserDaoTest extends TestCase
     App_DaoFactory::setFactory(new App_DaoFactory());
   }
 
-  /** @test */
+  /**
+   * @test
+   * @covers
+  */
   public function insertUserTest() : void
   {
     $userDao = App_DaoFactory::getFactory()->getUserDao();
@@ -37,10 +40,13 @@ class UserDaoTest extends TestCase
 
     $this->assertNotNull($userId);
 
-    $userDao->deleteUser($userId);
+    $userDao->deleteUser((int) $userId);
   }
 
-  /** @test */
+  /**
+   * @test
+   * @covers
+  */
   public function deleteUserTest() : void
   {
     $userDao = App_DaoFactory::getFactory()->getUserDao();
@@ -57,14 +63,17 @@ class UserDaoTest extends TestCase
         ->setBirthDate($birthDate)
         ->setEmail($email)
         ->setPassword($password);
-    $user = $userDao->insertUser($user);
+    $userId = $userDao->insertUser($user);
 
-    $success = $userDao->deleteUser($user);
+    $success = $userDao->deleteUser((int) $userId);
 
     $this->assertTrue($success);
   }
 
-  /** @test */
+  /**
+   * @test
+   * @covers
+  */
   public function selectUserByEmailTest() : void
   {
     $userDao = App_DaoFactory::getFactory()->getUserDao();
@@ -81,6 +90,7 @@ class UserDaoTest extends TestCase
       ->setBirthDate($birthDate)
       ->setEmail($email)
       ->setPassword($password);
+
     $userId = $userDao->insertUser($user);
 
     $userSelected = $userDao->selectUserByEmail($email);
@@ -90,13 +100,16 @@ class UserDaoTest extends TestCase
     $this->assertEquals($birthDate, $userSelected->getBirthDate());
     $this->assertEquals($email, $userSelected->getEmail());
 
-    $userDao->deleteUser($userId);
+    $userDao->deleteUser((int) $userId);
 
     $userSelected = $userDao->selectUserByEmail($email);
     $this->assertNull($userSelected);
   }
 
-  /** @test */
+  /**
+   * @test
+   * @covers
+  */
   public function selectUserByEmailAndPasswordTest() : void
   {
     $userDao = App_DaoFactory::getFactory()->getUserDao();
@@ -113,6 +126,7 @@ class UserDaoTest extends TestCase
       ->setBirthDate($birthDate)
       ->setEmail($email)
       ->setPassword($password);
+
     $userId = $userDao->insertUser($user);
 
     $userSelected = $userDao->selectUserByEmailAndPassword($email, $password);
@@ -122,7 +136,7 @@ class UserDaoTest extends TestCase
     $this->assertEquals($birthDate, $userSelected->getBirthDate());
     $this->assertEquals($email, $userSelected->getEmail());
 
-    $userDao->deleteUser($userId);
+    $userDao->deleteUser((int)$userId);
 
     $userSelected = $userDao->selectUserByEmailAndPassword($email, $password);
     $this->assertNull($userSelected);

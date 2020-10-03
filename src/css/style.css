@@ -1,0 +1,23 @@
+/* GENERAL */
+
+.row-vertically-centered {
+    display: flex;
+    align-items: center;
+}
+
+.big-logo {
+    margin-top: 20px;
+}
+
+/* PAGE HEADER */
+
+.page-header-custom {
+    border-bottom: 1px solid lightgrey;
+    margin-bottom: 10px;
+}
+
+/* HOME */
+
+.search-bar-custom {
+    margin-bottom: 10px;
+}

@@ -1,6 +1,6 @@
 
-# Created by https://www.toptal.com/developers/gitignore/api/composer,intellij+all,phpstorm+all,visualstudiocode,dotenv
-# Edit at https://www.toptal.com/developers/gitignore?templates=composer,intellij+all,phpstorm+all,visualstudiocode,dotenv
+# Created by https://www.toptal.com/developers/gitignore/api/dotenv,composer,intellij+all,phpstorm+all,visualstudiocode,phpunit,phpcodesniffer
+# Edit at https://www.toptal.com/developers/gitignore?templates=dotenv,composer,intellij+all,phpstorm+all,visualstudiocode,phpunit,phpcodesniffer
 
 ### Composer ###
 composer.phar
@@ -12,9 +12,6 @@ composer.phar
 
 ### dotenv ###
 .env
-
-### php-cs-fixer ###
-.php_cs.cache
 
 ### Intellij+all ###
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio, WebStorm and Rider
@@ -105,6 +102,12 @@ modules.xml
 # Sonarlint plugin
 .idea/sonarlint
 
+### PHPCodeSniffer ###
+# CodeSniffer
+
+/vendor/*
+/wpcs/*
+
 ### PhpStorm+all ###
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio, WebStorm and Rider
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
@@ -160,6 +163,19 @@ modules.xml
 
 # Sonarlint plugin
 
+### PHPUnit ###
+# Covers PHPUnit
+# Reference: https://phpunit.de/
+
+# Generated files
+.phpunit.result.cache
+
+# PHPUnit
+/app/phpunit.xml
+
+# Build data
+/build/
+
 ### VisualStudioCode ###
 .vscode/*
 !.vscode/settings.json
@@ -171,5 +187,10 @@ modules.xml
 ### VisualStudioCode Patch ###
 # Ignore all local history of files
 .history
+.ionide
 
-# End of https://www.toptal.com/developers/gitignore/api/composer,intellij+all,phpstorm+all,visualstudiocode,dotenv
+# End of https://www.toptal.com/developers/gitignore/api/dotenv,composer,intellij+all,phpstorm+all,visualstudiocode,phpunit,phpcodesniffer
+
+coverage.txt
+.php_cs.cache
+composer.lock
