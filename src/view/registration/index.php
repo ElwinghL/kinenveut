@@ -12,14 +12,16 @@
     </div>
     <div class="card-body">
       <div class="row">
-        <form action="?r=registration/register" method="post">
+        <form action="?r=registration/register" method="post" class="<?php if (!empty($data['errors'])) {
+  echo 'was-validated';
+} ?>">
           <div class="form-group col-md-12">
             <label for="firstName">Prénom</label>
             <input class="form-control" name="firstName" type="text" id="firstName" value="<?php if (isset($data['values']['firstName'])) {
   echo $data['values']['firstName'];
 } ?>" maxlength="100" required />
             <?php if (isset($data['errors']['firstName'])) : ?>
-              <div class="invalid-feedback"><?php $data['errors']['firstName'] ?></div>
+              <div class="invalid-feedback"><?php echo $data['errors']['firstName'] ?></div>
             <?php endif; ?>
             <br />
             <label for="lastName">Nom</label>
@@ -27,7 +29,7 @@
   echo $data['values']['lastName'];
 } ?>" maxlength="100" required />
             <?php if (isset($data['errors']['lastName'])) : ?>
-              <div class="invalid-feedback"><?php $data['errors']['lastName'] ?></div>
+              <div class="invalid-feedback"><?php echo $data['errors']['lastName'] ?></div>
             <?php endif; ?>
             <br />
             <label for="birthDate">Date de naissance</label>
@@ -35,7 +37,7 @@
   echo $data['values']['birthDate'];
 } ?>" maxlength="10" required />
             <?php if (isset($data['errors']['birthDate'])) : ?>
-              <div class="invalid-feedback"><?php $data['errors']['birthDate'] ?></div>
+              <div class="invalid-feedback"><?php echo $data['errors']['birthDate'] ?></div>
             <?php endif; ?>
             <br />
             <label for="email">Email</label>
@@ -43,13 +45,13 @@
   echo $data['values']['email'];
 } ?>" maxlength="255" required />
             <?php if (isset($data['errors']['email'])) : ?>
-              <div class="invalid-feedback"><?php $data['errors']['email'] ?></div>
+              <div class="invalid-feedback"><?php echo $data['errors']['email'] ?></div>
             <?php endif; ?>
             <br />
             <label for="password">Mot de passe</label>
             <input class="form-control" name="password" id="password" type="password" maxlength="255" required />
             <?php if (isset($data['errors']['password'])) : ?>
-              <div class="invalid-feedback"><?php $data['errors']['password'] ?></div>
+              <div class="invalid-feedback"><?php echo $data['errors']['password'] ?></div>
             <?php endif; ?>
             <br />
             <input class="btn btn-primary" name="registerButton" type="submit" value="S'inscrire" />

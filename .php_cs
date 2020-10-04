@@ -49,4 +49,5 @@ return PhpCsFixer\Config::create() ->setRules([
   'whitespace_after_comma_in_array' => true,
 ])
 ->setIndent("  ")
+->setLineEnding("\n")
 ->setFinder($finder);
