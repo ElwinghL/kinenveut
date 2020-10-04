@@ -1,7 +1,7 @@
 <div class="container page-header-custom">
     <div class="row row-vertically-centered">
         <div class="col-md-10">
-            <a href="http://localhost/kinenveut/"><img src="resources/logo.png" width="158" height="143"></a>
+            <a href="http://localhost/kinenveut/"><img src="resources/logo.png" width="158" height="143" alt="logo"></a>
         </div>
         <div class="col-md-2">
             <div class="dropdown">
@@ -10,6 +10,7 @@
                     <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                    <li><a href="?r=auction/create">Vendre</a></li>
                     <li><a href="?r=account">Mon compte</a></li>
                     <li><a href="?r=auction">Mes enchères</a></li>
                     <li><a href="?r=myAuction">Mes ventes</a></li>
