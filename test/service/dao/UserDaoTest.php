@@ -18,7 +18,7 @@ class UserDaoTest extends TestCase
 
   /**
    * @test
-   * @covers
+   * @covers UserDaoImpl
   */
   public function insertUserTest() : void
   {
@@ -45,7 +45,7 @@ class UserDaoTest extends TestCase
 
   /**
    * @test
-   * @covers
+   * @covers UserDaoImpl
   */
   public function deleteUserTest() : void
   {
@@ -72,7 +72,7 @@ class UserDaoTest extends TestCase
 
   /**
    * @test
-   * @covers
+   * @covers UserDaoImpl
   */
   public function selectUserByEmailTest() : void
   {
@@ -108,7 +108,7 @@ class UserDaoTest extends TestCase
 
   /**
    * @test
-   * @covers
+   * @covers UserDaoImpl
   */
   public function selectUserByEmailAndPasswordTest() : void
   {

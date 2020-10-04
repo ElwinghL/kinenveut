@@ -15,7 +15,7 @@ class AuctionBoTest extends TestCase
 
   /**
    * @test
-   * @covers
+   * @covers AuctionBoImpl
    */
   public function insertAuctionTest() : void
   {
@@ -35,7 +35,7 @@ class AuctionBoTest extends TestCase
 
   /**
    * @test
-   * @covers
+   * @covers AuctionBoImpl
    */
   public function updateStartDateAndAuctionStateTest(): void
   {
@@ -55,7 +55,7 @@ class AuctionBoTest extends TestCase
 
   /**
    * @test
-   * @covers
+   * @covers AuctionBoImpl
    */
   public function deleteAuctionTest() : void
   {
@@ -74,7 +74,7 @@ class AuctionBoTest extends TestCase
 
   /**
    * @test
-   * @covers
+   * @covers AuctionBoImpl
    */
   public function selectAllAuctionsByAuctionStateTest() : void
   {
@@ -111,7 +111,7 @@ class AuctionBoTest extends TestCase
 
   /**
    * @test
-   * @covers
+   * @covers AuctionBoImpl
    */
   public function selectAuctionByAuctionIdTest() : void
   {
@@ -145,7 +145,7 @@ class AuctionBoTest extends TestCase
 
   /**
    * @test
-   * @covers
+   * @covers AuctionBoImpl
    */
   public function getBestBidFrom_selectAuctionByAuctionIdTest(): void
   {

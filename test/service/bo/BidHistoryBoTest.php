@@ -15,7 +15,7 @@ class BidHistoryBoTest extends TestCase
 
   /**
    * @test
-   * @covers
+   * @covers BidHistoryBoImpl
    */
   public function insertBidTest() : void
   {
@@ -37,7 +37,7 @@ class BidHistoryBoTest extends TestCase
 
   /**
    * @test
-   * @covers
+   * @covers BidHistoryBoImpl
    */
   public function deleteBidByIdTest(): void
   {

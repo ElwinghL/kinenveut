@@ -8,7 +8,7 @@ class UserModelTest extends TestCase
 {
   /**
    * @test
-   * @covers
+   * @covers UserModel
   */
   public function getterSetterTest()
   {

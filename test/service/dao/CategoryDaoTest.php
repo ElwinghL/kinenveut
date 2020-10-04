@@ -18,7 +18,7 @@ class CategoryDaoTest extends TestCase
 
   /**
    * @test
-   * @covers
+   * @covers CategoryDaoImpl
    */
   public function insertCategoryTest() : void
   {
@@ -37,7 +37,7 @@ class CategoryDaoTest extends TestCase
 
   /**
    * @test
-   * @covers
+   * @covers CategoryDaoImpl
    */
   public function deleteCategoryTest() : void
   {
@@ -54,7 +54,7 @@ class CategoryDaoTest extends TestCase
 
   /**
    * @test
-   * @covers
+   * @covers CategoryDaoImpl
    */
   public function selectAllCategoriesTest() : void
   {
