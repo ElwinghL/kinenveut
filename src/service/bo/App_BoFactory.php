@@ -32,4 +32,9 @@ class App_BoFactory
   {
     return new CategoryBoImpl();
   }
+
+  public function getBidHistoryBo()
+  {
+    return new BidHistoryBoImpl();
+  }
 }
