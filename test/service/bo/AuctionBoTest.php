@@ -142,4 +142,56 @@ class AuctionBoTest extends TestCase
 
     $this->assertSame($expectedAuction, $auctionSelected);
   }
+
+  /**
+   * @test
+   * @covers
+   */
+  public function getBestBidFrom_selectAuctionByAuctionIdTest(): void
+  {
+    $auctionId = 42;
+
+    /*First step : create an auction*/
+    $auctionBo = App_BoFactory::getFactory()->getAuctionBo();
+
+    $auctionTest = new AuctionModel();
+    $auctionTest
+          ->setId($auctionId)
+          ->setName('Object Test')
+          ->setDescription('descr')
+          ->setBasePrice(3)
+          ->setReservePrice(10)
+          //->setCreationDate(creationDate)
+          ->setStartDate('2020-01-01')
+          ->setDuration(7)
+          ->setSellerId(1)
+          ->setPrivacyId(0)
+          ->setCategoryId(1);
+
+    /*Second step : create a bid*/
+    $bidTest = new bidModel();
+    $bidTest
+      ->setBidPrice(42)
+      ->setBidDate('2020-10-01')
+      ->setBidderId(1)
+      ->setObjectId($auctionId);
+
+    /*Third step : Create the Expected auction*/
+    $expectedAuction = $auctionTest->setBestBid($bidTest);
+
+    /*Fourth step : Create Mocks*/
+    $auctionDaoImpMock = $this->createPartialMock(AuctionDaoImpl::class, ['selectAuctionByAuctionId']);
+    $auctionDaoImpMock->method('selectAuctionByAuctionId')->willReturn($expectedAuction);
+
+    $app_DaoFactoryMock = $this->createPartialMock(App_DaoFactory::class, ['getAuctionDao']);
+    $app_DaoFactoryMock->method('getAuctionDao')->willReturn($auctionDaoImpMock);
+
+    App_DaoFactory::setFactory($app_DaoFactoryMock);
+
+    /*Fifth step : select an auction with the best bid**/
+    $auctionSelected = $auctionBo->selectAuctionByAuctionId($auctionId);
+
+    /*Last step : test the result*/
+    $this->assertSame($expectedAuction, $auctionSelected);
+  }
 }

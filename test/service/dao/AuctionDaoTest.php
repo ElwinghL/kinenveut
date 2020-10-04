@@ -69,7 +69,6 @@ class AuctionDaoTest extends TestCase
 
     $auctionId = $auctionDao->insertAuction($auctionTest);
 
-    $auctionSelected = new AuctionModel();
     $auctionSelected = $auctionDao->selectAuctionByAuctionId($auctionId);
 
     $this->assertNotNull($auctionSelected);
@@ -182,11 +181,10 @@ class AuctionDaoTest extends TestCase
    * @test
    * @covers
    */
-  public function getBestBidFrom_selectAllAuctionsByAuctionStateTest(): void
+  public function getBestBidFrom_selectAuctionByAuctionIdTest(): void
   {
+    /*First step : create an auction*/
     $auctionDao = App_DaoFactory::getFactory()->getAuctionDao();
-
-    $auctionState = 0;
 
     $auctionTest = new AuctionModel();
     $auctionTest
@@ -197,18 +195,37 @@ class AuctionDaoTest extends TestCase
             //->setCreationDate(creationDate)
             ->setStartDate('2020-01-01')
             ->setDuration(7)
-            ->setAuctionState($auctionState)
             ->setSellerId(1)
             ->setPrivacyId(0)
             ->setCategoryId(1);
 
+    /*Second step : insert the auction*/
     $auctionId = $auctionDao->insertAuction($auctionTest);
 
-    $AuctionsSelected = $auctionDao->selectAllAuctionsByAuctionState($auctionState);
+    /*Third step : create a bid*/
+    $bidHistoryDao = App_DaoFactory::getFactory()->getBidHistoryDao();
 
-    $this->assertTrue(is_array($AuctionsSelected));
-    $this->assertNotNull($AuctionsSelected[0]->getName());
+    $bidTest = new bidModel();
+    $bidTest
+          ->setBidPrice(42)
+          ->setBidDate('2020-10-01')
+          ->setBidderId(1)
+          ->setObjectId($auctionId);
 
+    /*Fourth step : insert the bid*/
+    $bidHistoryId = $bidHistoryDao->insertBid($bidTest);
+
+    /*Fifth step : select an auction with the best bid**/
+    $auctionSelected = $auctionDao->selectAuctionByAuctionId($auctionId);
+
+    $this->assertNotNull($auctionSelected->getBestBid());
+    $this->assertNotNull($auctionSelected->getBestBid()->getId());
+    $this->assertTrue($auctionSelected->getBestBid()->getId() > 0);
+
+    /*Sixth step : delete the inserted bid**/
+    $bidHistoryDao->deleteBidById($bidHistoryId);
+
+    /*Seventh step : delete the inserted auction**/
     $auctionDao->deleteAuctionById($auctionId);
   }
 }
