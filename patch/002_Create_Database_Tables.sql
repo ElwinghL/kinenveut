@@ -1,5 +1,4 @@
 ##----- Tables creation
-
 CREATE TABLE `Users` (
                         `id` INT NOT NULL AUTO_INCREMENT,
                         `firstName` VARCHAR(100) NOT NULL,
@@ -68,13 +67,13 @@ AS SELECT 0 AS id, 'public' AS name
 
 
 CREATE VIEW v_BestBids AS
-SELECT bidhistory.id,bidhistory.bidPrice,bidhistory.bidDate,bidhistory.objectId,bidhistory.bidderId
-FROM (SELECT * FROM bidhistory
-      WHERE bidPrice = (SELECT MAX(bidPrice) FROM bidhistory)
-      GROUP BY bidhistory.objectId
-     ) AS bidhistory
-WHERE bidDate = (SELECT MIN(bidDate) FROM bidhistory)
-GROUP BY bidhistory.objectId;
+SELECT BidHistory.id,BidHistory.bidPrice,BidHistory.bidDate,BidHistory.objectId,BidHistory.bidderId
+FROM (SELECT * FROM BidHistory
+      WHERE bidPrice = (SELECT MAX(bidPrice) FROM BidHistory)
+      GROUP BY BidHistory.objectId
+     ) AS BidHistory
+WHERE bidDate = (SELECT MIN(bidDate) FROM BidHistory)
+GROUP BY BidHistory.objectId;
 
 
 
@@ -96,4 +95,3 @@ VALUES
      ,('Multimédia')
      ,('Instruments de musique');
 UNLOCK TABLES;
-
