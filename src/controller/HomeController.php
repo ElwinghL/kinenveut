@@ -8,7 +8,14 @@ class HomeController extends Controller
   {
     $auctionBo = App_BoFactory::getFactory()->getAuctionBo();
     $auctionList = $auctionBo->selectAllAuctionsByAuctionState(self::IS_ONLINE);
-    $data = ['auctionList' => $auctionList];
+
+    $categoryBo = App_BoFactory::getFactory()->getCategoryBo();
+    $categoryList = $categoryBo->selectAllCategories();
+
+    $data = [
+      'categoryList'=> $categoryList,
+      'auctionList' => $auctionList
+    ];
 
     $this->render('index', $data);
   }
