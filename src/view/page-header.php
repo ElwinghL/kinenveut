@@ -13,12 +13,16 @@
                     <li><a href="?r=account">Mon compte</a></li>
                     <li><a href="?r=auction">Mes enchères</a></li>
                     <li><a href="?r=myAuction">Mes ventes</a></li>
+
+                    <?php if (isset($_SESSION['isAdmin']) && $_SESSION['isAdmin'] == 1):?>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="?r=user">Gestion des utilisateurs</a></li>
+                        <li><a href="?r=auction/alerte">Gestion des enchères</a></li>
+                        <li><a href="?r=categorie">Gestion des catégories</a></li>
+                    <?php endif;?>
+
                     <li role="separator" class="divider"></li>
-                    <li><a href="?r=user">Gestion des utilisateurs</a></li>
-                    <li><a href="?r=auction/alerte">Gestion des enchères</a></li>
-                    <li><a href="?r=categorie">Gestion des catégories</a></li>
-                    <li role="separator" class="divider"></li>
-                    <li><a href="?r=login">Déconnexion</a></li>
+                    <li><a href="?r=logout">Déconnexion</a></li>
                 </ul>
             </div>
         </div>
