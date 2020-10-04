@@ -12,17 +12,18 @@
                         <span class="caret"></span>
                     </button>
                     <div class="dropdown-menu">
+                        <a class="dropdown-item" href="?r=auction/create">Vendre</a>
                         <a class="dropdown-item" href="?r=account">Mon compte</a>
                         <a class="dropdown-item" href="?r=auction">Mes enchères</a>
                         <a class="dropdown-item" href="?r=myAuction">Mes ventes</a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="?r=user">Gestion des utilisateurs</a>
                         <a class="dropdown-item" href="?r=auctionManagement">Gestion des enchères</a>
-                        <a class="dropdown-item" href="?r=categorie">Gestion des catégories</a>
-                    
+                        <a class="dropdown-item" href="?r=categorie">Gestion des catégories</a>     
                     </div>
                     <input type="button" class="btn-secondary" value="Déconnexion">
                 </div>
+
             </div>
         </div>
     </div>

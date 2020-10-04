@@ -2,21 +2,21 @@ DROP VIEW IF EXISTS v_BestBids;
 DROP VIEW IF EXISTS v_BestBid;
 
 CREATE VIEW v_BestBid AS
-SELECT bidhistory.id,bidhistory.bidPrice,bidhistory.bidDate,bidhistory.objectId,bidhistory.bidderId
+SELECT BidHistory.id,BidHistory.bidPrice,BidHistory.bidDate,BidHistory.objectId,BidHistory.bidderId
 FROM (
-         SELECT bidhistory.*
-         FROM bidhistory
+         SELECT BidHistory.*
+         FROM BidHistory
                   INNER JOIN (SELECT objectId, MAX(bidPrice) AS bidPrice
-                              FROM bidhistory
-                              GROUP BY bidhistory.objectId) as bestBid
-                             ON bidhistory.objectId = bestBid.objectId
-                                 AND bidhistory.bidPrice = bestBid.bidPrice
-         GROUP BY bidhistory.objectId
+                              FROM BidHistory
+                              GROUP BY BidHistory.objectId) as bestBid
+                             ON BidHistory.objectId = bestBid.objectId
+                                 AND BidHistory.bidPrice = bestBid.bidPrice
+         GROUP BY BidHistory.objectId
      ) AS bestBid
          INNER JOIN (SELECT id,bidPrice,objectId,bidderId, MIN(bidDate) AS bidDate
-                     FROM bidhistory
-                     GROUP BY id,bidPrice,objectId,bidderId) as bidhistory
-                    ON bidhistory.objectId = bestBid.objectId
-                        AND bidhistory.bidPrice = bestBid.bidPrice
-                        AND bidhistory.bidDate = bestBid.bidDate
-GROUP BY bidhistory.objectId;
+                     FROM BidHistory
+                     GROUP BY id,bidPrice,objectId,bidderId) as BidHistory
+                    ON BidHistory.objectId = bestBid.objectId
+                        AND BidHistory.bidPrice = bestBid.bidPrice
+                        AND BidHistory.bidDate = bestBid.bidDate
+GROUP BY BidHistory.objectId;
