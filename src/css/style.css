@@ -18,6 +18,15 @@
 
 /* HOME */
 
-.search-bar-custom {
+.search-bar-custom, .categories-custom {
     margin-bottom: 10px;
+}
+
+.auctions-list-custom a {
+    color: black;
+    text-decoration: none; /* no underline */
+}
+
+.auction-custom:hover .auction-title-custom {
+    text-decoration: underline;
 }

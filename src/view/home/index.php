@@ -19,7 +19,7 @@ $auctionList = $data['auctionList'];
             </div>
         </div>
     </div>
-    <div class="row">
+    <div class="row categories-custom">
         <div class="col-md-6">
             <div class="form-group">
                 <label for="category">Catégorie</label>
@@ -41,25 +41,26 @@ $auctionList = $data['auctionList'];
     </div>
 </div>
 
-<div class="container">
+<div class="container auctions-list-custom">
     <div class="row">
         <!-- BEGIN PRODUCTS -->
         <?php foreach ($auctionList as $auction) : ?>
-            <div class="col-md-3 col-sm-6">
+            <a class="col-md-3 col-sm-6 auction-custom" href=<?php echo "?auctionId=".$auction->getId() ?>>
                 <div class="thumbnail text-center">
-                    <h4 class="text-danger"> <?php echo $auction->getName(); ?> </h4>
-                    <p>Expiration : <?php echo $auction->getDuration() ?></p>
+                    <h4 class="text-danger auction-title-custom"> <?php echo $auction->getName(); ?> </h4>
+                    <p>Expiration : <?php echo date('d/m/Y h:m', strtotime($auction->getStartDate().' + '.$auction->getDuration().' days')); ?></p>
                     <hr class="line" />
                     <div class="row">
-                        <div class="col-md-6 col-sm-6">
-                            <button type="button" class="btn btn-link"> <?php echo $auction->getBestBid()->getbidPrice(); ?> €</button>
-                        </div>
-                        <div class="col-md-6 col-sm-6">
-                            <button class="btn btn-danger right">Enchérir</button>
+                        <div class="col-md-12">
+                        <?php if ($auction->getBestBid()->getbidPrice() !== null) { 
+                            echo '<p class="bg-danger">Dernière offre : '.$auction->getBestBid()->getbidPrice().'€</p>';
+                        } else { 
+                            echo '<p class="bg-danger">Prix de base : '.$auction->getBasePrice().'€</p>';
+                        } ?>
                         </div>
                     </div>
                 </div>
-            </div>
+            </a>
         <?php endforeach; ?>
         <!-- END PRODUCTS -->
     </div>
