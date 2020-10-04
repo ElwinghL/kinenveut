@@ -30,7 +30,7 @@ class CategoryDaoTest extends TestCase
     $categoryId = $categoryDao->insertCategory($categoryTest);
 
     $this->assertNotNull($categoryId);
-    $this->assertTrue($categoryId>0);
+    $this->assertTrue($categoryId > 0);
 
     $categoryDao->deleteCategoryById($categoryId);
   }

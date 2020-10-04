@@ -34,28 +34,28 @@ if (isset($_SESSION['registerData'])) {
           <div class="form-group col-md-12">
             <label for="firstName">Prénom</label>
             <input class="form-control" name="firstName" type="text" id="firstName" value="<?php if (isset($firstName)) {
-                                                                                              echo $firstName;
-                                                                                            }
-                                                                                            echo (''); ?>" placeholder="" maxlength="100" required />
+  echo $firstName;
+}
+                                                                                            echo(''); ?>" placeholder="" maxlength="100" required />
 
             <br />
             <label for="lastName">Nom</label>
             <input class="form-control" name="lastName" id="lastName" type="text" value="<?php if (isset($lastName)) {
-                                                                                            echo $lastName;
-                                                                                          }
-                                                                                          echo (''); ?>" placeholder="" maxlength="100" required />
+                                                                                              echo $lastName;
+                                                                                            }
+                                                                                          echo(''); ?>" placeholder="" maxlength="100" required />
             <br />
             <label for="birthDate">Date de naissance</label>
             <input class="form-control" name="birthDate" id="birthDate" type="date" value="<?php if (isset($birthDate)) {
-                                                                                              echo $birthDate;
-                                                                                            }
-                                                                                            echo (''); ?>" placeholder="" maxlength="10" required />
+                                                                                            echo $birthDate;
+                                                                                          }
+                                                                                            echo(''); ?>" placeholder="" maxlength="10" required />
             <br />
             <label for="email">Email</label>
             <input class="form-control" name="email" id="email" type="email" value="<?php if (isset($email)) {
-                                                                                      echo $email;
-                                                                                    }
-                                                                                    echo (''); ?>" placeholder="" maxlength="255" required />
+                                                                                              echo $email;
+                                                                                            }
+                                                                                    echo(''); ?>" placeholder="" maxlength="255" required />
             <br />
             <label for="password">Mot de passe</label>
             <input class="form-control" name="password" id="password" type="password" value="" placeholder="" maxlength="255" required />

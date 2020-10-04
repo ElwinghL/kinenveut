@@ -2,14 +2,14 @@
 
 <?php
 if (isset($_SESSION['loginData'])) {
-    if (isset($_SESSION['loginData']['errors'])) {
-        $errors = $_SESSION['loginData']['errors'];
-        foreach ($errors as $err) {
-            echo $err;
-            echo '<br>';
-        }
+  if (isset($_SESSION['loginData']['errors'])) {
+    $errors = $_SESSION['loginData']['errors'];
+    foreach ($errors as $err) {
+      echo $err;
+      echo '<br>';
     }
-    unset($_SESSION['loginData']);
+  }
+  unset($_SESSION['loginData']);
 }
 ?>
 <div class="row">
@@ -43,7 +43,6 @@ if (isset($_SESSION['loginData'])) {
                     <small><a href="?r=registration">S'inscrire</a></small>
                 </div>
             </div>
-
         </div>
     </div>
 </div>
