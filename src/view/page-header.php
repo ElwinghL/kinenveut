@@ -6,7 +6,7 @@
         <div class="col-md-2">
             <div class="dropdown" aria-labelledby="dropdownMenu1">
                 <div class="row">
-                    
+
                     <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                         Menu
                         <span class="caret"></span>
@@ -15,11 +15,11 @@
                         <a class="dropdown-item" href="?r=auction/create">Vendre</a>
                         <a class="dropdown-item" href="?r=account">Mon compte</a>
                         <a class="dropdown-item" href="?r=auction">Mes enchères</a>
-                        <a class="dropdown-item" href="?r=myAuction">Mes ventes</a>
+                        <a class="dropdown-item" href="?r=auction/myAuction">Mes ventes</a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="?r=user">Gestion des utilisateurs</a>
                         <a class="dropdown-item" href="?r=auctionManagement">Gestion des enchères</a>
-                        <a class="dropdown-item" href="?r=categorie">Gestion des catégories</a>     
+                        <a class="dropdown-item" href="?r=categorie">Gestion des catégories</a>
                     </div>
                     <input type="button" class="btn-secondary" value="Déconnexion">
                 </div>
