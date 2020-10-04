@@ -205,7 +205,7 @@ class AuctionDaoTest extends TestCase
     /*Third step : create a bid*/
     $bidHistoryDao = App_DaoFactory::getFactory()->getBidHistoryDao();
 
-    $bidTest = new bidModel();
+    $bidTest = new BidModel();
     $bidTest
           ->setBidPrice(42)
           ->setBidDate('2020-10-01')
