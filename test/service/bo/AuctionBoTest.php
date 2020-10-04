@@ -37,6 +37,26 @@ class AuctionBoTest extends TestCase
    * @test
    * @covers
    */
+  public function updateStartDateAndAuctionStateTest(): void
+  {
+    $expectedState = true;
+    $auctionBo = App_BoFactory::getFactory()->getAuctionBo();
+    $auctionMock = $this->createPartialMock(AuctionModel::class, []);
+    $auctionDaoImpMock = $this->createPartialMock(AuctionDaoImpl::class, ['updateStartDateAndAuctionState']);
+    $auctionDaoImpMock->method('updateStartDateAndAuctionState')->willReturn($expectedState);
+    $app_DaoFactoryMock = $this->createPartialMock(App_DaoFactory::class, ['getAuctionDao']);
+    $app_DaoFactoryMock->method('getAuctionDao')->willReturn($auctionDaoImpMock);
+    App_DaoFactory::setFactory($app_DaoFactoryMock);
+
+    $isUpdated = $auctionBo->updateStartDateAndAuctionState($auctionMock);
+
+    $this->assertSame($expectedState, $isUpdated);
+  }
+
+  /**
+   * @test
+   * @covers
+   */
   public function deleteAuctionTest() : void
   {
     $expectedSuccess = true;
@@ -87,5 +107,39 @@ class AuctionBoTest extends TestCase
     $auctionList = $auctionBo->selectAllAuctionsByAuctionState(1);
 
     $this->assertSame($expectedAuctionList, $auctionList);
+  }
+
+  /**
+   * @test
+   * @covers
+   */
+  public function selectAuctionByAuctionIdTest() : void
+  {
+    $id = 42;
+    $expectedAuction = new AuctionModel();
+    $expectedAuction
+            ->setId($id)
+            ->setName('Object Test')
+            ->setBasePrice(3)
+            ->setReservePrice(10)
+            //->setCreationDate(creationDate)
+            ->setStartDate('2020-01-01')
+            ->setDuration(7)
+            ->setAuctionState(0)
+            ->setSellerId(1)
+            ->setPrivacyId(0)
+            ->setCategoryId(1);
+
+    $auctionBo = App_BoFactory::getFactory()->getAuctionBo();
+    $auctionDaoImpMock = $this->createPartialMock(AuctionDaoImpl::class, ['selectAuctionByAuctionId']);
+    $auctionDaoImpMock->method('selectAuctionByAuctionId')->willReturn($expectedAuction);
+
+    $app_DaoFactoryMock = $this->createPartialMock(App_DaoFactory::class, ['getAuctionDao']);
+    $app_DaoFactoryMock->method('getAuctionDao')->willReturn($auctionDaoImpMock);
+    App_DaoFactory::setFactory($app_DaoFactoryMock);
+
+    $auctionSelected = $auctionBo->selectAuctionByAuctionId($id);
+
+    $this->assertSame($expectedAuction, $auctionSelected);
   }
 }
