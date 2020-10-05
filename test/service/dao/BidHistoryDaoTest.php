@@ -18,7 +18,7 @@ class BidHistoryDaoTest extends TestCase
 
   /**
    * @test
-   * @covers
+   * @covers BidHistoryDaoImpl
    */
   public function insertBidTest(): void
   {
@@ -41,7 +41,7 @@ class BidHistoryDaoTest extends TestCase
 
   /**
    * @test
-   * @covers
+   * @covers BidHistoryDaoImpl
    */
   public function deleteBidTest(): void
   {

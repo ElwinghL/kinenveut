@@ -4,4 +4,4 @@ CREATE TABLE `Version` (
   PRIMARY KEY (`id`)
 ) ENGINE = MyISAM;
 
-INSERT INTO `Version` VALUES (1, '2');
+INSERT INTO `Version` VALUES (1, '1');

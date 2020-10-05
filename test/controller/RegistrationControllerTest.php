@@ -8,7 +8,7 @@ class RegistrationControllerTest extends TestCase
 {
   /**
    * @test
-   * @covers
+   * @covers RegistrationController
   */
   public function registerTest()
   {

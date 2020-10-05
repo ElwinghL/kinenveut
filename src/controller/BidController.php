@@ -2,10 +2,6 @@
 
 class BidController extends Controller
 {
-  public function __construct()
-  {
-  }
-
   public function index()
   {
     $auctionId = $_GET['auctionId'];

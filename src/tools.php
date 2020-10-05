@@ -17,8 +17,10 @@ function my_autoloader($name)
 
 spl_autoload_register('my_autoloader');
 
-function protectStringFromDB($str) {
+function protectStringFromDB($str)
+{
   $str = trim($str);
   $str = utf8_encode($str);
-	return htmlentities($str, ENT_QUOTES, 'UTF-8');
+
+  return htmlentities($str, ENT_QUOTES, 'UTF-8');
 }

@@ -2,10 +2,6 @@
 
 class CategorieController extends Controller
 {
-  public function __construct()
-  {
-  }
-
   public function index()
   {
     $categoryBo = App_BoFactory::getFactory()->getCategoryBo();

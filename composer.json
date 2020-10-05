@@ -15,7 +15,7 @@
     ],
     "test": "phpunit test",
     "coverage": "phpunit --coverage-text",
-    "coverage-txt": "phpunit --coverage-text=test/coverage.txt"
+    "coverage-html": "phpunit --coverage-html test/coverage/"
   },
   "config": {
     "process-timeout": 0
