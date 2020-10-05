@@ -22,10 +22,4 @@ class Controller
       exit();
     }
   }
-
-  public function redirect($path)
-  {
-    header('Location: ' . $path);
-    exit();
-  }
 }
