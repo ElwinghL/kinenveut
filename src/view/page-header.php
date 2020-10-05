@@ -1,12 +1,11 @@
 <div class="container page-header-custom">
     <div class="row row-vertically-centered">
         <div class="col-md-10">
-            <a href="?r=account"><img src="resources/logo.png" width="158" height="143"></a>
+            <a href="/kinenveut"><img src="resources/logo.png" width="158" height="143"></a>
         </div>
         <div class="col-md-2">
             <div class="dropdown" aria-labelledby="dropdownMenu1">
                 <div class="row">
-                    
                     <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                         Menu
                         <span class="caret"></span>
