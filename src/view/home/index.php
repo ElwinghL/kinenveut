@@ -1,51 +1,74 @@
 <?php
-  $categoryList = $data['categoryList'];
-  $auctionList = $data['auctionList'];
+$categoryList = $data['categoryList'];
+$auctionList = $data['auctionList'];
+$selectedCategory = -1;
+if (isset($data['selectedCategory'])) {
+  $selectedCategory = $data['selectedCategory'];
+}
+$selectedOfferType = -1;
+if (isset($data['selectedOfferType'])) {
+  $selectedOfferType = $data['selectedOfferType'];
+}
+$searchInput = '';
+if (isset($data['searchInput'])) {
+  $searchInput = $data['searchInput'];
+}
 ?>
 
 <?php include_once 'src/view/page-header.php' ?>
 
-<div class="container">
-    <div class="row search-bar-custom">
-        <h2>Recherche</h2>
-        <div id="custom-search-input">
-            <div class="input-group col-md-12">
-                <input type="text" class="search-query form-control" placeholder="Smartphone, enceinte connectée, PS4..." />
-                <span class="input-group-btn">
-                    <button class="btn btn-danger" type="button">
-                        <span class=" glyphicon glyphicon-search"></span>
-                    </button>
-                </span>
-            </div>
-        </div>
-    </div>
+<div class="container search-custom">
+    <h2>Recherche</h2>
+    <form action="?r=home/search" method="post">
     <div class="row categories-custom">
         <div class="col-md-6">
             <div class="form-group">
-                <label for="category">Catégorie</label>
-                <select id="category" class="form-control">
-                    <option selected>Toutes</option>
-                    <?php if (sizeof($categoryList) > 0):?>
-                        <?php foreach ($categoryList as $oneCategory): ?>
-                            <option value="<?php echo $oneCategory->getId(); ?>">
+                <label for="category">Catégories</label>
+                <select id="category" name="categoryType" class="form-control">
+                    <option value="-1">Toutes les catégories</option>
+                    <?php if (sizeof($categoryList) > 0) : ?>
+                        <?php foreach ($categoryList as $oneCategory) : ?>
+                            <option value="<?php echo $oneCategory->getId(); ?>" <?php if ($selectedCategory == $oneCategory->getId()) {
+  echo 'selected';
+} ?>>
                                 <?php echo $oneCategory->getName(); ?>
                             </option>
-                        <?php endforeach;?>
+                        <?php endforeach; ?>
                     <?php endif; ?>
                 </select>
             </div>
         </div>
         <div class="col-md-6">
             <div class="form-group">
-                <label for="privacy">Type d'offres</label>
-                <select id="category" class="form-control">
-                    <option>Offres publiques</option>
-                    <option>Offres privées</option>
-                    <option>Offres confidentielles</option>
+                <label for="privacy">Types d'offre</label>
+                <select id="category" name="offerType" class="form-control">
+                    <option value="-1" <?php if ($selectedOfferType == -1) {
+  echo 'selected';
+} ?>>Tous les types d'offre</option>
+                    <option value="0" <?php if ($selectedOfferType == 0) {
+  echo 'selected';
+} ?>>Offres publiques</option>
+                    <option value="1" <?php if ($selectedOfferType == 1) {
+  echo 'selected';
+} ?>>Offres privées</option>
+                    <option value="2" <?php if ($selectedOfferType == 2) {
+  echo 'selected';
+} ?>>Offres confidentielles</option>
                 </select>
             </div>
         </div>
     </div>
+    <div class="row">
+        <div class="input-group col-md-12">
+            <input name="searchInput" type="text" class="search-query form-control" value="<?php echo $searchInput ?>" placeholder="Smartphone, enceinte connectée, PS4..." />
+            <span class="input-group-btn">
+                <button class="btn btn-danger" type="submit" name="searchButton">
+                    Rechercher
+                </button>
+            </span>
+        </div>
+    </div>
+    </form>
 </div>
 
 <div class="container auctions-list-custom">

@@ -17,7 +17,7 @@ function my_autoloader($name)
 
 spl_autoload_register('my_autoloader');
 
-function protectStringFromDB($str)
+function protectStringToDisplay($str)
 {
   $str = trim($str);
   $str = utf8_encode($str);

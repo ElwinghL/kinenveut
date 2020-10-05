@@ -27,8 +27,8 @@ class AuctionDaoImpl implements IAuctionDao
       $oneAuctionModel = new AuctionModel();
       $oneAuctionModel
               ->setId($oneAuction['objectId'])
-                ->setName(protectStringFromDB($oneAuction['name']))
-                ->setDescription(protectStringFromDB($oneAuction['description']))
+                ->setName(protectStringToDisplay($oneAuction['name']))
+                ->setDescription(protectStringToDisplay($oneAuction['description']))
                 ->setBasePrice($oneAuction['basePrice'])
                 ->setReservePrice($oneAuction['reservePrice'])
                 ->setPictureLink($oneAuction['pictureLink'])
