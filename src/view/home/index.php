@@ -3,15 +3,15 @@ $categoryList = $data['categoryList'];
 $auctionList = $data['auctionList'];
 $selectedCategory = -1;
 if (isset($data['selectedCategory'])) {
-    $selectedCategory = $data['selectedCategory'];
+  $selectedCategory = $data['selectedCategory'];
 }
 $selectedOfferType = -1;
 if (isset($data['selectedOfferType'])) {
-    $selectedOfferType = $data['selectedOfferType'];
+  $selectedOfferType = $data['selectedOfferType'];
 }
 $searchInput = '';
 if (isset($data['searchInput'])) {
-    $searchInput = $data['searchInput'];
+  $searchInput = $data['searchInput'];
 }
 ?>
 
@@ -29,8 +29,8 @@ if (isset($data['searchInput'])) {
                         <?php if (sizeof($categoryList) > 0) : ?>
                             <?php foreach ($categoryList as $oneCategory) : ?>
                                 <option value="<?php echo $oneCategory->getId(); ?>" <?php if ($selectedCategory == $oneCategory->getId()) {
-                                                                                            echo 'selected';
-                                                                                        } ?>>
+  echo 'selected';
+} ?>>
                                     <?php echo $oneCategory->getName(); ?>
                                 </option>
                             <?php endforeach; ?>
@@ -43,17 +43,17 @@ if (isset($data['searchInput'])) {
                     <label for="privacy">Types d'offre</label>
                     <select id="category" name="offerType" class="form-control">
                         <option value="-1" <?php if ($selectedOfferType == -1) {
-                                                echo 'selected';
-                                            } ?>>Tous les types d'offre</option>
+  echo 'selected';
+} ?>>Tous les types d'offre</option>
                         <option value="0" <?php if ($selectedOfferType == 0) {
-                                                echo 'selected';
-                                            } ?>>Offres publiques</option>
+  echo 'selected';
+} ?>>Offres publiques</option>
                         <option value="1" <?php if ($selectedOfferType == 1) {
-                                                echo 'selected';
-                                            } ?>>Offres privées</option>
+  echo 'selected';
+} ?>>Offres privées</option>
                         <option value="2" <?php if ($selectedOfferType == 2) {
-                                                echo 'selected';
-                                            } ?>>Offres confidentielles</option>
+  echo 'selected';
+} ?>>Offres confidentielles</option>
                     </select>
                 </div>
             </div>
@@ -85,10 +85,10 @@ if (isset($data['searchInput'])) {
                             <div class="row">
                                 <div class="col-md-12">
                                     <?php if ($auction->getBestBid()->getbidPrice() !== null) {
-                                        echo '<p class="auction-price-custom">Dernière offre : ' . $auction->getBestBid()->getbidPrice() . '€</p>';
-                                    } else {
-                                        echo '<p class="auction-price-custom">Prix de base : ' . $auction->getBasePrice() . '€</p>';
-                                    } ?>
+  echo '<p class="auction-price-custom">Dernière offre : ' . $auction->getBestBid()->getbidPrice() . '€</p>';
+} else {
+  echo '<p class="auction-price-custom">Prix de base : ' . $auction->getBasePrice() . '€</p>';
+} ?>
                                 </div>
                             </div>
                         </div>
