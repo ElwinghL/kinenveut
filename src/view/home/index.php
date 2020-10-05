@@ -1,18 +1,10 @@
 <?php
-$categoryList = $data['categoryList'];
-$auctionList = $data['auctionList'];
-$selectedCategory = -1;
-if (isset($data['selectedCategory'])) {
-  $selectedCategory = $data['selectedCategory'];
-}
-$selectedOfferType = -1;
-if (isset($data['selectedOfferType'])) {
-  $selectedOfferType = $data['selectedOfferType'];
-}
-$searchInput = '';
-if (isset($data['searchInput'])) {
-  $searchInput = $data['searchInput'];
-}
+    $categoryList = $data['categoryList'];
+    $auctionList = $data['auctionList'];
+
+    $selectedCategory = isset($data['selectedCategory']) ? $data['selectedCategory'] : -1;
+    $selectedOfferType = isset($data['selectedOfferType']) ? $data['selectedOfferType'] : -1;
+    $searchInput = isset($data['searchInput']) ? $data['searchInput'] : '';
 ?>
 
 <?php include_once 'src/view/page-header.php' ?>
@@ -40,11 +32,11 @@ if (isset($data['searchInput'])) {
             </div>
             <div class="col-md-6">
                 <div class="form-group">
-                    <label for="privacy">Types d'offre</label>
+                    <label for="privacy">Types d'offres</label>
                     <select id="category" name="offerType" class="form-control">
                         <option value="-1" <?php if ($selectedOfferType == -1) {
   echo 'selected';
-} ?>>Tous les types d'offre</option>
+} ?>>Tous les types d'offres</option>
                         <option value="0" <?php if ($selectedOfferType == 0) {
   echo 'selected';
 } ?>>Offres publiques</option>
