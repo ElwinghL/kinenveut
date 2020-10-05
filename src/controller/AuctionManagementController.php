@@ -2,10 +2,6 @@
 
 class AuctionManagementController extends Controller
 {
-  public function __construct()
-  {
-  }
-
   public function index()
   {
     $auctionBo = App_BoFactory::getFactory()->getAuctionBo();
