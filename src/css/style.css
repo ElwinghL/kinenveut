@@ -17,8 +17,15 @@
 }
 
 /* HOME */
+.search-custom {
+    margin-bottom: 45px;
+}
 
-.search-bar-custom, .categories-custom {
+.search-button-custom {
+    margin-left: 10px;
+}
+
+.categories-custom {
     margin-bottom: 10px;
 }
 
@@ -27,6 +34,16 @@
     text-decoration: none; /* no underline */
 }
 
+.auction-custom {
+    padding: 10px 0;
+    margin-bottom: 25px;
+}
+
 .auction-custom:hover .auction-title-custom {
     text-decoration: underline;
+}
+
+.auction-price-custom {
+    margin-bottom: 0px;
+    font-weight: bold;
 }

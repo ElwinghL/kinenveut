@@ -21,9 +21,9 @@ class UserDaoImpl implements IUserDao
     $user = new UserModel();
     $user
           ->setId($firstUser['id'])
-          ->setFirstName(protectStringFromDB($firstUser['firstName']))
-          ->setLastName(protectStringFromDB($firstUser['lastName']))
-          ->setEmail(protectStringFromDB($firstUser['email']))
+          ->setFirstName(protectStringToDisplay($firstUser['firstName']))
+          ->setLastName(protectStringToDisplay($firstUser['lastName']))
+          ->setEmail(protectStringToDisplay($firstUser['email']))
           ->setBirthDate($firstUser['birthDate'])
           ->setIsAuthorised($firstUser['isAuthorised'])
           ->setIsAdmin($firstUser['isAdmin']);
@@ -45,9 +45,9 @@ class UserDaoImpl implements IUserDao
     $user = new UserModel();
     $user
           ->setId($firstUser['id'])
-          ->setFirstName(protectStringFromDB($firstUser['firstName']))
-          ->setLastName(protectStringFromDB($firstUser['lastName']))
-          ->setEmail(protectStringFromDB($firstUser['email']))
+          ->setFirstName(protectStringToDisplay($firstUser['firstName']))
+          ->setLastName(protectStringToDisplay($firstUser['lastName']))
+          ->setEmail(protectStringToDisplay($firstUser['email']))
           ->setBirthDate($firstUser['birthDate'])
           ->setIsAuthorised($firstUser['isAuthorised'])
           ->setIsAdmin($firstUser['isAdmin']);

@@ -13,8 +13,40 @@ class HomeController extends Controller
     $categoryList = $categoryBo->selectAllCategories();
 
     $data = [
-      'categoryList'=> $categoryList,
-      'auctionList' => $auctionList
+      'categoryList' => $categoryList,
+      'auctionList'  => $auctionList
+    ];
+
+    $this->render('index', $data);
+  }
+
+  public function search()
+  {
+    $categoryType = $_POST['categoryType'];
+    $offerType = $_POST['offerType'];
+    $searchInput = protectStringToDisplay($_POST['searchInput']);
+
+    $auctionBo = App_BoFactory::getFactory()->getAuctionBo();
+    $auctionList = $auctionBo->selectAllAuctionsByAuctionState(self::IS_ONLINE);
+
+    $categoryBo = App_BoFactory::getFactory()->getCategoryBo();
+    $categoryList = $categoryBo->selectAllCategories();
+
+    $filteredAuctionList = [];
+    foreach ($auctionList as $auction) {
+      if (($categoryType == -1 || $auction->getCategoryId() == $categoryType) &&
+      ($offerType == -1 || $auction->getPrivacyId() == $offerType) &&
+      ($searchInput == '' || strpos($auction->getName(), $searchInput) !== false)) {
+        $filteredAuctionList[] = $auction;
+      }
+    }
+
+    $data = [
+      'categoryList'      => $categoryList,
+      'auctionList'       => $filteredAuctionList,
+      'selectedCategory'  => $categoryType,
+      'selectedOfferType' => $offerType,
+      'searchInput'       => $searchInput
     ];
 
     $this->render('index', $data);
