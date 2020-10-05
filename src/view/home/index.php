@@ -25,7 +25,7 @@
                 <label for="category">Catégorie</label>
                 <select id="category" class="form-control">
                     <option selected>Toutes</option>
-                    <?php if( sizeof($categoryList) > 0):?>
+                    <?php if (sizeof($categoryList) > 0):?>
                         <?php foreach ($categoryList as $oneCategory): ?>
                             <option value="<?php echo $oneCategory->getId(); ?>">
                                 <?php echo $oneCategory->getName(); ?>
