@@ -14,7 +14,7 @@ class CategoryDaoImpl implements ICategoryDao
       $oneCategoryModel = new CategoryModel();
       $oneCategoryModel
         ->setId($oneCategory['id'])
-        ->setName(protectStringFromDB($oneCategory['name']));
+        ->setName(protectStringToDisplay($oneCategory['name']));
 
       array_push($categoryList, $oneCategoryModel);
     }

@@ -17,14 +17,21 @@
 }
 
 /* HOME */
+.search-custom {
+    margin-bottom: 25px;
+}
 
-.search-bar-custom, .categories-custom {
+.categories-custom {
     margin-bottom: 10px;
 }
 
 .auctions-list-custom a {
     color: black;
     text-decoration: none; /* no underline */
+}
+
+.auction-custom {
+    border: 1px solid lightgrey;
 }
 
 .auction-custom:hover .auction-title-custom {
