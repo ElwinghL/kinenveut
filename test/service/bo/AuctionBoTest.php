@@ -2,7 +2,7 @@
 
 use PHPUnit\Framework\TestCase;
 
-//include_once 'src/tools.php';
+include_once 'src/tools.php';
 
 class AuctionBoTest extends TestCase
 {
@@ -15,7 +15,7 @@ class AuctionBoTest extends TestCase
 
   /**
    * @test
-   * @covers
+   * @covers AuctionBoImpl
    */
   public function insertAuctionTest() : void
   {
@@ -35,7 +35,7 @@ class AuctionBoTest extends TestCase
 
   /**
    * @test
-   * @covers
+   * @covers AuctionBoImpl
    */
   public function updateStartDateAndAuctionStateTest(): void
   {
@@ -55,7 +55,7 @@ class AuctionBoTest extends TestCase
 
   /**
    * @test
-   * @covers
+   * @covers AuctionBoImpl
    */
   public function deleteAuctionTest() : void
   {
@@ -74,7 +74,7 @@ class AuctionBoTest extends TestCase
 
   /**
    * @test
-   * @covers
+   * @covers AuctionBoImpl
    */
   public function selectAllAuctionsByAuctionStateTest() : void
   {
@@ -111,7 +111,7 @@ class AuctionBoTest extends TestCase
 
   /**
    * @test
-   * @covers
+   * @covers AuctionBoImpl
    */
   public function selectAuctionByAuctionIdTest() : void
   {
@@ -145,7 +145,7 @@ class AuctionBoTest extends TestCase
 
   /**
    * @test
-   * @covers
+   * @covers AuctionBoImpl
    */
   public function getBestBidFrom_selectAuctionByAuctionIdTest(): void
   {
@@ -169,7 +169,7 @@ class AuctionBoTest extends TestCase
           ->setCategoryId(1);
 
     /*Second step : create a bid*/
-    $bidTest = new bidModel();
+    $bidTest = new BidModel();
     $bidTest
       ->setBidPrice(42)
       ->setBidDate('2020-10-01')

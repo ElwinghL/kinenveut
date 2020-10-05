@@ -15,7 +15,7 @@ class CategoryBoTest extends TestCase
 
   /**
    * @test
-   * @covers
+   * @covers CategoryBoImpl
    */
   public function insertCategoryTest() : void
   {
@@ -35,7 +35,7 @@ class CategoryBoTest extends TestCase
 
   /**
    * @test
-   * @covers
+   * @covers CategoryBoImpl
    */
   public function deleteCategoryTest() : void
   {
@@ -54,7 +54,7 @@ class CategoryBoTest extends TestCase
 
   /**
    * @test
-   * @covers
+   * @covers CategoryBoImpl
    */
   public function selectAllCategories() : void
   {

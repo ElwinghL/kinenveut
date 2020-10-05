@@ -13,13 +13,12 @@ class AuctionDaoTest extends TestCase
   public function setUp(): void
   {
     parent::setUp();
-
     App_DaoFactory::setFactory(new App_DaoFactory());
   }
 
   /**
    * @test
-   * @covers
+   * @covers AuctionDaoImpl
    */
   public function insertAuctionTest(): void
   {
@@ -48,7 +47,7 @@ class AuctionDaoTest extends TestCase
 
   /**
    * @test
-   * @covers
+   * @covers AuctionDaoImpl
    */
   public function selectAuctionByAuctionIdTest()
   {
@@ -79,7 +78,7 @@ class AuctionDaoTest extends TestCase
 
   /**
    * @test
-   * @covers
+   * @covers AuctionDaoImpl
    */
   public function updateStartDateAndAuctionStateTest(): void
   {
@@ -118,7 +117,7 @@ class AuctionDaoTest extends TestCase
 
   /**
    * @test
-   * @covers
+   * @covers AuctionDaoImpl
    */
   public function deleteAuctionTest(): void
   {
@@ -145,7 +144,7 @@ class AuctionDaoTest extends TestCase
 
   /**
    * @test
-   * @covers
+   * @covers AuctionDaoImpl
    */
   public function selectAllAuctionsByAuctionStateTest(): void
   {
@@ -179,7 +178,7 @@ class AuctionDaoTest extends TestCase
 
   /**
    * @test
-   * @covers
+   * @covers AuctionDaoImpl
    */
   public function getBestBidFrom_selectAuctionByAuctionIdTest(): void
   {
@@ -205,7 +204,7 @@ class AuctionDaoTest extends TestCase
     /*Third step : create a bid*/
     $bidHistoryDao = App_DaoFactory::getFactory()->getBidHistoryDao();
 
-    $bidTest = new bidModel();
+    $bidTest = new BidModel();
     $bidTest
           ->setBidPrice(42)
           ->setBidDate('2020-10-01')

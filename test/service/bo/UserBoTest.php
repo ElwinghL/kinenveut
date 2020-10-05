@@ -15,7 +15,7 @@ class UserBoTest extends TestCase
 
   /**
    * @test
-   * @covers
+   * @covers UserBoImpl
   */
   public function insertUserTest() : void
   {
@@ -35,7 +35,6 @@ class UserBoTest extends TestCase
 
   /**
    * @test
-   * @covers
   */
   public function deleteUserTest() : void
   {
@@ -54,7 +53,7 @@ class UserBoTest extends TestCase
 
   /**
    * @test
-   * @covers
+   * @covers UserBoImpl
   */
   public function selectUserByEmailTest() : void
   {
@@ -79,7 +78,7 @@ class UserBoTest extends TestCase
 
   /**
    * @test
-   * @covers
+   * @covers UserBoImpl
   */
   public function selectUserByEmailAndPasswordTest() : void
   {

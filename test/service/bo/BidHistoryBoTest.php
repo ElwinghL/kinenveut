@@ -2,9 +2,6 @@
 
 use PHPUnit\Framework\TestCase;
 
-$dotenv = Dotenv\Dotenv::createImmutable('.');
-$dotenv->load();
-include_once 'src/db.php';
 include_once 'src/tools.php';
 
 class BidHistoryBoTest extends TestCase
@@ -18,7 +15,7 @@ class BidHistoryBoTest extends TestCase
 
   /**
    * @test
-   * @covers
+   * @covers BidHistoryBoImpl
    */
   public function insertBidTest() : void
   {
@@ -40,7 +37,7 @@ class BidHistoryBoTest extends TestCase
 
   /**
    * @test
-   * @covers
+   * @covers BidHistoryBoImpl
    */
   public function deleteBidByIdTest(): void
   {

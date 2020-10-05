@@ -1,17 +1,3 @@
-<!--action :)-->
-
-<?php
-if (isset($_SESSION['loginData'])) {
-  if (isset($_SESSION['loginData']['errors'])) {
-    $errors = $_SESSION['loginData']['errors'];
-    foreach ($errors as $err) {
-      echo $err;
-      echo '<br>';
-    }
-  }
-  unset($_SESSION['loginData']);
-}
-?>
 <div class="row">
     <div class="col-md-5"></div>
     <div class="col-md-2">
@@ -26,14 +12,19 @@ if (isset($_SESSION['loginData'])) {
         </div>
         <div class="card-body">
             <div class="row">
-                <form action="?r=login/login" method="post">
+                <form action="?r=login/login" method="post" class="<?php if (!empty($data['errors'])) {
+  echo 'was-validated';
+} ?>">
                     <div class="form-group col-md-12">
                         <label for="email">Email</label>
-                        <input class="form-control" type="email" name="email" id="email" value="" placeholder="" maxlength="255" required />
+                        <input class="form-control" type="email" name="email" id="email" maxlength="255" required />
                         <br />
                         <label for="password">Mot de passe</label>
-                        <input class="form-control" type="password" name="password" id="password" value="" placeholder="" maxlength="255" required />
+                        <input class="form-control" type="password" name="password" id="password"maxlength="255" required />
                         <br />
+                        <?php if (isset($data['errors']['wrongIdentifiers'])) : ?>
+                          <div class="invalid-feedback"><?php echo $data['errors']['wrongIdentifiers'] ?></div>
+                        <?php endif; ?>
                         <input class="btn btn-primary" type="submit" name="connection" value="Se connecter" />
                     </div>
                 </form>

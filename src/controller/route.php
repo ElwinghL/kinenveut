@@ -24,7 +24,7 @@ function parameters()
 if (isset(parameters()['r'])) {
   $route = parameters()['r'];
   if ('default') {
-    list($controller, $action) = ['site', 'error'];
+    list($controller, $action) = ['home', 'error'];
   }
   if (strpos($route, '/') == false) {
     list($controller, $action) = [$route, 'index'];

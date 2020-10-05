@@ -15,7 +15,7 @@
                         <a class="dropdown-item" href="?r=auction/create">Vendre</a>
                         <a class="dropdown-item" href="?r=account">Mon compte</a>
                         <a class="dropdown-item" href="?r=auction">Mes enchères</a>
-                        <a class="dropdown-item" href="?r=myAuction">Mes ventes</a>
+                        <a class="dropdown-item" href="?r=auction/myAuction">Mes ventes</a>
                         <?php if (isset($_SESSION['isAdmin']) && $_SESSION['isAdmin'] == 1):?>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="?r=user">Gestion des utilisateurs</a>

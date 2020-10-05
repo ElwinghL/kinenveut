@@ -4,11 +4,6 @@ $data = null;
 
 class Controller
 {
-  public function check()
-  {
-    // need to override these method inside child class
-  }
-
   public function render($view, $d = null)
   {
     global $data;
@@ -26,11 +21,5 @@ class Controller
       header('Location: ?r=login');
       exit();
     }
-  }
-
-  public function redirect($path)
-  {
-    header('Location: ' . $path);
-    exit();
   }
 }
