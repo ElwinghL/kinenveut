@@ -69,7 +69,7 @@ class AuctionController extends Controller
 
       if ($auctionId !== null) {
         //Todo: créer un message de succès
-        $this->redirect("?r=home");
+        $this->redirect('?r=home');
       } else {
         $this->render('create', $this->createDataForm($data));
       }
