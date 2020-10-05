@@ -9,16 +9,15 @@ class AuctionController extends Controller
     $values['description'] = filter_input(INPUT_POST, 'description');
     $values['basePrice'] = filter_input(INPUT_POST, 'basePrice', FILTER_VALIDATE_INT);
     $values['reservePrice'] = filter_input(INPUT_POST, 'reservePrice', FILTER_VALIDATE_INT);
-    $values['startDate'] = filter_input(INPUT_POST, 'startDate');
     $values['duration'] = filter_input(INPUT_POST, 'duration', FILTER_VALIDATE_INT);
     $values['privacyId'] = filter_input(INPUT_POST, 'privacyId', FILTER_VALIDATE_INT);
     $values['categoryId'] = filter_input(INPUT_POST, 'categoryId', FILTER_VALIDATE_INT);
 
-    if (!(preg_match('#^(\d{4})-(\d{2})-(\d{2})$#', $values['startDate'], $matches)
+    /*if (!(preg_match('#^(\d{4})-(\d{2})-(\d{2})$#', $values['startDate'], $matches)
     && checkdate($matches[2], $matches[3], $matches[1])
     && DateTime::createFromFormat('d/m/Y', $values['startDate']) < (new DateTime()))) {
       $errors['startDate'] = 'La date n\'est pas valide';
-    }
+    }*/
 
     if ($values['basePrice'] > $values['reservePrice']) {
       $errors['basePrice'] = 'Le prix de départ ne peut pas être supérieur au prix de réserve';
@@ -44,6 +43,41 @@ class AuctionController extends Controller
 
   public function create()
   {
+    $this->render('create', $this->createDataForm());
+  }
+
+  public function saveObjectAuction()
+  {
+    $data = $this->check();
+
+    if (!empty($data['errors'])) {
+      $this->render('create', $this->createDataForm($data));
+    } else {
+      $auctionBo = App_BoFactory::getFactory()->getAuctionBo();
+      $auction = new AuctionModel();
+
+      $auction->setName(protectStringToDisplay($data['values']['name']))
+            ->setDescription(protectStringToDisplay($data['values']['description']))
+            ->setBasePrice($data['values']['basePrice'])
+            ->setReservePrice($data['values']['reservePrice'])
+            ->setDuration($data['values']['duration'])
+            ->setSellerId($_SESSION['userId'])
+            ->setPrivacyId($data['values']['privacyId'])
+            ->setCategoryId($data['values']['categoryId']);
+
+      $auctionId = $auctionBo->insertAuction($auction);
+
+      if ($auctionId !== null) {
+        //Todo: créer un message de succès
+        $this->redirect("?r=home");
+      } else {
+        $this->render('create', $this->createDataForm($data));
+      }
+    }
+  }
+
+  private function createDataForm($otherDatas = [])
+  {
     $categoryBo = App_BoFactory::getFactory()->getCategoryBo();
     $categoryList = $categoryBo->selectAllCategories();
 
@@ -51,32 +85,8 @@ class AuctionController extends Controller
       'categoryList' => $categoryList
     ];
 
-    $this->render('create', $data);
-  }
+    array_push($data, $otherDatas);
 
-  public function saveObjectAuction()
-  {
-    $data = $this->check();
-    if (!empty($data['errors'])) {
-      $this->render('create', $data);
-    }
-
-    $auctionBo = App_BoFactory::getFactory()->getAuctionBo();
-    $auction = new AuctionModel();
-
-    $auction->setName($data['values']['name'])
-                ->setDescription($data['values']['description'])
-                ->setBasePrice($data['values']['basePrice'])
-                ->setReservePrice($data['values']['reservePrice'])
-                ->setStartDate($data['values']['startDate'])
-                ->setDuration($data['values']['duration'])
-                ->setSellerId(0)//Todo : récupérer l'id de l'utilisateur
-                ->setPrivacyId($data['values']['privacyId'])
-                ->setCategoryId($data['values']['categoryId']);
-
-    $auctionId = $auctionBo->insertAuction($auction);
-    if ($auctionId !== null) {
-      $this->render('index');
-    }
+    return $data;
   }
 }
