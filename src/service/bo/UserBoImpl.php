@@ -2,6 +2,14 @@
 
 class UserBoImpl implements IUserBo
 {
+  public function selectUserByUserId(int $auctionId) : ?UserModel
+  {
+    $userDao = App_DaoFactory::getFactory()->getUserDao();
+    $user = $userDao->selectUserByUserId($auctionId);
+
+    return $user;
+  }
+
   public function selectUserByEmailAndPassword(String $email, String $password) : ?UserModel
   {
     $userDao = App_DaoFactory::getFactory()->getUserDao();
