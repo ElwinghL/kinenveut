@@ -1,7 +1,7 @@
 <div class="container page-header-custom">
     <div class="row row-vertically-centered">
         <div class="col-md-10">
-            <a href="/kinenveut"><img src="resources/logo.png" width="158" height="143"></a>
+            <a href="?"><img src="resources/logo.png" width="158" height="143"></a>
         </div>
         <div class="col-md-2">
             <div class="dropdown" aria-labelledby="dropdownMenu1">
