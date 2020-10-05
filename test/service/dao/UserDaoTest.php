@@ -141,4 +141,41 @@ class UserDaoTest extends TestCase
     $userSelected = $userDao->selectUserByEmailAndPassword($email, $password);
     $this->assertNull($userSelected);
   }
+
+  /**
+   * @test
+   * @covers UserDaoImpl
+   */
+  public function selectUserByUserIdTest()
+  {
+    $userDao = App_DaoFactory::getFactory()->getUserDao();
+    $user = new UserModel();
+    $firstName = 'Francis';
+    $lastName = 'Dupont';
+    $birthDate = '2000-01-13';
+    $email = 'Francis.Dupont@gmail.com';
+    $password = 'password';
+
+    $user
+          ->setFirstName($firstName)
+          ->setLastName($lastName)
+          ->setBirthDate($birthDate)
+          ->setEmail($email)
+          ->setPassword($password);
+
+    $userId = $userDao->insertUser($user);
+
+    $userSelected = $userDao->selectUserByUserId($userId);
+    $this->assertNotNull($userSelected);
+    $this->assertEquals($userId, $userSelected->getId());
+    $this->assertEquals($firstName, $userSelected->getFirstName());
+    $this->assertEquals($lastName, $userSelected->getLastName());
+    $this->assertEquals($birthDate, $userSelected->getBirthDate());
+    $this->assertEquals($email, $userSelected->getEmail());
+
+    $userDao->deleteUser((int) $userId);
+
+    $userSelected = $userDao->selectUserByUserId((int) $userId);
+    $this->assertNull($userSelected);
+  }
 }
