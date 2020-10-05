@@ -8,31 +8,31 @@ TRUNCATE TABLE User;
 LOCK TABLES User WRITE;
 INSERT INTO `User` (`id`,`firstName`,`lastName`,`email`,`birthDate`,`password`,`isAuthorised`,`isAdmin`)
 VALUES
-    (1,'Admin','','admin@kinenveut.fr','1950-01-01','5f4dcc3b5aa765d61d8327deb882cf99',1,1) ##The password is : password
-    ,(2,'Test','FamilyTest','test@kinenveut.fr','1975-01-01','05a671c66aefea124cc08b76ea6d30bb',1,0) ##The password is : testtest
+    (1,'Admin','','admin@kinenveut.fr','1950-01-01','$2y$10$HP6x/6OvIV9N736sE7KuxOsRJYmNVow4VKFqXoCimqQhMFlSJDt.q',1,1) ##The password is : password
+    ,(2,'Test','FamilyTest','test@kinenveut.fr','1975-01-01','$2y$10$Ld6uqCZP7T940V4rCkT.fuy1E4eaNjJqqAGdJlDPTBFSVmBx4D35S',1,0) ##The password is : testtest
      #BAN people
-    ,(3,'George','VSGCZDE','george@kinenveut.fr','1855-01-01','5f4dcc3b5aa765d61d8327deb882cf99',6,0) ##The password is : password, he is BAN
-    ,(4,'BHEVCDGAZVGAVAG','VSGCZDE','ban@kinenveut.fr','1855-01-01','5f4dcc3b5aa765d61d8327deb882cf99',6,0) ##The password is : password, he is BAN
+    ,(3,'George','VSGCZDE','george@kinenveut.fr','1855-01-01','$2y$10$HP6x/6OvIV9N736sE7KuxOsRJYmNVow4VKFqXoCimqQhMFlSJDt.q',6,0) ##The password is : password, he is BAN
+    ,(4,'BHEVCDGAZVGAVAG','VSGCZDE','ban@kinenveut.fr','1855-01-01','$2y$10$HP6x/6OvIV9N736sE7KuxOsRJYmNVow4VKFqXoCimqQhMFlSJDt.q',6,0) ##The password is : password, he is BAN
     #Refused people
     #Authorized people
-    ,(5,'Nathalia','Fratelli','nathalia@kinenveut.fr','1987-01-01','5f4dcc3b5aa765d61d8327deb882cf99',1,0) ##The password is : password
-    ,(6,'Victor','Lefort','victor@kinenveut.fr','1967-01-01','5f4dcc3b5aa765d61d8327deb882cf99',1,0) ##The password is : password
-    ,(7,'Géraldine','Lamaline','geraldine@kinenveut.fr','1970-01-01','5f4dcc3b5aa765d61d8327deb882cf99',1,0) ##The password is : password
-    ,(8,'Hector','Ledur','hector@kinenveut.fr','1970-01-01','5f4dcc3b5aa765d61d8327deb882cf99',1,0) ##The password is : password
-    ,(9,'Pascaline','Lapraline','pascaline@kinenveut.fr','1970-01-01','5f4dcc3b5aa765d61d8327deb882cf99',1,0) ##The password is : password
-    ,(10,'Leatitia','Paparla','leatitia@kinenveut.fr','1970-01-01','5f4dcc3b5aa765d61d8327deb882cf99',1,0) ##The password is : password
-    ,(11,'Big','Brother','big@kinenveut.fr','1970-01-01','5f4dcc3b5aa765d61d8327deb882cf99',1,0) ##The password is : password
-    ,(12,'Mamadou','Toudou','mamadou@kinenveut.fr','1970-01-01','5f4dcc3b5aa765d61d8327deb882cf99',1,0) ##The password is : password
-    ,(13,'Bernard','Lermit','bernard@kinenveut.fr','1970-01-01','5f4dcc3b5aa765d61d8327deb882cf99',1,0) ##The password is : password
-    ,(14,'Remi','Lami','remi@kinenveut.fr','1990-01-01','5f4dcc3b5aa765d61d8327deb882cf99',1,0) ##The password is : password
-    ,(15,'Antoine','Superman','antoine@kinenveut.fr','1990-01-01','5f4dcc3b5aa765d61d8327deb882cf99',1,0) ##The password is : password
-    ,(16,'Bastien','Baba','bastien@kinenveut.fr','1990-01-01','5f4dcc3b5aa765d61d8327deb882cf99',1,0) ##The password is : password
-    ,(17,'Axel','Superzel','axel@kinenveut.fr','1990-01-01','5f4dcc3b5aa765d61d8327deb882cf99',1,0) ##The password is : password
-    ,(18,'Ophélie','Pali','ophelie@kinenveut.fr','1990-01-01','5f4dcc3b5aa765d61d8327deb882cf99',1,0) ##The password is : password
-    ,(19,'Clément','Démant','clement@kinenveut.fr','1990-01-01','5f4dcc3b5aa765d61d8327deb882cf99',1,0) ##The password is : password
+    ,(5,'Nathalia','Fratelli','nathalia@kinenveut.fr','1987-01-01','$2y$10$HP6x/6OvIV9N736sE7KuxOsRJYmNVow4VKFqXoCimqQhMFlSJDt.q',1,0) ##The password is : password
+    ,(6,'Victor','Lefort','victor@kinenveut.fr','1967-01-01','$2y$10$HP6x/6OvIV9N736sE7KuxOsRJYmNVow4VKFqXoCimqQhMFlSJDt.q',1,0) ##The password is : password
+    ,(7,'Géraldine','Lamaline','geraldine@kinenveut.fr','1970-01-01','$2y$10$HP6x/6OvIV9N736sE7KuxOsRJYmNVow4VKFqXoCimqQhMFlSJDt.q',1,0) ##The password is : password
+    ,(8,'Hector','Ledur','hector@kinenveut.fr','1970-01-01','$2y$10$HP6x/6OvIV9N736sE7KuxOsRJYmNVow4VKFqXoCimqQhMFlSJDt.q',1,0) ##The password is : password
+    ,(9,'Pascaline','Lapraline','pascaline@kinenveut.fr','1970-01-01','$2y$10$HP6x/6OvIV9N736sE7KuxOsRJYmNVow4VKFqXoCimqQhMFlSJDt.q',1,0) ##The password is : password
+    ,(10,'Leatitia','Paparla','leatitia@kinenveut.fr','1970-01-01','$2y$10$HP6x/6OvIV9N736sE7KuxOsRJYmNVow4VKFqXoCimqQhMFlSJDt.q',1,0) ##The password is : password
+    ,(11,'Big','Brother','big@kinenveut.fr','1970-01-01','$2y$10$HP6x/6OvIV9N736sE7KuxOsRJYmNVow4VKFqXoCimqQhMFlSJDt.q',1,0) ##The password is : password
+    ,(12,'Mamadou','Toudou','mamadou@kinenveut.fr','1970-01-01','$2y$10$HP6x/6OvIV9N736sE7KuxOsRJYmNVow4VKFqXoCimqQhMFlSJDt.q',1,0) ##The password is : password
+    ,(13,'Bernard','Lermit','bernard@kinenveut.fr','1970-01-01','$2y$10$HP6x/6OvIV9N736sE7KuxOsRJYmNVow4VKFqXoCimqQhMFlSJDt.q',1,0) ##The password is : password
+    ,(14,'Remi','Lami','remi@kinenveut.fr','1990-01-01','$2y$10$HP6x/6OvIV9N736sE7KuxOsRJYmNVow4VKFqXoCimqQhMFlSJDt.q',1,0) ##The password is : password
+    ,(15,'Antoine','Superman','antoine@kinenveut.fr','1990-01-01','$2y$10$HP6x/6OvIV9N736sE7KuxOsRJYmNVow4VKFqXoCimqQhMFlSJDt.q',1,0) ##The password is : password
+    ,(16,'Bastien','Baba','bastien@kinenveut.fr','1990-01-01','$2y$10$HP6x/6OvIV9N736sE7KuxOsRJYmNVow4VKFqXoCimqQhMFlSJDt.q',1,0) ##The password is : password
+    ,(17,'Axel','Superzel','axel@kinenveut.fr','1990-01-01','$2y$10$HP6x/6OvIV9N736sE7KuxOsRJYmNVow4VKFqXoCimqQhMFlSJDt.q',1,0) ##The password is : password
+    ,(18,'Ophélie','Pali','ophelie@kinenveut.fr','1990-01-01','$2y$10$HP6x/6OvIV9N736sE7KuxOsRJYmNVow4VKFqXoCimqQhMFlSJDt.q',1,0) ##The password is : password
+    ,(19,'Clément','Démant','clement@kinenveut.fr','1990-01-01','$2y$10$HP6x/6OvIV9N736sE7KuxOsRJYmNVow4VKFqXoCimqQhMFlSJDt.q',1,0) ##The password is : password
      #Last suscribers
-    ,(20,'Manon','Tanon','manon@kinenveut.fr','1975-01-01','5f4dcc3b5aa765d61d8327deb882cf99',0,0) ##The password is : password, she just suscribed
-    ,(21,'Kevin','Souris','kevin@kinenveut.fr','1945-01-01','5f4dcc3b5aa765d61d8327deb882cf99',0,0) ##The password is : password, he just suscribed
+    ,(20,'Manon','Tanon','manon@kinenveut.fr','1975-01-01','$2y$10$HP6x/6OvIV9N736sE7KuxOsRJYmNVow4VKFqXoCimqQhMFlSJDt.q',0,0) ##The password is : password, she just suscribed
+    ,(21,'Kevin','Souris','kevin@kinenveut.fr','1945-01-01','$2y$10$HP6x/6OvIV9N736sE7KuxOsRJYmNVow4VKFqXoCimqQhMFlSJDt.q',0,0) ##The password is : password, he just suscribed
 ;
 UNLOCK TABLES;
 
