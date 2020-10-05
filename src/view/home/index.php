@@ -3,15 +3,15 @@ $categoryList = $data['categoryList'];
 $auctionList = $data['auctionList'];
 $selectedCategory = -1;
 if (isset($data['selectedCategory'])) {
-  $selectedCategory = $data['selectedCategory'];
+    $selectedCategory = $data['selectedCategory'];
 }
 $selectedOfferType = -1;
 if (isset($data['selectedOfferType'])) {
-  $selectedOfferType = $data['selectedOfferType'];
+    $selectedOfferType = $data['selectedOfferType'];
 }
 $searchInput = '';
 if (isset($data['searchInput'])) {
-  $searchInput = $data['searchInput'];
+    $searchInput = $data['searchInput'];
 }
 ?>
 
@@ -20,79 +20,81 @@ if (isset($data['searchInput'])) {
 <div class="container search-custom">
     <h2>Recherche</h2>
     <form action="?r=home/search" method="post">
-    <div class="row categories-custom">
-        <div class="col-md-6">
-            <div class="form-group">
-                <label for="category">Catégories</label>
-                <select id="category" name="categoryType" class="form-control">
-                    <option value="-1">Toutes les catégories</option>
-                    <?php if (sizeof($categoryList) > 0) : ?>
-                        <?php foreach ($categoryList as $oneCategory) : ?>
-                            <option value="<?php echo $oneCategory->getId(); ?>" <?php if ($selectedCategory == $oneCategory->getId()) {
-  echo 'selected';
-} ?>>
-                                <?php echo $oneCategory->getName(); ?>
-                            </option>
-                        <?php endforeach; ?>
-                    <?php endif; ?>
-                </select>
+        <div class="row categories-custom">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="category">Catégories</label>
+                    <select id="category" name="categoryType" class="form-control">
+                        <option value="-1">Toutes les catégories</option>
+                        <?php if (sizeof($categoryList) > 0) : ?>
+                            <?php foreach ($categoryList as $oneCategory) : ?>
+                                <option value="<?php echo $oneCategory->getId(); ?>" <?php if ($selectedCategory == $oneCategory->getId()) {
+                                                                                            echo 'selected';
+                                                                                        } ?>>
+                                    <?php echo $oneCategory->getName(); ?>
+                                </option>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="privacy">Types d'offre</label>
+                    <select id="category" name="offerType" class="form-control">
+                        <option value="-1" <?php if ($selectedOfferType == -1) {
+                                                echo 'selected';
+                                            } ?>>Tous les types d'offre</option>
+                        <option value="0" <?php if ($selectedOfferType == 0) {
+                                                echo 'selected';
+                                            } ?>>Offres publiques</option>
+                        <option value="1" <?php if ($selectedOfferType == 1) {
+                                                echo 'selected';
+                                            } ?>>Offres privées</option>
+                        <option value="2" <?php if ($selectedOfferType == 2) {
+                                                echo 'selected';
+                                            } ?>>Offres confidentielles</option>
+                    </select>
+                </div>
             </div>
         </div>
-        <div class="col-md-6">
-            <div class="form-group">
-                <label for="privacy">Types d'offre</label>
-                <select id="category" name="offerType" class="form-control">
-                    <option value="-1" <?php if ($selectedOfferType == -1) {
-  echo 'selected';
-} ?>>Tous les types d'offre</option>
-                    <option value="0" <?php if ($selectedOfferType == 0) {
-  echo 'selected';
-} ?>>Offres publiques</option>
-                    <option value="1" <?php if ($selectedOfferType == 1) {
-  echo 'selected';
-} ?>>Offres privées</option>
-                    <option value="2" <?php if ($selectedOfferType == 2) {
-  echo 'selected';
-} ?>>Offres confidentielles</option>
-                </select>
+        <div class="row">
+            <div class="input-group col-md-12">
+                <input name="searchInput" type="text" class="search-query form-control" value="<?php echo $searchInput ?>" placeholder="Smartphone, enceinte connectée, PS4..." />
+                <span class="input-group-btn">
+                    <button class="btn btn-danger search-button-custom" type="submit" name="searchButton">
+                        Rechercher
+                    </button>
+                </span>
             </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="input-group col-md-12">
-            <input name="searchInput" type="text" class="search-query form-control" value="<?php echo $searchInput ?>" placeholder="Smartphone, enceinte connectée, PS4..." />
-            <span class="input-group-btn">
-                <button class="btn btn-danger" type="submit" name="searchButton">
-                    Rechercher
-                </button>
-            </span>
-        </div>
-    </div>
     </form>
 </div>
 
 <div class="container auctions-list-custom">
     <div class="row">
         <!-- BEGIN PRODUCTS -->
-        <?php if (isset($auctionList)): ?>
-          <?php foreach ($auctionList as $auction) : ?>
-              <a class="col-md-3 col-sm-6 auction-custom" href=<?php echo '?r=bid/index&auctionId=' . $auction->getId() ?>>
-                  <div class="thumbnail text-center">
-                      <h4 class="text-danger auction-title-custom"> <?php echo $auction->getName(); ?> </h4>
-                      <p>Expiration : <?php echo date('d/m/Y h:m', strtotime($auction->getStartDate() . ' + ' . $auction->getDuration() . ' days')); ?></p>
-                      <hr class="line" />
-                      <div class="row">
-                          <div class="col-md-12">
-                          <?php if ($auction->getBestBid()->getbidPrice() !== null) {
-  echo '<p class="bg-danger">Dernière offre : ' . $auction->getBestBid()->getbidPrice() . '€</p>';
-} else {
-  echo '<p class="bg-danger">Prix de base : ' . $auction->getBasePrice() . '€</p>';
-} ?>
-                          </div>
-                      </div>
-                  </div>
-              </a>
-          <?php endforeach; ?>
+        <?php if (isset($auctionList)) : ?>
+            <?php foreach ($auctionList as $auction) : ?>
+                <div class="col-md-3 col-sm-6">
+                    <a class="auction-custom card card-product" href=<?php echo '?r=bid/index&auctionId=' . $auction->getId() ?>>
+                        <div class="thumbnail text-center">
+                            <h4 class="text-danger auction-title-custom"> <?php echo $auction->getName(); ?> </h4>
+                            <p>Expiration : <?php echo date('d/m/Y h:m', strtotime($auction->getStartDate() . ' + ' . $auction->getDuration() . ' days')); ?></p>
+                            <hr class="line" />
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <?php if ($auction->getBestBid()->getbidPrice() !== null) {
+                                        echo '<p class="auction-price-custom">Dernière offre : ' . $auction->getBestBid()->getbidPrice() . '€</p>';
+                                    } else {
+                                        echo '<p class="auction-price-custom">Prix de base : ' . $auction->getBasePrice() . '€</p>';
+                                    } ?>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            <?php endforeach; ?>
         <?php endif; ?>
         <!-- END PRODUCTS -->
     </div>
