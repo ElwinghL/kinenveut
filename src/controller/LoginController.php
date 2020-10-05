@@ -13,6 +13,8 @@ class LoginController extends Controller
     $user = $userBo->selectUserByEmailAndPassword($_POST['email'], $_POST['password']);
     if ($user !== null) {
       $homeController = new HomeController();
+      $_SESSION['userId'] = $user->getId();
+      $_SESSION['isAdmin'] = $user->getIsAdmin();
       $homeController->render('index');
     } else {
       $data['errors']['wrongIdentifiers'] = 'Identifiants incorrects';
