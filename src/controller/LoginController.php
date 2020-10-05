@@ -12,14 +12,12 @@ class LoginController extends Controller
     $userBo = App_BoFactory::getFactory()->getUserBo();
     $user = $userBo->selectUserByEmailAndPassword($_POST['email'], $_POST['password']);
     if ($user !== null) {
-      $homeController = new HomeController();
       $_SESSION['userId'] = $user->getId();
       $_SESSION['isAdmin'] = $user->getIsAdmin();
-      $homeController->render('index');
+      $this->redirect('?r=home');
     } else {
       $data['errors']['wrongIdentifiers'] = 'Identifiants incorrects';
-      $loginController = new LoginController();
-      $loginController->render('index', $data);
+      $this->render('index', $data);
     }
   }
 }

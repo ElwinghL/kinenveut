@@ -191,6 +191,6 @@ modules.xml
 
 # End of https://www.toptal.com/developers/gitignore/api/dotenv,composer,intellij+all,phpstorm+all,visualstudiocode,phpunit,phpcodesniffer
 
-coverage.txt
 .php_cs.cache
 composer.lock
+/test/coverage
