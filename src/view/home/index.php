@@ -61,10 +61,10 @@
                       <div class="row">
                           <div class="col-md-12">
                           <?php if ($auction->getBestBid()->getbidPrice() !== null) {
-    echo '<p class="bg-danger">Dernière offre : ' . $auction->getBestBid()->getbidPrice() . '€</p>';
-  } else {
-    echo '<p class="bg-danger">Prix de base : ' . $auction->getBasePrice() . '€</p>';
-  } ?>
+  echo '<p class="bg-danger">Dernière offre : ' . $auction->getBestBid()->getbidPrice() . '€</p>';
+} else {
+  echo '<p class="bg-danger">Prix de base : ' . $auction->getBasePrice() . '€</p>';
+} ?>
                           </div>
                       </div>
                   </div>

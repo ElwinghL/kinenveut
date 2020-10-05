@@ -9,20 +9,20 @@
             <input class="form-control" name="firstName" type="text" id="firstName" value="<?php if (isset($firstName)) {
   echo $firstName;
 }
-                                                                                            echo(''); ?>" placeholder="" maxlength="100" required />
+                                                                                             ?>" placeholder="" maxlength="100" required />
 
             <br />
             <label for="lastName">Nom</label>
             <input class="form-control" name="lastName" id="lastName" type="text" value="<?php if (isset($lastName)) {
-                                                                                              echo $lastName;
-                                                                                            }
-                                                                                          echo(''); ?>" placeholder="" maxlength="100" required />
+                                                                                               echo $lastName;
+                                                                                             }
+                                                                                           ?>" placeholder="" maxlength="100" required />
             <br />
             <label for="email">Email</label>
             <input class="form-control" name="email" id="email" type="email" value="<?php if (isset($email)) {
-                                                                                            echo $email;
-                                                                                          }
-                                                                                    echo(''); ?>" placeholder="" maxlength="255" required />
+                                                                                             echo $email;
+                                                                                           }
+                                                                                     ?>" placeholder="" maxlength="255" required />
             <br />
             <input class="btn btn-primary" name="updateButton" type="submit" value="Mettre à jour" />
           </div>
