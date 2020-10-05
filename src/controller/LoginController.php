@@ -14,8 +14,7 @@ class LoginController extends Controller
     if ($user !== null) {
       $_SESSION['userId'] = $user->getId();
       $_SESSION['isAdmin'] = $user->getIsAdmin();
-      $homeController = new HomeController();
-      $homeController->index();
+      $this->redirect('?r=home');
     } else {
       $data['errors']['wrongIdentifiers'] = 'Identifiants incorrects';
       $this->render('index', $data);
