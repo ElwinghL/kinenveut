@@ -2,8 +2,8 @@
 
 <?php
     $categoryList = $data['categoryList'];
-    $dataError = isset($data['errors'])?$data['errors']:null;
-    $dataValue = isset($data['values'])?$data['values']:null;
+    $dataError = isset($data['errors']) ? $data['errors'] : null;
+    $dataValue = isset($data['values']) ? $data['values'] : null;
 ?>
 
 <div class="container">
@@ -12,13 +12,17 @@
     </h2>
 
     <div class="col-12">
-        <form action="?r=auction/saveObjectAuction" method="post" class="<?php if (!empty($dataError)) { echo 'was-validated';} ?>">
+        <form action="?r=auction/saveObjectAuction" method="post" class="<?php if (!empty($dataError)) {
+  echo 'was-validated';
+} ?>">
 
             <!--Titre-->
             <div class="form-group col-md-3">
                 <label for="name">Titre</label>
                 <input class="form-control" name="name" type="text" id="name"
-                       value="<?php if (isset($dataValue['name'])) { echo $dataValue['name'];} ?>"
+                       value="<?php if (isset($dataValue['name'])) {
+  echo $dataValue['name'];
+} ?>"
                        placeholder="" maxlength="255" required />
 
                 <?php if (isset($dataError['name'])) : ?>
@@ -81,7 +85,7 @@
             <div class="form-group col-md-3">
                 <label for="duration">Durée (Nombre de jours)</label>
                 <input class="form-control" type="number" name="duration" id="duration"
-                       value="<?php echo isset($dataValue['duration'])? $dataValue['duration'] : '7';?>"
+                       value="<?php echo isset($dataValue['duration']) ? $dataValue['duration'] : '7';?>"
                        min="0" max ="30" placeholder="Durée" required/>
 
                 <?php if (isset($dataError['duration'])) : ?>
@@ -103,7 +107,7 @@
             <div class="form-group col-md-5">
                 <label for="description">Description</label>
                 <textarea id="description" name="description" class="form-control" rows="4" cols="50"
-                ><?php echo isset($dataValue['description'])? $dataValue['description'] : '';?></textarea>
+                ><?php echo isset($dataValue['description']) ? $dataValue['description'] : '';?></textarea>
 
                 <?php if (isset($dataError['description'])) : ?>
                     <div class="invalid-feedback">
