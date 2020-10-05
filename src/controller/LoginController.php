@@ -12,12 +12,12 @@ class LoginController extends Controller
     $userBo = App_BoFactory::getFactory()->getUserBo();
     $user = $userBo->selectUserByEmailAndPassword($_POST['email'], $_POST['password']);
     if ($user !== null) {
-      $this->redirect('http://localhost/kinenveut/');
+      $homeController = new HomeController();
+      $homeController->render('index');
     } else {
-      $errors['wrongIdentifiers'] = 'Identifiants incorrects';
-      $dataTmp['errors'] = $errors;
-      $_SESSION['loginData'] = $dataTmp;
-      $this->redirect('http://localhost/kinenveut/?r=login');
+      $data['errors']['wrongIdentifiers'] = 'Identifiants incorrects';
+      $loginController = new LoginController();
+      $loginController->render('index', $data);
     }
   }
 }
