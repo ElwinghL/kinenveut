@@ -37,4 +37,9 @@ class App_DaoFactory
   {
     return new BidHistoryDaoImpl();
   }
+
+  public function getAuctionAccessStateDao() : AuctionAccessStateDaoImpl
+  {
+    return new AuctionAccessStateDaoImpl();
+  }
 }
