@@ -13,7 +13,7 @@ class UserModelTest extends TestCase
   public function getterSetterTest()
   {
     $user = new UserModel();
-    $id = 'testUser';
+    $id = 0;
     $firstName = 'Francis';
     $lastName = 'Dupont';
     $birthDate = '2000-01-13';

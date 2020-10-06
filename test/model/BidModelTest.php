@@ -13,11 +13,11 @@ class BidModelTest extends TestCase
   public function getterSetterTest()
   {
     $bid = new BidModel();
-    $id = 'testBid';
+    $id = 0;
     $bidPrice = 20;
     $bidDate = new DateTime();
-    $objectId = 'testObject';
-    $bidderId = 'testUser';
+    $objectId = 0;
+    $bidderId = 0;
 
     $bid
       ->setId($id)
