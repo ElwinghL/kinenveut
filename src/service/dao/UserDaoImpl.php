@@ -106,8 +106,14 @@ class UserDaoImpl implements IUserDao
 
   public function updateUser(UserModel $user) : bool
   {
-    $request = db()->prepare('UPDATE User SET firstName = ?, lastName = ?, email = ? WHERE id = ?');
-    $success = $request->execute([$user->getFirstName(), $user->getLastName(), $user->getEmail(), $user->getId()]);
+    $request = 'UPDATE User SET firstName = ?, lastName = ?, email = ? WHERE id = ?';
+
+    try {
+      $query = db()->prepare($request);
+      $success = $query->execute([$user->getFirstName(), $user->getLastName(), $user->getEmail(), $user->getId()]);
+    } catch (PDOException $Exception) {
+      throw new BDDException($Exception->getMessage(), (int)$Exception->getCode());
+    }
 
     return $success;
   }
