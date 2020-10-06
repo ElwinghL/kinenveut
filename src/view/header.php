@@ -2,6 +2,7 @@
 	<html>
 		<head>
 			<meta name="viewport" content="width=device-width, initial-scale=1">
+			<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 			<title>Qui n'en  veut ?</title>
 			<link rel="icon" type="image/png" href="resources/favicon.png" />
 			<!-- CSS only -->
