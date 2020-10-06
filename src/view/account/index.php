@@ -1,36 +1,32 @@
+<?php
+    $user = isset($data['user']) ? $data['user'] : new UserModel();
+?>
+
 <?php include_once 'src/view/page-header.php' ?>
 
 <div class="container">
-    <h2>Mon compte</h2>
-    <div class="row">
-        <form action="?r=account/modify" method="post">
-          <div class="form-group col-md-12">
-            <label for="firstName">Prénom</label>
-            <input class="form-control" name="firstName" type="text" id="firstName" value="<?php if (isset($firstName)) {
-  echo $firstName;
-}
-                                                                                             ?>" placeholder="" maxlength="100" required />
+    <h2>
+        <?php echo $user->getFirstName() . ' ' . $user->getLastName();?>
+    </h2>
+    <?php if ($_SESSION['isAdmin'] == 1):?>
+        <b>Email :</b>&nbsp<?php echo $user->getEmail();?>
+        <br/>
+        <b>Date d'anniversaire :</b>&nbsp<?php echo $user->getBirthDate();?>
+        <br/>
+    <?php endif;?>
 
-            <br />
-            <label for="lastName">Nom</label>
-            <input class="form-control" name="lastName" id="lastName" type="text" value="<?php if (isset($lastName)) {
-                                                                                               echo $lastName;
-                                                                                             }
-                                                                                           ?>" placeholder="" maxlength="100" required />
-            <br />
-            <label for="email">Email</label>
-            <input class="form-control" name="email" id="email" type="email" value="<?php if (isset($email)) {
-                                                                                             echo $email;
-                                                                                           }
-                                                                                     ?>" placeholder="" maxlength="255" required />
-            <br />
-            <input class="btn btn-primary" name="updateButton" type="submit" value="Mettre à jour" />
-          </div>
-        </form>
-      </div>
-      <div class="row">
-        <div class="col-md-12">
-          <small><a href="?r=account/password">Modifier le mot de passe</a></small>
-        </div>
-      </div>
+    <?php if ($user->getIsAuthorised() != 0):?>
+        <a href="?r=auction/sells&userId=<?= $user->getId();?>">
+            <?php echo ($_SESSION['userId'] == $user->getId()) ? 'Mes' : 'Ses'?>&nbspventes
+        </a>
+        <br/>
+    <?php endif;?>
+
+    <?php if ($_SESSION['userId'] == $user->getId()):?>
+        <a href="?r=auction/bids&userId=<?= $user->getId();?>">Mes enchères</a>
+        <br/>
+        <a href="?r=account/edit&userId=<?= $user->getId(); ?>">Modifier mes informations</a>
+        <br/>
+        <a href="?r=account/editPassword&userId=<?= $user->getId(); ?>">Modifier mon mot de passe</a>
+    <?php endif;?>
 </div>
