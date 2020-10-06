@@ -22,6 +22,7 @@ class AuctionAccessStateModel
   public function getAuction() : AuctionModel
   {
     $this->auction = ($this->auction == null) ? new AuctionModel() : $this->auction;
+
     return $this->auction;
   }
 
@@ -35,6 +36,7 @@ class AuctionAccessStateModel
   public function getBidder() : UserModel
   {
     $this->bidder = ($this->bidder == null) ? new UserModel() : $this->bidder;
+
     return $this->bidder;
   }
 
