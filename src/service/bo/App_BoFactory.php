@@ -4,7 +4,7 @@ class App_BoFactory
 {
   private static $_instance;
 
-  public static function setFactory(App_BoFactory $f)
+  public static function setFactory($f)
   {
     self::$_instance = $f;
   }
@@ -18,22 +18,22 @@ class App_BoFactory
     return self::$_instance;
   }
 
-  public function getUserBo()
+  public function getUserBo() : UserBoImpl
   {
     return new UserBoImpl();
   }
 
-  public function getAuctionBo()
+  public function getAuctionBo() : AuctionBoImpl
   {
     return new AuctionBoImpl();
   }
 
-  public function getCategoryBo()
+  public function getCategoryBo() : CategoryBoImpl
   {
     return new CategoryBoImpl();
   }
 
-  public function getBidHistoryBo()
+  public function getBidHistoryBo() : BidHistoryBoImpl
   {
     return new BidHistoryBoImpl();
   }

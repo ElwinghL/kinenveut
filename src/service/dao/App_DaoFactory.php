@@ -4,7 +4,7 @@ class App_DaoFactory
 {
   private static $_instance;
 
-  public static function setFactory(App_DaoFactory $f)
+  public static function setFactory($f)
   {
     self::$_instance = $f;
   }
@@ -28,12 +28,12 @@ class App_DaoFactory
     return new AuctionDaoImpl();
   }
 
-  public function getCategoryDao()
+  public function getCategoryDao() : CategoryDaoImpl
   {
     return new CategoryDaoImpl();
   }
 
-  public function getBidHistoryDao()
+  public function getBidHistoryDao() : BidHistoryDaoImpl
   {
     return new BidHistoryDaoImpl();
   }
