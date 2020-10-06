@@ -2,6 +2,7 @@
 
 class AuctionController extends Controller
 {
+  /*Return an array with errors and values for edit form*/
   public function check()
   {
     $errors = [];
@@ -23,17 +24,60 @@ class AuctionController extends Controller
       $errors['basePrice'] = 'Le prix de départ ne peut pas être supérieur au prix de réserve';
     }
 
-    return ['errors'=> $errors, 'values' => $values];
+    return ['errors' => $errors, 'values' => $values];
   }
 
-  public function index()
+  /*Return page with auctions created by one user*/
+  public function sells()
   {
-    $this->render('index');
+    $sellerId = $_GET['userId'];
+    $userId = $_SESSION['userId'];
+
+    $auctionBo = App_BoFactory::getFactory()->getAuctionBo();
+    $auctionList = [];//$auctionBo->selectAllAuctionsBySellerId($sellerId);
+
+    if (is_array($auctionList) && sizeof($auctionList) > 0) {
+      $titlePage = (($sellerId == $userId) ? 'Mes' : 'Ses') . ' ventes';
+      $data = [
+        'titlePage'   => $titlePage,
+        'auctionList' => $auctionList
+      ];
+
+      //Todo: créer une vue différente !
+      $this->render('index', $this->createDataForm($data));
+    } else {
+      //Todo : Gérer le cas où il y a 0 enchère :)
+      $this->redirect('?r=home');
+    }
   }
 
-  public function myAuction()
+  /*Return page with auctions for wich ones the user participated*/
+  public function bids()
   {
-    $this->render('myAuction');
+    $bidderId = $_GET['userId'];
+    $userId = $_SESSION['userId'];
+
+    $auctionBo = App_BoFactory::getFactory()->getAuctionBo();
+    $auctionList = [];//$auctionBo->selectAllAuctionsByBidderId($bidderId);
+
+    if ($bidderId == $userId) {
+      if (is_array($auctionList) && sizeof($auctionList) > 0) {
+        $titlePage = 'Mes enchères';
+        $data = [
+          'titlePage'   => $titlePage,
+          'auctionList' => $auctionList
+        ];
+
+        //Todo: créer une vue différente !
+        $this->render('index', $this->createDataForm($data));
+      } else {
+        //Todo : Gérer le cas où il y a 0 enchère :)
+        $this->redirect('?r=home');
+      }
+    } else {
+      //Todo : Gérer le cas où l'accès est interdit
+      $this->redirect('?r=home');
+    }
   }
 
   public function alerte()
@@ -41,11 +85,13 @@ class AuctionController extends Controller
     $this->render('alerte');
   }
 
+  /*Return a page to create an auction*/
   public function create()
   {
     $this->render('create', $this->createDataForm());
   }
 
+  /*Create a new auction*/
   public function saveObjectAuction()
   {
     $data = $this->check();
@@ -76,6 +122,7 @@ class AuctionController extends Controller
     }
   }
 
+  /*Create datas list for the form*/
   private function createDataForm($otherDatas = [])
   {
     $categoryBo = App_BoFactory::getFactory()->getCategoryBo();
