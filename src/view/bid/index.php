@@ -46,7 +46,7 @@ $minPrice = (($bestBid->getBidPrice() != null) && ($bestBid->getBidPrice() != nu
                             </div>
                             <?php if (isset($_SESSION['errors']['noBidPrice'])) : ?>
                                 <?php
-                                echo "<span class='error-custom'>" . $_SESSION['errors']['noBidPrice'] . '</span>';
+                                echo "<span class='error-custom'>" . $_SESSION['errors']['noBidPrice'] . "</span>";
                                 unset($_SESSION['errors']['noBidPrice']);
                                 ?>
                             <?php endif; ?>
