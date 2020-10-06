@@ -6,33 +6,40 @@ class BidController extends Controller
   {
     $auctionId = $_GET['auctionId'];
 
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-      $this->addBid($auctionId);
-    }
-
     $auctionBo = App_BoFactory::getFactory()->getAuctionBo();
     $auction = $auctionBo->selectAuctionByAuctionId($auctionId);
 
-    $data = [
-      'auction'=> $auction
-    ];
+    if ($auction != null && $auction->getSellerId() > 0) {
+      $userBo = App_BoFactory::getFactory()->getUserBo();
+      $seller = $userBo->selectUserByUserId($auction->getSellerId());
 
-    $this->render('index', $data);
+      $data = [
+        'auction'=> $auction,
+        'seller' => $seller
+      ];
+
+      $this->render('index', $data);
+    } else {
+      //Todo : redirection page erreur
+      $this->redirect('?r=home');
+    }
   }
 
-  private function addBid($auctionId) : int
+  public function addBid()
   {
-    $_POST['bidPrice'];
+    $auctionId = $_GET['auctionId'];
 
-    $newBid = new BidModel();
-    $newBid
-            ->setBidPrice($_POST['bidPrice'])
-            ->setBidderId(1) //todo : get user id (bidderId)
-            ->setObjectId($auctionId);
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+      $newBid = new BidModel();
+      $newBid
+              ->setBidPrice($_POST['bidPrice'])
+              ->setBidderId($_SESSION['userId'])
+              ->setObjectId($auctionId);
 
-    $bidHistoryBo = App_BoFactory::getFactory()->getBidHistoryBo();
-    $bidId = $bidHistoryBo->insertBid($newBid);
+      $bidHistoryBo = App_BoFactory::getFactory()->getBidHistoryBo();
+      $bidHistoryBo->insertBid($newBid);
+    }
 
-    return $bidId;
+    $this->redirect("?r=bid&auctionId=" . $_GET['auctionId']);
   }
 }
