@@ -128,4 +128,32 @@ class UserBoTest extends TestCase
 
     $this->assertSame($expectedUser, $user);
   }
+
+  /**
+   * @test
+   * @covers UserBoImpl
+   */
+  public function updateUserTest() : void
+  {
+    $expectedSuccess = true;
+    $user = new UserModel();
+    $user
+            ->setId(42)
+            ->setFirstName('Francis')
+            ->setLastName('Dupont')
+            ->setBirthDate(2000 - 01 - 13)
+            ->setEmail('Francis.Dupont@gmail.com')
+            ->setIsAdmin('false');
+    $userBo = App_BoFactory::getFactory()->getUserBo();
+    $userDaoImpMock = $this->createPartialMock(UserDaoImpl::class, ['updateUser']);
+    $userDaoImpMock->method('updateUser')->willReturn(true);
+
+    $app_DaoFactoryMock = $this->createPartialMock(App_DaoFactory::class, ['getUserDao']);
+    $app_DaoFactoryMock->method('getUserDao')->willReturn($userDaoImpMock);
+    App_DaoFactory::setFactory($app_DaoFactoryMock);
+
+    $success = $userBo->updateUser($user);
+
+    $this->assertSame($expectedSuccess, $success);
+  }
 }
