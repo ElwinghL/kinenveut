@@ -39,16 +39,15 @@ class RegistrationController extends Controller
 
   public function register():void
   {
-    $registrationController = new RegistrationController();
     $data = $this->check();
     if (!empty($data['errors'])) {
-      $registrationController->render('index', $data);
+      $this->render('index', $data);
     }
 
     $userBo = App_BoFactory::getFactory()->getUserBo();
     if ($userBo->selectUserByEmail($data['values']['email']) !== null) {
       $data['errors']['email'] = 'L\'adresse mail est déjà utilisée par un autre utilisateur';
-      $registrationController->render('index', $data);
+      $this->render('index', $data);
     }
 
     $user = new UserModel();
@@ -61,8 +60,7 @@ class RegistrationController extends Controller
     $userId = $userBo->insertUser($user);
 
     if ($userId !== null) {
-      $loginController = new LoginController();
-      $loginController->render('index');
+      $this->redirect('?r=login');
     }
   }
 }

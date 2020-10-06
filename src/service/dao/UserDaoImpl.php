@@ -2,12 +2,42 @@
 
 class UserDaoImpl implements IUserDao
 {
+  public function selectUserByUserId(int $userId) : ?UserModel
+  {
+    $request = db()->prepare('SELECT id, firstName, lastName, email, birthDate, isAuthorised, isAdmin FROM User WHERE id=?');
+    $params = [$userId];
+    $request->execute($params);
+    $userSelected = $request->fetch();
+
+    if ((is_array($userSelected) == false)
+            || (is_array($userSelected) && ($userSelected['id'] == null || $userSelected['id'] < 1))
+        ) {
+      return null;
+    }
+
+    $user = new UserModel();
+    $user
+            ->setId($userSelected['id'])
+            ->setFirstName(protectStringToDisplay($userSelected['firstName']))
+            ->setLastName(protectStringToDisplay($userSelected['lastName']))
+            ->setEmail(protectStringToDisplay($userSelected['email']))
+            ->setBirthDate($userSelected['birthDate'])
+            ->setIsAuthorised($userSelected['isAuthorised'])
+            ->setIsAdmin($userSelected['isAdmin']);
+
+    return $user;
+  }
+
   public function selectUserByEmailAndPassword(String $email, String $password) : ?UserModel
   {
     $request = db()->prepare('SELECT id, firstName, lastName, email, birthDate, isAuthorised, isAdmin, password FROM User WHERE email=?');
     $params = [$email];
     $request->execute($params);
     $firstUser = $request->fetch();
+
+    if (!(is_array($firstUser) && isset($firstUser['password']))) {
+      return null;
+    }
 
     $isPasswordCorrect = password_verify($password, $firstUser['password']);
 

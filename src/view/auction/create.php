@@ -1,108 +1,126 @@
-<!--action :)-->
 <?php include_once 'src/view/page-header.php' ?>
+
+<?php
+    $categoryList = $data['categoryList'];
+    $dataError = isset($data['errors']) ? $data['errors'] : null;
+    $dataValue = isset($data['values']) ? $data['values'] : null;
+?>
 
 <div class="container">
     <h2>
-        Gestion des catégories
+        Créer une enchère
     </h2>
 
     <div class="col-12">
-            <form action="?r=auction/saveObjectAuction" method="post" class="<?php if (!empty($data['errors'])) {
+        <form action="?r=auction/saveObjectAuction" method="post" class="<?php if (!empty($dataError)) {
   echo 'was-validated';
 } ?>">
 
-                <div class="form-group col-md-10">
+            <!--Titre-->
+            <div class="form-group col-md-3">
+                <label for="name">Titre</label>
+                <input class="form-control" name="name" type="text" id="name"
+                       value="<?php if (isset($dataValue['name'])) {
+  echo $dataValue['name'];
+} ?>"
+                       placeholder="" maxlength="255" required />
 
-                    <label for="name">Objet</label>
-                    <input class="form-control" name="name" type="text" id="name" value="<?php if (isset($data['values']['name'])) {
-  echo $data['values']['name'];
-}
-                     ?>" placeholder="Objet" maxlength="255" required/>
-                                 <?php if (isset($data['errors']['name'])) : ?>
-              <div class="invalid-feedback"><?php echo $data['errors']['name'] ?></div>
-            <?php endif; ?>
+                <?php if (isset($dataError['name'])) : ?>
+                    <div class="invalid-feedback">
+                        <?php echo $dataError['name'] ?>
+                    </div>
+                <?php endif; ?>
+            </div>
 
-                    <br/>
+            <!--Prix-->
+            <div class="form-group col-md-3">
+                <label for="basePrice">Prix de base
+                    <span title="Prix de départ">
+                        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-info-circle" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                            <path d="M8.93 6.588l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588z"/>
+                            <circle cx="8" cy="4.5" r="1"/>
+                        </svg>
+                    </span>
+                </label>
+                <input class="form-control" name="basePrice" type="number" id="basePrice"
+                       value="<?php echo isset($dataValue['basePrice']) ? $dataValue['basePrice'] : 0;?>"
+                       placeholder="0" min="0" step="any"/>
 
-                    <label for="description">Description</label>
-                    <input class="form-control" name="description" type="text" id="description" value="<?php if (isset($data['values']['description'])) {
-                       echo $data['values']['description'];
-                     }
-                     ?>" placeholder="Description" maxlength="255"/>
-           <?php if (isset($data['errors']['description'])) : ?>
-              <div class="invalid-feedback"><?php echo $data['errors']['description'] ?></div>
-            <?php endif; ?>
-                    <br/>
+                <?php if (isset($dataError['basePrice'])) : ?>
+                    <div class="invalid-feedback"><?php echo $dataError['basePrice'] ?></div>
+                <?php endif; ?>
 
-                    <label for="basePrice">Prix de départ</label>
-                    <input class="form-control" name="basePrice" type="number" id="basePrice" value="<?php if (isset($data['values']['basePrice'])) {
-                       echo $data['values']['basePrice'];
-                     }
-                     ?>" placeholder="" step="any" required/>
-           <?php if (isset($data['errors']['basePrice'])) : ?>
-              <div class="invalid-feedback"><?php echo $data['errors']['basePrice'] ?></div>
-            <?php endif; ?>
-                    <br/>
+                <label for="reservePrice">Prix de réserve
+                    <span title="Prix minimum à atteindre : L'article ne sera pas vendu s'il n'atteint pas ce prix">
+                        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-info-circle" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                            <path d="M8.93 6.588l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588z"/>
+                            <circle cx="8" cy="4.5" r="1"/>
+                        </svg>
+                    </span>
+                </label>
+                <input class="form-control" name="reservePrice" type="number" id="reservePrice"
+                       value="<?php echo isset($dataValue['reservePrice']) ? $dataValue['reservePrice'] : 0;?>"
+                       placeholder="0" min="0" step="any"/>
 
-                    <label for="reservePrice">Prix de réserve</label>
-                    <input class="form-control" name="reservePrice" type="number" id="reservePrice" value="<?php if (isset($data['values']['reservePrice'])) {
-                       echo $data['values']['reservePrice'];
-                     }
-                     ?>" placeholder="" step="any"/>
-           <?php if (isset($data['errors']['reservePrice'])) : ?>
-              <div class="invalid-feedback"><?php echo $data['errors']['reservePrice'] ?></div>
-            <?php endif; ?>
-                    <br/>
+                <?php if (isset($dataError['reservePrice'])) : ?>
+                    <div class="invalid-feedback"><?php echo $dataError['reservePrice'] ?></div>
+                <?php endif; ?>
+            </div>
 
+            <!--Catégories-->
+            <div class="form-group col-md-3">
+                <label for="categoryId">Catégories</label>
+                <select class="form-control" name="categoryId" id="categoryId">
+                    <?php if (sizeof($categoryList) > 0):?>
+                        <?php foreach ($categoryList as $oneCategory): ?>
+                            <option value="<?= $oneCategory->getId(); ?>"><?= $oneCategory->getName(); ?></option>
+                        <?php endforeach;?>
+                    <?php endif; ?>
+                </select>
+            </div>
 
-                    <!--                    <label for="pictureLink">Image</label>-->
-                    <!--                    <input class="form-control" name="pictureLink" type="file" id="pictureLink" value=""/>-->
+            <!--Durée-->
+            <div class="form-group col-md-3">
+                <label for="duration">Durée (Nombre de jours)</label>
+                <input class="form-control" type="number" name="duration" id="duration"
+                       value="<?php echo isset($dataValue['duration']) ? $dataValue['duration'] : '7';?>"
+                       min="0" max ="30" placeholder="Durée" required/>
 
-                    <label for="startDate">Date de début</label>
-                    <input class="form-control" type="date" name="startDate" id="startDate" value="<?php if (isset($data['values']['startDate'])) {
-                       echo $data['values']['startDate'];
-                     }
-                     ?>" placeholder="Date de début" min=<?php echo date('Y-m-d')?> max=<?php echo date('Y-m-d', strtotime('+7 days'))?> />
-           <?php if (isset($data['errors']['startDate'])) : ?>
-              <div class="invalid-feedback"><?php echo $data['errors']['startDate'] ?></div>
-            <?php endif; ?>
-                    <br/>
+                <?php if (isset($dataError['duration'])) : ?>
+                    <div class="invalid-feedback"><?php echo $dataError['duration'] ?></div>
+                <?php endif; ?>
+            </div>
 
-                    <label for="duration">Durée (jours)</label>
-                    <input class="form-control" type="number" name="duration" id="duration" value="<?php if (isset($data['values']['duration'])) {
-                       echo $data['values']['duration'];
-                     }
-                     ?>" min="0" max ="30" placeholder="Durée" required/>
-           <?php if (isset($data['errors']['duration'])) : ?>
-              <div class="invalid-feedback"><?php echo $data['errors']['duration'] ?></div>
-            <?php endif; ?>
-                    <br/>
-
-                    <label for="privacyId">Confidentialité</label>
-                    <select class="form-control" name="privacyId" id="privacyId"required/>
+            <!--Confidentialité-->
+            <div class="form-group col-md-3">
+                <label for="privacyId">Confidentialité</label>
+                <select class="form-control" name="privacyId" id="privacyId">
                     <option value="1" selected>Libre</option>
                     <option value="2">Privée</option>
                     <option value="3" >Confidentielle</option>
-                    </select>
+                </select>
+            </div>
 
-                    <br/>
+            <!--Description-->
+            <div class="form-group col-md-5">
+                <label for="description">Description</label>
+                <textarea id="description" name="description" class="form-control" rows="4" cols="50"
+                ><?php echo isset($dataValue['description']) ? $dataValue['description'] : '';?></textarea>
 
-                    <label for="categoryId">Catégories</label>
+                <?php if (isset($dataError['description'])) : ?>
+                    <div class="invalid-feedback">
+                        <?php echo $dataError['description'] ?>
+                    </div>
+                <?php endif; ?>
+            </div>
 
-                    <select class="form-control" name="categoryId" id="categoryId">
-                        <?php if (sizeof($categoryList) > 0):
-                            foreach ($categoryList as $oneCategory): ?>
-                                <option value="<?= $oneCategory->getId(); ?>"><?= $oneCategory->getName(); ?></option>
-                            <?php endforeach;
-                        endif; ?>
-
-                    </select>
-
-                    <br/>
-
-                    <input class="btn btn-primary" type="submit" name="createAuction" id="createAuction" value="Valider"/>
-                    <input class="btn btn-primary" type="submit" name="cancel" id="cancel" value="Annuler"/>
-                </div>
-            </form>
-        </div>
+            <!--Boutons-->
+            <div class="form-group col-md-3">
+                <input class="btn btn-primary" type="submit" name="createAuction" id="createAuction" value="Valider"/>
+                <input class="btn btn-primary" type="submit" name="cancel" id="cancel" value="Annuler"/>
+            </div>
+        </form>
     </div>
+</div>

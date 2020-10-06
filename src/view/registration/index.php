@@ -1,7 +1,9 @@
 <div class="row">
   <div class="col-md-5"></div>
   <div class="col-md-2">
-    <img class="big-logo" src="resources/logo.png" width="158" height="143">
+      <a href="?r=login">
+          <img class="big-logo" src="resources/logo.png" width="158" height="143" alt="logo"/>
+      </a>
   </div>
   <div class="col-md-5"></div>
 </div>
