@@ -10,5 +10,7 @@ interface IUserDao
 
   public function insertUser(UserModel $user) : ?int;
 
+  public function updateUser(UserModel $user) : bool;
+
   public function deleteUser(int $userId) : bool;
 }

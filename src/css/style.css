@@ -5,6 +5,11 @@
     align-items: center;
 }
 
+.error-custom {
+    color: red;
+    font-style: italic;
+}
+
 .big-logo {
     margin-top: 20px;
 }
