@@ -46,9 +46,8 @@
                 <input class="form-control" name="basePrice" type="number" id="basePrice"
                        value="<?php echo isset($dataValue['basePrice']) ? $dataValue['basePrice'] : 0;?>"
                        placeholder="0" min="0" step="any"/>
-
                 <?php if (isset($dataError['basePrice'])) : ?>
-                    <div class="invalid-feedback"><?php echo $dataError['basePrice'] ?></div>
+                    <div class="invalid-feedback"><?php echo $dataError['basePrice']; ?></div>
                 <?php endif; ?>
 
                 <label for="reservePrice">Prix de réserve
@@ -63,7 +62,6 @@
                 <input class="form-control" name="reservePrice" type="number" id="reservePrice"
                        value="<?php echo isset($dataValue['reservePrice']) ? $dataValue['reservePrice'] : 0;?>"
                        placeholder="0" min="0" step="any"/>
-
                 <?php if (isset($dataError['reservePrice'])) : ?>
                     <div class="invalid-feedback"><?php echo $dataError['reservePrice'] ?></div>
                 <?php endif; ?>
@@ -87,7 +85,6 @@
                 <input class="form-control" type="number" name="duration" id="duration"
                        value="<?php echo isset($dataValue['duration']) ? $dataValue['duration'] : '7';?>"
                        min="0" max ="30" placeholder="Durée" required/>
-
                 <?php if (isset($dataError['duration'])) : ?>
                     <div class="invalid-feedback"><?php echo $dataError['duration'] ?></div>
                 <?php endif; ?>
@@ -108,7 +105,6 @@
                 <label for="description">Description</label>
                 <textarea id="description" name="description" class="form-control" rows="4" cols="50"
                 ><?php echo isset($dataValue['description']) ? $dataValue['description'] : '';?></textarea>
-
                 <?php if (isset($dataError['description'])) : ?>
                     <div class="invalid-feedback">
                         <?php echo $dataError['description'] ?>

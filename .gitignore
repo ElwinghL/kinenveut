@@ -194,3 +194,4 @@ modules.xml
 .php_cs.cache
 composer.lock
 /test/coverage
+.htaccess
