@@ -34,8 +34,8 @@ class AuctionAccessStateModelTest extends TestCase
         ->setBidder($bidder);
 
     $this->assertSame($auctionAccessState->getId(), $id);
-    $this->assertSame($auctionAccessState->getAuction(), $auction);
-    $this->assertSame($auctionAccessState->getBidder(), $bidder);
+    $this->assertEquals($auctionAccessState->getAuction(), $auction);
+    $this->assertEquals($auctionAccessState->getBidder(), $bidder);
     $this->assertSame($auctionAccessState->getStateId(), $stateId);
   }
 }
