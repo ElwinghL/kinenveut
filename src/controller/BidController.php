@@ -30,6 +30,12 @@ class BidController extends Controller
     $auctionId = $_GET['auctionId'];
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+      if (!isset($_POST['bidPrice']) || $_POST['bidPrice'] === "") {
+        $_SESSION['errors']['noBidPrice'] = 'Veuillez renseigner un montant à enchérir';
+        $this->redirect('?r=bid/index&auctionId=' . $auctionId);
+        exit();
+      }
+
       $newBid = new BidModel();
       $newBid
               ->setBidPrice($_POST['bidPrice'])
