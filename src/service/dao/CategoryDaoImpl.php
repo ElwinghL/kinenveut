@@ -4,12 +4,16 @@ class CategoryDaoImpl implements ICategoryDao
 {
   public function selectAllCategories(): array
   {
-    $request = db()->query('SELECT id, name FROM Category');
+    $request = 'SELECT id, name FROM Category';
 
-    $categories = $request->fetchAll(PDO::FETCH_ASSOC);
+    try {
+      $query = db()->query($request);
+      $categories = $query->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $Exception) {
+      throw new BDDException($Exception->getMessage(), (int)$Exception->getCode());
+    }
 
     $categoryList = [];
-
     foreach ($categories as $oneCategory) {
       $oneCategoryModel = new CategoryModel();
       $oneCategoryModel
@@ -24,17 +28,28 @@ class CategoryDaoImpl implements ICategoryDao
 
   public function insertCategory(CategoryModel $categoryModel): ?int
   {
-    $request = db()->prepare('INSERT INTO Category(name) VALUES (?)');
+    $request = 'INSERT INTO Category(name) VALUES (?)';
 
-    $request->execute([$categoryModel->getName()]);
+    try {
+      $query = db()->prepare($request);
+      $query->execute([$categoryModel->getName()]);
+    } catch (PDOException $Exception) {
+      throw new BDDException($Exception->getMessage(), (int)$Exception->getCode());
+    }
 
     return db()->lastInsertId();
   }
 
   public function deleteCategoryById(int $categoryId): bool
   {
-    $request = db()->prepare('DELETE FROM Category WHERE id=?');
-    $success = $request->execute([$categoryId]);
+    $request = 'DELETE FROM Category WHERE id=?';
+
+    try {
+      $query = db()->prepare($request);
+      $success = $query->execute([$categoryId]);
+    } catch (PDOException $Exception) {
+      throw new BDDException($Exception->getMessage(), (int)$Exception->getCode());
+    }
 
     return $success;
   }

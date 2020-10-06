@@ -17,12 +17,16 @@ class AuctionManagementController extends Controller
     
     $auctionBo = App_BoFactory::getFactory()->getAuctionBo();
     $auction = $auctionBo->selectAuctionByAuctionId($auctionId);
-    
-    $data = [
-      'auction'=> $auction
-    ];
 
-    $this->render('bid', $data);
+    $userBo = App_BoFactory::getFactory()->getUserBo();    
+    $seller = $userBo->selectUserByUserId($auction->getSellerId());
+
+    $data = [
+      'auction'=> $auction,
+      'seller' => $seller
+    ];
+    $bidcontroller=new BidController();
+    $bidcontroller->render('index', $data);
   }
   public function validate()
   { $auctionId = $_GET['id'];

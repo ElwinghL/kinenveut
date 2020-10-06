@@ -4,14 +4,17 @@ class UserDaoImpl implements IUserDao
 {
   public function selectUserByUserId(int $userId) : ?UserModel
   {
-    $request = db()->prepare('SELECT id, firstName, lastName, email, birthDate, isAuthorised, isAdmin FROM User WHERE id=?');
-    $params = [$userId];
-    $request->execute($params);
-    $userSelected = $request->fetch();
+    $request = 'SELECT id, firstName, lastName, email, birthDate, isAuthorised, isAdmin FROM User WHERE id=?';
 
-    if ((is_array($userSelected) == false)
-            || (is_array($userSelected) && ($userSelected['id'] == null || $userSelected['id'] < 1))
-        ) {
+    try {
+      $query = db()->prepare($request);
+      $query->execute([$userId]);
+      $userSelected = $query->fetch();
+    } catch (PDOException $Exception) {
+      throw new BDDException($Exception->getMessage(), (int)$Exception->getCode());
+    }
+
+    if ($userSelected == null) {
       return null;
     }
 
@@ -30,21 +33,18 @@ class UserDaoImpl implements IUserDao
 
   public function selectUserByEmailAndPassword(String $email, String $password) : ?UserModel
   {
-    $request = db()->prepare('SELECT id, firstName, lastName, email, birthDate, isAuthorised, isAdmin, password FROM User WHERE email=?');
-    $params = [$email];
-    $request->execute($params);
-    $firstUser = $request->fetch();
+    $request = 'SELECT id, firstName, lastName, email, birthDate, isAuthorised, isAdmin, password FROM User WHERE email=?';
 
-    if (!(is_array($firstUser) && isset($firstUser['password']))) {
-      return null;
+    $firstUser = '';
+    try {
+      $query = db()->prepare($request);
+      $query->execute([$email]);
+      $firstUser = $query->fetch();
+    } catch (PDOException $Exception) {
+      throw new BDDException($Exception->getMessage(), (int)$Exception->getCode());
     }
 
-    $isPasswordCorrect = password_verify($password, $firstUser['password']);
-
-    if (($firstUser == false)
-          || (is_array($firstUser) && ($firstUser['id'] == null || $firstUser['id'] < 1)
-          || !$isPasswordCorrect)
-      ) {
+    if ($firstUser == null || !password_verify($password, $firstUser['password'])) {
       return null;
     }
 
@@ -63,12 +63,17 @@ class UserDaoImpl implements IUserDao
 
   public function selectUserByEmail(String $email) : ?UserModel
   {
-    $request = db()->prepare('SELECT * FROM User WHERE email=?');
-    $request->execute([$email]);
-    $firstUser = $request->fetch();
-    if (($firstUser == false)
-          || (is_array($firstUser) && ($firstUser['id'] == null || $firstUser['id'] < 1))
-      ) {
+    $request = 'SELECT * FROM User WHERE email=?';
+
+    try {
+      $request = db()->prepare($request);
+      $request->execute([$email]);
+      $firstUser = $request->fetch();
+    } catch (PDOException $Exception) {
+      throw new BDDException($Exception->getMessage(), (int)$Exception->getCode());
+    }
+
+    if ($firstUser == null) {
       return null;
     }
 
@@ -87,10 +92,13 @@ class UserDaoImpl implements IUserDao
 
   public function insertUser(UserModel $user) : ?int
   {
-    $request = db()->prepare('INSERT INTO User(firstName, lastName, email, password, birthDate, isAdmin) VALUES (?, ?, ?, ?, ?, false)');
-    $success = $request->execute([$user->getFirstName(), $user->getLastName(), $user->getEmail(), password_hash($user->getPassword(), PASSWORD_DEFAULT), $user->getBirthDate()]);
-    if ($success == false) {
-      return null;
+    $request = 'INSERT INTO User(firstName, lastName, email, password, birthDate, isAdmin) VALUES (?, ?, ?, ?, ?, false)';
+
+    try {
+      $query = db()->prepare($request);
+      $query->execute([$user->getFirstName(), $user->getLastName(), $user->getEmail(), $user->getPassword(), $user->getBirthDate()]);
+    } catch (PDOException $Exception) {
+      throw new BDDException($Exception->getMessage(), (int)$Exception->getCode());
     }
 
     return db()->lastInsertId();
@@ -98,8 +106,14 @@ class UserDaoImpl implements IUserDao
 
   public function deleteUser(int $userId) : bool
   {
-    $request = db()->prepare('DELETE FROM User WHERE id=?');
-    $success = $request->execute([$userId]);
+    $request = 'DELETE FROM User WHERE id=?';
+
+    try {
+      $query = db()->prepare($request);
+      $success = $query->execute([$userId]);
+    } catch (PDOException $Exception) {
+      throw new BDDException($Exception->getMessage(), (int)$Exception->getCode());
+    }
 
     return $success;
   }

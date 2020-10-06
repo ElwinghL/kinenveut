@@ -1,5 +1,5 @@
 <?php
-    $titlePage = isset($data['titlePage'])?$data['titlePage']:'Liste d\'enchères';
+    $titlePage = isset($data['titlePage']) ? $data['titlePage'] : 'Liste d\'enchères';
     $categoryList = $data['categoryList'];
     $auctionList = $data['auctionList'];
 ?>

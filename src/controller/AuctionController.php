@@ -132,7 +132,7 @@ class AuctionController extends Controller
       'categoryList' => $categoryList
     ];
 
-    array_push($data, $otherDatas);
+    $data = array_merge($data, $otherDatas);
 
     return $data;
   }
