@@ -58,14 +58,6 @@ class UserBoImpl implements IUserBo
     return $success;
   }
 
-  public function updateUser(UserModel $user) : bool
-  {
-    $userDao = App_DaoFactory::getFactory()->getUserDao();
-    $success = $userDao->updateUser($user);
-
-    return $success;
-  }
-
   public function deleteUser(int $userId) : bool
   {
     $userDao = App_DaoFactory::getFactory()->getUserDao();

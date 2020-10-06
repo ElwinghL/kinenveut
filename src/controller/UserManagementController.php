@@ -13,20 +13,18 @@ class UserManagementController extends Controller
   }  
   public function info()
   {
-    $auctionId = $_GET['id'];
+    $userId = $_GET['id'];
     
-    $auctionBo = App_BoFactory::getFactory()->getAuctionBo();
-    $auction = $auctionBo->selectAuctionByAuctionId($auctionId);
+    $userBo = App_BoFactory::getFactory()->getUserBo();
 
-    $userBo = App_BoFactory::getFactory()->getUserBo();    
-    $seller = $userBo->selectUserByUserId($auction->getSellerId());
+    $user = $userBo->selectUserByUserId($userId);
 
     $data = [
-      'auction'=> $auction,
-      'seller' => $seller
+      'user'=> $user
     ];
-    $bidcontroller=new BidController();
-    $bidcontroller->render('index', $data);
+
+    $accountController=new AccountController();
+    $accountController->render('index', $data);
   }  
   public function validate()
   { 
