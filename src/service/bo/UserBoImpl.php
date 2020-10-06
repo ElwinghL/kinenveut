@@ -29,6 +29,7 @@ class UserBoImpl implements IUserBo
   public function insertUser(UserModel $user) : ?int
   {
     $userDao = App_DaoFactory::getFactory()->getUserDao();
+    $user->setPassword(password_hash($user->getPassword(), PASSWORD_DEFAULT));
     $userId = $userDao->insertUser($user);
 
     return $userId;

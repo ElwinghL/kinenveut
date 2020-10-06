@@ -4,15 +4,19 @@ class AuctionDaoImpl implements IAuctionDao
 {
   public function selectAllAuctionsByAuctionState($auctionSate) : array
   {
-    $request = db()->prepare('SELECT Auction.id AS objectId,name,description,basePrice,reservePrice,pictureLink,startDate,duration,auctionState,sellerId,privacyId,categoryId
-                    ,v_BestBid.id AS bidId,v_BestBid.bidPrice,v_BestBid.bidDate,v_BestBid.bidderId
-                    FROM Auction
-                    LEFT JOIN v_BestBid ON v_BestBid.objectId = Auction.id
-                    WHERE auctionState = :auctionSate');
+    $request = 'SELECT Auction.id AS objectId,name,description,basePrice,reservePrice,pictureLink,startDate,duration,auctionState,sellerId,privacyId,categoryId
+    ,v_BestBid.id AS bidId,v_BestBid.bidPrice,v_BestBid.bidDate,v_BestBid.bidderId
+    FROM Auction
+    LEFT JOIN v_BestBid ON v_BestBid.objectId = Auction.id
+    WHERE auctionState = :auctionSate';
 
-    $request->execute(['auctionSate'=>$auctionSate]);
-
-    $auctions = $request->fetchAll(PDO::FETCH_ASSOC);
+    try {
+      $query = db()->prepare($request);
+      $query->execute(['auctionSate'=>$auctionSate]);
+      $auctions = $query->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $Exception) {
+      throw new BDDException($Exception->getMessage(), (int)$Exception->getCode());
+    }
 
     $auctionList = [];
     foreach ($auctions as $oneAuction) {
@@ -48,14 +52,19 @@ class AuctionDaoImpl implements IAuctionDao
 
   public function selectAuctionByAuctionId(int $auctionId): AuctionModel
   {
-    $request = db()->prepare('SELECT Auction.id AS objectId,name,description,basePrice,reservePrice,pictureLink,startDate,duration,auctionState,sellerId,privacyId,categoryId
-                    ,v_BestBid.id AS bidId,v_BestBid.bidPrice,v_BestBid.bidDate,v_BestBid.bidderId
-                    FROM Auction
-                    LEFT JOIN v_BestBid ON v_BestBid.objectId = Auction.id
-                    WHERE Auction.id = :id');
+    $request = 'SELECT Auction.id AS objectId,name,description,basePrice,reservePrice,pictureLink,startDate,duration,auctionState,sellerId,privacyId,categoryId
+    ,v_BestBid.id AS bidId,v_BestBid.bidPrice,v_BestBid.bidDate,v_BestBid.bidderId
+    FROM Auction
+    LEFT JOIN v_BestBid ON v_BestBid.objectId = Auction.id
+    WHERE Auction.id = :id';
 
-    $request->execute(['id'=>$auctionId]);
-    $oneAuction = $request->fetch();
+    try {
+      $query = db()->prepare($request);
+      $query->execute(['id'=>$auctionId]);
+      $oneAuction = $query->fetch();
+    } catch (PDOException $Exception) {
+      throw new BDDException($Exception->getMessage(), (int)$Exception->getCode());
+    }
 
     $theBestBid = new BidModel();
     $theBestBid
@@ -86,26 +95,43 @@ class AuctionDaoImpl implements IAuctionDao
 
   public function insertAuction(AuctionModel $auction):?int
   {
-    $request = db()->prepare("INSERT INTO Auction(name, description, basePrice, reservePrice, pictureLink, /*startDate,*/ duration, auctionState, sellerId, privacyId, categoryId) VALUES (?, ?, ?, ?, ' ',/* ?,*/ ?, 0, ?, ?, ?)");
+    $request = "INSERT INTO Auction(name, description, basePrice, reservePrice, pictureLink, /*startDate,*/ duration, auctionState, sellerId, privacyId, categoryId) VALUES (?, ?, ?, ?, ' ',/* ?,*/ ?, 0, ?, ?, ?)";
 
-    $request->execute([$auction->getName(), $auction->getDescription(), $auction->getBasePrice(), $auction->getReservePrice(), /*$auction->getPictureLink(), $auction->getStartDate(),*/ $auction->getDuration(), $auction->getSellerId(), $auction->getPrivacyId(), $auction->getCategoryId()]);
+    try {
+      $query = db()->prepare($request);
+      $query->execute([$auction->getName(), $auction->getDescription(), $auction->getBasePrice(), $auction->getReservePrice(), /*$auction->getPictureLink(), $auction->getStartDate(),*/ $auction->getDuration(), $auction->getSellerId(), $auction->getPrivacyId(), $auction->getCategoryId()]);
+    } catch (PDOException $Exception) {
+      throw new BDDException($Exception->getMessage(), (int)$Exception->getCode());
+    }
 
     return db()->lastInsertId();
   }
 
   public function deleteAuctionById(int $auctionId) : bool
   {
-    $request = db()->prepare('DELETE FROM Auction WHERE id=?');
-    $success = $request->execute([$auctionId]);
+    $request = 'DELETE FROM Auction WHERE id=?';
+
+    try {
+      $query = db()->prepare($request);
+      $success = $query->execute([$auctionId]);
+    } catch (PDOException $Exception) {
+      throw new BDDException($Exception->getMessage(), (int)$Exception->getCode());
+    }
 
     return $success;
   }
 
   public function updateStartDateAndAuctionState(AuctionModel $auction): bool
   {
+    $request = 'UPDATE Auction SET startDate = :startDate, auctionState = :auctionState WHERE id = :id';
+
     if ($auction->getId() != null) {
-      $request = db()->prepare('UPDATE Auction SET startDate = :startDate, auctionState = :auctionState WHERE id = :id');
-      $success = $request->execute(['id'=>$auction->getId(), 'startDate'=>$auction->getStartDate(), 'auctionState'=>$auction->getAuctionState()]);
+      try {
+        $query = db()->prepare($request);
+        $success = $query->execute(['id'=>$auction->getId(), 'startDate'=>$auction->getStartDate(), 'auctionState'=>$auction->getAuctionState()]);
+      } catch (PDOException $Exception) {
+        throw new BDDException($Exception->getMessage(), (int)$Exception->getCode());
+      }
     }
 
     return $success;

@@ -11,6 +11,8 @@ function my_autoloader($name)
     $dir = 'service/bo';
   } elseif (stripos($name, 'Dao') !== false) {
     $dir = 'service/dao';
+  } elseif (stripos($name, 'Exception') !== false) {
+    $dir = 'exception';
   }
   include_once $dir . '/' . $name . '.php';
 }

@@ -125,7 +125,7 @@ class UserDaoTest extends TestCase
       ->setLastName($lastName)
       ->setBirthDate($birthDate)
       ->setEmail($email)
-      ->setPassword($password);
+      ->setPassword(password_hash($password, PASSWORD_DEFAULT));
 
     $userId = $userDao->insertUser($user);
 
