@@ -31,6 +31,31 @@ class UserDaoImpl implements IUserDao
     return $user;
   }
 
+  public function selectUsersByState($state): ?array
+  {    
+    $request = db()->prepare('SELECT id, firstName, lastName, email, birthDate, isAuthorised, isAdmin FROM User WHERE isAuthorised=?');
+    $params = [$state];
+    $request->execute($params);
+    $usersList = $request->fetchAll(PDO::FETCH_ASSOC);
+
+    $users = [];
+    foreach ($usersList as $oneUser) {
+      $user = new UserModel();
+      $user
+        ->setId($oneUser['id'])
+        ->setFirstName(protectStringToDisplay($oneUser['firstName']))
+        ->setLastName(protectStringToDisplay($oneUser['lastName']))
+        ->setEmail(protectStringToDisplay($oneUser['email']))
+        ->setBirthDate($oneUser['birthDate'])
+        ->setIsAuthorised($oneUser['isAuthorised'])
+        ->setIsAdmin($oneUser['isAdmin']);
+
+      array_push($users, $user);
+    }
+
+    return $users;
+  }
+
   public function selectUserByEmailAndPassword(String $email, String $password) : ?UserModel
   {
     $request = 'SELECT id, firstName, lastName, email, birthDate, isAuthorised, isAdmin, password FROM User WHERE email=?';
@@ -102,6 +127,17 @@ class UserDaoImpl implements IUserDao
     }
 
     return db()->lastInsertId();
+  }
+
+  public function updateUserIsAuthorised(UserModel $user) : bool
+  {
+    if ($user->getId() != null) {
+      $request = db()->prepare('UPDATE User SET isAuthorised = :startDate WHERE id = :id');
+      $success = $request->execute(['id'=>$user->getId(), 'startDate'=>$user->getIsAuthorised()]);
+
+    }
+
+    return $success;
   }
 
   public function deleteUser(int $userId) : bool

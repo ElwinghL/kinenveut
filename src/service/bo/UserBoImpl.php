@@ -10,6 +10,14 @@ class UserBoImpl implements IUserBo
     return $user;
   }
 
+  public function selectUsersByState($state): ?array
+  {
+    $userDao = App_DaoFactory::getFactory()->getUserDao();
+    $users = $userDao->selectUsersBystate($state);
+
+    return $users;
+  }
+
   public function selectUserByEmailAndPassword(String $email, String $password) : ?UserModel
   {
     $userDao = App_DaoFactory::getFactory()->getUserDao();
@@ -34,12 +42,27 @@ class UserBoImpl implements IUserBo
 
     return $userId;
   }
+  
+  public function updateUserIsAuthorised(UserModel $user) : ?bool
+  {
+    $userDao = App_DaoFactory::getFactory()->getUserDao();
+    $userDao->updateUserIsAuthorised($user);
+    return true;
+  }
+
+  public function updateUser(UserModel $user) : bool
+  {
+    $userDao = App_DaoFactory::getFactory()->getUserDao();
+    $success = $userDao->updateUser($user);
+
+    return $success;
+  }
 
   public function deleteUser(int $userId) : bool
   {
     $userDao = App_DaoFactory::getFactory()->getUserDao();
-    $userId = $userDao->deleteUser($userId);
+    $success = $userDao->deleteUser($userId);
 
-    return $userId;
+    return $success;
   }
 }
