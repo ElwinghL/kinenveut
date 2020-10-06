@@ -9,6 +9,14 @@ class UserBoImpl implements IUserBo
 
     return $user;
   }
+  public function selectUsersByState($state): ?array
+  {
+    $userDao = App_DaoFactory::getFactory()->getUserDao();
+    $users = $userDao->selectUsersBystate($state);
+
+    return $users;
+  }
+
 
   public function selectUserByEmailAndPassword(String $email, String $password) : ?UserModel
   {

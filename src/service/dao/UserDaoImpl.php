@@ -7,25 +7,49 @@ class UserDaoImpl implements IUserDao
     $request = db()->prepare('SELECT id, firstName, lastName, email, birthDate, isAuthorised, isAdmin FROM User WHERE id=?');
     $params = [$userId];
     $request->execute($params);
-    $userSelected = $request->fetch();
+    $user = $request->fetch();
 
-    if ((is_array($userSelected) == false)
-            || (is_array($userSelected) && ($userSelected['id'] == null || $userSelected['id'] < 1))
+    if ((is_array($user) == false)
+            || (is_array($user) && ($user['id'] == null || $user['id'] < 1))
         ) {
       return null;
     }
 
     $user = new UserModel();
     $user
-            ->setId($userSelected['id'])
-            ->setFirstName(protectStringToDisplay($userSelected['firstName']))
-            ->setLastName(protectStringToDisplay($userSelected['lastName']))
-            ->setEmail(protectStringToDisplay($userSelected['email']))
-            ->setBirthDate($userSelected['birthDate'])
-            ->setIsAuthorised($userSelected['isAuthorised'])
-            ->setIsAdmin($userSelected['isAdmin']);
+            ->setId($user['id'])
+            ->setFirstName(protectStringToDisplay($user['firstName']))
+            ->setLastName(protectStringToDisplay($user['lastName']))
+            ->setEmail(protectStringToDisplay($user['email']))
+            ->setBirthDate($user['birthDate'])
+            ->setIsAuthorised($user['isAuthorised'])
+            ->setIsAdmin($user['isAdmin']);
 
     return $user;
+  }
+  public function selectUsersByState($state): ?array
+  {    
+    $request = db()->prepare('SELECT id, firstName, lastName, email, birthDate, isAuthorised, isAdmin FROM User WHERE isAuthorised=?');
+    $params = [$state];
+    $request->execute($params);
+    $usersList = $request->fetchAll(PDO::FETCH_ASSOC);
+
+    $users = [];
+    foreach ($usersList as $oneUser) {
+      $user = new UserModel();
+      $user
+        ->setId($oneUser['id'])
+        ->setFirstName(protectStringToDisplay($oneUser['firstName']))
+        ->setLastName(protectStringToDisplay($oneUser['lastName']))
+        ->setEmail(protectStringToDisplay($oneUser['email']))
+        ->setBirthDate($oneUser['birthDate'])
+        ->setIsAuthorised($oneUser['isAuthorised'])
+        ->setIsAdmin($oneUser['isAdmin']);
+
+      array_push($users, $user);
+    }
+
+    return $users;
   }
 
   public function selectUserByEmailAndPassword(String $email, String $password) : ?UserModel

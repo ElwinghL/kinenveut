@@ -1,28 +1,33 @@
 <?php
 
-class AuctionManagementController extends Controller
+class UserManagementController extends Controller
 {
   public function index()
   {
-    $auctionBo = App_BoFactory::getFactory()->getAuctionBo();
-    $auctions = $auctionBo->selectAllAuctionsByAuctionState(0);
+    $userBo = App_BoFactory::getFactory()->getUserBo();
+    $users = $userBo->selectUsersByState(0);
     $data = [
-      'auctions'=> $auctions
+      'users'=> $users
     ];
     $this->render('index', $data);
   }
+  /*
   public function info()
   {
     $auctionId = $_GET['id'];
     
     $auctionBo = App_BoFactory::getFactory()->getAuctionBo();
     $auction = $auctionBo->selectAuctionByAuctionId($auctionId);
-    
-    $data = [
-      'auction'=> $auction
-    ];
 
-    $this->render('bid', $data);
+    $userBo = App_BoFactory::getFactory()->getUserBo();    
+    $seller = $userBo->selectUserByUserId($auction->getSellerId());
+
+    $data = [
+      'auction'=> $auction,
+      'seller' => $seller
+    ];
+    $bidcontroller=new BidController();
+    $bidcontroller->render('index', $data);
   }
   public function validate()
   { $auctionId = $_GET['id'];
@@ -51,5 +56,5 @@ class AuctionManagementController extends Controller
       'auctions'=> $auctions
     ];
     $this->render('index', $data);
-  }
+  }*/ 
 }

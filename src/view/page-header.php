@@ -19,7 +19,7 @@
                             <a class="dropdown-item" href="?r=account&userId=<?= isset($_SESSION['userId'])?$_SESSION['userId']:'1';?>">Mon compte</a>
                             <?php if (isset($_SESSION['isAdmin']) && $_SESSION['isAdmin'] == 1) : ?>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="?r=user">Gestion des utilisateurs</a>
+                                <a class="dropdown-item" href="?r=userManagement">Gestion des utilisateurs</a>
                                 <a class="dropdown-item" href="?r=auctionManagement">Gestion des enchères</a>
                                 <a class="dropdown-item" href="?r=categorie">Gestion des catégories</a>
                             <?php endif; ?>
