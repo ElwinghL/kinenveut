@@ -19,8 +19,8 @@ class Controller
       include_once 'src/view/footer.php';
     } else {
       header('Location: ?r=login');
-      exit();
     }
+    exit();
   }
 
   public function redirect($path)
