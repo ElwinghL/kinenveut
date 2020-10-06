@@ -35,9 +35,8 @@ class UserDaoImpl implements IUserDao
     $request->execute($params);
     $firstUser = $request->fetch();
 
-    if(!(is_array($firstUser) && isset($firstUser['password'])))
-    {
-        return null;
+    if (!(is_array($firstUser) && isset($firstUser['password']))) {
+      return null;
     }
 
     $isPasswordCorrect = password_verify($password, $firstUser['password']);

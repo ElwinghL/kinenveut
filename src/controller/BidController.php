@@ -40,6 +40,6 @@ class BidController extends Controller
       $bidHistoryBo->insertBid($newBid);
     }
 
-    $this->redirect("?r=bid&auctionId=" . $_GET['auctionId']);
+    $this->redirect('?r=bid&auctionId=' . $_GET['auctionId']);
   }
 }
