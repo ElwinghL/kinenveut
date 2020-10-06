@@ -104,6 +104,14 @@ class UserDaoImpl implements IUserDao
     return db()->lastInsertId();
   }
 
+  public function updateUser(UserModel $user) : bool
+  {
+    $request = db()->prepare('UPDATE User SET firstName = ?, lastName = ?, email = ? WHERE id = ?');
+    $success = $request->execute([$user->getFirstName(), $user->getLastName(), $user->getEmail(), $user->getId()]);
+
+    return $success;
+  }
+
   public function deleteUser(int $userId) : bool
   {
     $request = 'DELETE FROM User WHERE id=?';
