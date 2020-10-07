@@ -17,8 +17,8 @@ class BidController extends Controller
       $auctionAccessState = $auctionAccessSateBo->selectAuctionAccessStateByAuctionIdAndBidderId($auctionId, $_SESSION['userId']);
 
       $data = [
-        'auction'           => $auction,
-        'seller'            => $seller,
+        'auction'            => $auction,
+        'seller'             => $seller,
         'auctionAccessState' => $auctionAccessState
       ];
 
@@ -60,9 +60,8 @@ class BidController extends Controller
     $auctionAccessStateDao = App_DaoFactory::getFactory()->getAuctionAccessStateDao();
     try {
       $auctionAccessStateDao->insertAuctionAccessState($auctionId, $bidderId);
-
     } catch (BDDException $e) {
-        $auctionAccessStateDao->updateStateIdByAuctionIdAndBidderId($auctionId, $bidderId, 0);
+      $auctionAccessStateDao->updateStateIdByAuctionIdAndBidderId($auctionId, $bidderId, 0);
     }
 
     $this->redirect('?r=bid&auctionId=' . $auctionId);

@@ -17,7 +17,7 @@
                         <?php $auction = $oneAuctionAccessSate->getAuction();?>
                         <?php $bidder = $oneAuctionAccessSate->getBidder();?>
                 <div class="col-md-10 mr-0 float-left">
-                    <b><?php echo utf8_encode($bidder->getFirstName()." ".$bidder->getLastName()); ?></b>
+                    <b><?php echo utf8_encode($bidder->getFirstName() . ' ' . $bidder->getLastName()); ?></b>
                     a demandé à pouvoir accéder à l'enchère "<?php echo utf8_encode($auction->getName()); ?>".
                 </div>
                 <div class="col-md- mr-0 float-right">

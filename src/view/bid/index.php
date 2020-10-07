@@ -53,7 +53,7 @@ $minPrice = (($bestBid->getBidPrice() != null) && ($bestBid->getBidPrice() != nu
                                 <?php endif; ?>
                             </form>
                         <?php else:?>
-                            <?php if($auctionAccessState->getStateId() !== null && $auctionAccessState->getStateId() == 0):?>
+                            <?php if ($auctionAccessState->getStateId() !== null && $auctionAccessState->getStateId() == 0):?>
                                 <a class="btn btn-secondary" href="?r=bid/cancelAuctionAccessRequest&auctionId=<?= $_GET['auctionId']; ?>">Annuler ma demande</a>
                             <?php else:?>
                                 <a class="btn btn-primary" href="?r=bid/makeAuctionAccessRequest&auctionId=<?= $_GET['auctionId']; ?>">Demander à participer à l'enchère</a>
