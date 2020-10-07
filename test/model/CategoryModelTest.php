@@ -13,7 +13,7 @@ class CategoryModelTest extends TestCase
   public function getterSetterTest()
   {
     $category = new CategoryModel();
-    $id = 'testCategory';
+    $id = 1;
     $name = 'Je suis une belle catégorie';
 
     $category
