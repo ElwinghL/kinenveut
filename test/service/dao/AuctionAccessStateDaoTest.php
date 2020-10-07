@@ -84,6 +84,30 @@ class AuctionAccessStateDaoTest extends TestCase
    * @covers AuctionAccessStateDaoImpl
    * @throws BDDException
    */
+  public function updateStateIdByAuctionIdAndBidderIdTest(): void
+  {
+    //Todo : vérifier l'update
+    $newStateId = 1;
+
+    $auctionAccessStateDao = App_DaoFactory::getFactory()->getAuctionAccessStateDao();
+
+    $auctionId = 1;
+    $bidderId = 1;
+
+    $auctionAccessStateId = $auctionAccessStateDao->insertAuctionAccessState($auctionId, $bidderId);
+
+    $success = $auctionAccessStateDao->updateStateIdByAuctionIdAndBidderId($auctionId, $bidderId, $newStateId);
+
+    $this->assertTrue($success);
+
+    $auctionAccessStateDao->deleteAuctionAccessStateById($auctionAccessStateId);
+  }
+
+  /**
+   * @test
+   * @covers AuctionAccessStateDaoImpl
+   * @throws BDDException
+   */
   public function selectAllAuctionAccessStateBySellerIdAndStateIdTest(): void
   {
     $sellerId = 1;

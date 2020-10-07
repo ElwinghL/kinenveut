@@ -46,6 +46,21 @@ class AuctionAccessStateDaoImpl implements IAuctionAccessStateDao
     return $success;
   }
 
+  public function updateStateIdByAuctionIdAndBidderId(int $auctionId, int $bidderId, int $stateId)  : bool
+  {
+    $request = 'UPDATE AuctionAccessState SET stateId = :stateId WHERE auctionId = :auctionId AND bidderId = :bidderId';
+
+    try {
+      $query = db()->prepare($request);
+      $params = ['stateId'=>$stateId, 'auctionId'=>$auctionId, 'bidderId'=>$bidderId];
+      $success = $query->execute($params);
+    } catch (PDOException $Exception) {
+      throw new BDDException($Exception->getMessage(), (int)$Exception->getCode());
+    }
+
+    return $success;
+  }
+
   public function selectAllAuctionAccessStateBySellerIdAndStateId(int $sellerId, int $stateId): array
   {
     $request = 'SELECT aas.id AS auctionAccessStateId, aas.auctionId, aas.bidderId, aas.stateId
