@@ -97,6 +97,50 @@ class AuctionDaoImpl implements IAuctionDao
     return $oneAuctionModel;
   }
 
+  public function selectAllAuctionsBySellerId($sellerId) : array
+  {
+    $request = db()->prepare('SELECT Auction.id AS objectId,name,description,basePrice,reservePrice,pictureLink,startDate,duration,auctionState,sellerId,privacyId,categoryId
+                    ,v_BestBid.id AS bidId,v_BestBid.bidPrice,v_BestBid.bidDate,v_BestBid.bidderId
+                    FROM Auction
+                    LEFT JOIN v_BestBid ON v_BestBid.objectId = Auction.id
+                    WHERE sellerId = :sellerId ORDER BY auctionState');
+
+    $request->execute(['sellerId'=>$sellerId]);
+
+    $auctions = $request->fetchAll(PDO::FETCH_ASSOC);
+
+    $auctionList = [];
+    foreach ($auctions as $oneAuction) {
+      $theBestBid = new BidModel();
+      $theBestBid
+                ->setId($oneAuction['bidId'])
+                ->setBidPrice($oneAuction['bidPrice'])
+                ->setBidDate($oneAuction['bidDate'])
+                ->setBidderId($oneAuction['bidderId'])
+                ->setObjectId($oneAuction['objectId']);
+
+      $oneAuctionModel = new AuctionModel();
+      $oneAuctionModel
+                ->setId($oneAuction['objectId'])
+                ->setName(protectStringToDisplay($oneAuction['name']))
+                ->setDescription(protectStringToDisplay($oneAuction['description']))
+                ->setBasePrice($oneAuction['basePrice'])
+                ->setReservePrice($oneAuction['reservePrice'])
+                ->setPictureLink($oneAuction['pictureLink'])
+                ->setStartDate($oneAuction['startDate'])
+                ->setDuration($oneAuction['duration'])
+                ->setAuctionState($oneAuction['auctionState'])
+                ->setSellerId($oneAuction['sellerId'])
+                ->setPrivacyId($oneAuction['privacyId'])
+                ->setCategoryId($oneAuction['categoryId'])
+                ->setBestBid($theBestBid);
+
+      array_push($auctionList, $oneAuctionModel);
+    }
+
+    return $auctionList;
+  }
+
   public function insertAuction(AuctionModel $auction):?int
   {
     $request = "INSERT INTO Auction(name, description, basePrice, reservePrice, pictureLink, /*startDate,*/ duration, auctionState, sellerId, privacyId, categoryId) VALUES (?, ?, ?, ?, ' ',/* ?,*/ ?, 0, ?, ?, ?)";
@@ -136,6 +180,16 @@ class AuctionDaoImpl implements IAuctionDao
       } catch (PDOException $Exception) {
         throw new BDDException($Exception->getMessage(), (int)$Exception->getCode());
       }
+    }
+
+    return $success;
+  }
+
+  public function updateAuctionState(AuctionModel $auction): bool
+  {
+    if ($auction->getId() != null) {
+      $request = db()->prepare('UPDATE Auction SET auctionState = :auctionState WHERE id = :id');
+      $success = $request->execute(['id'=>$auction->getId(), 'auctionState'=>$auction->getAuctionState()]);
     }
 
     return $success;

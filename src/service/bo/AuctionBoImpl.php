@@ -18,6 +18,14 @@ class AuctionBoImpl implements IAuctionBo
     return $auctionSelected;
   }
 
+  public function selectAllAuctionsBySellerId(int $userId): array
+    {
+        $auctionDao = App_DaoFactory::getFactory()->getAuctionDao();
+        $auctionList = $auctionDao->selectAllAuctionsBySellerId($userId);
+
+        return $auctionList;
+    }
+
   public function insertAuction(AuctionModel $auction) : ?int
   {
     $auctionDao = App_DaoFactory::getFactory()->getAuctionDao();
@@ -41,4 +49,12 @@ class AuctionBoImpl implements IAuctionBo
 
     return $isUpdated;
   }
+
+    public function updateAuctionState(AuctionModel $auction): bool
+    {
+        $auctionDao = App_DaoFactory::getFactory()->getAuctionDao();
+        $isUpdated = $auctionDao->updateAuctionState($auction);
+
+        return $isUpdated;
+    }
 }
