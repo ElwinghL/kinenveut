@@ -6,9 +6,9 @@ interface IUserDao
 
   public function selectUsersByState($state): ?array;
 
-  public function selectUserByEmailAndPassword(String $email, String $password) : ?UserModel;
+  public function selectUserByEmailAndPassword(string $email, string $password) : ?UserModel;
 
-  public function selectUserByEmail(String $email) : ?UserModel;
+  public function selectUserByEmail(string $email) : ?UserModel;
 
   public function insertUser(UserModel $user) : ?int;
 

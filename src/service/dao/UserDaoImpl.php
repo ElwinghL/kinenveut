@@ -63,7 +63,7 @@ class UserDaoImpl implements IUserDao
     return $users;
   }
 
-  public function selectUserByEmailAndPassword(String $email, String $password) : ?UserModel
+  public function selectUserByEmailAndPassword(string $email, string $password) : ?UserModel
   {
     $firstUser = null;
     $request = 'SELECT id, firstName, lastName, email, birthDate, isAuthorised, isAdmin, password FROM User WHERE email=?';
@@ -93,7 +93,7 @@ class UserDaoImpl implements IUserDao
     return $user;
   }
 
-  public function selectUserByEmail(String $email) : ?UserModel
+  public function selectUserByEmail(string $email) : ?UserModel
   {
     $firstUser = null;
     $request = 'SELECT * FROM User WHERE email=?';

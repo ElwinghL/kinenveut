@@ -18,7 +18,7 @@ class UserBoImpl implements IUserBo
     return $users;
   }
 
-  public function selectUserByEmailAndPassword(String $email, String $password) : ?UserModel
+  public function selectUserByEmailAndPassword(string $email, string $password) : ?UserModel
   {
     $userDao = App_DaoFactory::getFactory()->getUserDao();
     $user = $userDao->selectUserByEmailAndPassword($email, $password);
@@ -26,7 +26,7 @@ class UserBoImpl implements IUserBo
     return $user;
   }
 
-  public function selectUserByEmail(String $email) : ?UserModel
+  public function selectUserByEmail(string $email) : ?UserModel
   {
     $userDao = App_DaoFactory::getFactory()->getUserDao();
     $user = $userDao->selectUserByEmail($email);
