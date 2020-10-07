@@ -10,14 +10,14 @@ class AuctionModel
   private $pictureLink;
   private $startDate;
   private $duration;
-  private $auctionState; //(null: attente d'acceptation, 0: EnchèreEnCours, 1: Annulée)
+  private $auctionState;
   private $sellerId;
   private $privacyId;
   private $categoryId;
 
   private $bestBid;
 
-  public function getId()
+  public function getId() : ?int
   {
     return $this->id;
   }
@@ -29,7 +29,7 @@ class AuctionModel
     return $this;
   }
 
-  public function getName()
+  public function getName() : ?String
   {
     return $this->name;
   }
@@ -41,7 +41,7 @@ class AuctionModel
     return $this;
   }
 
-  public function getDescription()
+  public function getDescription() : ?String
   {
     return $this->description;
   }
@@ -53,7 +53,7 @@ class AuctionModel
     return $this;
   }
 
-  public function getBasePrice()
+  public function getBasePrice() : ?int
   {
     return $this->basePrice;
   }
@@ -65,7 +65,7 @@ class AuctionModel
     return $this;
   }
 
-  public function getReservePrice()
+  public function getReservePrice() : ?int
   {
     return $this->reservePrice;
   }
@@ -77,7 +77,7 @@ class AuctionModel
     return $this;
   }
 
-  public function getPictureLink()
+  public function getPictureLink() : ?String
   {
     return $this->pictureLink;
   }
@@ -101,7 +101,7 @@ class AuctionModel
     return $this;
   }
 
-  public function getDuration()
+  public function getDuration() : ?int
   {
     return $this->duration;
   }
@@ -113,7 +113,7 @@ class AuctionModel
     return $this;
   }
 
-  public function getAuctionState()
+  public function getAuctionState() : ?int
   {
     return $this->auctionState;
   }
@@ -125,7 +125,7 @@ class AuctionModel
     return $this;
   }
 
-  public function getSellerId()
+  public function getSellerId() : ?int
   {
     return $this->sellerId;
   }
@@ -137,7 +137,7 @@ class AuctionModel
     return $this;
   }
 
-  public function getPrivacyId()
+  public function getPrivacyId() : ?int
   {
     return $this->privacyId;
   }
@@ -149,7 +149,7 @@ class AuctionModel
     return $this;
   }
 
-  public function getCategoryId()
+  public function getCategoryId() : ?int
   {
     return $this->categoryId;
   }

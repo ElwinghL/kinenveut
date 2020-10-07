@@ -30,8 +30,6 @@ class AuctionDaoTest extends TestCase
             ->setDescription('descr')
             ->setBasePrice(3)
             ->setReservePrice(10)
-            //->setCreationDate(creationDate)
-            ->setStartDate('2020-01-01')
             ->setDuration(7)
             ->setSellerId(1)
             ->setPrivacyId(0)

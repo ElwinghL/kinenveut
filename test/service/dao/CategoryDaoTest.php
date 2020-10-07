@@ -72,4 +72,45 @@ class CategoryDaoTest extends TestCase
 
     $categoryDao->deleteCategoryById($categoryId);
   }
+
+  /**
+   * @test
+   * @covers CategoryDaoImpl
+   */
+  public function selectCategoryByIdTest() : void
+  {
+    $categoryDao = App_DaoFactory::getFactory()->getCategoryDao();
+    $categoryTest = new CategoryModel();
+    $categoryTestName = 'Test';
+    $categoryTest->setName($categoryTestName);
+
+    $categoryId = $categoryDao->insertCategory($categoryTest);
+
+    $category = $categoryDao->selectCategoryById($categoryId);
+
+    $this->assertNotNull($category);
+    $this->assertSame($categoryTestName, $category->getName());
+
+    $categoryDao->deleteCategoryById($categoryId);
+  }
+
+  /**
+   * @test
+   * @covers CategoryDaoImpl
+   */
+  public function updateCategoryTest() : void
+  {
+    $categoryDao = App_DaoFactory::getFactory()->getCategoryDao();
+    $categoryTest = new CategoryModel();
+    $expectedName = 'Edit-Test';
+    $categoryTest->setId($categoryDao->insertCategory($categoryTest->setName('Test')));
+
+    $categoryDao->updateCategory($categoryTest->setName($expectedName));
+    $category = $categoryDao->selectCategoryById($categoryTest->getId());
+
+    $this->assertNotNull($category);
+    $this->assertSame($expectedName, $category->getName());
+
+    $categoryDao->deleteCategoryById($categoryTest->getId());
+  }
 }

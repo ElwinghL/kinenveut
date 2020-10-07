@@ -37,4 +37,9 @@ class App_BoFactory
   {
     return new BidHistoryBoImpl();
   }
+
+  public function getAuctionAccessStateBo() : AuctionAccessStateBoImpl
+  {
+    return new AuctionAccessStateBoImpl();
+  }
 }

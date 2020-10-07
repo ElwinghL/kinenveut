@@ -4,7 +4,7 @@ interface IAuctionDao
 {
   public function selectAllAuctionsByAuctionState(int $auctionState) : array;
 
-  public function selectAuctionByAuctionId(int $auctionId) : AuctionModel;
+  public function selectAuctionByAuctionId(int $auctionId) : ?AuctionModel;
 
   public function selectAllAuctionsBySellerId(int $userId) : array;
 
