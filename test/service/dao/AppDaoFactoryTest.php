@@ -62,4 +62,13 @@ class AppDaoFactoryTest extends TestCase
   {
     $this->assertInstanceOf(BidHistoryDaoImpl::class, App_DaoFactory::getFactory()->getBidHistoryDao());
   }
+
+  /**
+ * @test
+ * @covers App_DaoFactory
+ */
+  public function getAuctionAccessStateDaoTest(): void
+  {
+    $this->assertInstanceOf(AuctionAccessStateDaoImpl::class, App_DaoFactory::getFactory()->getAuctionAccessStateDao());
+  }
 }

@@ -62,4 +62,13 @@ class AppBoFactoryTest extends TestCase
   {
     $this->assertInstanceOf(BidHistoryBoImpl::class, App_BoFactory::getFactory()->getBidHistoryBo());
   }
+
+  /**
+   * @test
+   * @covers App_BoFactory
+   */
+  public function getAuctionAccessStateBoTest(): void
+  {
+    $this->assertInstanceOf(AuctionAccessStateBoImpl::class, App_BoFactory::getFactory()->getAuctionAccessStateBo());
+  }
 }
