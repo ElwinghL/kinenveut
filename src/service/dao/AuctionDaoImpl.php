@@ -50,7 +50,7 @@ class AuctionDaoImpl implements IAuctionDao
     return $auctionList;
   }
 
-  public function selectAuctionByAuctionId(int $auctionId): AuctionModel
+  public function selectAuctionByAuctionId(int $auctionId): ?AuctionModel
   {
     $request = 'SELECT Auction.id AS objectId,name,description,basePrice,reservePrice,pictureLink,startDate,duration,auctionState,sellerId,privacyId,categoryId
     ,v_BestBid.id AS bidId,v_BestBid.bidPrice,v_BestBid.bidDate,v_BestBid.bidderId
@@ -64,6 +64,10 @@ class AuctionDaoImpl implements IAuctionDao
       $oneAuction = $query->fetch();
     } catch (PDOException $Exception) {
       throw new BDDException($Exception->getMessage(), (int)$Exception->getCode());
+    }
+
+    if ($oneAuction === null) {
+      return null;
     }
 
     $theBestBid = new BidModel();
