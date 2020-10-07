@@ -271,7 +271,7 @@ class UserDaoTest extends TestCase
     $this->assertNotNull($userModifiedSelected);
     $this->assertEquals($isAuthorised, $userModifiedSelected->getIsAuthorised());
 
-    $userDao->deleteUser((int) $userModified->getId());
+    $userDao->deleteUser($userModified->getId());
   }
 
   /**
@@ -287,23 +287,30 @@ class UserDaoTest extends TestCase
     $birthDate = '2000-01-13';
     $email = 'Francis.Dupont@gmail.com';
     $password = 'password';
-    $isAuthorised = '0';
 
     $user
-      ->setFirstName($firstName)
-      ->setLastName($lastName)
+    ->setFirstName($firstName)
+    ->setLastName($lastName)
       ->setBirthDate($birthDate)
       ->setEmail($email)
-      ->setPassword($password)
-      ->setIsAuthorised($isAuthorised);
+      ->setPassword($password);
 
     $userId = $userDao->insertUser($user);
+    $user->setId($userId);
 
     $usersSelected = $userDao->selectUsersByState(null);
 
     $this->assertTrue(is_array($usersSelected));
     $this->assertNotNull($usersSelected[0]->getId());
 
-    $userDao->deleteUser((int)$userId);
+    $isAuthorised = '0';
+    $user->setIsAuthorised($isAuthorised);
+    $userDao->updateUserIsAuthorised($user);
+    $usersSelected = $userDao->selectUsersByState($isAuthorised);
+
+    $this->assertTrue(is_array($usersSelected));
+    $this->assertNotNull($usersSelected[0]->getId());
+
+    $userDao->deleteUser($userId);
   }
 }

@@ -136,12 +136,13 @@ class UserDaoImpl implements IUserDao
 
   public function updateUserIsAuthorised(UserModel $user) : bool
   {
-    $request = 'UPDATE User SET isAuthorised = :startDate WHERE id = :id';
+    $success = null;
+    $request = 'UPDATE User SET isAuthorised = :isAuthorised WHERE id = :id';
 
     try {
       if ($user->getId() != null) {
         $query = db()->prepare($request);
-        $success = $query->execute(['id'=>$user->getId(), 'startDate'=>$user->getIsAuthorised()]);
+        $success = $query->execute(['id'=>$user->getId(), 'isAuthorised'=>$user->getIsAuthorised()]);
       }
     } catch (PDOException $Exception) {
       throw new BDDException($Exception->getMessage(), (int)$Exception->getCode());
