@@ -1,3 +1,6 @@
+<?php
+  $nbDemandes = 0;
+?>
 <div class="container page-header-custom">
   <div class="row row-vertically-centered">
     <div class="col-md-10">
@@ -18,7 +21,7 @@
               <a class="dropdown-item" href="?r=account&userId=<?= isset($_SESSION['userId']) ? $_SESSION['userId'] : '1'; ?>">Mon compte</a>
               <a class="dropdown-item" href="?r=auction/sells/&userId=<?= isset($_SESSION['userId']) ? $_SESSION['userId'] : '1'; ?>">Mes ventes</a>
               <a class="dropdown-item" href="?r=auction/bids&userId=<?= isset($_SESSION['userId']) ? $_SESSION['userId'] : '1'; ?>">Mes enchères</a>
-              <a class="dropdown-item" href="?r=accessrequest/index">Demandes <span class="badge badge-light">9</span></a>
+              <a class="dropdown-item" href="?r=accessrequest/index">Demandes <?php  if($nbDemandes > 0):?><span class="badge badge-danger">9</span><?php endif;?></a>
               <?php if (isset($_SESSION['isAdmin']) && $_SESSION['isAdmin'] == 1) : ?>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="?r=user">Gestion des utilisateurs</a>

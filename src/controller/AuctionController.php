@@ -102,8 +102,8 @@ class AuctionController extends Controller
       $auctionBo = App_BoFactory::getFactory()->getAuctionBo();
       $auction = new AuctionModel();
 
-      $auction->setName(protectStringToDisplay($data['values']['name']))
-            ->setDescription(protectStringToDisplay($data['values']['description']))
+      $auction->setName($data['values']['name'])
+            ->setDescription($data['values']['description'])
             ->setBasePrice($data['values']['basePrice'])
             ->setReservePrice($data['values']['reservePrice'])
             ->setDuration($data['values']['duration'])

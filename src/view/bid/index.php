@@ -2,7 +2,9 @@
 
 <?php
 $auction = (isset($data['auction'])) ? $data['auction'] : new AuctionModel();
+$auctionAccessState = (isset($data['auctionAccessState'])) ? $data['auctionAccessState'] : new AuctionAccessStateModel();
 $seller = (isset($data['seller'])) ? $data['seller'] : new UserModel();
+
 $bestBid = ($auction->getBestBid() != null) ? $auction->getBestBid() : new BidModel();
 $minPrice = (($bestBid->getBidPrice() != null) && ($bestBid->getBidPrice() != null)) ? $bestBid->getBidPrice() : $auction->getBasePrice();
 ?>
@@ -12,7 +14,7 @@ $minPrice = (($bestBid->getBidPrice() != null) && ($bestBid->getBidPrice() != nu
     <!--Titre-->
     <div class="row">
         <div class="col-md-9">
-            <h2><?php echo $auction->getName(); ?> - <?php echo $minPrice ?>€</h2>
+            <h2><?php echo protectStringToDisplay($auction->getName()); ?> - <?php echo $minPrice ?>€</h2>
         </div>
         <div class="col-md-3">
             <small><i>Mis en ligne le <?php echo $auction->getStartDate(); ?></i></small>
@@ -35,7 +37,7 @@ $minPrice = (($bestBid->getBidPrice() != null) && ($bestBid->getBidPrice() != nu
             <?php if ($auction->getAuctionState() == 1) : ?>
                 <?php if ($_SESSION['userId'] != $auction->getSellerId()) : ?>
                     <?php if ($_SESSION['userId'] != $bestBid->getBidderId()) : ?>
-                        <?php if ($auction->getPrivacyId() == 0)://todo: ajouter le test de s'il est autorisé ou non à accéder!?>
+                        <?php if ($auction->getPrivacyId() == 0 || $auctionAccessState->getStateId() == 1):?>
                             <form action="?r=bid/addBid&auctionId=<?= $_GET['auctionId']; ?>" method="post">
                                 <div class="input-group mb-2">
                                     <input class="form-control" name="bidPrice" type="number" id="bidPrice" value="" min="<?php echo $minPrice + 1; ?>" placeholder="Saisir votre enchère maximum" />
@@ -51,10 +53,10 @@ $minPrice = (($bestBid->getBidPrice() != null) && ($bestBid->getBidPrice() != nu
                                 <?php endif; ?>
                             </form>
                         <?php else:?>
-                            <?php if(1):?>
-                                <a class="btn" href="?r=bid/makeAuctionAccessRequest&auctionId=<?= $_GET['auctionId']; ?>">Demander à participer à l'enchère</a>
+                            <?php if($auctionAccessState->getStateId() !== null && $auctionAccessState->getStateId() == 0):?>
+                                <a class="btn btn-secondary" href="?r=bid/cancelAuctionAccessRequest&auctionId=<?= $_GET['auctionId']; ?>">Annuler ma demande</a>
                             <?php else:?>
-                                <a class="btn" href="?r=bid/cancelAuctionAccessRequest&auctionId=<?= $_GET['auctionId']; ?>">Annuler ma demande</a>
+                                <a class="btn btn-primary" href="?r=bid/makeAuctionAccessRequest&auctionId=<?= $_GET['auctionId']; ?>">Demander à participer à l'enchère</a>
                             <?php endif;?>
                         <?php endif;?>
                     <?php else : ?>
@@ -85,7 +87,7 @@ $minPrice = (($bestBid->getBidPrice() != null) && ($bestBid->getBidPrice() != nu
         <div class="col-md-12">
             <h3>Description</h3>
             <p>
-                <?php echo $auction->getDescription(); ?>
+                <?php echo protectStringToDisplay($auction->getDescription()); ?>
             </p>
         </div>
     </div>
