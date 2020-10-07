@@ -14,7 +14,16 @@ function my_autoloader($name)
   } elseif (stripos($name, 'Exception') !== false) {
     $dir = 'exception';
   }
-  include_once $dir . '/' . $name . '.php';
+
+  if (file_exists('src/' . $dir . '/' . $name . '.php')) {
+    include_once $dir . '/' . $name . '.php';
+  } else {
+    if (isset($_SESSION['userId'])) {
+      header('Location: ?r=home');
+    } else {
+      header('Location: ?r=login');
+    }
+  }
 }
 
 spl_autoload_register('my_autoloader');
