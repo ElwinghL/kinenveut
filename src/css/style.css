@@ -61,3 +61,44 @@ div.hr{
     border-top: 1px solid lightgrey;
     opacity: 0.5;
 }
+
+/* Auctions */
+
+.btn-ca{
+    background-color: orangered;
+    border-color: orangered;
+}
+
+.btn-ca:hover{
+    background-color: red;
+    border-color: red;
+}
+
+.btn-ab{
+    background-color: darkgreen;
+    border-color: darkgreen;
+}
+.btn-ab:hover{
+    background-color: forestgreen;
+    border-color: forestgreen;
+}
+
+.btn-add{
+    background-color: darkgray;
+    border-color: darkgray;
+}
+
+.btn-add:hover{
+    background-color: gray;
+    border-color: gray;
+}
+
+.head-list {
+    border-bottom-style: none;
+    font-weight: bold;
+}
+
+.title-line {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}

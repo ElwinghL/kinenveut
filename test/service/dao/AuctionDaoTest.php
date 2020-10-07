@@ -119,6 +119,42 @@ class AuctionDaoTest extends TestCase
    * @test
    * @covers AuctionDaoImpl
    */
+  public function updateAuctionStateTest(): void
+  {
+    $auctionDao = App_DaoFactory::getFactory()->getAuctionDao();
+
+    $auctionTest = new AuctionModel();
+    $auctionTest
+            ->setName('Object Test')
+            ->setDescription('descr')
+            ->setBasePrice(3)
+            ->setReservePrice(10)
+            ->setStartDate('2020-01-01')
+            ->setDuration(7)
+            ->setSellerId(1)
+            ->setPrivacyId(0)
+            ->setCategoryId(1);
+
+    $auctionId = $auctionDao->insertAuction($auctionTest);
+    $auctionInserted = $auctionDao->selectAuctionByAuctionId($auctionId);
+
+    $auctionTest
+            ->setId($auctionId)
+            ->setAuctionState(1);
+
+    $auctionDao->updateAuctionState($auctionTest);
+    $auctionUpdated = $auctionDao->selectAuctionByAuctionId($auctionId);
+
+    $this->assertSame($auctionInserted->getId(), $auctionUpdated->getId());
+    $this->assertNotSame($auctionInserted->getAuctionState(), $auctionUpdated->getAuctionState());
+
+    $auctionDao->deleteAuctionById($auctionId);
+  }
+
+  /**
+   * @test
+   * @covers AuctionDaoImpl
+   */
   public function deleteAuctionTest(): void
   {
     $auctionDao = App_DaoFactory::getFactory()->getAuctionDao();
@@ -169,6 +205,39 @@ class AuctionDaoTest extends TestCase
     $auctionId = $auctionDao->insertAuction($auctionTest);
 
     $AuctionsSelected = $auctionDao->selectAllAuctionsByAuctionState($auctionState);
+
+    $this->assertTrue(is_array($AuctionsSelected));
+    $this->assertNotNull($AuctionsSelected[0]->getName());
+
+    $auctionDao->deleteAuctionById($auctionId);
+  }
+
+  /**
+   * @test
+   * @covers AuctionDaoImpl
+   */
+  public function selectAllAuctionsBySellerIdTest(): void
+  {
+    $auctionDao = App_DaoFactory::getFactory()->getAuctionDao();
+
+    $sellerId = 7;
+
+    $auctionTest = new AuctionModel();
+    $auctionTest
+            ->setName('Object Test')
+            ->setDescription('descr')
+            ->setBasePrice(3)
+            ->setReservePrice(10)
+            ->setStartDate('2020-01-01')
+            ->setDuration(7)
+            ->setAuctionState(1)
+            ->setSellerId($sellerId)
+            ->setPrivacyId(0)
+            ->setCategoryId(1);
+
+    $auctionId = $auctionDao->insertAuction($auctionTest);
+
+    $AuctionsSelected = $auctionDao->selectAllAuctionsBySellerId($sellerId);
 
     $this->assertTrue(is_array($AuctionsSelected));
     $this->assertNotNull($AuctionsSelected[0]->getName());
