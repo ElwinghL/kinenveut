@@ -1,3 +1,3 @@
-ALTER TABLE auctionaccessstate
-ADD CONSTRAINT AK_Password UNIQUE (auctionId, bidderId);
+ALTER TABLE AuctionAccessState
+ADD CONSTRAINT AK_Auction_Bidder UNIQUE (auctionId, bidderId);
 
