@@ -60,7 +60,7 @@ class AuctionAccessStateDaoTest extends TestCase
    * @covers AuctionAccessStateDaoImpl
    * @throws BDDException
    */
-  public function updateStateIdTest(): void
+  public function updateStateIdByAuctionAccessStateIdTest(): void
   {
     //Todo : vérifier l'update
     $newStateId = 1;
@@ -72,7 +72,7 @@ class AuctionAccessStateDaoTest extends TestCase
 
     $auctionAccessStateId = $auctionAccessStateDao->insertAuctionAccessState($auctionId, $bidderId);
 
-    $success = $auctionAccessStateDao->updateStateId($auctionAccessStateId, $newStateId);
+    $success = $auctionAccessStateDao->updateStateIdByAuctionAccessStateId($auctionAccessStateId, $newStateId);
 
     $this->assertTrue($success);
 

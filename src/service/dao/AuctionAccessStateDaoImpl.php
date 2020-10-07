@@ -31,7 +31,7 @@ class AuctionAccessStateDaoImpl implements IAuctionAccessStateDao
     return $success;
   }
 
-  public function updateStateId(int $auctionAccessStateId, int $stateId): bool
+  public function updateStateIdByAuctionAccessStateId(int $auctionAccessStateId, int $stateId): bool
   {
     $request = 'UPDATE AuctionAccessState SET stateId = :stateId WHERE id = :id';
 

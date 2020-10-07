@@ -37,7 +37,7 @@ class AccessRequestController extends Controller
     $aasid = $_GET['aasid'];
     $auctionAccessStateDao = App_DaoFactory::getFactory()->getAuctionAccessStateDao();
     try {
-      $auctionAccessStateDao->updateStateId($aasid, $stateId);
+      $auctionAccessStateDao->updateStateIdByAuctionAccessStateId($aasid, $stateId);
     } catch (BDDException $e) {
       $this->redirect('?r=home');
     }

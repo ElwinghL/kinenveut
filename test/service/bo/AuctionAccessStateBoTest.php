@@ -43,14 +43,14 @@ class AuctionAccessStateBoTest extends TestCase
     $expectedState = true;
 
     $auctionAccessStateBo = App_BoFactory::getFactory()->getAuctionAccessStateBo();
-    $auctionAccessStateDaoImpMock = $this->createPartialMock(AuctionAccessStateDaoImpl::class, ['updateStateId']);
-    $auctionAccessStateDaoImpMock->method('updateStateId')->willReturn($expectedState);
+    $auctionAccessStateDaoImpMock = $this->createPartialMock(AuctionAccessStateDaoImpl::class, ['updateStateIdByAuctionAccessStateId']);
+    $auctionAccessStateDaoImpMock->method('updateStateIdByAuctionAccessStateId')->willReturn($expectedState);
 
     $app_DaoFactoryMock = $this->createPartialMock(App_DaoFactory::class, ['getAuctionAccessStateDao']);
     $app_DaoFactoryMock->method('getAuctionAccessStateDao')->willReturn($auctionAccessStateDaoImpMock);
     App_DaoFactory::setFactory($app_DaoFactoryMock);
 
-    $isUpdated = $auctionAccessStateBo->updateStateId(42, 42);
+    $isUpdated = $auctionAccessStateBo->updateStateIdByAuctionAccessStateId(42, 42);
 
     $this->assertSame($expectedState, $isUpdated);
   }
