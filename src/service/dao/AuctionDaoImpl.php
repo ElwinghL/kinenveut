@@ -4,6 +4,7 @@ class AuctionDaoImpl implements IAuctionDao
 {
   public function selectAllAuctionsByAuctionState($auctionSate) : array
   {
+    $auctions = null;
     $request = 'SELECT Auction.id AS objectId,name,description,basePrice,reservePrice,pictureLink,startDate,duration,auctionState,sellerId,privacyId,categoryId
     ,v_BestBid.id AS bidId,v_BestBid.bidPrice,v_BestBid.bidDate,v_BestBid.bidderId
     FROM Auction
@@ -52,6 +53,7 @@ class AuctionDaoImpl implements IAuctionDao
 
   public function selectAuctionByAuctionId(int $auctionId): ?AuctionModel
   {
+    $oneAuction = null;
     $request = 'SELECT Auction.id AS objectId,name,description,basePrice,reservePrice,pictureLink,startDate,duration,auctionState,sellerId,privacyId,categoryId
     ,v_BestBid.id AS bidId,v_BestBid.bidPrice,v_BestBid.bidDate,v_BestBid.bidderId
     FROM Auction
@@ -99,15 +101,20 @@ class AuctionDaoImpl implements IAuctionDao
 
   public function selectAllAuctionsBySellerId($sellerId) : array
   {
-    $request = db()->prepare('SELECT Auction.id AS objectId,name,description,basePrice,reservePrice,pictureLink,startDate,duration,auctionState,sellerId,privacyId,categoryId
+    $auctions = null;
+    $request = 'SELECT Auction.id AS objectId,name,description,basePrice,reservePrice,pictureLink,startDate,duration,auctionState,sellerId,privacyId,categoryId
                     ,v_BestBid.id AS bidId,v_BestBid.bidPrice,v_BestBid.bidDate,v_BestBid.bidderId
                     FROM Auction
                     LEFT JOIN v_BestBid ON v_BestBid.objectId = Auction.id
-                    WHERE sellerId = :sellerId ORDER BY auctionState');
+                    WHERE sellerId = :sellerId ORDER BY auctionState';
 
-    $request->execute(['sellerId'=>$sellerId]);
-
-    $auctions = $request->fetchAll(PDO::FETCH_ASSOC);
+    try {
+      $query = db()->prepare($request);
+      $query->execute(['sellerId'=>$sellerId]);
+      $auctions = $query->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $Exception) {
+      throw new BDDException($Exception->getMessage(), (int)$Exception->getCode());
+    }
 
     $auctionList = [];
     foreach ($auctions as $oneAuction) {
@@ -157,6 +164,7 @@ class AuctionDaoImpl implements IAuctionDao
 
   public function deleteAuctionById(int $auctionId) : bool
   {
+    $success = null;
     $request = 'DELETE FROM Auction WHERE id=?';
 
     try {
@@ -171,6 +179,7 @@ class AuctionDaoImpl implements IAuctionDao
 
   public function updateStartDateAndAuctionState(AuctionModel $auction): bool
   {
+    $success = null;
     $request = 'UPDATE Auction SET startDate = :startDate, auctionState = :auctionState WHERE id = :id';
 
     if ($auction->getId() != null) {
@@ -187,9 +196,14 @@ class AuctionDaoImpl implements IAuctionDao
 
   public function updateAuctionState(AuctionModel $auction): bool
   {
-    if ($auction->getId() != null) {
-      $request = db()->prepare('UPDATE Auction SET auctionState = :auctionState WHERE id = :id');
-      $success = $request->execute(['id'=>$auction->getId(), 'auctionState'=>$auction->getAuctionState()]);
+    $success = null;
+    $request = 'UPDATE Auction SET auctionState = :auctionState WHERE id = :id';
+
+    try {
+      $query = db()->prepare($request);
+      $success = $query->execute(['id'=>$auction->getId(), 'auctionState'=>$auction->getAuctionState()]);
+    } catch (PDOException $Exception) {
+      throw new BDDException($Exception->getMessage(), (int)$Exception->getCode());
     }
 
     return $success;

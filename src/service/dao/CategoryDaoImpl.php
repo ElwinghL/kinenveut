@@ -4,6 +4,7 @@ class CategoryDaoImpl implements ICategoryDao
 {
   public function selectAllCategories(): array
   {
+    $categories = null;
     $request = 'SELECT id, name FROM Category';
 
     try {
@@ -42,6 +43,7 @@ class CategoryDaoImpl implements ICategoryDao
 
   public function deleteCategoryById(int $categoryId): bool
   {
+    $success = null;
     $request = 'DELETE FROM Category WHERE id=?';
 
     try {
@@ -56,6 +58,7 @@ class CategoryDaoImpl implements ICategoryDao
 
   public function selectCategoryById(int $categoryId): ?CategoryModel
   {
+    $category = null;
     $request = 'SELECT id, name FROM Category WHERE id=?';
 
     try {
@@ -80,6 +83,7 @@ class CategoryDaoImpl implements ICategoryDao
 
   public function updateCategory(CategoryModel $categoryModel): ?bool
   {
+    $success = null;
     $request = 'UPDATE Category SET name = :name WHERE id = :id';
 
     try {

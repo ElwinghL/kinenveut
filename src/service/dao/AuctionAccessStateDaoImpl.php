@@ -8,8 +8,7 @@ class AuctionAccessStateDaoImpl implements IAuctionAccessStateDao
 
     try {
       $query = db()->prepare($request);
-      $params = [$auctionId, $bidderId];
-      $query->execute($params);
+      $query->execute([$auctionId, $bidderId]);
     } catch (PDOException $Exception) {
       throw new BDDException($Exception->getMessage(), (int)$Exception->getCode());
     }
@@ -19,6 +18,7 @@ class AuctionAccessStateDaoImpl implements IAuctionAccessStateDao
 
   public function deleteAuctionAccessStateById(int $id): bool
   {
+    $success = null;
     $request = 'DELETE FROM AuctionAccessState WHERE id=?';
 
     try {
@@ -33,12 +33,12 @@ class AuctionAccessStateDaoImpl implements IAuctionAccessStateDao
 
   public function updateStateIdByAuctionAccessStateId(int $auctionAccessStateId, int $stateId): bool
   {
+    $success = null;
     $request = 'UPDATE AuctionAccessState SET stateId = :stateId WHERE id = :id';
 
     try {
       $query = db()->prepare($request);
-      $params = ['stateId'=>$stateId, 'id'=>$auctionAccessStateId];
-      $success = $query->execute($params);
+      $success = $query->execute(['stateId'=>$stateId, 'id'=>$auctionAccessStateId]);
     } catch (PDOException $Exception) {
       throw new BDDException($Exception->getMessage(), (int)$Exception->getCode());
     }
@@ -48,12 +48,12 @@ class AuctionAccessStateDaoImpl implements IAuctionAccessStateDao
 
   public function updateStateIdByAuctionIdAndBidderId(int $auctionId, int $bidderId, int $stateId)  : bool
   {
+    $success = null;
     $request = 'UPDATE AuctionAccessState SET stateId = :stateId WHERE auctionId = :auctionId AND bidderId = :bidderId';
 
     try {
       $query = db()->prepare($request);
-      $params = ['stateId'=>$stateId, 'auctionId'=>$auctionId, 'bidderId'=>$bidderId];
-      $success = $query->execute($params);
+      $success = $query->execute(['stateId'=>$stateId, 'auctionId'=>$auctionId, 'bidderId'=>$bidderId]);
     } catch (PDOException $Exception) {
       throw new BDDException($Exception->getMessage(), (int)$Exception->getCode());
     }
@@ -63,14 +63,15 @@ class AuctionAccessStateDaoImpl implements IAuctionAccessStateDao
 
   public function selectAuctionAccessStateByAuctionIdAndBidderId(int $auctionId, int $bidderId) : ?AuctionAccessStateModel
   {
+    $auctionAccessStateSelected = null;
     $request = 'SELECT aas.id AS auctionAccessStateId, aas.auctionId, aas.bidderId, aas.stateId
                 FROM AuctionAccessState AS aas
                 WHERE aas.auctionId = :auctionId
                     AND aas.bidderId = :bidderId';
+
     try {
       $query = db()->prepare($request);
-      $params = ['auctionId'=>$auctionId, 'bidderId'=>$bidderId];
-      $query->execute($params);
+      $query->execute(['auctionId'=>$auctionId, 'bidderId'=>$bidderId]);
       $auctionAccessStateSelected = $query->fetch();
     } catch (PDOException $Exception) {
       throw new BDDException($Exception->getMessage(), (int)$Exception->getCode());
@@ -90,6 +91,7 @@ class AuctionAccessStateDaoImpl implements IAuctionAccessStateDao
 
   public function selectAllAuctionAccessStateBySellerIdAndStateId(int $sellerId, int $stateId): array
   {
+    $auctionAccessStateSelected = null;
     $request = 'SELECT aas.id AS auctionAccessStateId, aas.auctionId, aas.bidderId, aas.stateId
                     ,Auction.name AS auctionName, Auction.sellerId
                     ,User.firstName AS bidderFirstName,User.lastName AS bidderLastName
@@ -103,8 +105,7 @@ class AuctionAccessStateDaoImpl implements IAuctionAccessStateDao
 
     try {
       $query = db()->prepare($request);
-      $params = ['sellerId'=>$sellerId, 'stateId'=>$stateId];
-      $query->execute($params);
+      $query->execute(['sellerId'=>$sellerId, 'stateId'=>$stateId]);
       $auctionAccessStateSelected = $query->fetchAll(PDO::FETCH_ASSOC);
     } catch (PDOException $Exception) {
       throw new BDDException($Exception->getMessage(), (int)$Exception->getCode());
@@ -115,14 +116,16 @@ class AuctionAccessStateDaoImpl implements IAuctionAccessStateDao
       $oneAuctionAccessStateModel = new AuctionAccessStateModel();
       $oneAuctionAccessStateModel
           ->setId($oneAuctionAccessState['auctionAccessStateId'])
-          ->setAuction($oneAuctionAccessStateModel->getAuction()
-                                                ->setId($oneAuctionAccessState['auctionId'])
-                                                ->setName($oneAuctionAccessState['auctionName'])
-                                                ->setSellerId($oneAuctionAccessState['sellerId']))
-          ->setBidder($oneAuctionAccessStateModel->getBidder()
-                                                ->setId($oneAuctionAccessState['bidderId'])
-                                                ->setFirstName($oneAuctionAccessState['bidderFirstName'])
-                                                ->setLastName($oneAuctionAccessState['bidderLastName']))
+          ->setAuction($oneAuctionAccessStateModel
+            ->getAuction()
+            ->setId($oneAuctionAccessState['auctionId'])
+            ->setName($oneAuctionAccessState['auctionName'])
+            ->setSellerId($oneAuctionAccessState['sellerId']))
+          ->setBidder($oneAuctionAccessStateModel
+            ->getBidder()
+            ->setId($oneAuctionAccessState['bidderId'])
+            ->setFirstName($oneAuctionAccessState['bidderFirstName'])
+            ->setLastName($oneAuctionAccessState['bidderLastName']))
           ->setStateId($oneAuctionAccessState['stateId']);
 
       array_push($auctionAccessStateList, $oneAuctionAccessStateModel);
@@ -133,16 +136,17 @@ class AuctionAccessStateDaoImpl implements IAuctionAccessStateDao
 
   public function selectNumberOfAuctionAccessStateBySellerId(int $sellerId) : int
   {
+    $numberOfAAS = null;
     $request = 'SELECT count(*)
                 FROM AuctionAccessState AS aas
                 INNER JOIN Auction
                     ON aas.auctionId = Auction.id
                 WHERE Auction.sellerId = :sellerId
                 AND aas.stateId = 0';
+
     try {
       $query = db()->prepare($request);
-      $params = ['sellerId'=>$sellerId];
-      $query->execute($params);
+      $query->execute(['sellerId'=>$sellerId]);
       $numberOfAAS = $query->fetch();
     } catch (PDOException $Exception) {
       throw new BDDException($Exception->getMessage(), (int)$Exception->getCode());

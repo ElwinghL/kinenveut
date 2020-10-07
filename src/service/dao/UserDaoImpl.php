@@ -4,6 +4,7 @@ class UserDaoImpl implements IUserDao
 {
   public function selectUserByUserId(int $userId) : ?UserModel
   {
+    $userSelected = null;
     $request = 'SELECT id, firstName, lastName, email, birthDate, isAuthorised, isAdmin FROM User WHERE id=?';
 
     try {
@@ -33,6 +34,7 @@ class UserDaoImpl implements IUserDao
 
   public function selectUsersByState($state): ?array
   {
+    $usersList = null;
     $request = 'SELECT id, firstName, lastName, email, birthDate, isAuthorised, isAdmin FROM User WHERE isAuthorised' . ($state === null ? ' is ?' : '=?');
 
     try {
@@ -63,9 +65,9 @@ class UserDaoImpl implements IUserDao
 
   public function selectUserByEmailAndPassword(String $email, String $password) : ?UserModel
   {
+    $firstUser = null;
     $request = 'SELECT id, firstName, lastName, email, birthDate, isAuthorised, isAdmin, password FROM User WHERE email=?';
 
-    $firstUser = '';
     try {
       $query = db()->prepare($request);
       $query->execute([$email]);
@@ -93,6 +95,7 @@ class UserDaoImpl implements IUserDao
 
   public function selectUserByEmail(String $email) : ?UserModel
   {
+    $firstUser = null;
     $request = 'SELECT * FROM User WHERE email=?';
 
     try {
@@ -153,6 +156,7 @@ class UserDaoImpl implements IUserDao
 
   public function updateUser(UserModel $user) : bool
   {
+    $success = null;
     $request = 'UPDATE User SET firstName = ?, lastName = ?, email = ? WHERE id = ?';
 
     try {
@@ -167,6 +171,7 @@ class UserDaoImpl implements IUserDao
 
   public function deleteUser(int $userId) : bool
   {
+    $success = null;
     $request = 'DELETE FROM User WHERE id=?';
 
     try {
