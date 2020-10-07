@@ -35,22 +35,28 @@ $minPrice = (($bestBid->getBidPrice() != null) && ($bestBid->getBidPrice() != nu
             <?php if ($auction->getAuctionState() == 1) : ?>
                 <?php if ($_SESSION['userId'] != $auction->getSellerId()) : ?>
                     <?php if ($_SESSION['userId'] != $bestBid->getBidderId()) : ?>
-                        <form action="?r=bid/addBid&auctionId=<?= $_GET['auctionId']; ?>" method="post">
-                            <div class="input-group mb-2">
-                                <input class="form-control" name="bidPrice" type="number" id="bidPrice" value="" min="<?php echo $minPrice + 1; ?>" placeholder="Saisir votre enchère maximum" />
-                                <div class="input-group-prepend">
-                                    <div class="input-group-btn">
-                                        <input class="btn btn-light" name="makeabid" type="submit" value="Enchérir" />
+                        <?php if ($auction->getPrivacyId() == 0)://todo: ajouter le test de s'il est autorisé ou non à accéder!?>
+                            <form action="?r=bid/addBid&auctionId=<?= $_GET['auctionId']; ?>" method="post">
+                                <div class="input-group mb-2">
+                                    <input class="form-control" name="bidPrice" type="number" id="bidPrice" value="" min="<?php echo $minPrice + 1; ?>" placeholder="Saisir votre enchère maximum" />
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-btn">
+                                            <input class="btn btn-light" name="makeabid" type="submit" value="Enchérir" />
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <?php if (isset($_SESSION['errors']['noBidPrice'])) : ?>
-                                <?php
-                                echo "<span class='error-custom'>" . $_SESSION['errors']['noBidPrice'] . '</span>';
-                                unset($_SESSION['errors']['noBidPrice']);
-                                ?>
-                            <?php endif; ?>
-                        </form>
+                                <?php if (isset($_SESSION['errors']['noBidPrice'])) : ?>
+                                    <span class='error-custom'><?=$_SESSION['errors']['noBidPrice']?></span>;
+                                    <?php unset($_SESSION['errors']['noBidPrice']);?>
+                                <?php endif; ?>
+                            </form>
+                        <?php else:?>
+                            <?php if(1):?>
+                                <a class="btn" href="?r=bid/makeAuctionAccessRequest&auctionId=<?= $_GET['auctionId']; ?>">Demander à participer à l'enchère</a>
+                            <?php else:?>
+                                <a class="btn" href="?r=bid/cancelAuctionAccessRequest&auctionId=<?= $_GET['auctionId']; ?>">Annuler ma demande</a>
+                            <?php endif;?>
+                        <?php endif;?>
                     <?php else : ?>
                         Dernière offre :&nbsp<b><span style="color: green"><?php echo ' ' . $minPrice . ' €'; ?></span></b>
                     <?php endif; ?>

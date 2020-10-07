@@ -14,8 +14,8 @@ class BidController extends Controller
       $seller = $userBo->selectUserByUserId($auction->getSellerId());
 
       $data = [
-        'auction'=> $auction,
-        'seller' => $seller
+        'auction' => $auction,
+        'seller'  => $seller
       ];
 
       $this->render('index', $data);
@@ -38,14 +38,41 @@ class BidController extends Controller
 
       $newBid = new BidModel();
       $newBid
-              ->setBidPrice($_POST['bidPrice'])
-              ->setBidderId($_SESSION['userId'])
-              ->setObjectId($auctionId);
+                ->setBidPrice($_POST['bidPrice'])
+                ->setBidderId($_SESSION['userId'])
+                ->setObjectId($auctionId);
 
       $bidHistoryBo = App_BoFactory::getFactory()->getBidHistoryBo();
       $bidHistoryBo->insertBid($newBid);
     }
 
-    $this->redirect('?r=bid&auctionId=' . $_GET['auctionId']);
+    $this->redirect('?r=bid&auctionId=' . $auctionId);
+  }
+
+  public function makeAuctionAccessRequest()
+  {
+    $bidderId = $_SESSION['userId'];
+    $auctionId = $_GET['auctionId'];
+
+    $auctionAccessStateDao = App_DaoFactory::getFactory()->getAuctionAccessStateDao();
+    try {
+      $auctionAccessStateDao->insertAuctionAccessState($auctionId, $bidderId);
+    } catch (BDDException $e) {
+    }
+
+    $this->redirect('?r=bid&auctionId=' . $auctionId);
+  }
+
+  public function cancelAuctionAccessRequest()
+  {
+    $bidderId = $_SESSION['userId'];
+    $auctionId = $_GET['auctionId'];
+
+    $auctionAccessStateDao = App_DaoFactory::getFactory()->getAuctionAccessStateDao();
+    try {
+      $auctionAccessStateDao->updateAuctionAccessStateByAuctionIdAndBidderId($auctionId, $bidderId);
+    } catch (BDDException $e) {
+    }
+    $this->redirect('?r=bid&auctionId=' . $auctionId);
   }
 }
