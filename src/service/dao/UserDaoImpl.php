@@ -33,16 +33,20 @@ class UserDaoImpl implements IUserDao
 
   public function selectUsersByState($state): ?array
   {
-    $request = db()->prepare('SELECT id, firstName, lastName, email, birthDate, isAuthorised, isAdmin FROM User WHERE isAuthorised=?');
-    try {
-      $params = [$state];
-      $request->execute($params);
-      $usersList = $request->fetchAll(PDO::FETCH_ASSOC);
+    $request = 'SELECT id, firstName, lastName, email, birthDate, isAuthorised, isAdmin FROM User WHERE isAuthorised=?';
 
-      $users = [];
-      foreach ($usersList as $oneUser) {
-        $user = new UserModel();
-        $user
+    try {
+      $query = db()->prepare($request);
+      $query->execute([$state]);
+      $usersList = $query->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $Exception) {
+      throw new BDDException($Exception->getMessage(), (int)$Exception->getCode());
+    }
+
+    $users = [];
+    foreach ($usersList as $oneUser) {
+      $user = new UserModel();
+      $user
           ->setId($oneUser['id'])
           ->setFirstName(protectStringToDisplay($oneUser['firstName']))
           ->setLastName(protectStringToDisplay($oneUser['lastName']))
@@ -51,10 +55,7 @@ class UserDaoImpl implements IUserDao
           ->setIsAuthorised($oneUser['isAuthorised'])
           ->setIsAdmin($oneUser['isAdmin']);
 
-        array_push($users, $user);
-      }
-    } catch (PDOException $Exception) {
-      throw new BDDException($Exception->getMessage(), (int)$Exception->getCode());
+      array_push($users, $user);
     }
 
     return $users;
@@ -135,10 +136,12 @@ class UserDaoImpl implements IUserDao
 
   public function updateUserIsAuthorised(UserModel $user) : bool
   {
+    $request = 'UPDATE User SET isAuthorised = :startDate WHERE id = :id';
+
     try {
       if ($user->getId() != null) {
-        $request = db()->prepare('UPDATE User SET isAuthorised = :startDate WHERE id = :id');
-        $success = $request->execute(['id'=>$user->getId(), 'startDate'=>$user->getIsAuthorised()]);
+        $query = db()->prepare($request);
+        $success = $query->execute(['id'=>$user->getId(), 'startDate'=>$user->getIsAuthorised()]);
       }
     } catch (PDOException $Exception) {
       throw new BDDException($Exception->getMessage(), (int)$Exception->getCode());
