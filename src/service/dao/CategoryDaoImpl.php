@@ -53,4 +53,42 @@ class CategoryDaoImpl implements ICategoryDao
 
     return $success;
   }
+
+  public function selectCategoryById(int $categoryId): ?CategoryModel
+  {
+    $request = 'SELECT id, name FROM Category WHERE id=?';
+
+    try {
+      $query = db()->prepare($request);
+      $query->execute([$categoryId]);
+      $category = $query->fetch();
+    } catch (PDOException $Exception) {
+      throw new BDDException($Exception->getMessage(), (int)$Exception->getCode());
+    }
+
+    if ($category == null) {
+      return null;
+    }
+
+    $categoryModel = new CategoryModel();
+    $categoryModel
+      ->setId($category['id'])
+      ->setName($category['name']);
+
+    return $categoryModel;
+  }
+
+  public function updateCategory(CategoryModel $categoryModel): ?bool
+  {
+    $request = 'UPDATE Category SET name = :name WHERE id = :id';
+
+    try {
+      $query = db()->prepare($request);
+      $success = $query->execute(['id'=>$categoryModel->getId(), 'name'=>$categoryModel->getName()]);
+    } catch (PDOException $Exception) {
+      throw new BDDException($Exception->getMessage(), (int)$Exception->getCode());
+    }
+
+    return $success;
+  }
 }

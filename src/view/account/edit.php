@@ -20,7 +20,7 @@ $user = isset($data['user']) ? $data['user'] : new UserModel();
         <label for="email">Email</label>
         <input class="form-control" name="email" id="email" type="email" value="<?php echo protectStringToDisplay($user->getEmail()) ?>" placeholder="" maxlength="255" required />
         <?php if (isset($data['errors']['email'])) : ?>
-          <div class="invalid-feedback"><?php echo $data['errors']['email'] ?></div>
+          <div class="invalid-feedback d-block"><?php echo $data['errors']['email'] ?></div>
         <?php endif; ?>
         <br />
         <input class="btn btn-primary" name="updateButton" type="submit" value="Mettre à jour" />
