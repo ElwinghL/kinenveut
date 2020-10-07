@@ -2,10 +2,10 @@
 
 class AuctionAccessStateBoImpl implements IAuctionAccessStateBo
 {
-  public function insertAuctionAccessState(AuctionAccessStateModel $auctionAccessState): ?int
+  public function insertAuctionAccessState(int $auctionId, int $bidderId): ?int
   {
     $auctionAccessStateDao = App_DaoFactory::getFactory()->getAuctionAccessStateDao();
-    $auctionId = $auctionAccessStateDao->insertAuctionAccessState($auctionAccessState);
+    $auctionId = $auctionAccessStateDao->insertAuctionAccessState($auctionId, $bidderId);
 
     return $auctionId;
   }

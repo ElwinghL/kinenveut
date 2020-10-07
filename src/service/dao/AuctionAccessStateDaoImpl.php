@@ -2,13 +2,13 @@
 
 class AuctionAccessStateDaoImpl implements IAuctionAccessStateDao
 {
-  public function insertAuctionAccessState(AuctionAccessStateModel $auctionAccessState): ?int
+  public function insertAuctionAccessState($auctionId, $bidderId): ?int
   {
-    $request = 'INSERT INTO AuctionAccessState(auctionId, bidderId, stateId) VALUES (?,?,?)';
+    $request = 'INSERT INTO AuctionAccessState(auctionId, bidderId, stateId) VALUES (?,?,0)';
 
     try {
       $query = db()->prepare($request);
-      $params = [$auctionAccessState->getAuction()->getId(), $auctionAccessState->getBidder()->getId(), $auctionAccessState->getStateId()];
+      $params = [$auctionId, $bidderId];
       $query->execute($params);
     } catch (PDOException $Exception) {
       throw new BDDException($Exception->getMessage(), (int)$Exception->getCode());

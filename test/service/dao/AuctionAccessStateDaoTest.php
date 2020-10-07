@@ -25,13 +25,10 @@ class AuctionAccessStateDaoTest extends TestCase
   {
     $auctionAccessStateDao = App_DaoFactory::getFactory()->getAuctionAccessStateDao();
 
-    $auctionAccessStateTest = new AuctionAccessStateModel();
-    $auctionAccessStateTest
-        ->setAuction($auctionAccessStateTest->getAuction()->setId(1))
-        ->setBidder($auctionAccessStateTest->getBidder()->setId(1))
-        ->setStateId(1);
+    $auctionId = 1;
+    $bidderId = 1;
 
-    $auctionAccessStateId = $auctionAccessStateDao->insertAuctionAccessState($auctionAccessStateTest);
+    $auctionAccessStateId = $auctionAccessStateDao->insertAuctionAccessState($auctionId, $bidderId);
 
     $this->assertNotNull($auctionAccessStateId);
     $this->assertTrue($auctionAccessStateId > 0);
@@ -47,13 +44,11 @@ class AuctionAccessStateDaoTest extends TestCase
   public function deleteAuctionAccessStateByIdTest(): void
   {
     $auctionAccessStateDao = App_DaoFactory::getFactory()->getAuctionAccessStateDao();
-    $auctionAccessStateTest = new AuctionAccessStateModel();
-    $auctionAccessStateTest
-        ->setAuction($auctionAccessStateTest->getAuction()->setId(1))
-        ->setBidder($auctionAccessStateTest->getBidder()->setId(1))
-        ->setStateId(1);
 
-    $auctionAccessStateId = $auctionAccessStateDao->insertAuctionAccessState($auctionAccessStateTest);
+    $auctionId = 1;
+    $bidderId = 1;
+
+    $auctionAccessStateId = $auctionAccessStateDao->insertAuctionAccessState($auctionId, $bidderId);
 
     $success = $auctionAccessStateDao->deleteAuctionAccessStateById($auctionAccessStateId);
 
@@ -71,13 +66,11 @@ class AuctionAccessStateDaoTest extends TestCase
     $newStateId = 1;
 
     $auctionAccessStateDao = App_DaoFactory::getFactory()->getAuctionAccessStateDao();
-    $auctionAccessStateTest = new AuctionAccessStateModel();
-    $auctionAccessStateTest
-          ->setAuction($auctionAccessStateTest->getAuction()->setId(1))
-          ->setBidder($auctionAccessStateTest->getBidder()->setId(1))
-          ->setStateId(1);
 
-    $auctionAccessStateId = $auctionAccessStateDao->insertAuctionAccessState($auctionAccessStateTest);
+    $auctionId = 1;
+    $bidderId = 1;
+
+    $auctionAccessStateId = $auctionAccessStateDao->insertAuctionAccessState($auctionId, $bidderId);
 
     $success = $auctionAccessStateDao->updateStateId($auctionAccessStateId, $newStateId);
 
@@ -115,14 +108,11 @@ class AuctionAccessStateDaoTest extends TestCase
     /*Second step : create an auctionAccessState*/
     $auctionAccessStateDao = App_DaoFactory::getFactory()->getAuctionAccessStateDao();
 
-    $auctionAccessStateTest = new AuctionAccessStateModel();
-    $auctionAccessStateTest
-        ->setAuction($auctionAccessStateTest->getAuction()->setId($auctionTestId)->setSellerId($sellerId))
-        ->setBidder($auctionAccessStateTest->getBidder()->setId(1))
-        ->setStateId($stateId);
+    $auctionId = $auctionTestId;
+    $bidderId = 1;
 
     /*Third step : insert the auctionAccessState*/
-    $auctionAccessStateId = $auctionAccessStateDao->insertAuctionAccessState($auctionAccessStateTest);
+    $auctionAccessStateId = $auctionAccessStateDao->insertAuctionAccessState($auctionId, $bidderId);
 
     /*Fourth step : select an auctionAccessState*/
     $auctionAccessStateSelectedList = $auctionAccessStateDao->selectAllAuctionAccessStateBySellerIdAndStateId($sellerId, $stateId);

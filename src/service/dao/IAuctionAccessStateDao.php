@@ -2,7 +2,7 @@
 
 interface IAuctionAccessStateDao
 {
-  public function insertAuctionAccessState(AuctionAccessStateModel $auctionAccessState) : ?int;
+  public function insertAuctionAccessState(int $auctionId, int $bidderId) : ?int;
 
   public function deleteAuctionAccessStateById(int $categoryId) : bool;
 
