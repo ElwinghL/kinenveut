@@ -228,5 +228,82 @@ class UserDaoTest extends TestCase
     $this->assertEquals($newEmail, $userModifiedSelected->getEmail());
 
     $userDao->deleteUser((int) $userModified->getId());
+  }  
+
+  /**
+   * @test
+   * @covers UserDaoImpl
+   */
+  public function updateUserIsAuthorisedTest()
+  {
+    $userDao = App_DaoFactory::getFactory()->getUserDao();
+    $user = new UserModel();
+    $firstName = 'Francis';
+    $lastName = 'Dupont';
+    $birthDate = '2000-01-13';
+    $email = 'Francis.Dupont@gmail.com';
+    $password = 'password';
+
+    $user
+          ->setFirstName($firstName)
+          ->setLastName($lastName)
+          ->setBirthDate($birthDate)
+          ->setEmail($email)
+          ->setPassword($password);
+
+    $userId = $userDao->insertUser($user);
+
+    $userSelected = $userDao->selectUserByUserId($userId);
+    $this->assertNotNull($userSelected);
+    $this->assertEquals($userId, $userSelected->getId());
+    $this->assertEquals($firstName, $userSelected->getFirstName());
+    $this->assertEquals($lastName, $userSelected->getLastName());
+    $this->assertEquals($birthDate, $userSelected->getBirthDate());
+    $this->assertEquals($email, $userSelected->getEmail());
+
+    $userModified = $userSelected;
+    $isAuthorised=1;
+    $userModified->setIsAuthorised($isAuthorised);
+
+    $userDao->updateUserIsAuthorised($userModified);
+
+    $userModifiedSelected = $userDao->selectUserByUserId($userModified->getId());
+    $this->assertNotNull($userModifiedSelected);
+    $this->assertEquals($isAuthorised, $userModifiedSelected->getIsAuthorised());
+
+    $userDao->deleteUser((int) $userModified->getId());
+  }  
+  
+  /**
+   * @test
+   * @covers UserDaoImpl
+  */
+  public function selectUsersByStateTest() : void
+  {
+    $userDao = App_DaoFactory::getFactory()->getUserDao();
+    $user = new UserModel();
+    $firstName = 'Francis';
+    $lastName = 'Dupont';
+    $birthDate = '2000-01-13';
+    $email = 'Francis.Dupont@gmail.com';
+    $password = 'password';
+
+    $user
+      ->setFirstName($firstName)
+      ->setLastName($lastName)
+      ->setBirthDate($birthDate)
+      ->setEmail($email)
+      ->setPassword($password);
+
+    $userId = $userDao->insertUser($user);
+
+    $usersSelected = $userDao->selectUsersByState(0);
+
+    $this->assertTrue(is_array($usersSelected));
+    $this->assertNotNull($usersSelected[0]->getId());
+
+    $userDao->deleteUser((int)$userId);
+
   }
+
 }
