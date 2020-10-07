@@ -49,4 +49,12 @@ class AuctionAccessStateBoImpl implements IAuctionAccessStateBo
 
     return $auctionAccessStateList;
   }
+
+  public function selectNumberOfAuctionAccessStateBySellerId(int $sellerId) : int
+  {
+    $auctionAccessStateDao = App_DaoFactory::getFactory()->getAuctionAccessStateDao();
+    $auctionAccessStateList = $auctionAccessStateDao->selectNumberOfAuctionAccessStateBySellerId($sellerId);
+
+    return $auctionAccessStateList;
+  }
 }

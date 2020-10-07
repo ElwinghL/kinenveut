@@ -212,4 +212,46 @@ class AuctionAccessStateDaoTest extends TestCase
     $auctionDao->deleteAuctionById($auctionTestId);
     $auctionAccessStateDao->deleteAuctionAccessStateById($auctionAccessStateId);
   }
+
+  /**
+     * @test
+     * @covers AuctionAccessStateDaoImpl
+     * @throws BDDException
+     */
+  public function selectNumberOfAuctionAccessStateBySellerIdTest() : void
+  {
+    $sellerId = 1;
+
+    /*First step : create an auction & insert it*/
+    $auctionDao = App_DaoFactory::getFactory()->getAuctionDao();
+
+    $auctionTest = new AuctionModel();
+    $auctionTest
+            ->setName('Object Test')
+            ->setDescription('descr')
+            ->setBasePrice(3)
+            ->setReservePrice(10)
+            ->setDuration(7)
+            ->setSellerId($sellerId)
+            ->setPrivacyId(1)
+            ->setCategoryId(1);
+
+    $auctionId = $auctionDao->insertAuction($auctionTest);
+
+    /*Second step : create an auctionAccessState & insert it*/
+    $auctionAccessStateDao = App_DaoFactory::getFactory()->getAuctionAccessStateDao();
+    $bidderId = 1;
+
+    $auctionAccessStateId = $auctionAccessStateDao->insertAuctionAccessState($auctionId, $bidderId);
+
+    /*Third step : let's select what we wanna get !*/
+    $numberOfAAS = $auctionAccessStateDao->selectNumberOfAuctionAccessStateBySellerId($sellerId);
+
+    $this->assertNotNull($numberOfAAS);
+    $this->assertTrue($numberOfAAS > 0);
+
+    /*Last step : delete the inserted auction & auctionAccessState*/
+    $auctionDao->deleteAuctionById($auctionId);
+    $auctionAccessStateDao->deleteAuctionAccessStateById($auctionAccessStateId);
+  }
 }

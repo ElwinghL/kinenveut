@@ -130,4 +130,24 @@ class AuctionAccessStateDaoImpl implements IAuctionAccessStateDao
 
     return $auctionAccessStateList;
   }
+
+  public function selectNumberOfAuctionAccessStateBySellerId(int $sellerId) : int
+  {
+    $request = 'SELECT count(*)
+                FROM AuctionAccessState AS aas
+                INNER JOIN Auction
+                    ON aas.auctionId = Auction.id
+                WHERE Auction.sellerId = :sellerId
+                AND aas.stateId = 0';
+    try {
+      $query = db()->prepare($request);
+      $params = ['sellerId'=>$sellerId];
+      $query->execute($params);
+      $numberOfAAS = $query->fetch();
+    } catch (PDOException $Exception) {
+      throw new BDDException($Exception->getMessage(), (int)$Exception->getCode());
+    }
+
+    return $numberOfAAS[0];
+  }
 }
