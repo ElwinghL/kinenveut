@@ -33,7 +33,7 @@ class UserDaoImpl implements IUserDao
 
   public function selectUsersByState($state): ?array
   {
-    $request = 'SELECT id, firstName, lastName, email, birthDate, isAuthorised, isAdmin FROM User WHERE isAuthorised=?';
+    $request = 'SELECT id, firstName, lastName, email, birthDate, isAuthorised, isAdmin FROM User WHERE isAuthorised' . ($state === null ? ' is ?' : '=?');
 
     try {
       $query = db()->prepare($request);

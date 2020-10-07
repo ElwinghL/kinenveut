@@ -297,7 +297,7 @@ class UserDaoTest extends TestCase
 
     $userId = $userDao->insertUser($user);
 
-    $usersSelected = $userDao->selectUsersByState(0);
+    $usersSelected = $userDao->selectUsersByState(null);
 
     $this->assertTrue(is_array($usersSelected));
     $this->assertNotNull($usersSelected[0]->getId());
