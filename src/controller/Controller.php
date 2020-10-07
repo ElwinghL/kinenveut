@@ -11,15 +11,10 @@ class Controller
     $model = substr($controller, 0, strpos($controller, 'Controller'));
     $data = $d;
 
-    if (isset($_SESSION['userId'])
-          || (strtolower($model) == 'login' || strtolower($model) == 'registration')
-      ) {
-      include_once 'src/view/header.php';
-      include_once 'src/view/' . strtolower($model) . '/' . $view . '.php';
-      include_once 'src/view/footer.php';
-    } else {
-      header('Location: ?r=login');
-    }
+    include_once 'src/view/header.php';
+    include_once 'src/view/' . strtolower($model) . '/' . $view . '.php';
+    include_once 'src/view/footer.php';
+
     exit();
   }
 
