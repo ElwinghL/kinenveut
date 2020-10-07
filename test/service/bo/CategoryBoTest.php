@@ -77,4 +77,75 @@ class CategoryBoTest extends TestCase
 
     $this->assertSame($expectedCategoryList, $categoryList);
   }
+
+  /**
+   * @test
+   * @covers CategoryBoImpl
+   */
+  public function selectCategoryByIdTest() : void
+  {
+    $expectedCategory = new CategoryModel();
+    $expectedCategory
+        ->setId(42)
+        ->setName('Test');
+
+    $categoryBo = App_BoFactory::getFactory()->getCategoryBo();
+    $categoryDaoImpMock = $this->createPartialMock(CategoryDaoImpl::class, ['selectCategoryById']);
+    $categoryDaoImpMock->method('selectCategoryById')->willReturn($expectedCategory);
+
+    $app_DaoFactoryMock = $this->createPartialMock(App_DaoFactory::class, ['getCategoryDao']);
+    $app_DaoFactoryMock->method('getCategoryDao')->willReturn($categoryDaoImpMock);
+    App_DaoFactory::setFactory($app_DaoFactoryMock);
+
+    $category = $categoryBo->selectCategoryById(42);
+
+    $this->assertSame($expectedCategory, $category);
+  }
+
+  /**
+   * @test
+   * @covers CategoryBoImpl
+   */
+  public function updateCategoryTest() : void
+  {
+    $category = new CategoryModel();
+    $category
+        ->setId(42)
+        ->setName('Test');
+
+    $categoryBo = App_BoFactory::getFactory()->getCategoryBo();
+    $categoryDaoImpMock = $this->createPartialMock(CategoryDaoImpl::class, ['updateCategory']);
+    $categoryDaoImpMock->method('updateCategory')->willReturn(true);
+
+    $app_DaoFactoryMock = $this->createPartialMock(App_DaoFactory::class, ['getCategoryDao']);
+    $app_DaoFactoryMock->method('getCategoryDao')->willReturn($categoryDaoImpMock);
+    App_DaoFactory::setFactory($app_DaoFactoryMock);
+
+    $this->assertSame(true, $categoryBo->updateCategory($category));
+  }
+
+  /**
+   * @test
+   * @covers CategoryBoImpl
+   */
+  public function addOrUpdateCategoryTest() : void
+  {
+    $category = new CategoryModel();
+    $category->setName('Test');
+
+    $categoryBo = App_BoFactory::getFactory()->getCategoryBo();
+    $categoryDaoImpMock = $this->createPartialMock(CategoryDaoImpl::class, ['insertCategory', 'updateCategory']);
+    $categoryDaoImpMock->method('insertCategory')->willReturn(42);
+    $categoryDaoImpMock->method('updateCategory')->will($this->onConsecutiveCalls(true, false));
+
+    $app_DaoFactoryMock = $this->createPartialMock(App_DaoFactory::class, ['getCategoryDao']);
+    $app_DaoFactoryMock->method('getCategoryDao')->willReturn($categoryDaoImpMock);
+    App_DaoFactory::setFactory($app_DaoFactoryMock);
+
+    $this->assertSame(42, $categoryBo->addOrUpdateCategory($category));
+
+    $category->setId(42);
+    $this->assertSame(42, $categoryBo->addOrUpdateCategory($category));
+    $this->assertSame(-1, $categoryBo->addOrUpdateCategory($category));
+  }
 }

@@ -10,7 +10,7 @@ class AuctionBoImpl implements IAuctionBo
     return $auctionList;
   }
 
-  public function selectAuctionByAuctionId(int $auctionId): AuctionModel
+  public function selectAuctionByAuctionId(int $auctionId): ?AuctionModel
   {
     $auctionDao = App_DaoFactory::getFactory()->getAuctionDao();
     $auctionSelected = $auctionDao->selectAuctionByAuctionId($auctionId);
