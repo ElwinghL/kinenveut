@@ -34,20 +34,47 @@ class AuctionController extends Controller
     $userId = $_SESSION['userId'];
 
     $auctionBo = App_BoFactory::getFactory()->getAuctionBo();
-    $auctionList = [];//$auctionBo->selectAllAuctionsBySellerId($sellerId);
+    $auctionList = $auctionBo->selectAllAuctionsBySellerId($sellerId);
+
+    $titlePage = (($sellerId == $userId) ? 'Mes' : 'Ses') . ' ventes';
+    $data = ['titlePage'   => $titlePage];
 
     if (is_array($auctionList) && sizeof($auctionList) > 0) {
-      $titlePage = (($sellerId == $userId) ? 'Mes' : 'Ses') . ' ventes';
-      $data = [
-        'titlePage'   => $titlePage,
-        'auctionList' => $auctionList
-      ];
+      $data2 = ['auctionList' => $auctionList];
+      $data = array_merge($data, $data2);
 
       //Todo: créer une vue différente !
-      $this->render('index', $this->createDataForm($data));
+      $this->render('index', $data);
     } else {
       //Todo : Gérer le cas où il y a 0 enchère :)
-      $this->redirect('?r=home');
+      $this->render('index', $data);
+    }
+  }
+
+  public function abort()
+  {
+    $auctionId = $_GET['auctionId'];
+    $auctionBo = App_BoFactory::getFactory()->getAuctionBo();
+    $auction = $auctionBo->selectAuctionByAuctionId($auctionId);
+
+    if ($_SESSION['userId'] == $auction->getSellerId()) {
+      $auction->setAuctionState(3);
+      $auctionBo->updateAuctionState($auction);
+
+      $this->redirect('?r=auction/sells/&userId=' . $_SESSION['userId']);
+    }
+  }
+
+  public function cancel()
+  {
+    $auctionId = $_GET['auctionId'];
+    $auctionBo = App_BoFactory::getFactory()->getAuctionBo();
+    $auction = $auctionBo->selectAuctionByAuctionId($auctionId);
+    if ($_SESSION['userId'] == $auction->getSellerId()) {
+      $auction->setAuctionState(2);
+      $auctionBo->updateAuctionState($auction);
+
+      $this->redirect('?r=auction/sells/&userId=' . $_SESSION['userId']);
     }
   }
 
@@ -102,8 +129,8 @@ class AuctionController extends Controller
       $auctionBo = App_BoFactory::getFactory()->getAuctionBo();
       $auction = new AuctionModel();
 
-      $auction->setName(protectStringToDisplay($data['values']['name']))
-            ->setDescription(protectStringToDisplay($data['values']['description']))
+      $auction->setName($data['values']['name'])
+            ->setDescription($data['values']['description'])
             ->setBasePrice($data['values']['basePrice'])
             ->setReservePrice($data['values']['reservePrice'])
             ->setDuration($data['values']['duration'])

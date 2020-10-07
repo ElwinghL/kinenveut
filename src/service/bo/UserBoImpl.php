@@ -42,11 +42,12 @@ class UserBoImpl implements IUserBo
 
     return $userId;
   }
-  
+
   public function updateUserIsAuthorised(UserModel $user) : ?bool
   {
     $userDao = App_DaoFactory::getFactory()->getUserDao();
     $userDao->updateUserIsAuthorised($user);
+
     return true;
   }
 
