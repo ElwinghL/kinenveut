@@ -10,7 +10,7 @@ class AuctionModel
   private $pictureLink;
   private $startDate;
   private $duration;
-  private $auctionState; //(null: attente d'acceptation, 0: EnchèreEnCours, 1: Annulée)
+  private $auctionState;
   private $sellerId;
   private $privacyId;
   private $categoryId;

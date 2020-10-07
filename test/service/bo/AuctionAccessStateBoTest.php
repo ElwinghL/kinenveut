@@ -101,6 +101,35 @@ class AuctionAccessStateBoTest extends TestCase
    * @test
    * @covers AuctionAccessStateBoImpl
    */
+  public function selectAuctionAccessStateByAuctionIdAndBidderIdTest(): void
+  {
+    $auctionId = 1;
+    $bidderId = 0;
+
+    $expectedAuctionAccessState = new AuctionAccessStateModel();
+    $expectedAuctionAccessState
+            ->setId(42)
+            ->setAuction($expectedAuctionAccessState->getAuction()->setId($auctionId))
+            ->setBidder($expectedAuctionAccessState->getBidder()->setId($bidderId))
+            ->setStateId(0);
+
+    $AuctionAccessStateBo = App_BoFactory::getFactory()->getAuctionAccessStateBo();
+    $AuctionAccessStateDaoImpMock = $this->createPartialMock(AuctionAccessStateDaoImpl::class, ['selectAuctionAccessStateByAuctionIdAndBidderId']);
+    $AuctionAccessStateDaoImpMock->method('selectAuctionAccessStateByAuctionIdAndBidderId')->willReturn($expectedAuctionAccessState);
+
+    $app_DaoFactoryMock = $this->createPartialMock(App_DaoFactory::class, ['getAuctionAccessStateDao']);
+    $app_DaoFactoryMock->method('getAuctionAccessStateDao')->willReturn($AuctionAccessStateDaoImpMock);
+    App_DaoFactory::setFactory($app_DaoFactoryMock);
+
+    $AuctionAccessState = $AuctionAccessStateBo->selectAuctionAccessStateByAuctionIdAndBidderId($auctionId, $bidderId);
+
+    $this->assertEquals($expectedAuctionAccessState, $AuctionAccessState);
+  }
+
+  /**
+   * @test
+   * @covers AuctionAccessStateBoImpl
+   */
   public function selectAllAuctionAccessStateBySellerIdAndStateIdTest(): void
   {
     $sellerId = 1;
@@ -108,10 +137,10 @@ class AuctionAccessStateBoTest extends TestCase
 
     $expectedAuctionAccessState = new AuctionAccessStateModel();
     $expectedAuctionAccessState
-        ->setId(42)
-        ->setAuction($expectedAuctionAccessState->getAuction()->setId(1)->setSellerId($sellerId))
-        ->setBidder($expectedAuctionAccessState->getBidder()->setId(1))
-        ->setStateId($stateId);
+            ->setId(42)
+            ->setAuction($expectedAuctionAccessState->getAuction()->setId(1)->setSellerId($sellerId))
+            ->setBidder($expectedAuctionAccessState->getBidder()->setId(1))
+            ->setStateId($stateId);
 
     $expectedAuctionAccessStateList = [$expectedAuctionAccessState];
 

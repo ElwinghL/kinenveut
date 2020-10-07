@@ -108,6 +108,58 @@ class AuctionAccessStateDaoTest extends TestCase
    * @covers AuctionAccessStateDaoImpl
    * @throws BDDException
    */
+  public function selectAuctionAccessStateByAuctionIdAndBidderIdTest(): void
+  {
+    /*First step : create an auction & insert it*/
+    $auctionDao = App_DaoFactory::getFactory()->getAuctionDao();
+
+    $auctionTest = new AuctionModel();
+    $auctionTest
+            ->setName('Object Test')
+            ->setDescription('descr')
+            ->setBasePrice(3)
+            ->setReservePrice(10)
+            ->setDuration(7)
+            ->setSellerId(1)
+            ->setPrivacyId(1)
+            ->setCategoryId(1);
+
+    $auctionId = $auctionDao->insertAuction($auctionTest);
+
+    /*Second step : create an auctionAccessState*/
+    $auctionAccessStateDao = App_DaoFactory::getFactory()->getAuctionAccessStateDao();
+
+    $bidderId = 1;
+
+    /*Third step : insert the auctionAccessState*/
+    $auctionAccessStateId = $auctionAccessStateDao->insertAuctionAccessState($auctionId, $bidderId);
+
+    /*Fourth step : select an auctionAccessState*/
+    $auctionAccessStateSelected = $auctionAccessStateDao->selectAuctionAccessStateByAuctionIdAndBidderId($auctionId, $bidderId);
+
+    /*TEST*/
+    $this->assertNotNull($auctionAccessStateSelected->getId());
+    $this->assertSame($auctionAccessStateId, $auctionAccessStateSelected->getId());
+
+    $this->assertNotNull($auctionAccessStateSelected->getAuction());
+    $this->assertTrue($auctionAccessStateSelected->getAuction()->getId() > 0);
+
+    $this->assertNotNull($auctionAccessStateSelected->getBidder());
+    $this->assertTrue($auctionAccessStateSelected->getBidder()->getId() > 0);
+
+    $this->assertNotNull($auctionAccessStateSelected->getStateId());
+    $this->assertTrue($auctionAccessStateSelected->getStateId() >= 0);
+
+    /*Last step : delete the inserted auction & auctionAccessState*/
+    $auctionDao->deleteAuctionById($auctionId);
+    $auctionAccessStateDao->deleteAuctionAccessStateById($auctionAccessStateId);
+  }
+
+  /**
+   * @test
+   * @covers AuctionAccessStateDaoImpl
+   * @throws BDDException
+   */
   public function selectAllAuctionAccessStateBySellerIdAndStateIdTest(): void
   {
     $sellerId = 1;

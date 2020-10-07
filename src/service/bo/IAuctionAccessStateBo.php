@@ -10,5 +10,7 @@ interface IAuctionAccessStateBo
 
   public function updateStateIdByAuctionIdAndBidderId(int $auctionId, int $bidderId, int $stateId)  : bool;
 
+  public function selectAuctionAccessStateByAuctionIdAndBidderId(int $auctionId, int $bidderId) : ?AuctionAccessStateModel;
+
   public function selectAllAuctionAccessStateBySellerIdAndStateId(int $sellerId, int $stateId) : array;
 }

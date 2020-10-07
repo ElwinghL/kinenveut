@@ -61,6 +61,33 @@ class AuctionAccessStateDaoImpl implements IAuctionAccessStateDao
     return $success;
   }
 
+  public function selectAuctionAccessStateByAuctionIdAndBidderId(int $auctionId, int $bidderId) : ?AuctionAccessStateModel
+  {
+    $request = 'SELECT aas.id AS auctionAccessStateId, aas.auctionId, aas.bidderId, aas.stateId
+                FROM AuctionAccessState AS aas
+                WHERE aas.auctionId = :auctionId
+                    AND aas.bidderId = :bidderId';
+    try {
+      $query = db()->prepare($request);
+      $params = ['auctionId'=>$auctionId, 'bidderId'=>$bidderId];
+      $query->execute($params);
+      $auctionAccessStateSelected = $query->fetch();
+    } catch (PDOException $Exception) {
+      throw new BDDException($Exception->getMessage(), (int)$Exception->getCode());
+    }
+
+    $oneAuctionAccessStateModel = new AuctionAccessStateModel();
+    $oneAuctionAccessStateModel
+        ->setId($auctionAccessStateSelected['auctionAccessStateId'])
+        ->setAuction($oneAuctionAccessStateModel->getAuction()
+            ->setId($auctionAccessStateSelected['auctionId']))
+        ->setBidder($oneAuctionAccessStateModel->getBidder()
+            ->setId($auctionAccessStateSelected['bidderId']))
+        ->setStateId($auctionAccessStateSelected['stateId']);
+
+    return $oneAuctionAccessStateModel;
+  }
+
   public function selectAllAuctionAccessStateBySellerIdAndStateId(int $sellerId, int $stateId): array
   {
     $request = 'SELECT aas.id AS auctionAccessStateId, aas.auctionId, aas.bidderId, aas.stateId
