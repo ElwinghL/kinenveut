@@ -163,5 +163,4 @@ class AuctionController extends Controller
 
     return $data;
   }
-
 }

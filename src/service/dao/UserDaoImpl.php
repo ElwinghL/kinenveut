@@ -31,6 +31,36 @@ class UserDaoImpl implements IUserDao
     return $user;
   }
 
+  public function selectUsersByState($state): ?array
+  {
+    $request = 'SELECT id, firstName, lastName, email, birthDate, isAuthorised, isAdmin FROM User WHERE isAuthorised' . ($state === null ? ' is ?' : '=?');
+
+    try {
+      $query = db()->prepare($request);
+      $query->execute([$state]);
+      $usersList = $query->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $Exception) {
+      throw new BDDException($Exception->getMessage(), (int)$Exception->getCode());
+    }
+
+    $users = [];
+    foreach ($usersList as $oneUser) {
+      $user = new UserModel();
+      $user
+          ->setId($oneUser['id'])
+          ->setFirstName(protectStringToDisplay($oneUser['firstName']))
+          ->setLastName(protectStringToDisplay($oneUser['lastName']))
+          ->setEmail(protectStringToDisplay($oneUser['email']))
+          ->setBirthDate($oneUser['birthDate'])
+          ->setIsAuthorised($oneUser['isAuthorised'])
+          ->setIsAdmin($oneUser['isAdmin']);
+
+      array_push($users, $user);
+    }
+
+    return $users;
+  }
+
   public function selectUserByEmailAndPassword(String $email, String $password) : ?UserModel
   {
     $request = 'SELECT id, firstName, lastName, email, birthDate, isAuthorised, isAdmin, password FROM User WHERE email=?';
@@ -92,16 +122,33 @@ class UserDaoImpl implements IUserDao
 
   public function insertUser(UserModel $user) : ?int
   {
-    $request = 'INSERT INTO User(firstName, lastName, email, password, birthDate, isAdmin) VALUES (?, ?, ?, ?, ?, false)';
+    $request = 'INSERT INTO User(firstName, lastName, email, password, birthDate, isAdmin,isAuthorised) VALUES (?, ?, ?, ?, ?, false,?)';
 
     try {
       $query = db()->prepare($request);
-      $query->execute([$user->getFirstName(), $user->getLastName(), $user->getEmail(), $user->getPassword(), $user->getBirthDate()]);
+      $query->execute([$user->getFirstName(), $user->getLastName(), $user->getEmail(), $user->getPassword(), $user->getBirthDate(), $user->getIsAuthorised()]);
     } catch (PDOException $Exception) {
       throw new BDDException($Exception->getMessage(), (int)$Exception->getCode());
     }
 
     return db()->lastInsertId();
+  }
+
+  public function updateUserIsAuthorised(UserModel $user) : bool
+  {
+    $success = null;
+    $request = 'UPDATE User SET isAuthorised = :isAuthorised WHERE id = :id';
+
+    try {
+      if ($user->getId() != null) {
+        $query = db()->prepare($request);
+        $success = $query->execute(['id'=>$user->getId(), 'isAuthorised'=>$user->getIsAuthorised()]);
+      }
+    } catch (PDOException $Exception) {
+      throw new BDDException($Exception->getMessage(), (int)$Exception->getCode());
+    }
+
+    return $success;
   }
 
   public function updateUser(UserModel $user) : bool
