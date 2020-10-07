@@ -287,13 +287,15 @@ class UserDaoTest extends TestCase
     $birthDate = '2000-01-13';
     $email = 'Francis.Dupont@gmail.com';
     $password = 'password';
+    $isAuthorised = '0';
 
     $user
       ->setFirstName($firstName)
       ->setLastName($lastName)
       ->setBirthDate($birthDate)
       ->setEmail($email)
-      ->setPassword($password);
+      ->setPassword($password)
+      ->setIsAuthorised($isAuthorised);
 
     $userId = $userDao->insertUser($user);
 
