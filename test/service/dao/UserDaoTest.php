@@ -228,7 +228,7 @@ class UserDaoTest extends TestCase
     $this->assertEquals($newEmail, $userModifiedSelected->getEmail());
 
     $userDao->deleteUser((int) $userModified->getId());
-  }  
+  }
 
   /**
    * @test
@@ -262,7 +262,7 @@ class UserDaoTest extends TestCase
     $this->assertEquals($email, $userSelected->getEmail());
 
     $userModified = $userSelected;
-    $isAuthorised=1;
+    $isAuthorised = 1;
     $userModified->setIsAuthorised($isAuthorised);
 
     $userDao->updateUserIsAuthorised($userModified);
@@ -272,8 +272,8 @@ class UserDaoTest extends TestCase
     $this->assertEquals($isAuthorised, $userModifiedSelected->getIsAuthorised());
 
     $userDao->deleteUser((int) $userModified->getId());
-  }  
-  
+  }
+
   /**
    * @test
    * @covers UserDaoImpl
@@ -303,7 +303,5 @@ class UserDaoTest extends TestCase
     $this->assertNotNull($usersSelected[0]->getId());
 
     $userDao->deleteUser((int)$userId);
-
   }
-
 }

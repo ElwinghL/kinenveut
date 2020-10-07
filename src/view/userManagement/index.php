@@ -15,7 +15,7 @@
                     <li id="user_<?php echo $user->getId();?>" class="list-group-item float">
                     
                         <div class="col-md-10 mr-0 float-left">
-                            <?php  echo utf8_encode($user->getFirstName())." ".utf8_encode($user->getLastName());?>
+                            <?php  echo utf8_encode($user->getFirstName()) . ' ' . utf8_encode($user->getLastName());?>
                         </div>
                         <div class="col-md- mr-0 float-right">
                             <a href="?r=userManagement/info&id=<?php echo utf8_encode($user->getId());?>" class="btn btn-primary">

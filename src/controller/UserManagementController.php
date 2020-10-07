@@ -10,11 +10,12 @@ class UserManagementController extends Controller
       'users'=> $users
     ];
     $this->render('index', $data);
-  }  
+  }
+
   public function info()
   {
     $userId = $_GET['id'];
-    
+
     $userBo = App_BoFactory::getFactory()->getUserBo();
 
     $user = $userBo->selectUserByUserId($userId);
@@ -23,13 +24,14 @@ class UserManagementController extends Controller
       'user'=> $user
     ];
 
-    $accountController=new AccountController();
+    $accountController = new AccountController();
     $accountController->render('index', $data);
-  }  
+  }
+
   public function validate()
-  { 
+  {
     $userId = $_GET['id'];
-    
+
     $userBo = App_BoFactory::getFactory()->getUserBo();
 
     $user = $userBo->selectUserByUserId($userId);
@@ -42,10 +44,11 @@ class UserManagementController extends Controller
     ];
     $this->render('index', $data);
   }
+
   public function delete()
   {
     $userId = $_GET['id'];
-    
+
     $userBo = App_BoFactory::getFactory()->getUserBo();
 
     $user = $userBo->selectUserByUserId($userId);
