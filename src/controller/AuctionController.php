@@ -36,7 +36,7 @@ class AuctionController extends Controller
       $auction->setAuctionState(3);
       $auctionBo->updateAuctionState($auction);
 
-      return ['redirect', '?r=auction/sells/', ['userId' => $_SESSION['userId']]];
+      return ['redirect', '?r=auction/sells', ['userId' => $_SESSION['userId']]];
     }
   }
 
@@ -49,7 +49,7 @@ class AuctionController extends Controller
       $auction->setAuctionState(2);
       $auctionBo->updateAuctionState($auction);
 
-      return ['redirect', '?r=auction/sells/', ['userId' => $_SESSION['userId']]];
+      return ['redirect', '?r=auction/sells', ['userId' => $_SESSION['userId']]];
     }
   }
 
