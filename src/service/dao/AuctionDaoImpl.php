@@ -2,19 +2,21 @@
 
 class AuctionDaoImpl implements IAuctionDao
 {
-  public function selectAllAuctionsByAuctionState($auctionSate): array
+  public function selectAllAuctionsByAuctionState($auctionState): array
   {
     $auctions = null;
     $request = 'SELECT Auction.id AS objectId,name,description,basePrice,reservePrice,pictureLink,startDate,duration,auctionState,sellerId,privacyId,categoryId
     ,v_BestBid.id AS bidId,v_BestBid.bidPrice,v_BestBid.bidDate,v_BestBid.bidderId
     FROM Auction
     LEFT JOIN v_BestBid ON v_BestBid.objectId = Auction.id
-    WHERE auctionState = :auctionSate
-        AND privacyId in (0,1)';
+    WHERE auctionState = :auctionState
+        AND (CASE WHEN auctionState = 0 THEN privacyId is not null
+            ELSE privacyId in (0,1)
+            END);';
 
     try {
       $query = db()->prepare($request);
-      $query->execute(['auctionSate' => $auctionSate]);
+      $query->execute(['auctionState' => $auctionState]);
       $auctions = $query->fetchAll(PDO::FETCH_ASSOC);
     } catch (PDOException $Exception) {
       throw new BDDException($Exception->getMessage(), $Exception->getCode());
@@ -146,6 +148,58 @@ class AuctionDaoImpl implements IAuctionDao
       array_push($auctionList, $oneAuctionModel);
     }
 
+    return $auctionList;
+  }
+
+  public function selectAcceptedConfidentialAuctionsByBidderId($userId): array
+  {
+    $auctions = null;
+    $request = 'SELECT Auction.id AS objectId,name,description,basePrice,reservePrice,pictureLink,startDate,duration,auctionState,sellerId,privacyId,categoryId
+    ,v_BestBid.id AS bidId,v_BestBid.bidPrice,v_BestBid.bidDate,v_BestBid.bidderId
+    FROM Auction
+    LEFT JOIN v_BestBid ON v_BestBid.objectId = Auction.id
+    INNER JOIN AuctionAccessState ON AuctionAccessState.auctionId = Auction.id
+    WHERE AuctionAccessState.bidderId = :bidderId
+        AND AuctionAccessState.stateId = 1
+        AND privacyId = 2';
+
+    try {
+      $query = db()->prepare($request);
+      $query->execute(['bidderId' => $userId]);
+      $auctions = $query->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $Exception) {
+      throw new BDDException($Exception->getMessage(), $Exception->getCode());
+    }
+
+    $auctionList = [];
+    foreach ($auctions as $oneAuction) {
+      $theBestBid = new BidModel();
+      $theBestBid
+        ->setId($oneAuction['bidId'])
+        ->setBidPrice($oneAuction['bidPrice'])
+        ->setBidDate($oneAuction['bidDate'])
+        ->setBidderId($oneAuction['bidderId'])
+        ->setObjectId($oneAuction['objectId']);
+
+      $oneAuctionModel = new AuctionModel();
+      $oneAuctionModel
+        ->setId($oneAuction['objectId'])
+        ->setName(protectStringToDisplay($oneAuction['name']))
+        ->setDescription(protectStringToDisplay($oneAuction['description']))
+        ->setBasePrice($oneAuction['basePrice'])
+        ->setReservePrice($oneAuction['reservePrice'])
+        ->setPictureLink($oneAuction['pictureLink'])
+        ->setStartDate($oneAuction['startDate'])
+        ->setDuration($oneAuction['duration'])
+        ->setAuctionState($oneAuction['auctionState'])
+        ->setSellerId($oneAuction['sellerId'])
+        ->setPrivacyId($oneAuction['privacyId'])
+        ->setCategoryId($oneAuction['categoryId'])
+        ->setBestBid($theBestBid);
+
+      array_push($auctionList, $oneAuctionModel);
+    }
+    
     return $auctionList;
   }
 
