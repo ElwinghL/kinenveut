@@ -4,7 +4,7 @@ class HomeController extends Controller
 {
   protected const IS_ONLINE = 1;
 
-  public function index()
+  public function index(): array
   {
     $auctionBo = App_BoFactory::getFactory()->getAuctionBo();
     $auctionList = $auctionBo->selectAllAuctionsByAuctionState(self::IS_ONLINE);
@@ -17,14 +17,14 @@ class HomeController extends Controller
       'auctionList'  => $auctionList
     ];
 
-    $this->render('index', $data);
+    return ['render', 'index', $data];
   }
 
-  public function search()
+  public function search(): array
   {
-    $categoryType = $_POST['categoryType'];
-    $offerType = $_POST['offerType'];
-    $searchInput = protectStringToDisplay($_POST['searchInput']);
+    $categoryType = parameters()['categoryType'];
+    $offerType = parameters()['offerType'];
+    $searchInput = protectStringToDisplay(parameters()['searchInput']);
 
     $auctionBo = App_BoFactory::getFactory()->getAuctionBo();
     $auctionList = $auctionBo->selectAllAuctionsByAuctionState(self::IS_ONLINE);
@@ -35,8 +35,9 @@ class HomeController extends Controller
     $filteredAuctionList = [];
     foreach ($auctionList as $auction) {
       if (($categoryType == -1 || $auction->getCategoryId() == $categoryType) &&
-      ($offerType == -1 || $auction->getPrivacyId() == $offerType) &&
-      ($searchInput == '' || strpos($auction->getName(), $searchInput) !== false)) {
+        ($offerType == -1 || $auction->getPrivacyId() == $offerType) &&
+        ($searchInput == '' || strpos($auction->getName(), $searchInput) !== false)
+      ) {
         $filteredAuctionList[] = $auction;
       }
     }
@@ -49,6 +50,6 @@ class HomeController extends Controller
       'searchInput'       => $searchInput
     ];
 
-    $this->render('index', $data);
+    return ['render', 'index', $data];
   }
 }

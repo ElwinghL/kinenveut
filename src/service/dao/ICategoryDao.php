@@ -2,11 +2,11 @@
 
 interface ICategoryDao
 {
-  public function selectAllCategories() : array;
+  public function selectAllCategories(): array;
 
   public function insertCategory(CategoryModel $categoryModel): ?int;
 
-  public function deleteCategoryById(int $categoryId) : bool;
+  public function deleteCategoryById(int $categoryId): bool;
 
   public function selectCategoryById(int $categoryId): ?CategoryModel;
 

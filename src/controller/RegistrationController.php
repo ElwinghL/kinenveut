@@ -2,14 +2,19 @@
 
 class RegistrationController extends Controller
 {
-  public function check()
+  public function index(): array
+  {
+    return ['render', 'index'];
+  }
+
+  public function register(): array
   {
     $errors = [];
-    $values['firstName'] = filter_input(INPUT_POST, 'firstName');
-    $values['lastName'] = filter_input(INPUT_POST, 'lastName');
-    $values['birthDate'] = filter_input(INPUT_POST, 'birthDate');
-    $values['email'] = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
-    $values['password'] = filter_input(INPUT_POST, 'password', FILTER_UNSAFE_RAW);
+    $values['firstName'] = filter_var(parameters()['firstName']);
+    $values['lastName'] = filter_var(parameters()['lastName']);
+    $values['birthDate'] = filter_var(parameters()['birthDate']);
+    $values['email'] = filter_var(parameters()['email'], FILTER_VALIDATE_EMAIL);
+    $values['password'] = filter_var(parameters()['password'], FILTER_UNSAFE_RAW);
 
     if ($values['firstName'] && strlen($values['firstName']) > 29) {
       $errors['firstName'] = 'Le Prénom n\'est pas valide';
@@ -18,8 +23,8 @@ class RegistrationController extends Controller
       $errors['firstName'] = 'La zone Nom n\'est pas valide';
     }
     if (!(preg_match('#^(\d{4})-(\d{2})-(\d{2})$#', $values['birthDate'], $matches)
-    && checkdate($matches[2], $matches[3], $matches[1])
-    && DateTime::createFromFormat('d/m/Y', $values['birthDate']) < (new DateTime()))) {
+      && checkdate($matches[2], $matches[3], $matches[1])
+      && DateTime::createFromFormat('d/m/Y', $values['birthDate']) < (new DateTime()))) {
       $errors['birthDate'] = 'La date de naissance n\'est pas valide';
     }
     if ($values['email'] === false) {
@@ -29,38 +34,30 @@ class RegistrationController extends Controller
       $errors['password'] = 'Le mot de passe doit contenir au moins 8 caractères';
     }
 
-    return ['errors'=> $errors, 'values' => $values];
-  }
+    $data = ['errors' => $errors, 'values' => $values];
 
-  public function index()
-  {
-    $this->render('index');
-  }
-
-  public function register():void
-  {
-    $data = $this->check();
     if (!empty($data['errors'])) {
-      $this->render('index', $data);
+      return ['render', 'index', $data];
     }
 
     $userBo = App_BoFactory::getFactory()->getUserBo();
     if ($userBo->selectUserByEmail($data['values']['email']) !== null) {
       $data['errors']['email'] = 'L\'adresse mail est déjà utilisée par un autre utilisateur';
-      $this->render('index', $data);
+
+      return ['render', 'index', $data];
     }
 
     $user = new UserModel();
     $user
-          ->setFirstName($data['values']['firstName'])
-          ->setLastName($data['values']['lastName'])
-          ->setBirthDate($data['values']['birthDate'])
-          ->setEmail($data['values']['email'])
-          ->setPassword($data['values']['password']);
+      ->setFirstName($data['values']['firstName'])
+      ->setLastName($data['values']['lastName'])
+      ->setBirthDate($data['values']['birthDate'])
+      ->setEmail($data['values']['email'])
+      ->setPassword($data['values']['password']);
     $userId = $userBo->insertUser($user);
 
     if ($userId !== null) {
-      $this->redirect('?r=login');
+      return ['redirect', '?r=login'];
     }
   }
 }

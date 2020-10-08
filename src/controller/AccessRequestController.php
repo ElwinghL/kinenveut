@@ -2,8 +2,7 @@
 
 class AccessRequestController extends Controller
 {
-  /*Return */
-  public function index()
+  public function index(): array
   {
     $sellerId = $_SESSION['userId'];
     $stateId = 0;
@@ -16,31 +15,32 @@ class AccessRequestController extends Controller
         'auctionAccessStateList' => $auctionAccessStateList
       ];
 
-      $this->render('index', $data);
+      return ['render', 'index', $data];
     } catch (BDDException $e) {
-      $this->redirect('?r=home');
+      return ['redirect', '?r=home'];
     }
   }
 
-  public function accept()
+  public function accept(): array
   {
-    $this->updateRequestStateId(1);
+    return $this->updateRequestStateId(1);
   }
 
-  public function refuse()
+  public function refuse(): array
   {
-    $this->updateRequestStateId(5);
+    return $this->updateRequestStateId(5);
   }
 
-  private function updateRequestStateId($stateId)
+  private function updateRequestStateId($stateId): array
   {
-    $aasid = $_GET['aasid'];
+    $aasid = parameters()['aasid'];
     $auctionAccessStateDao = App_DaoFactory::getFactory()->getAuctionAccessStateDao();
     try {
       $auctionAccessStateDao->updateStateIdByAuctionAccessStateId($aasid, $stateId);
     } catch (BDDException $e) {
-      $this->redirect('?r=home');
+      return ['redirect', '?r=home'];
     }
-    $this->redirect('?r=accessRequest');
+
+    return ['redirect', '?r=accessRequest'];
   }
 }

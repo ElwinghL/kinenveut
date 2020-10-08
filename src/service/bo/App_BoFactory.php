@@ -4,12 +4,12 @@ class App_BoFactory
 {
   private static $_instance;
 
-  public static function setFactory($f)
+  public static function setFactory(?App_BoFactory $f)
   {
     self::$_instance = $f;
   }
 
-  public static function getFactory()
+  public static function getFactory(): App_BoFactory
   {
     if (!self::$_instance) {
       self::$_instance = new self;
@@ -18,27 +18,27 @@ class App_BoFactory
     return self::$_instance;
   }
 
-  public function getUserBo() : UserBoImpl
+  public function getUserBo(): UserBoImpl
   {
     return new UserBoImpl();
   }
 
-  public function getAuctionBo() : AuctionBoImpl
+  public function getAuctionBo(): AuctionBoImpl
   {
     return new AuctionBoImpl();
   }
 
-  public function getCategoryBo() : CategoryBoImpl
+  public function getCategoryBo(): CategoryBoImpl
   {
     return new CategoryBoImpl();
   }
 
-  public function getBidHistoryBo() : BidHistoryBoImpl
+  public function getBidHistoryBo(): BidHistoryBoImpl
   {
     return new BidHistoryBoImpl();
   }
 
-  public function getAuctionAccessStateBo() : AuctionAccessStateBoImpl
+  public function getAuctionAccessStateBo(): AuctionAccessStateBoImpl
   {
     return new AuctionAccessStateBoImpl();
   }

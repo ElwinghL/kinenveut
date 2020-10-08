@@ -199,7 +199,7 @@ class UserBoTest extends TestCase
             ->setBirthDate(2000 - 01 - 13)
             ->setEmail('Francis.Dupont@gmail.com')
             ->setIsAdmin('false');
-            
+
     $expecteduserList = [$expecteduser];
 
     $userBo = App_BoFactory::getFactory()->getUserBo();
@@ -213,6 +213,5 @@ class UserBoTest extends TestCase
     $userList = $userBo->selectUsersByState(0);
 
     $this->assertSame($expecteduserList, $userList);
-
   }
 }

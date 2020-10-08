@@ -2,8 +2,9 @@
 
 class UserDaoImpl implements IUserDao
 {
-  public function selectUserByUserId(int $userId) : ?UserModel
+  public function selectUserByUserId(int $userId): ?UserModel
   {
+    $userSelected = null;
     $request = 'SELECT id, firstName, lastName, email, birthDate, isAuthorised, isAdmin FROM User WHERE id=?';
 
     try {
@@ -20,52 +21,53 @@ class UserDaoImpl implements IUserDao
 
     $user = new UserModel();
     $user
-            ->setId($userSelected['id'])
-            ->setFirstName(protectStringToDisplay($userSelected['firstName']))
-            ->setLastName(protectStringToDisplay($userSelected['lastName']))
-            ->setEmail(protectStringToDisplay($userSelected['email']))
-            ->setBirthDate($userSelected['birthDate'])
-            ->setIsAuthorised($userSelected['isAuthorised'])
-            ->setIsAdmin($userSelected['isAdmin']);
+      ->setId($userSelected['id'])
+      ->setFirstName(protectStringToDisplay($userSelected['firstName']))
+      ->setLastName(protectStringToDisplay($userSelected['lastName']))
+      ->setEmail(protectStringToDisplay($userSelected['email']))
+      ->setBirthDate($userSelected['birthDate'])
+      ->setIsAuthorised($userSelected['isAuthorised'])
+      ->setIsAdmin($userSelected['isAdmin']);
 
     return $user;
   }
 
-  public function selectUsersByState($state): ?array
-  {    
-    $request = db()->prepare('SELECT id, firstName, lastName, email, birthDate, isAuthorised, isAdmin FROM User WHERE isAuthorised=?');
-    try{
-      $params = [$state];
-      $request->execute($params);
-      $usersList = $request->fetchAll(PDO::FETCH_ASSOC);
-  
-      $users = [];
-      foreach ($usersList as $oneUser) {
-        $user = new UserModel();
-        $user
-          ->setId($oneUser['id'])
-          ->setFirstName(protectStringToDisplay($oneUser['firstName']))
-          ->setLastName(protectStringToDisplay($oneUser['lastName']))
-          ->setEmail(protectStringToDisplay($oneUser['email']))
-          ->setBirthDate($oneUser['birthDate'])
-          ->setIsAuthorised($oneUser['isAuthorised'])
-          ->setIsAdmin($oneUser['isAdmin']);
-  
-        array_push($users, $user);
-      }
-      
-    }catch (PDOException $Exception) {
+  public function selectUsersByState(?int $state): ?array
+  {
+    $usersList = null;
+    $request = 'SELECT id, firstName, lastName, email, birthDate, isAuthorised, isAdmin FROM User WHERE isAuthorised' . ($state === null ? ' is ?' : '=?');
+
+    try {
+      $query = db()->prepare($request);
+      $query->execute([$state]);
+      $usersList = $query->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $Exception) {
       throw new BDDException($Exception->getMessage(), (int)$Exception->getCode());
+    }
+
+    $users = [];
+    foreach ($usersList as $oneUser) {
+      $user = new UserModel();
+      $user
+        ->setId($oneUser['id'])
+        ->setFirstName(protectStringToDisplay($oneUser['firstName']))
+        ->setLastName(protectStringToDisplay($oneUser['lastName']))
+        ->setEmail(protectStringToDisplay($oneUser['email']))
+        ->setBirthDate($oneUser['birthDate'])
+        ->setIsAuthorised($oneUser['isAuthorised'])
+        ->setIsAdmin($oneUser['isAdmin']);
+
+      array_push($users, $user);
     }
 
     return $users;
   }
 
-  public function selectUserByEmailAndPassword(String $email, String $password) : ?UserModel
+  public function selectUserByEmailAndPassword(string $email, string $password): ?UserModel
   {
+    $firstUser = null;
     $request = 'SELECT id, firstName, lastName, email, birthDate, isAuthorised, isAdmin, password FROM User WHERE email=?';
 
-    $firstUser = '';
     try {
       $query = db()->prepare($request);
       $query->execute([$email]);
@@ -80,19 +82,20 @@ class UserDaoImpl implements IUserDao
 
     $user = new UserModel();
     $user
-          ->setId($firstUser['id'])
-          ->setFirstName(protectStringToDisplay($firstUser['firstName']))
-          ->setLastName(protectStringToDisplay($firstUser['lastName']))
-          ->setEmail(protectStringToDisplay($firstUser['email']))
-          ->setBirthDate($firstUser['birthDate'])
-          ->setIsAuthorised($firstUser['isAuthorised'])
-          ->setIsAdmin($firstUser['isAdmin']);
+      ->setId($firstUser['id'])
+      ->setFirstName(protectStringToDisplay($firstUser['firstName']))
+      ->setLastName(protectStringToDisplay($firstUser['lastName']))
+      ->setEmail(protectStringToDisplay($firstUser['email']))
+      ->setBirthDate($firstUser['birthDate'])
+      ->setIsAuthorised($firstUser['isAuthorised'])
+      ->setIsAdmin($firstUser['isAdmin']);
 
     return $user;
   }
 
-  public function selectUserByEmail(String $email) : ?UserModel
+  public function selectUserByEmail(string $email): ?UserModel
   {
+    $firstUser = null;
     $request = 'SELECT * FROM User WHERE email=?';
 
     try {
@@ -109,24 +112,25 @@ class UserDaoImpl implements IUserDao
 
     $user = new UserModel();
     $user
-          ->setId($firstUser['id'])
-          ->setFirstName(protectStringToDisplay($firstUser['firstName']))
-          ->setLastName(protectStringToDisplay($firstUser['lastName']))
-          ->setEmail(protectStringToDisplay($firstUser['email']))
-          ->setBirthDate($firstUser['birthDate'])
-          ->setIsAuthorised($firstUser['isAuthorised'])
-          ->setIsAdmin($firstUser['isAdmin']);
+      ->setId($firstUser['id'])
+      ->setFirstName(protectStringToDisplay($firstUser['firstName']))
+      ->setLastName(protectStringToDisplay($firstUser['lastName']))
+      ->setEmail(protectStringToDisplay($firstUser['email']))
+      ->setBirthDate($firstUser['birthDate'])
+      ->setIsAuthorised($firstUser['isAuthorised'])
+      ->setIsAdmin($firstUser['isAdmin']);
 
     return $user;
   }
 
-  public function insertUser(UserModel $user) : ?int
+  public function insertUser(UserModel $user): ?int
   {
-    $request = 'INSERT INTO User(firstName, lastName, email, password, birthDate, isAdmin,isAuthorised) VALUES (?, ?, ?, ?, ?, false,0)';
+
+    $request = 'INSERT INTO User(firstName, lastName, email, password, birthDate, isAdmin,isAuthorised) VALUES (?, ?, ?, ?, ?, false,?)';
 
     try {
       $query = db()->prepare($request);
-      $query->execute([$user->getFirstName(), $user->getLastName(), $user->getEmail(), $user->getPassword(), $user->getBirthDate()]);
+      $query->execute([$user->getFirstName(), $user->getLastName(), $user->getEmail(), $user->getPassword(), $user->getBirthDate(), $user->getIsAuthorised()]);
     } catch (PDOException $Exception) {
       throw new BDDException($Exception->getMessage(), (int)$Exception->getCode());
     }
@@ -134,23 +138,29 @@ class UserDaoImpl implements IUserDao
     return db()->lastInsertId();
   }
 
-  public function updateUserIsAuthorised(UserModel $user) : bool
+  public function updateUserIsAuthorised(UserModel $user): bool
   {
-    try{
+    $success = null;
+    $request = 'UPDATE User SET isAuthorised = :isAuthorised WHERE id = :id';
+
+    try {
       if ($user->getId() != null) {
-        $request = db()->prepare('UPDATE User SET isAuthorised = :startDate WHERE id = :id');
-        $success = $request->execute(['id'=>$user->getId(), 'startDate'=>$user->getIsAuthorised()]);
+        $query = db()->prepare($request);
+        $success = $query->execute(['id' => $user->getId(), 'isAuthorised' => $user->getIsAuthorised()]);
       }
-    }catch (PDOException $Exception) {
+    } catch (PDOException $Exception) {
       throw new BDDException($Exception->getMessage(), (int)$Exception->getCode());
     }
+
     return $success;
   }
-  public function updateUser(UserModel $user) : bool
+
+  public function updateUser(UserModel $user): bool
   {
+    $success = null;
     $request = 'UPDATE User SET firstName = ?, lastName = ?, email = ? WHERE id = ?';
 
-    try{
+    try {
       $query = db()->prepare($request);
       $success = $query->execute([$user->getFirstName(), $user->getLastName(), $user->getEmail(), $user->getId()]);
     } catch (PDOException $Exception) {
@@ -160,8 +170,9 @@ class UserDaoImpl implements IUserDao
     return $success;
   }
 
-  public function deleteUser(int $userId) : bool
+  public function deleteUser(int $userId): bool
   {
+    $success = null;
     $request = 'DELETE FROM User WHERE id=?';
 
     try {

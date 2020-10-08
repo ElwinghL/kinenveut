@@ -8,24 +8,24 @@ class BidModel
   private $objectId;
   private $bidderId;
 
-  public function getId()
+  public function getId(): ?int
   {
     return $this->id;
   }
 
-  public function setId($id): BidModel
+  public function setId(?int $id): BidModel
   {
     $this->id = $id;
 
     return $this;
   }
 
-  public function getBidPrice()
+  public function getBidPrice(): ?int
   {
     return $this->bidPrice;
   }
 
-  public function setBidPrice($bidPrice): BidModel
+  public function setBidPrice(?int $bidPrice): BidModel
   {
     $this->bidPrice = $bidPrice;
 
@@ -44,24 +44,24 @@ class BidModel
     return $this;
   }
 
-  public function getBidderId()
+  public function getBidderId(): ?int
   {
     return $this->bidderId;
   }
 
-  public function setBidderId($bidderId): BidModel
+  public function setBidderId(?int $bidderId): BidModel
   {
     $this->bidderId = $bidderId;
 
     return $this;
   }
 
-  public function getObjectId()
+  public function getObjectId(): ?int
   {
     return $this->objectId;
   }
 
-  public function setObjectId($objectId): BidModel
+  public function setObjectId(?int $objectId): BidModel
   {
     $this->objectId = $objectId;
 

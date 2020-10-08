@@ -7,52 +7,52 @@ class AuctionAccessStateModel
   private $bidder;
   private $stateId;
 
-  public function getId() : ?int
+  public function getId(): ?int
   {
     return $this->id;
   }
 
-  public function setId($id): AuctionAccessStateModel
+  public function setId(?int $id): AuctionAccessStateModel
   {
     $this->id = $id;
 
     return $this;
   }
 
-  public function getAuction() : AuctionModel
+  public function getAuction(): AuctionModel
   {
     $this->auction = ($this->auction == null) ? new AuctionModel() : $this->auction;
 
     return $this->auction;
   }
 
-  public function setAuction($auction): AuctionAccessStateModel
+  public function setAuction(?AuctionModel $auction): AuctionAccessStateModel
   {
     $this->auction = $auction;
 
     return $this;
   }
 
-  public function getBidder() : UserModel
+  public function getBidder(): UserModel
   {
     $this->bidder = ($this->bidder == null) ? new UserModel() : $this->bidder;
 
     return $this->bidder;
   }
 
-  public function setBidder($bidder): AuctionAccessStateModel
+  public function setBidder(?UserModel $bidder): AuctionAccessStateModel
   {
     $this->bidder = $bidder;
 
     return $this;
   }
 
-  public function getStateId() : ?int
+  public function getStateId(): ?int
   {
     return $this->stateId;
   }
 
-  public function setStateId($stateId): AuctionAccessStateModel
+  public function setStateId(?int $stateId): AuctionAccessStateModel
   {
     $this->stateId = $stateId;
 

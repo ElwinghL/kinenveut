@@ -4,12 +4,12 @@ class App_DaoFactory
 {
   private static $_instance;
 
-  public static function setFactory($f)
+  public static function setFactory(?App_DaoFactory $f)
   {
     self::$_instance = $f;
   }
 
-  public static function getFactory() : App_DaoFactory
+  public static function getFactory(): App_DaoFactory
   {
     if (!self::$_instance) {
       self::$_instance = new self;
@@ -18,27 +18,27 @@ class App_DaoFactory
     return self::$_instance;
   }
 
-  public function getUserDao() : UserDaoImpl
+  public function getUserDao(): UserDaoImpl
   {
     return new UserDaoImpl();
   }
 
-  public function getAuctionDao() : AuctionDaoImpl
+  public function getAuctionDao(): AuctionDaoImpl
   {
     return new AuctionDaoImpl();
   }
 
-  public function getCategoryDao() : CategoryDaoImpl
+  public function getCategoryDao(): CategoryDaoImpl
   {
     return new CategoryDaoImpl();
   }
 
-  public function getBidHistoryDao() : BidHistoryDaoImpl
+  public function getBidHistoryDao(): BidHistoryDaoImpl
   {
     return new BidHistoryDaoImpl();
   }
 
-  public function getAuctionAccessStateDao() : AuctionAccessStateDaoImpl
+  public function getAuctionAccessStateDao(): AuctionAccessStateDaoImpl
   {
     return new AuctionAccessStateDaoImpl();
   }

@@ -2,9 +2,9 @@
 
 class BidController extends Controller
 {
-  public function index()
+  public function index(): array
   {
-    $auctionId = $_GET['auctionId'];
+    $auctionId = parameters()['auctionId'];
 
     $auctionBo = App_BoFactory::getFactory()->getAuctionBo();
     $auction = $auctionBo->selectAuctionByAuctionId($auctionId);
@@ -22,41 +22,41 @@ class BidController extends Controller
         'auctionAccessState' => $auctionAccessState
       ];
 
-      $this->render('index', $data);
+      return ['render', 'index', $data];
     } else {
       //Todo : redirection page erreur
-      $this->redirect('?r=home');
+      return ['redirect', '?r=home'];
     }
   }
 
-  public function addBid()
+  public function addBid(): array
   {
-    $auctionId = $_GET['auctionId'];
+    $auctionId = parameters()['auctionId'];
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-      if (!isset($_POST['bidPrice']) || $_POST['bidPrice'] === '') {
+      if (!isset(parameters()['bidPrice']) || parameters()['bidPrice'] === '') {
         $_SESSION['errors']['noBidPrice'] = 'Veuillez renseigner un montant à enchérir';
-        $this->redirect('?r=bid/index&auctionId=' . $auctionId);
-        exit();
+
+        return ['redirect', '?r=bid/index', ['auctionId' => $auctionId]];
       }
 
       $newBid = new BidModel();
       $newBid
-                ->setBidPrice($_POST['bidPrice'])
-                ->setBidderId($_SESSION['userId'])
-                ->setObjectId($auctionId);
+        ->setBidPrice(parameters()['bidPrice'])
+        ->setBidderId($_SESSION['userId'])
+        ->setObjectId($auctionId);
 
       $bidHistoryBo = App_BoFactory::getFactory()->getBidHistoryBo();
       $bidHistoryBo->insertBid($newBid);
     }
 
-    $this->redirect('?r=bid&auctionId=' . $auctionId);
+    return ['redirect', '?r=bid', ['auctionId' => $auctionId]];
   }
 
-  public function makeAuctionAccessRequest()
+  public function makeAuctionAccessRequest(): array
   {
     $bidderId = $_SESSION['userId'];
-    $auctionId = $_GET['auctionId'];
+    $auctionId = parameters()['auctionId'];
     $auctionAccessStateDao = App_DaoFactory::getFactory()->getAuctionAccessStateDao();
     try {
       $auctionAccessStateDao->insertAuctionAccessState($auctionId, $bidderId);
@@ -64,19 +64,20 @@ class BidController extends Controller
       $auctionAccessStateDao->updateStateIdByAuctionIdAndBidderId($auctionId, $bidderId, 0);
     }
 
-    $this->redirect('?r=bid&auctionId=' . $auctionId);
+    return ['redirect', '?r=bid', ['auctionId' => $auctionId]];
   }
 
-  public function cancelAuctionAccessRequest()
+  public function cancelAuctionAccessRequest(): array
   {
     $bidderId = $_SESSION['userId'];
-    $auctionId = $_GET['auctionId'];
+    $auctionId = parameters()['auctionId'];
 
     $auctionAccessStateDao = App_DaoFactory::getFactory()->getAuctionAccessStateDao();
     try {
       $auctionAccessStateDao->updateStateIdByAuctionIdAndBidderId($auctionId, $bidderId, 2);
     } catch (BDDException $e) {
     }
-    $this->redirect('?r=bid&auctionId=' . $auctionId);
+
+    return ['redirect', '?r=bid', ['auctionId' => $auctionId]];
   }
 }

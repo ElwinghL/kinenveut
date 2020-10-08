@@ -26,21 +26,21 @@ class CategoryBoImpl implements ICategoryBo
     return $success;
   }
 
-  public function selectCategoryById(int $categoryId) : ?CategoryModel
+  public function selectCategoryById(int $categoryId): ?CategoryModel
   {
     $categoryDao = App_DaoFactory::getFactory()->getCategoryDao();
 
     return $categoryDao->selectCategoryById($categoryId);
   }
 
-  public function updateCategory(CategoryModel $categoryModel) : ?bool
+  public function updateCategory(CategoryModel $categoryModel): ?bool
   {
     $categoryDao = App_DaoFactory::getFactory()->getCategoryDao();
 
     return $categoryDao->updateCategory($categoryModel);
   }
 
-  public function addOrUpdateCategory(CategoryModel $categoryModel) : int
+  public function addOrUpdateCategory(CategoryModel $categoryModel): int
   {
     $categoryBo = App_BoFactory::getFactory()->getCategoryBo();
 
