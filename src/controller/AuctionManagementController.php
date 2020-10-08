@@ -15,7 +15,7 @@ class AuctionManagementController extends Controller
 
   public function info(): array
   {
-    $auctionId = $_GET['id'];
+    $auctionId = parameters()['id'];
 
     $auctionBo = App_BoFactory::getFactory()->getAuctionBo();
     $auction = $auctionBo->selectAuctionByAuctionId($auctionId);
@@ -29,7 +29,7 @@ class AuctionManagementController extends Controller
 
   public function validate(): array
   {
-    $auctionId = $_GET['id'];
+    $auctionId = parameters()['id'];
     $auctionBo = App_BoFactory::getFactory()->getAuctionBo();
     $auction = $auctionBo->selectAuctionByAuctionId($auctionId);
     $auction->setAuctionState(1); //Etat Accepté
@@ -44,7 +44,7 @@ class AuctionManagementController extends Controller
 
   public function delete(): array
   {
-    $auctionId = $_GET['id'];
+    $auctionId = parameters()['id'];
 
     $auctionBo = App_BoFactory::getFactory()->getAuctionBo();
     $auction = $auctionBo->selectAuctionByAuctionId($auctionId);

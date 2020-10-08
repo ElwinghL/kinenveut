@@ -5,7 +5,7 @@ class AuctionController extends Controller
   /*Return page with auctions created by one user*/
   public function sells(): array
   {
-    $sellerId = $_GET['userId'];
+    $sellerId = parameters()['userId'];
     $userId = $_SESSION['userId'];
 
     $auctionBo = App_BoFactory::getFactory()->getAuctionBo();
@@ -28,7 +28,7 @@ class AuctionController extends Controller
 
   public function abort(): array
   {
-    $auctionId = $_GET['auctionId'];
+    $auctionId = parameters()['auctionId'];
     $auctionBo = App_BoFactory::getFactory()->getAuctionBo();
     $auction = $auctionBo->selectAuctionByAuctionId($auctionId);
 
@@ -42,7 +42,7 @@ class AuctionController extends Controller
 
   public function cancel(): array
   {
-    $auctionId = $_GET['auctionId'];
+    $auctionId = parameters()['auctionId'];
     $auctionBo = App_BoFactory::getFactory()->getAuctionBo();
     $auction = $auctionBo->selectAuctionByAuctionId($auctionId);
     if ($_SESSION['userId'] == $auction->getSellerId()) {
@@ -56,7 +56,7 @@ class AuctionController extends Controller
   /*Return page with auctions for wich ones the user participated*/
   public function bids(): array
   {
-    $bidderId = $_GET['userId'];
+    $bidderId = parameters()['userId'];
     $userId = $_SESSION['userId'];
 
     $auctionBo = App_BoFactory::getFactory()->getAuctionBo();
@@ -97,13 +97,13 @@ class AuctionController extends Controller
   public function saveObjectAuction(): array
   {
     $errors = [];
-    $values['name'] = filter_input(INPUT_POST, 'name');
-    $values['description'] = filter_input(INPUT_POST, 'description');
-    $values['basePrice'] = filter_input(INPUT_POST, 'basePrice', FILTER_VALIDATE_INT);
-    $values['reservePrice'] = filter_input(INPUT_POST, 'reservePrice', FILTER_VALIDATE_INT);
-    $values['duration'] = filter_input(INPUT_POST, 'duration', FILTER_VALIDATE_INT);
-    $values['privacyId'] = filter_input(INPUT_POST, 'privacyId', FILTER_VALIDATE_INT);
-    $values['categoryId'] = filter_input(INPUT_POST, 'categoryId', FILTER_VALIDATE_INT);
+    $values['name'] = filter_var(parameters()['name']);
+    $values['description'] = filter_var(parameters()['description']);
+    $values['basePrice'] = filter_var(parameters()['basePrice'], FILTER_VALIDATE_INT);
+    $values['reservePrice'] = filter_var(parameters()['reservePrice'], FILTER_VALIDATE_INT);
+    $values['duration'] = filter_var(parameters()['duration'], FILTER_VALIDATE_INT);
+    $values['privacyId'] = filter_var(parameters()['privacyId'], FILTER_VALIDATE_INT);
+    $values['categoryId'] = filter_var(parameters()['categoryId'], FILTER_VALIDATE_INT);
 
     /*if (!(preg_match('#^(\d{4})-(\d{2})-(\d{2})$#', $values['startDate'], $matches)
     && checkdate($matches[2], $matches[3], $matches[1])

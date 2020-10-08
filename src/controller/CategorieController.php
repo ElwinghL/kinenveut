@@ -16,7 +16,7 @@ class CategorieController extends Controller
 
   public function update_page(): array
   {
-    $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+    $id = filter_var(parameters()['id'], FILTER_VALIDATE_INT);
     $data = null;
     $categoryBo = App_BoFactory::getFactory()->getCategoryBo();
 
@@ -37,7 +37,7 @@ class CategorieController extends Controller
 
   public function delete(): array
   {
-    $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+    $id = filter_var(parameters()['id'], FILTER_VALIDATE_INT);
     $categoryBo = App_BoFactory::getFactory()->getCategoryBo();
 
     if ($id !== null) {
@@ -49,8 +49,8 @@ class CategorieController extends Controller
 
   public function update_data(): array
   {
-    $id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
-    $name = filter_input(INPUT_POST, 'name');
+    $id = filter_var(parameters()['id'], FILTER_VALIDATE_INT);
+    $name = filter_var(parameters()['name']);
     $categoryBo = App_BoFactory::getFactory()->getCategoryBo();
     $category = new CategoryModel();
 

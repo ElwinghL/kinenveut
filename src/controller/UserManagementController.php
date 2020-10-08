@@ -15,7 +15,7 @@ class UserManagementController extends Controller
 
   public function info(): array
   {
-    $userId = $_GET['id'];
+    $userId = parameters()['id'];
 
     $userBo = App_BoFactory::getFactory()->getUserBo();
 
@@ -31,7 +31,7 @@ class UserManagementController extends Controller
 
   public function validate(): array
   {
-    $userId = $_GET['id'];
+    $userId = parameters()['id'];
 
     $userBo = App_BoFactory::getFactory()->getUserBo();
 
@@ -49,7 +49,7 @@ class UserManagementController extends Controller
 
   public function delete(): array
   {
-    $userId = $_GET['id'];
+    $userId = parameters()['id'];
 
     $userBo = App_BoFactory::getFactory()->getUserBo();
 

@@ -33,7 +33,7 @@ class AccessRequestController extends Controller
 
   private function updateRequestStateId($stateId): array
   {
-    $aasid = $_GET['aasid'];
+    $aasid = parameters()['aasid'];
     $auctionAccessStateDao = App_DaoFactory::getFactory()->getAuctionAccessStateDao();
     try {
       $auctionAccessStateDao->updateStateIdByAuctionAccessStateId($aasid, $stateId);

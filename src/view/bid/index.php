@@ -38,7 +38,7 @@ $minPrice = (($bestBid->getBidPrice() != null) && ($bestBid->getBidPrice() != nu
         <?php if ($_SESSION['userId'] != $auction->getSellerId()) : ?>
           <?php if ($_SESSION['userId'] != $bestBid->getBidderId()) : ?>
             <?php if ($auction->getPrivacyId() == 0 || $auctionAccessState->getStateId() == 1) : ?>
-              <form action="?r=bid/addBid&auctionId=<?= $_GET['auctionId']; ?>" method="post">
+              <form action="?r=bid/addBid&auctionId=<?= parameters()['auctionId']; ?>" method="post">
                 <div class="input-group mb-2">
                   <input class="form-control" name="bidPrice" type="number" id="bidPrice" value="" min="<?php echo $minPrice + 1; ?>" placeholder="Saisir votre enchère maximum" />
                   <div class="input-group-prepend">
@@ -54,9 +54,9 @@ $minPrice = (($bestBid->getBidPrice() != null) && ($bestBid->getBidPrice() != nu
               </form>
             <?php else : ?>
               <?php if ($auctionAccessState->getStateId() !== null && $auctionAccessState->getStateId() == 0) : ?>
-                <a class="btn btn-secondary" href="?r=bid/cancelAuctionAccessRequest&auctionId=<?= $_GET['auctionId']; ?>">Annuler ma demande</a>
+                <a class="btn btn-secondary" href="?r=bid/cancelAuctionAccessRequest&auctionId=<?= parameters()['auctionId']; ?>">Annuler ma demande</a>
               <?php else : ?>
-                <a class="btn btn-primary" href="?r=bid/makeAuctionAccessRequest&auctionId=<?= $_GET['auctionId']; ?>">Demander à participer à l'enchère</a>
+                <a class="btn btn-primary" href="?r=bid/makeAuctionAccessRequest&auctionId=<?= parameters()['auctionId']; ?>">Demander à participer à l'enchère</a>
               <?php endif; ?>
             <?php endif; ?>
           <?php else : ?>

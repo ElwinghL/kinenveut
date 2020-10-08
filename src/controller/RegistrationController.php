@@ -10,11 +10,11 @@ class RegistrationController extends Controller
   public function register(): array
   {
     $errors = [];
-    $values['firstName'] = filter_input(INPUT_POST, 'firstName');
-    $values['lastName'] = filter_input(INPUT_POST, 'lastName');
-    $values['birthDate'] = filter_input(INPUT_POST, 'birthDate');
-    $values['email'] = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
-    $values['password'] = filter_input(INPUT_POST, 'password', FILTER_UNSAFE_RAW);
+    $values['firstName'] = filter_var(parameters()['firstName']);
+    $values['lastName'] = filter_var(parameters()['lastName']);
+    $values['birthDate'] = filter_var(parameters()['birthDate']);
+    $values['email'] = filter_var(parameters()['email'], FILTER_VALIDATE_EMAIL);
+    $values['password'] = filter_var(parameters()['password'], FILTER_UNSAFE_RAW);
 
     if ($values['firstName'] && strlen($values['firstName']) > 29) {
       $errors['firstName'] = 'Le Prénom n\'est pas valide';

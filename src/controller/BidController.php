@@ -4,7 +4,7 @@ class BidController extends Controller
 {
   public function index(): array
   {
-    $auctionId = $_GET['auctionId'];
+    $auctionId = parameters()['auctionId'];
 
     $auctionBo = App_BoFactory::getFactory()->getAuctionBo();
     $auction = $auctionBo->selectAuctionByAuctionId($auctionId);
@@ -31,10 +31,10 @@ class BidController extends Controller
 
   public function addBid(): array
   {
-    $auctionId = $_GET['auctionId'];
+    $auctionId = parameters()['auctionId'];
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-      if (!isset($_POST['bidPrice']) || $_POST['bidPrice'] === '') {
+      if (!isset(parameters()['bidPrice']) || parameters()['bidPrice'] === '') {
         $_SESSION['errors']['noBidPrice'] = 'Veuillez renseigner un montant à enchérir';
 
         return ['redirect', '?r=bid/index', ['auctionId' => $auctionId]];
@@ -42,7 +42,7 @@ class BidController extends Controller
 
       $newBid = new BidModel();
       $newBid
-        ->setBidPrice($_POST['bidPrice'])
+        ->setBidPrice(parameters()['bidPrice'])
         ->setBidderId($_SESSION['userId'])
         ->setObjectId($auctionId);
 
@@ -56,7 +56,7 @@ class BidController extends Controller
   public function makeAuctionAccessRequest(): array
   {
     $bidderId = $_SESSION['userId'];
-    $auctionId = $_GET['auctionId'];
+    $auctionId = parameters()['auctionId'];
     $auctionAccessStateDao = App_DaoFactory::getFactory()->getAuctionAccessStateDao();
     try {
       $auctionAccessStateDao->insertAuctionAccessState($auctionId, $bidderId);
@@ -70,7 +70,7 @@ class BidController extends Controller
   public function cancelAuctionAccessRequest(): array
   {
     $bidderId = $_SESSION['userId'];
-    $auctionId = $_GET['auctionId'];
+    $auctionId = parameters()['auctionId'];
 
     $auctionAccessStateDao = App_DaoFactory::getFactory()->getAuctionAccessStateDao();
     try {

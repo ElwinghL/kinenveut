@@ -22,9 +22,9 @@ class HomeController extends Controller
 
   public function search(): array
   {
-    $categoryType = $_POST['categoryType'];
-    $offerType = $_POST['offerType'];
-    $searchInput = protectStringToDisplay($_POST['searchInput']);
+    $categoryType = parameters()['categoryType'];
+    $offerType = parameters()['offerType'];
+    $searchInput = protectStringToDisplay(parameters()['searchInput']);
 
     $auctionBo = App_BoFactory::getFactory()->getAuctionBo();
     $auctionList = $auctionBo->selectAllAuctionsByAuctionState(self::IS_ONLINE);

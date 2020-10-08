@@ -5,7 +5,7 @@ class AccountController extends Controller
   /*Return Account page with user informations*/
   public function index(): array
   {
-    $userId = $_GET['userId'];
+    $userId = parameters()['userId'];
     $userBo = App_BoFactory::getFactory()->getUserBo();
     $userSelected = $userBo->selectUserByUserId($userId);
 
@@ -23,7 +23,7 @@ class AccountController extends Controller
   /*Return page to edit account informations*/
   public function edit(): array
   {
-    $userId = $_GET['userId'];
+    $userId = parameters()['userId'];
     $userBo = App_BoFactory::getFactory()->getUserBo();
     $userSelected = $userBo->selectUserByUserId($userId);
 
@@ -40,34 +40,34 @@ class AccountController extends Controller
 
   public function update(): array
   {
-    $userId = $_GET['userId'];
+    $userId = parameters()['userId'];
     $userBo = App_BoFactory::getFactory()->getUserBo();
     $userSelected = $userBo->selectUserByUserId($userId);
 
     if (isset($userSelected) && $userSelected->getId() > 0) {
-      $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
+      $email = filter_var(parameters()['email'], FILTER_VALIDATE_EMAIL);
       if ($email === false) {
-        $userSelected->setFirstName($_POST['firstName']);
-        $userSelected->setLastName($_POST['lastName']);
-        $userSelected->setEmail($_POST['email']);
+        $userSelected->setFirstName(parameters()['firstName']);
+        $userSelected->setLastName(parameters()['lastName']);
+        $userSelected->setEmail(parameters()['email']);
         $data['user'] = $userSelected;
         $data['errors']['email'] = 'L\'adresse mail n\'est pas valide';
 
         return ['render', 'edit', $data];
       }
       if ($email != $userSelected->getEmail() && $userBo->selectUserByEmail($email) !== null) {
-        $userSelected->setFirstName($_POST['firstName']);
-        $userSelected->setLastName($_POST['lastName']);
-        $userSelected->setEmail($_POST['email']);
+        $userSelected->setFirstName(parameters()['firstName']);
+        $userSelected->setLastName(parameters()['lastName']);
+        $userSelected->setEmail(parameters()['email']);
         $data['user'] = $userSelected;
         $data['errors']['email'] = 'L\'adresse mail est déjà utilisée par un autre utilisateur';
 
         return ['render', 'edit', $data];
       }
 
-      $userSelected->setFirstName($_POST['firstName']);
-      $userSelected->setLastName($_POST['lastName']);
-      $userSelected->setEmail($_POST['email']);
+      $userSelected->setFirstName(parameters()['firstName']);
+      $userSelected->setLastName(parameters()['lastName']);
+      $userSelected->setEmail(parameters()['email']);
       $data['user'] = $userSelected;
 
       $userBo->updateUser($userSelected);
