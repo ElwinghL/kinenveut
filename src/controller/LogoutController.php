@@ -2,9 +2,10 @@
 
 class LogoutController extends Controller
 {
-  public function index()
+  public function index(): array
   {
     session_destroy();
-    $this->redirect('?r=login');
+
+    return ['redirect', '?r=login'];
   }
 }

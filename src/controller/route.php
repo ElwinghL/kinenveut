@@ -21,6 +21,18 @@ function parameters()
   return $parameters;
 }
 
+function render(string $controller, string $action) : void
+{
+  $c = new $controller();
+  $data = $c->$action();
+  $action = $data[0];
+  $path = $data[1];
+  $data = isset($data[2]) ? $data[2] : null;
+
+  $c->$action($path, $data);
+  exit();
+}
+
 if (isset(parameters()['r'])) {
   $route = parameters()['r'];
   if ('default') {
@@ -32,9 +44,7 @@ if (isset(parameters()['r'])) {
     list($controller, $action) = explode('/', $route);
   }
   $controller = ucfirst($controller) . 'Controller';
-  $c = new $controller();
-  $c->$action();
+  render($controller, $action);
 } else {
-  $c = new HomeController();
-  $c->index();
+  render('HomeController', 'index');
 }

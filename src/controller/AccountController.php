@@ -3,7 +3,7 @@
 class AccountController extends Controller
 {
   /*Return Account page with user informations*/
-  public function index()
+  public function index(): array
   {
     $userId = $_GET['userId'];
     $userBo = App_BoFactory::getFactory()->getUserBo();
@@ -14,14 +14,14 @@ class AccountController extends Controller
         'user' => $userSelected
       ];
 
-      $this->render('index', $data);
+      return ['render', 'index', $data];
     } else {
-      $this->redirect('?r=home');
+      return ['redirect', '?r=home'];
     }
   }
 
   /*Return page to edit account informations*/
-  public function edit()
+  public function edit(): array
   {
     $userId = $_GET['userId'];
     $userBo = App_BoFactory::getFactory()->getUserBo();
@@ -32,13 +32,13 @@ class AccountController extends Controller
         'user' => $userSelected
       ];
 
-      $this->render('edit', $data);
+      return ['render', 'edit', $data];
     } else {
-      $this->redirect('?r=home');
+      return ['redirect', '?r=home'];
     }
   }
 
-  public function update()
+  public function update(): array
   {
     $userId = $_GET['userId'];
     $userBo = App_BoFactory::getFactory()->getUserBo();
@@ -52,7 +52,8 @@ class AccountController extends Controller
         $userSelected->setEmail($_POST['email']);
         $data['user'] = $userSelected;
         $data['errors']['email'] = 'L\'adresse mail n\'est pas valide';
-        $this->render('edit', $data);
+
+        return ['render', 'edit', $data];
         exit();
       }
       if ($email != $userSelected->getEmail() && $userBo->selectUserByEmail($email) !== null) {
@@ -61,7 +62,8 @@ class AccountController extends Controller
         $userSelected->setEmail($_POST['email']);
         $data['user'] = $userSelected;
         $data['errors']['email'] = 'L\'adresse mail est déjà utilisée par un autre utilisateur';
-        $this->render('edit', $data);
+
+        return ['render', 'edit', $data];
         exit();
       }
 
@@ -72,9 +74,9 @@ class AccountController extends Controller
 
       $userBo->updateUser($userSelected);
 
-      $this->render('index', $data);
+      return ['render', 'index', $data];
     } else {
-      $this->redirect('?r=home');
+      return ['redirect', '?r=home'];
     }
   }
 }

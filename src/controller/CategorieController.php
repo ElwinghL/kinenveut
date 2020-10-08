@@ -2,7 +2,7 @@
 
 class CategorieController extends Controller
 {
-  public function index()
+  public function index(): array
   {
     $categoryBo = App_BoFactory::getFactory()->getCategoryBo();
     $categoryList = $categoryBo->selectAllCategories();
@@ -11,10 +11,10 @@ class CategorieController extends Controller
       'categoryList' => $categoryList
     ];
 
-    $this->render('index', $data);
+    return ['render', 'index', $data];
   }
 
-  public function update_page()
+  public function update_page(): array
   {
     $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
     $data = null;
@@ -25,17 +25,17 @@ class CategorieController extends Controller
       if ($category !== null) {
         $data = [
           'category' => [
-            'id'  => $category->getId(),
-            'name'=> $category->getName()
+            'id'   => $category->getId(),
+            'name' => $category->getName()
           ]
         ];
       }
     }
 
-    $this->render('update_page', $data);
+    return ['render', 'update_page', $data];
   }
 
-  public function delete()
+  public function delete(): array
   {
     $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
     $categoryBo = App_BoFactory::getFactory()->getCategoryBo();
@@ -44,10 +44,10 @@ class CategorieController extends Controller
       $categoryBo->deleteCategoryById($id);
     }
 
-    $this->redirect('?r=categorie');
+    return ['redirect', '?r=categorie'];
   }
 
-  public function update_data()
+  public function update_data(): array
   {
     $id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
     $name = filter_input(INPUT_POST, 'name');
@@ -55,10 +55,10 @@ class CategorieController extends Controller
     $category = new CategoryModel();
 
     $category
-    ->setId($id)
-    ->setName($name);
+      ->setId($id)
+      ->setName($name);
     $categoryBo->addOrUpdateCategory($category);
 
-    $this->redirect('?r=categorie');
+    return ['redirect', '?r=categorie'];
   }
 }

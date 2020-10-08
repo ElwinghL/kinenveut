@@ -4,16 +4,15 @@ use PHPUnit\Framework\TestCase;
 
 include_once 'src/tools.php';
 
-class RegistrationControllerTest extends TestCase
+class LoginControllerTest extends TestCase
 {
   /**
    * @test
-   * @covers RegistrationController
+   * @covers LoginController
   */
-  public function registerTest()
+  public function indexTest()
   {
     // TODO
-    $controller = new RegistrationController();
     $this->markTestIncomplete(
       'This test has not been implemented yet.'
     );

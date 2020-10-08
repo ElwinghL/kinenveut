@@ -2,17 +2,18 @@
 
 class AuctionManagementController extends Controller
 {
-  public function index()
+  public function index(): array
   {
     $auctionBo = App_BoFactory::getFactory()->getAuctionBo();
     $auctions = $auctionBo->selectAllAuctionsByAuctionState(0);
     $data = [
-      'auctions'=> $auctions
+      'auctions' => $auctions
     ];
-    $this->render('index', $data);
+
+    return ['render', 'index', $data];
   }
 
-  public function info()
+  public function info(): array
   {
     $auctionId = $_GET['id'];
 
@@ -20,39 +21,41 @@ class AuctionManagementController extends Controller
     $auction = $auctionBo->selectAuctionByAuctionId($auctionId);
 
     $data = [
-      'auction'=> $auction
+      'auction' => $auction
     ];
 
-    $this->render('bid', $data);
+    return ['render', 'bid', $data];
   }
 
-  public function validate()
+  public function validate(): array
   {
     $auctionId = $_GET['id'];
     $auctionBo = App_BoFactory::getFactory()->getAuctionBo();
     $auction = $auctionBo->selectAuctionByAuctionId($auctionId);
-    $auction->setAuctionState(1);//Etat Accepté
+    $auction->setAuctionState(1); //Etat Accepté
     $auctionBo->updateStartDateAndAuctionState($auction);
     $auctions = $auctionBo->selectAllAuctionsByAuctionState(0);
     $data = [
-      'auctions'=> $auctions
+      'auctions' => $auctions
     ];
-    $this->render('index', $data);
+
+    return ['render', 'index', $data];
   }
 
-  public function delete()
+  public function delete(): array
   {
     $auctionId = $_GET['id'];
 
     $auctionBo = App_BoFactory::getFactory()->getAuctionBo();
     $auction = $auctionBo->selectAuctionByAuctionId($auctionId);
-    $auction->setAuctionState(2);//Etat Refusé
+    $auction->setAuctionState(2); //Etat Refusé
     $auctionBo->updateStartDateAndAuctionState($auction);
 
     $auctions = $auctionBo->selectAllAuctionsByAuctionState(0);
     $data = [
-      'auctions'=> $auctions
+      'auctions' => $auctions
     ];
-    $this->render('index', $data);
+
+    return ['render', 'index', $data];
   }
 }

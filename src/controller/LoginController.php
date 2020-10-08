@@ -2,22 +2,24 @@
 
 class LoginController extends Controller
 {
-  public function index()
+  public function index(): array
   {
-    $this->render('index');
+    return ['render', 'index'];
   }
 
-  public function login()
+  public function login(): array
   {
     $userBo = App_BoFactory::getFactory()->getUserBo();
     $user = $userBo->selectUserByEmailAndPassword($_POST['email'], $_POST['password']);
     if ($user !== null) {
       $_SESSION['userId'] = $user->getId();
       $_SESSION['isAdmin'] = $user->getIsAdmin();
-      $this->redirect('?r=home');
+
+      return ['redirect', '?r=home'];
     } else {
       $data['errors']['wrongIdentifiers'] = 'Identifiants incorrects';
-      $this->render('index', $data);
+
+      return ['render', 'index', $data];
     }
   }
 }
