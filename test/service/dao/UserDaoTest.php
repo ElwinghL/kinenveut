@@ -9,137 +9,102 @@ include_once 'src/tools.php';
 
 class UserDaoTest extends TestCase
 {
+  const FIRST_NAME = 'Francis';
+  const LAST_NAME = 'Dupont';
+  const BIRTH_DATE = '2000-01-13';
+  const EMAIL = 'Francis.Dupont@gmail.com';
+  const PASSWORD = 'password';
+
+  private $userDao = null;
+  private $user = null;
+
   /** @before*/
-  public function setUp() : void
+  public function setUp(): void
   {
     parent::setUp();
     App_DaoFactory::setFactory(new App_DaoFactory());
+    $this->userDao = App_DaoFactory::getFactory()->getUserDao();
+    $this->user = new UserModel();
+    $this->user
+      ->setFirstName(self::FIRST_NAME)
+      ->setLastName(self::LAST_NAME)
+      ->setBirthDate(self::BIRTH_DATE)
+      ->setEmail(self::EMAIL)
+      ->setPassword(self::PASSWORD);
   }
 
   /**
    * @test
    * @covers UserDaoImpl
-  */
-  public function insertUserTest() : void
+   */
+  public function insertUserTest(): void
   {
-    $userDao = App_DaoFactory::getFactory()->getUserDao();
-    $user = new UserModel();
-    $firstName = 'Francis';
-    $lastName = 'Dupont';
-    $birthDate = '2000-01-13';
-    $email = 'Francis.Dupont@gmail.com';
-    $password = 'password';
-
-    $user
-      ->setFirstName($firstName)
-      ->setLastName($lastName)
-      ->setBirthDate($birthDate)
-      ->setEmail($email)
-      ->setPassword($password);
-    $userId = $userDao->insertUser($user);
+    $userId = $this->userDao->insertUser($this->user);
 
     $this->assertNotNull($userId);
 
-    $userDao->deleteUser((int) $userId);
+    $this->userDao->deleteUser($userId);
+
+    $this->expectException(BDDException::class);
+    $userEmpty = new UserModel();
+    $this->userDao->insertUser($userEmpty);
   }
 
   /**
    * @test
    * @covers UserDaoImpl
-  */
-  public function deleteUserTest() : void
+   */
+  public function deleteUserTest(): void
   {
-    $userDao = App_DaoFactory::getFactory()->getUserDao();
-    $user = new UserModel();
-    $firstName = 'Francis';
-    $lastName = 'Dupont';
-    $birthDate = '2000-01-13';
-    $email = 'Francis.Dupont@gmail.com';
-    $password = 'password';
+    $userId = $this->userDao->insertUser($this->user);
 
-    $user
-        ->setFirstName($firstName)
-        ->setLastName($lastName)
-        ->setBirthDate($birthDate)
-        ->setEmail($email)
-        ->setPassword($password);
-    $userId = $userDao->insertUser($user);
-
-    $success = $userDao->deleteUser((int) $userId);
+    $success = $this->userDao->deleteUser($userId);
 
     $this->assertTrue($success);
+    $this->assertTrue($this->userDao->deleteUser(-1));
   }
 
   /**
    * @test
    * @covers UserDaoImpl
-  */
-  public function selectUserByEmailTest() : void
+   */
+  public function selectUserByEmailTest(): void
   {
-    $userDao = App_DaoFactory::getFactory()->getUserDao();
-    $user = new UserModel();
-    $firstName = 'Francis';
-    $lastName = 'Dupont';
-    $birthDate = '2000-01-13';
-    $email = 'Francis.Dupont@gmail.com';
-    $password = 'password';
+    $userId = $this->userDao->insertUser($this->user);
 
-    $user
-      ->setFirstName($firstName)
-      ->setLastName($lastName)
-      ->setBirthDate($birthDate)
-      ->setEmail($email)
-      ->setPassword($password);
+    $userSelected = $this->userDao->selectUserByEmail(self::EMAIL);
 
-    $userId = $userDao->insertUser($user);
-
-    $userSelected = $userDao->selectUserByEmail($email);
     $this->assertNotNull($userSelected);
-    $this->assertEquals($firstName, $userSelected->getFirstName());
-    $this->assertEquals($lastName, $userSelected->getLastName());
-    $this->assertEquals($birthDate, $userSelected->getBirthDate());
-    $this->assertEquals($email, $userSelected->getEmail());
+    $this->assertEquals(self::FIRST_NAME, $userSelected->getFirstName());
+    $this->assertEquals(self::LAST_NAME, $userSelected->getLastName());
+    $this->assertEquals(self::BIRTH_DATE, $userSelected->getBirthDate());
+    $this->assertEquals(self::EMAIL, $userSelected->getEmail());
 
-    $userDao->deleteUser((int) $userId);
+    $this->userDao->deleteUser($userId);
 
-    $userSelected = $userDao->selectUserByEmail($email);
-    $this->assertNull($userSelected);
+    $this->assertNull($this->userDao->selectUserByEmail('notAnEmail'));
   }
 
   /**
    * @test
    * @covers UserDaoImpl
-  */
-  public function selectUserByEmailAndPasswordTest() : void
+   */
+  public function selectUserByEmailAndPasswordTest(): void
   {
-    $userDao = App_DaoFactory::getFactory()->getUserDao();
-    $user = new UserModel();
-    $firstName = 'Francis';
-    $lastName = 'Dupont';
-    $birthDate = '2000-01-13';
-    $email = 'Francis.Dupont@gmail.com';
-    $password = 'password';
+    $this->user->setPassword(password_hash($this->user->getPassword(), PASSWORD_DEFAULT));
+    $userId = $this->userDao->insertUser($this->user);
 
-    $user
-      ->setFirstName($firstName)
-      ->setLastName($lastName)
-      ->setBirthDate($birthDate)
-      ->setEmail($email)
-      ->setPassword(password_hash($password, PASSWORD_DEFAULT));
+    $userSelected = $this->userDao->selectUserByEmailAndPassword(self::EMAIL, self::PASSWORD);
 
-    $userId = $userDao->insertUser($user);
-
-    $userSelected = $userDao->selectUserByEmailAndPassword($email, $password);
     $this->assertNotNull($userSelected);
-    $this->assertEquals($firstName, $userSelected->getFirstName());
-    $this->assertEquals($lastName, $userSelected->getLastName());
-    $this->assertEquals($birthDate, $userSelected->getBirthDate());
-    $this->assertEquals($email, $userSelected->getEmail());
+    $this->assertEquals(self::FIRST_NAME, $userSelected->getFirstName());
+    $this->assertEquals(self::LAST_NAME, $userSelected->getLastName());
+    $this->assertEquals(self::BIRTH_DATE, $userSelected->getBirthDate());
+    $this->assertEquals(self::EMAIL, $userSelected->getEmail());
 
-    $userDao->deleteUser((int)$userId);
+    $this->userDao->deleteUser($userId);
 
-    $userSelected = $userDao->selectUserByEmailAndPassword($email, $password);
-    $this->assertNull($userSelected);
+    $this->assertNull($this->userDao->selectUserByEmailAndPassword('', ''));
   }
 
   /**
@@ -148,35 +113,20 @@ class UserDaoTest extends TestCase
    */
   public function selectUserByUserIdTest()
   {
-    $userDao = App_DaoFactory::getFactory()->getUserDao();
-    $user = new UserModel();
-    $firstName = 'Francis';
-    $lastName = 'Dupont';
-    $birthDate = '2000-01-13';
-    $email = 'Francis.Dupont@gmail.com';
-    $password = 'password';
+    $userId = $this->userDao->insertUser($this->user);
 
-    $user
-          ->setFirstName($firstName)
-          ->setLastName($lastName)
-          ->setBirthDate($birthDate)
-          ->setEmail($email)
-          ->setPassword($password);
+    $userSelected = $this->userDao->selectUserByUserId($userId);
 
-    $userId = $userDao->insertUser($user);
-
-    $userSelected = $userDao->selectUserByUserId($userId);
     $this->assertNotNull($userSelected);
     $this->assertEquals($userId, $userSelected->getId());
-    $this->assertEquals($firstName, $userSelected->getFirstName());
-    $this->assertEquals($lastName, $userSelected->getLastName());
-    $this->assertEquals($birthDate, $userSelected->getBirthDate());
-    $this->assertEquals($email, $userSelected->getEmail());
+    $this->assertEquals(self::FIRST_NAME, $userSelected->getFirstName());
+    $this->assertEquals(self::LAST_NAME, $userSelected->getLastName());
+    $this->assertEquals(self::BIRTH_DATE, $userSelected->getBirthDate());
+    $this->assertEquals(self::EMAIL, $userSelected->getEmail());
 
-    $userDao->deleteUser((int) $userId);
+    $this->userDao->deleteUser($userId);
 
-    $userSelected = $userDao->selectUserByUserId((int) $userId);
-    $this->assertNull($userSelected);
+    $this->assertNull($this->userDao->selectUserByUserId(-1));
   }
 
   /**
@@ -185,49 +135,27 @@ class UserDaoTest extends TestCase
    */
   public function updateUserTest()
   {
-    $userDao = App_DaoFactory::getFactory()->getUserDao();
-    $user = new UserModel();
-    $firstName = 'Francis';
-    $lastName = 'Dupont';
-    $birthDate = '2000-01-13';
-    $email = 'Francis.Dupont@gmail.com';
-    $password = 'password';
-
-    $user
-          ->setFirstName($firstName)
-          ->setLastName($lastName)
-          ->setBirthDate($birthDate)
-          ->setEmail($email)
-          ->setPassword($password);
-
-    $userId = $userDao->insertUser($user);
-
-    $userSelected = $userDao->selectUserByUserId($userId);
-    $this->assertNotNull($userSelected);
-    $this->assertEquals($userId, $userSelected->getId());
-    $this->assertEquals($firstName, $userSelected->getFirstName());
-    $this->assertEquals($lastName, $userSelected->getLastName());
-    $this->assertEquals($birthDate, $userSelected->getBirthDate());
-    $this->assertEquals($email, $userSelected->getEmail());
-
     $newFirstName = 'Jean';
     $newLastName = 'Claude';
     $newEmail = 'Jean.Claude@gmail.com';
-
-    $userModified = $userSelected;
+    $userId = $this->userDao->insertUser($this->user);
+    $userModified = $this->userDao->selectUserByUserId($userId);
     $userModified->setFirstName($newFirstName);
     $userModified->setLastName($newLastName);
     $userModified->setEmail($newEmail);
 
-    $userDao->updateUser($userModified);
+    $this->userDao->updateUser($userModified);
 
-    $userModifiedSelected = $userDao->selectUserByUserId($userModified->getId());
+    $userModifiedSelected = $this->userDao->selectUserByUserId($userModified->getId());
     $this->assertNotNull($userModifiedSelected);
     $this->assertEquals($newFirstName, $userModifiedSelected->getFirstName());
     $this->assertEquals($newLastName, $userModifiedSelected->getLastName());
     $this->assertEquals($newEmail, $userModifiedSelected->getEmail());
 
-    $userDao->deleteUser((int) $userModified->getId());
+    $this->userDao->deleteUser($userModified->getId());
+
+    $userEmpty = new UserModel();
+    $this->assertTrue($this->userDao->updateUser($userEmpty));
   }
 
   /**
@@ -236,83 +164,49 @@ class UserDaoTest extends TestCase
    */
   public function updateUserIsAuthorisedTest()
   {
-    $userDao = App_DaoFactory::getFactory()->getUserDao();
-    $user = new UserModel();
-    $firstName = 'Francis';
-    $lastName = 'Dupont';
-    $birthDate = '2000-01-13';
-    $email = 'Francis.Dupont@gmail.com';
-    $password = 'password';
-
-    $user
-          ->setFirstName($firstName)
-          ->setLastName($lastName)
-          ->setBirthDate($birthDate)
-          ->setEmail($email)
-          ->setPassword($password);
-
-    $userId = $userDao->insertUser($user);
-
-    $userSelected = $userDao->selectUserByUserId($userId);
-    $this->assertNotNull($userSelected);
-    $this->assertEquals($userId, $userSelected->getId());
-    $this->assertEquals($firstName, $userSelected->getFirstName());
-    $this->assertEquals($lastName, $userSelected->getLastName());
-    $this->assertEquals($birthDate, $userSelected->getBirthDate());
-    $this->assertEquals($email, $userSelected->getEmail());
-
-    $userModified = $userSelected;
     $isAuthorised = 1;
+    $userId = $this->userDao->insertUser($this->user);
+    $userModified = $this->userDao->selectUserByUserId($userId);
     $userModified->setIsAuthorised($isAuthorised);
 
-    $userDao->updateUserIsAuthorised($userModified);
+    $this->userDao->updateUserIsAuthorised($userModified);
 
-    $userModifiedSelected = $userDao->selectUserByUserId($userModified->getId());
+    $userModifiedSelected = $this->userDao->selectUserByUserId($userModified->getId());
     $this->assertNotNull($userModifiedSelected);
     $this->assertEquals($isAuthorised, $userModifiedSelected->getIsAuthorised());
 
-    $userDao->deleteUser($userModified->getId());
+    $this->userDao->deleteUser($userModified->getId());
+
+    // $this->expectException(BDDException::class);
+    $userEmpty = new UserModel();
+    $this->assertTrue($this->userDao->updateUserIsAuthorised($userEmpty));
   }
 
   /**
    * @test
    * @covers UserDaoImpl
-  */
-  public function selectUsersByStateTest() : void
+   */
+  public function selectUsersByStateTest(): void
   {
-    $userDao = App_DaoFactory::getFactory()->getUserDao();
-    $user = new UserModel();
-    $firstName = 'Francis';
-    $lastName = 'Dupont';
-    $birthDate = '2000-01-13';
-    $email = 'Francis.Dupont@gmail.com';
-    $password = 'password';
-    $isAuthorised = 0;
-
-    $user
-    ->setFirstName($firstName)
-    ->setLastName($lastName)
-      ->setBirthDate($birthDate)
-      ->setEmail($email)
-      ->setPassword($password)
-      ->setIsAuthorised($isAuthorised);
-
-    $userId = $userDao->insertUser($user);
-    $user->setId($userId);
-
-    $usersSelected = $userDao->selectUsersByState(0);
-
-    $this->assertTrue(is_array($usersSelected));
-    $this->assertNotNull($usersSelected[0]->getId());
-
     $isAuthorised = '0';
-    $user->setIsAuthorised($isAuthorised);
-    $userDao->updateUserIsAuthorised($user);
-    $usersSelected = $userDao->selectUsersByState($isAuthorised);
+    $userId = $this->userDao->insertUser($this->user);
+    $this->user->setId($userId);
+
+    $usersSelected = $this->userDao->selectUsersByState(null);
 
     $this->assertTrue(is_array($usersSelected));
     $this->assertNotNull($usersSelected[0]->getId());
 
-    $userDao->deleteUser($userId);
+    $this->user->setIsAuthorised($isAuthorised);
+    $this->userDao->updateUserIsAuthorised($this->user);
+
+    $usersSelected = $this->userDao->selectUsersByState($isAuthorised);
+
+    $this->assertTrue(is_array($usersSelected));
+    $this->assertNotNull($usersSelected[0]->getId());
+
+    $this->userDao->deleteUser($userId);
+
+    $this->assertEmpty($this->userDao->selectUsersByState(-1));
   }
 }

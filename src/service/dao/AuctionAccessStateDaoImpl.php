@@ -10,7 +10,7 @@ class AuctionAccessStateDaoImpl implements IAuctionAccessStateDao
       $query = db()->prepare($request);
       $query->execute([$auctionId, $bidderId]);
     } catch (PDOException $Exception) {
-      throw new BDDException($Exception->getMessage(), (int)$Exception->getCode());
+      throw new BDDException($Exception->getMessage(), $Exception->getCode());
     }
 
     return db()->lastInsertId();
@@ -25,7 +25,7 @@ class AuctionAccessStateDaoImpl implements IAuctionAccessStateDao
       $query = db()->prepare($request);
       $success = $query->execute([$id]);
     } catch (PDOException $Exception) {
-      throw new BDDException($Exception->getMessage(), (int)$Exception->getCode());
+      throw new BDDException($Exception->getMessage(), $Exception->getCode());
     }
 
     return $success;
@@ -40,7 +40,7 @@ class AuctionAccessStateDaoImpl implements IAuctionAccessStateDao
       $query = db()->prepare($request);
       $success = $query->execute(['stateId' => $stateId, 'id' => $auctionAccessStateId]);
     } catch (PDOException $Exception) {
-      throw new BDDException($Exception->getMessage(), (int)$Exception->getCode());
+      throw new BDDException($Exception->getMessage(), $Exception->getCode());
     }
 
     return $success;
@@ -55,7 +55,7 @@ class AuctionAccessStateDaoImpl implements IAuctionAccessStateDao
       $query = db()->prepare($request);
       $success = $query->execute(['stateId' => $stateId, 'auctionId' => $auctionId, 'bidderId' => $bidderId]);
     } catch (PDOException $Exception) {
-      throw new BDDException($Exception->getMessage(), (int)$Exception->getCode());
+      throw new BDDException($Exception->getMessage(), $Exception->getCode());
     }
 
     return $success;
@@ -74,7 +74,7 @@ class AuctionAccessStateDaoImpl implements IAuctionAccessStateDao
       $query->execute(['auctionId' => $auctionId, 'bidderId' => $bidderId]);
       $auctionAccessStateSelected = $query->fetch();
     } catch (PDOException $Exception) {
-      throw new BDDException($Exception->getMessage(), (int)$Exception->getCode());
+      throw new BDDException($Exception->getMessage(), $Exception->getCode());
     }
 
     $oneAuctionAccessStateModel = new AuctionAccessStateModel();
@@ -108,7 +108,7 @@ class AuctionAccessStateDaoImpl implements IAuctionAccessStateDao
       $query->execute(['sellerId' => $sellerId, 'stateId' => $stateId]);
       $auctionAccessStateSelected = $query->fetchAll(PDO::FETCH_ASSOC);
     } catch (PDOException $Exception) {
-      throw new BDDException($Exception->getMessage(), (int)$Exception->getCode());
+      throw new BDDException($Exception->getMessage(), $Exception->getCode());
     }
 
     $auctionAccessStateList = [];
@@ -149,7 +149,7 @@ class AuctionAccessStateDaoImpl implements IAuctionAccessStateDao
       $query->execute(['sellerId' => $sellerId]);
       $numberOfAAS = $query->fetch();
     } catch (PDOException $Exception) {
-      throw new BDDException($Exception->getMessage(), (int)$Exception->getCode());
+      throw new BDDException($Exception->getMessage(), $Exception->getCode());
     }
 
     return $numberOfAAS[0];

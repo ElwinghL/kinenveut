@@ -16,7 +16,7 @@ class AuctionDaoImpl implements IAuctionDao
       $query->execute(['auctionSate' => $auctionSate]);
       $auctions = $query->fetchAll(PDO::FETCH_ASSOC);
     } catch (PDOException $Exception) {
-      throw new BDDException($Exception->getMessage(), (int)$Exception->getCode());
+      throw new BDDException($Exception->getMessage(), $Exception->getCode());
     }
 
     $auctionList = [];
@@ -65,7 +65,7 @@ class AuctionDaoImpl implements IAuctionDao
       $query->execute(['id' => $auctionId]);
       $oneAuction = $query->fetch();
     } catch (PDOException $Exception) {
-      throw new BDDException($Exception->getMessage(), (int)$Exception->getCode());
+      throw new BDDException($Exception->getMessage(), $Exception->getCode());
     }
 
     if ($oneAuction === null) {
@@ -113,7 +113,7 @@ class AuctionDaoImpl implements IAuctionDao
       $query->execute(['sellerId' => $sellerId]);
       $auctions = $query->fetchAll(PDO::FETCH_ASSOC);
     } catch (PDOException $Exception) {
-      throw new BDDException($Exception->getMessage(), (int)$Exception->getCode());
+      throw new BDDException($Exception->getMessage(), $Exception->getCode());
     }
 
     $auctionList = [];
@@ -156,7 +156,7 @@ class AuctionDaoImpl implements IAuctionDao
       $query = db()->prepare($request);
       $query->execute([utf8_decode($auction->getName()), utf8_decode($auction->getDescription()), $auction->getBasePrice(), $auction->getReservePrice(), /*$auction->getPictureLink(), $auction->getStartDate(),*/ $auction->getDuration(), $auction->getSellerId(), $auction->getPrivacyId(), $auction->getCategoryId()]);
     } catch (PDOException $Exception) {
-      throw new BDDException($Exception->getMessage(), (int)$Exception->getCode());
+      throw new BDDException($Exception->getMessage(), $Exception->getCode());
     }
 
     return db()->lastInsertId();
@@ -171,7 +171,7 @@ class AuctionDaoImpl implements IAuctionDao
       $query = db()->prepare($request);
       $success = $query->execute([$auctionId]);
     } catch (PDOException $Exception) {
-      throw new BDDException($Exception->getMessage(), (int)$Exception->getCode());
+      throw new BDDException($Exception->getMessage(), $Exception->getCode());
     }
 
     return $success;
@@ -187,7 +187,7 @@ class AuctionDaoImpl implements IAuctionDao
         $query = db()->prepare($request);
         $success = $query->execute(['id' => $auction->getId(), 'startDate' => $auction->getStartDate(), 'auctionState' => $auction->getAuctionState()]);
       } catch (PDOException $Exception) {
-        throw new BDDException($Exception->getMessage(), (int)$Exception->getCode());
+        throw new BDDException($Exception->getMessage(), $Exception->getCode());
       }
     }
 
@@ -203,7 +203,7 @@ class AuctionDaoImpl implements IAuctionDao
       $query = db()->prepare($request);
       $success = $query->execute(['id' => $auction->getId(), 'auctionState' => $auction->getAuctionState()]);
     } catch (PDOException $Exception) {
-      throw new BDDException($Exception->getMessage(), (int)$Exception->getCode());
+      throw new BDDException($Exception->getMessage(), $Exception->getCode());
     }
 
     return $success;
