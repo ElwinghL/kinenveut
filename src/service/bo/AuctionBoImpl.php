@@ -26,6 +26,14 @@ class AuctionBoImpl implements IAuctionBo
     return $auctionList;
   }
 
+  public function selectAcceptedConfidentialAuctionsByBidderId(int $userId): array
+  {
+    $auctionDao = App_DaoFactory::getFactory()->getAuctionDao();
+    $auctionList = $auctionDao->selectAcceptedConfidentialAuctionsByBidderId($userId);
+
+    return $auctionList;
+  }
+
   public function insertAuction(AuctionModel $auction): ?int
   {
     $auctionDao = App_DaoFactory::getFactory()->getAuctionDao();

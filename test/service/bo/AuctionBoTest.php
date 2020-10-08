@@ -251,4 +251,39 @@ class AuctionBoTest extends TestCase
     /*Last step : test the result*/
     $this->assertSame($expectedAuction, $auctionSelected);
   }
+
+  /**
+   * @test
+   * @covers AuctionBoImpl
+   */
+  public function selectAcceptedConfidentialAuctionsByBidderId() : void
+  {
+    $userId = 42;
+    $auction = new AuctionModel();
+    $auction
+            ->setId(12)
+            ->setName('Object Test')
+            ->setBasePrice(3)
+            ->setReservePrice(10)
+            //->setCreationDate(creationDate)
+            ->setStartDate('2020-01-01')
+            ->setDuration(7)
+            ->setAuctionState(0)
+            ->setSellerId(1)
+            ->setPrivacyId(2)
+            ->setCategoryId(1);
+    $expectedAuctions[] = $auction;
+
+    $auctionBo = App_BoFactory::getFactory()->getAuctionBo();
+    $auctionDaoImpMock = $this->createPartialMock(AuctionDaoImpl::class, ['selectAcceptedConfidentialAuctionsByBidderId']);
+    $auctionDaoImpMock->method('selectAcceptedConfidentialAuctionsByBidderId')->willReturn($expectedAuctions);
+
+    $app_DaoFactoryMock = $this->createPartialMock(App_DaoFactory::class, ['getAuctionDao']);
+    $app_DaoFactoryMock->method('getAuctionDao')->willReturn($auctionDaoImpMock);
+    App_DaoFactory::setFactory($app_DaoFactoryMock);
+
+    $auctionsSelected = $auctionBo->selectAcceptedConfidentialAuctionsByBidderId($userId);
+
+    $this->assertSame($expectedAuctions, $auctionsSelected);
+  }
 }

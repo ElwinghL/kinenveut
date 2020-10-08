@@ -8,7 +8,8 @@ class HomeController extends Controller
   {
     $auctionBo = App_BoFactory::getFactory()->getAuctionBo();
     $auctionList = $auctionBo->selectAllAuctionsByAuctionState(self::IS_ONLINE);
-
+    $confidentialAuctionList = $auctionBo->selectAcceptedConfidentialAuctionsByBidderId($_SESSION['userId']);
+    $auctionList = array_merge($auctionList, $confidentialAuctionList);
     $categoryBo = App_BoFactory::getFactory()->getCategoryBo();
     $categoryList = $categoryBo->selectAllCategories();
 
@@ -28,6 +29,8 @@ class HomeController extends Controller
 
     $auctionBo = App_BoFactory::getFactory()->getAuctionBo();
     $auctionList = $auctionBo->selectAllAuctionsByAuctionState(self::IS_ONLINE);
+    $confidentialAuctionList = $auctionBo->selectAcceptedConfidentialAuctionsByBidderId($_SESSION['userId']);
+    $auctionList = array_merge($auctionList, $confidentialAuctionList);
 
     $categoryBo = App_BoFactory::getFactory()->getCategoryBo();
     $categoryList = $categoryBo->selectAllCategories();

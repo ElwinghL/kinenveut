@@ -8,6 +8,8 @@ interface IAuctionDao
 
   public function selectAllAuctionsBySellerId(int $userId): array;
 
+  public function selectAcceptedConfidentialAuctionsByBidderId($userId): array;
+
   public function insertAuction(AuctionModel $auction): ?int;
 
   public function updateStartDateAndAuctionState(AuctionModel $auction): bool;
