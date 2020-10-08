@@ -324,7 +324,7 @@ class AuctionDaoTest extends TestCase
     $auctionAccessStateDao = App_DaoFactory::getFactory()->getAuctionAccessStateDao();
     $auctionAccessStateId = $auctionAccessStateDao->insertAuctionAccessState($auctionId, $bidderId);
     $auctionAccessStateDao->updateStateIdByAuctionIdAndBidderId($auctionId, $bidderId, 1);
-    
+
     $AuctionsSelected = $auctionDao->selectAcceptedConfidentialAuctionsByBidderId($bidderId);
 
     $this->assertTrue(is_array($AuctionsSelected));
@@ -332,6 +332,5 @@ class AuctionDaoTest extends TestCase
 
     $auctionDao->deleteAuctionById($auctionId);
     $auctionAccessStateDao->deleteAuctionAccessStateById($auctionAccessStateId);
-
   }
 }
