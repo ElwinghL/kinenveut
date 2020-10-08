@@ -9,7 +9,8 @@ class AuctionDaoImpl implements IAuctionDao
     ,v_BestBid.id AS bidId,v_BestBid.bidPrice,v_BestBid.bidDate,v_BestBid.bidderId
     FROM Auction
     LEFT JOIN v_BestBid ON v_BestBid.objectId = Auction.id
-    WHERE auctionState = :auctionSate';
+    WHERE auctionState = :auctionSate
+        AND privacyId in (0,1)';
 
     try {
       $query = db()->prepare($request);
