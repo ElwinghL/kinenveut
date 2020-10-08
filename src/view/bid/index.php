@@ -95,27 +95,53 @@ $minPrice = (($bestBid->getBidPrice() != null) && ($bestBid->getBidPrice() != nu
     <!--Line-->
     <div class="hr"></div>
 
-    <?php if ($_SESSION['userId'] == $auction->getSellerId()) : ?>
-        <a href=<?php echo '?r=auction/abort&auctionId=' . $auction->getId() ?>>
-            <button type="button" class="btn btn-secondary">Clôturer</button>
-        </a>
-        <a href=<?php echo '?r=auction/cancel&auctionId=' . $auction->getId() ?>>
-            <button type="button" class="btn btn-danger">Supprimer</button>
-        </a>
+    <?php if ($auction->getAuctionState() == 1):?>
+    <div class="row">
+        <?php if ($auction->getPrivacyId() == 0 || $auction->getPrivacyId() == 1 || $_SESSION['userId'] == $auction->getSellerId()) : ?>
+        <div class="col-md-12">
+            <h3>Partager</h3>
+            <div class="col-md-6">
+                <div class="input-group mb-2">
+                    <input id="to-copy" class="form-control" type="text" value="" readonly/>
+                    <div class="input-group-prepend">
+                        <div class="input-group-btn">
+                            <input id="copy" class="btn btn-secondary" value="Copier le lien"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+                <!--Line-->
+        <div class="hr"></div>
+        <?php endif;?>
+
+
+        <?php if ($_SESSION['userId'] == $auction->getSellerId()) : ?>
+        <div class="col-md-12">
+            <br/>
+            <a href=<?php echo '?r=auction/abort&auctionId=' . $auction->getId() ?>>
+                <button class="btn btn-secondary">Clôturer</button>
+            </a>
+            <a href=<?php echo '?r=auction/cancel&auctionId=' . $auction->getId() ?>>
+                <button class="btn btn-danger">Supprimer</button>
+            </a>
+        </div>
         <!--Line-->
         <div class="hr"></div>
     <?php endif;?>
+    </div>
+    <?php endif;?>
+
   <!--User-->
   <div class="row">
     <div class="col-md-9">
-
-      <a href="?r=account/index&userId=<?= $seller->getId(); ?>">
-        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-person-square" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-          <path fill-rule="evenodd" d="M14 1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z" />
-          <path fill-rule="evenodd" d="M2 15v-1c0-1 1-4 6-4s6 3 6 4v1H2zm6-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
-        </svg>
-        <?php echo $seller->getFirstName() . ' ' . strtoupper(substr($seller->getLastName(), 0, 1)); ?>
-      </a>
+        <a href="?r=account/index&userId=<?= $seller->getId(); ?>">
+            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-person-square" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+              <path fill-rule="evenodd" d="M14 1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z" />
+              <path fill-rule="evenodd" d="M2 15v-1c0-1 1-4 6-4s6 3 6 4v1H2zm6-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
+            </svg>
+            <?php echo $seller->getFirstName() . ' ' . strtoupper(substr($seller->getLastName(), 0, 1)); ?>
+        </a>
     </div>
 
     <div class="col-md-3"></div>
@@ -123,3 +149,22 @@ $minPrice = (($bestBid->getBidPrice() != null) && ($bestBid->getBidPrice() != nu
   </div>
 
 </div>
+
+<script type="text/javascript">
+    document.getElementById("to-copy").value = window.location.href;
+
+    var url = window.location.href,
+        toCopy  = document.getElementById( 'to-copy' ),
+        btnCopy = document.getElementById( 'copy' );
+
+    btnCopy.addEventListener( 'click', function(){
+        toCopy.select();
+
+        if (document.execCommand( 'copy') ) {
+            console.info( 'lien copié');
+        } else {
+            console.info( 'lien non copié' )
+        }
+        return false;
+    } );
+</script>
