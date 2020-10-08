@@ -54,7 +54,6 @@ class AccountController extends Controller
         $data['errors']['email'] = 'L\'adresse mail n\'est pas valide';
 
         return ['render', 'edit', $data];
-        exit();
       }
       if ($email != $userSelected->getEmail() && $userBo->selectUserByEmail($email) !== null) {
         $userSelected->setFirstName($_POST['firstName']);
@@ -64,7 +63,6 @@ class AccountController extends Controller
         $data['errors']['email'] = 'L\'adresse mail est déjà utilisée par un autre utilisateur';
 
         return ['render', 'edit', $data];
-        exit();
       }
 
       $userSelected->setFirstName($_POST['firstName']);
