@@ -2,6 +2,14 @@
 
 class AuctionController extends Controller
 {
+  /*----Views-----*/
+
+  /*Return a page to create an auction*/
+  public function create(): array
+  {
+    return ['render', 'create', $this->createDataForm()];
+  }
+
   /*Return page with auctions created by one user*/
   public function sells(): array
   {
@@ -23,33 +31,6 @@ class AuctionController extends Controller
     } else {
       //Todo : Gérer le cas où il y a 0 enchère :)
       return ['render', 'index', $data];
-    }
-  }
-
-  public function abort(): array
-  {
-    $auctionId = parameters()['auctionId'];
-    $auctionBo = App_BoFactory::getFactory()->getAuctionBo();
-    $auction = $auctionBo->selectAuctionByAuctionId($auctionId);
-
-    if ($_SESSION['userId'] == $auction->getSellerId()) {
-      $auction->setAuctionState(3);
-      $auctionBo->updateAuctionState($auction);
-
-      return ['redirect', '?r=auction/sells', ['userId' => $_SESSION['userId']]];
-    }
-  }
-
-  public function cancel(): array
-  {
-    $auctionId = parameters()['auctionId'];
-    $auctionBo = App_BoFactory::getFactory()->getAuctionBo();
-    $auction = $auctionBo->selectAuctionByAuctionId($auctionId);
-    if ($_SESSION['userId'] == $auction->getSellerId()) {
-      $auction->setAuctionState(2);
-      $auctionBo->updateAuctionState($auction);
-
-      return ['redirect', '?r=auction/sells', ['userId' => $_SESSION['userId']]];
     }
   }
 
@@ -82,15 +63,20 @@ class AuctionController extends Controller
     }
   }
 
-  public function alerte(): array
+  /*-----Actions-----*/
+
+  public function abort(): array
   {
-    return ['render', 'alerte'];
+    $this->updateAuctionState(3);
+
+    return ['redirect', '?r=auction/sells', ['userId' => $_SESSION['userId']]];
   }
 
-  /*Return a page to create an auction*/
-  public function create(): array
+  public function cancel(): array
   {
-    return ['render', 'create', $this->createDataForm()];
+    $this->updateAuctionState(2);
+
+    return ['redirect', '?r=auction/sells', ['userId' => $_SESSION['userId']]];
   }
 
   /*Create a new auction*/
@@ -104,12 +90,6 @@ class AuctionController extends Controller
     $values['duration'] = filter_var(parameters()['duration'], FILTER_VALIDATE_INT);
     $values['privacyId'] = filter_var(parameters()['privacyId'], FILTER_VALIDATE_INT);
     $values['categoryId'] = filter_var(parameters()['categoryId'], FILTER_VALIDATE_INT);
-
-    /*if (!(preg_match('#^(\d{4})-(\d{2})-(\d{2})$#', $values['startDate'], $matches)
-    && checkdate($matches[2], $matches[3], $matches[1])
-    && DateTime::createFromFormat('d/m/Y', $values['startDate']) < (new DateTime()))) {
-      $errors['startDate'] = 'La date n\'est pas valide';
-    }*/
 
     if ($values['basePrice'] > $values['reservePrice']) {
       $errors['basePrice'] = 'Le prix de départ ne peut pas être supérieur au prix de réserve';
@@ -143,6 +123,8 @@ class AuctionController extends Controller
     }
   }
 
+  /*-----Private functions-----*/
+
   /*Create datas list for the form*/
   private function createDataForm($otherDatas = []): array
   {
@@ -156,5 +138,21 @@ class AuctionController extends Controller
     $data = array_merge($data, $otherDatas);
 
     return $data;
+  }
+
+  /*Upadte the auction state*/
+  private function updateAuctionState(int $auctionState) : bool
+  {
+    $auctionId = parameters()['auctionId'];
+
+    $auctionBo = App_BoFactory::getFactory()->getAuctionBo();
+    $auction = $auctionBo->selectAuctionByAuctionId($auctionId);
+
+    if ($_SESSION['userId'] == $auction->getSellerId()) {
+      $auction->setAuctionState($auctionState);
+      $isUpdated = $auctionBo->updateAuctionState($auction);
+    }
+
+    return $isUpdated;
   }
 }
