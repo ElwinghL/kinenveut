@@ -8,7 +8,6 @@
       <directory>src/controller/route.php</directory>
       <directory>src/view</directory>
       <directory>src/db.php</directory>
-      <directory>src/test_js.php</directory>
       <directory>src/tools.php</directory>
     </exclude>
   </coverage>
