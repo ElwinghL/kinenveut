@@ -63,7 +63,7 @@ $dataValue = isset($data['values']) ? $data['values'] : null;
 
       <!--Catégories-->
       <div class="form-group col-md-3">
-        <label for="categoryId">Catégories</label>
+        <label for="categoryId">Catégorie</label>
         <select class="form-control" name="categoryId" id="categoryId">
           <?php if (sizeof($categoryList) > 0) : ?>
             <?php foreach ($categoryList as $oneCategory) : ?>
@@ -86,9 +86,9 @@ $dataValue = isset($data['values']) ? $data['values'] : null;
       <div class="form-group col-md-3">
         <label for="privacyId">Confidentialité</label>
         <select class="form-control" name="privacyId" id="privacyId">
-          <option value="1" selected>Libre</option>
-          <option value="2">Privée</option>
-          <option value="3">Confidentielle</option>
+          <option value="0" selected>Libre</option>
+          <option value="1">Privée</option>
+          <option value="2">Confidentielle</option>
         </select>
       </div>
 

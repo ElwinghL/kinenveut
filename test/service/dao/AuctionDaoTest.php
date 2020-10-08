@@ -294,4 +294,44 @@ class AuctionDaoTest extends TestCase
     /*Seventh step : delete the inserted auction**/
     $auctionDao->deleteAuctionById($auctionId);
   }
+
+  /**
+   * @test
+   * @covers AuctionDaoImpl
+   */
+  public function selectAcceptedConfidentialAuctionsByBidderId(): void
+  {
+    $auctionDao = App_DaoFactory::getFactory()->getAuctionDao();
+
+    $bidderId = 2;
+
+    $auctionTest = new AuctionModel();
+    $auctionTest
+            ->setName('Object Test')
+            ->setDescription('descr')
+            ->setBasePrice(3)
+            ->setReservePrice(10)
+            //->setCreationDate(creationDate)
+            ->setStartDate('2020-01-01')
+            ->setDuration(7)
+            ->setAuctionState(1)
+            ->setSellerId(1)
+            ->setPrivacyId(2)
+            ->setCategoryId(1);
+
+    $auctionId = $auctionDao->insertAuction($auctionTest);
+
+    $auctionAccessStateDao = App_DaoFactory::getFactory()->getAuctionAccessStateDao();
+    $auctionAccessStateId = $auctionAccessStateDao->insertAuctionAccessState($auctionId, $bidderId);
+    $auctionAccessStateDao->updateStateIdByAuctionIdAndBidderId($auctionId, $bidderId, 1);
+    
+    $AuctionsSelected = $auctionDao->selectAcceptedConfidentialAuctionsByBidderId($bidderId);
+
+    $this->assertTrue(is_array($AuctionsSelected));
+    $this->assertNotNull($AuctionsSelected[0]->getName());
+
+    $auctionDao->deleteAuctionById($auctionId);
+    $auctionAccessStateDao->deleteAuctionAccessStateById($auctionAccessStateId);
+
+  }
 }
