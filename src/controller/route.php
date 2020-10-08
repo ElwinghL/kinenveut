@@ -10,7 +10,11 @@ function render(string $controller, string $action): void
   $path = $data[1];
   $data = isset($data[2]) ? $data[2] : null;
 
-  $c->$action($path, $data);
+  if (isset($_SESSION['userId']) || $c instanceof LoginController) {
+    $c->$action($path, $data);
+  } else {
+    header('Location: ?r=login');
+  }
   exit();
 }
 

@@ -287,7 +287,7 @@ class UserDaoTest extends TestCase
     $birthDate = '2000-01-13';
     $email = 'Francis.Dupont@gmail.com';
     $password = 'password';
-    $isAuthorised=0;
+    $isAuthorised = 0;
 
     $user
     ->setFirstName($firstName)

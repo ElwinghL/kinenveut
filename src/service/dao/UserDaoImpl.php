@@ -125,7 +125,6 @@ class UserDaoImpl implements IUserDao
 
   public function insertUser(UserModel $user): ?int
   {
-
     $request = 'INSERT INTO User(firstName, lastName, email, password, birthDate, isAdmin,isAuthorised) VALUES (?, ?, ?, ?, ?, false,?)';
 
     try {
