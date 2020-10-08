@@ -106,7 +106,7 @@ $dataValue = isset($data['values']) ? $data['values'] : null;
       <!--Boutons-->
       <div class="form-group col-md-3">
         <input class="btn btn-primary" type="submit" name="createAuction" id="createAuction" value="Valider" />
-        <input class="btn btn-primary" type="submit" name="cancel" id="cancel" value="Annuler" />
+        <a href=<?php echo "/kinenveut/?r=auction/sells/&userId=".$_SESSION['userId'] ?> class="btn btn-primary">Annuler</a>
       </div>
     </form>
   </div>
