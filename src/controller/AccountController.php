@@ -77,4 +77,18 @@ class AccountController extends Controller
       return ['redirect', '?r=home'];
     }
   }
+
+  public function info(): array
+  {
+    $userId = parameters()['id'];
+    $userBo = App_BoFactory::getFactory()->getUserBo();
+
+    $user = $userBo->selectUserByUserId($userId);
+
+    $data = [
+      'user' => $user
+    ];
+
+    return['render', 'index', $data];
+  }
 }

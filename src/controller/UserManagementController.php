@@ -13,22 +13,6 @@ class UserManagementController extends Controller
     return ['render', 'index', $data];
   }
 
-  public function info(): void
-  {
-    $userId = parameters()['id'];
-
-    $userBo = App_BoFactory::getFactory()->getUserBo();
-
-    $user = $userBo->selectUserByUserId($userId);
-
-    $data = [
-      'user' => $user
-    ];
-
-    $accountController = new AccountController();
-    $accountController->render('index', $data);
-  }
-
   public function validate(): array
   {
     $userId = parameters()['id'];
