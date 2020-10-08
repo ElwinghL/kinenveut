@@ -199,7 +199,7 @@ class AuctionDaoImpl implements IAuctionDao
 
       array_push($auctionList, $oneAuctionModel);
     }
-    
+
     return $auctionList;
   }
 

@@ -1,7 +1,9 @@
 <?php include_once 'src/view/page-header.php' ?>
 
 <?php
+
     date_default_timezone_set('Europe/Paris');
+
     $dateFormat = 'm d, Y H:i:s';
     $auction = (isset($data['auction'])) ? $data['auction'] : new AuctionModel();
     $auctionAccessState = (isset($data['auctionAccessState'])) ? $data['auctionAccessState'] : new AuctionAccessStateModel();
@@ -16,18 +18,14 @@
     $nowDateBis = new DateTime('Now');
     $endDateFormated = date('Y-m-d H:i:s', $endDate);
 
-    /*var_dump(date('m d, Y H:i:s', $startDate));
-    var_dump(date('m d, Y H:i:s', $nowDate));
-    var_dump(date('m d, Y H:i:s', $endDate));*/
-    $timingLeft = abs($endDate - $nowDate);
+    $isFinished = $nowDate > $endDate;
 
-    //Je travaille ici :) #JoliCommentaire
-    //Todo : Cher Bastien, auriez vous l'obligence de regarder pour résoudre la soustraction en php. Cordialement, Ophélie.
+    $dateBis = date('Y-m-d H:i:s', $endDate);
+    $nowDatetime = new DateTime();
+    $endDatetime = new DateTime('' . $dateBis);
+    $interval = $nowDatetime->diff($endDatetime);
 
-    $timingLeft = "";//((new DateTime($endDateFormated))->date_diff(new DateTime('Now')))->format('m d, Y H:i:s');
-    //var_dump($timingLeft);
-    //var_dump(date('m d, Y H:i:s', $timingLeft));
-    $isFinished = $timingLeft <= 0;
+    $timingLeftFormated = $interval->format('%a jours %h:%i:%s');
 ?>
 
 <div class="container">
@@ -40,7 +38,7 @@
             <?php if ($isFinished):?>
                 L'enchère est terminée depuis le <?php echo date('d/m/Y H:i:s', $endDate);?>
             <?php else:?>
-                Expire dans : <?php /*echo date('d', $timingLeft) . ' jours ' . date('H:i:s', $timingLeft)*/;?>;
+                Expire dans : <?php echo $timingLeftFormated;?>
             <?php endif;?></div>
         <br/>
     </div>
@@ -297,6 +295,7 @@
             document.getElementById("timer").innerHTML = "L'enchère est terminée depuis le <?php echo date('d/m/Y H:i:s', $endDate);?>";
             document.getElementById("formulairePourEncherir").innerHTML = " ";
             document.getElementById("formulairePourEncherir").style.visibility="hidden";
+            //Todo : ici, on peut discrètement passer l'enchère à terminé ^^ si l'état est en cours
         }
     }
 </script>
