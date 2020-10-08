@@ -1,3 +1,6 @@
+#!/bin/bash
+# affiche_param.sh
+
 user=""
 password=""
 dbname=""
@@ -9,6 +12,12 @@ while read line ; do
   esac
 done < ".env"
 
+if [ $1 == "reset" ]
+then
+  echo $(mysql -u $user -p$password -e "DROP DATABASE IF EXISTS "$dbname";")
+  echo $(mysql -u $user -p$password -e "CREATE DATABASE "$dbname" CHARACTER SET 'utf8';")
+  mysql -u $user -p$password $dbname < ./patch/001_create_table_version.sql;
+fi
 number=$( echo $(mysql -u $user -p$password $dbname -e "SELECT number FROM Version;") | cut -d" " -f2)
 
 for eachfile in $(ls ./patch/*.sql)
