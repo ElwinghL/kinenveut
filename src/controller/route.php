@@ -1,27 +1,8 @@
 <?php
 
-$parameters = [];
+include_once 'src/parameters.php';
 
-if (isset($_POST)) {
-  foreach ($_POST as $k=>$v) {
-    $parameters[$k] = $v;
-  }
-}
-
-if (isset($_GET)) {
-  foreach ($_GET as $k=>$v) {
-    $parameters[$k] = $v;
-  }
-}
-
-function parameters()
-{
-  global $parameters;
-
-  return $parameters;
-}
-
-function render(string $controller, string $action) : void
+function render(string $controller, string $action): void
 {
   $c = new $controller();
   $data = $c->$action();
