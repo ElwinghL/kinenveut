@@ -75,7 +75,7 @@ script à faire à chaque pull pour passer automatiquement les nouveaux patchs.
 
 ### Script composer
 
-`composer format` lance php-cs-fixer à chaque changement de fichier
+`composer format` lance php-cs-fixer à chaque changement de fichier \
 `composer test` lance les tests avec php unit \
 `composer coverage` lance la couverture des tests dans le terminal \
 `composer coverage-html` lance la couverture des tests en html dans le dossier `/test/coverage/`
