@@ -40,7 +40,7 @@
             <?php if ($isFinished):?>
                 L'enchère est terminée depuis le <?php echo date('d/m/Y H:i:s', $endDate);?>
             <?php else:?>
-                Expire dans : <?php echo date('d', $timingLeft) . ' jours ' . date('H:i:s', $timingLeft)?>;
+                Expire dans : <?php /*echo date('d', $timingLeft) . ' jours ' . date('H:i:s', $timingLeft)*/;?>;
             <?php endif;?></div>
         <br/>
     </div>
@@ -194,7 +194,7 @@
 <script type="text/javascript">
     /*Remplissage du champs URL à copier*/
     document.getElementById("to-copy").value = window.location.href;
-    replaceTimer();
+
     var url = window.location.href,
         toCopy  = document.getElementById( 'to-copy' ),
         btnCopy = document.getElementById( 'copy' );
@@ -236,6 +236,49 @@
             temps_restant += days + " jours ";
         }
         if(temps_restant != "" || hours > 0){
+            if(hours < 10) temps_restant += 0;
+            temps_restant += hours + ":";
+        }
+        if(temps_restant != "" || minutes > 0){
+            if(minutes < 10) temps_restant += 0;
+            temps_restant += minutes + ":";
+        }
+        if(temps_restant != "" || seconds > 0){
+            if(seconds < 10) temps_restant += 0;
+            temps_restant += seconds + "";
+        }
+
+        // Display the result in the element with id="demo"
+        document.getElementById("timer").innerHTML = "Expire dans : " + temps_restant;
+
+        // If the count down is finished, write some text
+        if (distance < 0) {
+            clearInterval(x);
+            document.getElementById("timer").innerHTML = "L'enchère est terminée depuis le <?php echo date('d/m/Y H:i:s', $endDate);?>";
+            document.getElementById("formulairePourEncherir").innerHTML = " ";
+            document.getElementById("formulairePourEncherir").style.visibility="hidden";
+        }
+    }, 1000);
+
+    function replaceTimer(){
+        // Get today's date and time
+        var now = new Date().getTime();
+
+        // Find the distance between now and the count down date
+        var distance = countDownDate - now;
+
+        // Time calculations for days, hours, minutes and seconds
+        var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        var temps_restant = "";
+
+        if(days > 0){
+            temps_restant += days + " jours ";
+        }
+        if(temps_restant != "" || hours > 0){
             temps_restant += hours + ":";
         }
         if(temps_restant != "" || minutes > 0){
@@ -255,5 +298,5 @@
             document.getElementById("formulairePourEncherir").innerHTML = " ";
             document.getElementById("formulairePourEncherir").style.visibility="hidden";
         }
-    }, 1000);
+    }
 </script>
