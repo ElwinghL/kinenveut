@@ -7,6 +7,9 @@ $seller = (isset($data['seller'])) ? $data['seller'] : new UserModel();
 
 $bestBid = ($auction->getBestBid() != null) ? $auction->getBestBid() : new BidModel();
 $minPrice = (($bestBid->getBidPrice() != null) && ($bestBid->getBidPrice() != null)) ? $bestBid->getBidPrice() : $auction->getBasePrice();
+
+$endDate = date('F j, Y h:i:s', strtotime($auction->getStartDate() . ' + ' . $auction->getDuration() . ' days'));
+$isFinished = $endDate < date('F j, Y h:i:s');
 ?>
 
 <div class="container">
@@ -15,6 +18,8 @@ $minPrice = (($bestBid->getBidPrice() != null) && ($bestBid->getBidPrice() != nu
   <div class="row">
     <div class="col-md-9">
       <h2><?php echo protectStringToDisplay($auction->getName()); ?> - <?php echo $minPrice ?>€</h2>
+        <div id="timer"></div>
+        <br/>
     </div>
     <div class="col-md-3">
       <small><i>Mis en ligne le <?php echo $auction->getStartDate(); ?></i></small>
@@ -38,20 +43,24 @@ $minPrice = (($bestBid->getBidPrice() != null) && ($bestBid->getBidPrice() != nu
         <?php if ($_SESSION['userId'] != $auction->getSellerId()) : ?>
           <?php if ($_SESSION['userId'] != $bestBid->getBidderId()) : ?>
             <?php if ($auction->getPrivacyId() == 0 || $auctionAccessState->getStateId() == 1) : ?>
-              <form action="?r=bid/addBid&auctionId=<?= parameters()['auctionId']; ?>" method="post">
-                <div class="input-group mb-2">
-                  <input class="form-control" name="bidPrice" type="number" id="bidPrice" value="" min="<?php echo $minPrice + 1; ?>" placeholder="Saisir votre enchère maximum" />
-                  <div class="input-group-prepend">
-                    <div class="input-group-btn">
-                      <input class="btn btn-light" name="makeabid" type="submit" value="Enchérir" />
-                    </div>
-                  </div>
-                </div>
-                <?php if (isset($_SESSION['errors']['noBidPrice'])) : ?>
-                  <span class='error-custom'><?= $_SESSION['errors']['noBidPrice'] ?></span>;
-                  <?php unset($_SESSION['errors']['noBidPrice']); ?>
-                <?php endif; ?>
-              </form>
+            <div id="formulairePourEncherir">
+            <?php if ($isFinished):?>
+                  <form action="?r=bid/addBid&auctionId=<?= parameters()['auctionId']; ?>" method="post">
+                      <div class="input-group mb-2">
+                          <input class="form-control" name="bidPrice" type="number" id="bidPrice" value="" min="<?php echo $minPrice + 1; ?>" placeholder="Saisir votre enchère maximum" />
+                          <div class="input-group-prepend">
+                              <div class="input-group-btn">
+                                  <input class="btn btn-light" name="makeabid" type="submit" value="Enchérir" />
+                              </div>
+                          </div>
+                      </div>
+                      <?php if (isset($_SESSION['errors']['noBidPrice'])) : ?>
+                          <span class='error-custom'><?= $_SESSION['errors']['noBidPrice'] ?></span>;
+                          <?php unset($_SESSION['errors']['noBidPrice']); ?>
+                      <?php endif; ?>
+                  </form>
+            <?php endif;?>
+            </div>
             <?php else : ?>
               <?php if ($auctionAccessState->getStateId() !== null && $auctionAccessState->getStateId() == 0) : ?>
                 <a class="btn btn-secondary" href="?r=bid/cancelAuctionAccessRequest&auctionId=<?= parameters()['auctionId']; ?>">Annuler ma demande</a>
@@ -151,12 +160,14 @@ $minPrice = (($bestBid->getBidPrice() != null) && ($bestBid->getBidPrice() != nu
 </div>
 
 <script type="text/javascript">
+    /*Remplissage du champs URL à copier*/
     document.getElementById("to-copy").value = window.location.href;
 
     var url = window.location.href,
         toCopy  = document.getElementById( 'to-copy' ),
         btnCopy = document.getElementById( 'copy' );
 
+    /*Fonction copiant l'URL*/
     btnCopy.addEventListener( 'click', function(){
         toCopy.select();
 
@@ -167,4 +178,50 @@ $minPrice = (($bestBid->getBidPrice() != null) && ($bestBid->getBidPrice() != nu
         }
         return false;
     } );
+
+    /*Gestion du timer*/
+    // Set the date we're counting down to
+    var countDownDate = new Date("<?=$endDate?>").getTime();
+
+    // Update the count down every 1 second
+    var x = setInterval(function() {
+
+        // Get today's date and time
+        var now = new Date().getTime();
+
+        // Find the distance between now and the count down date
+        var distance = countDownDate - now;
+
+        // Time calculations for days, hours, minutes and seconds
+        var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        var temps_restant = "";
+
+        if(days > 0){
+            temps_restant += days + " jours ";
+        }
+        if(temps_restant != "" || hours > 0){
+            temps_restant += hours + ":";
+        }
+        if(temps_restant != "" || minutes > 0){
+            temps_restant += minutes + ":";
+        }
+        if(temps_restant != "" || seconds > 0){
+            temps_restant += seconds + "";
+        }
+
+        // Display the result in the element with id="demo"
+        document.getElementById("timer").innerHTML = "Expire dans : " + temps_restant;
+
+        // If the count down is finished, write some text
+        if (distance < 0) {
+            clearInterval(x);
+            document.getElementById("timer").innerHTML = "L'enchère est terminée.";
+            document.getElementById("formulairePourEncherir").innerHTML = " ";
+            document.getElementById("formulairePourEncherir").style.visibility="hidden";
+        }
+    }, 1000);
 </script>
