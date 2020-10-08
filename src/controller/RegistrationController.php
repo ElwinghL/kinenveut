@@ -53,7 +53,8 @@ class RegistrationController extends Controller
       ->setLastName($data['values']['lastName'])
       ->setBirthDate($data['values']['birthDate'])
       ->setEmail($data['values']['email'])
-      ->setPassword($data['values']['password']);
+      ->setPassword($data['values']['password'])
+      ->setIsAuthorised(0);
     $userId = $userBo->insertUser($user);
 
     if ($userId !== null) {
