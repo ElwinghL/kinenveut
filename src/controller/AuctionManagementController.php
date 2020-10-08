@@ -48,7 +48,7 @@ class AuctionManagementController extends Controller
 
     $auctionBo = App_BoFactory::getFactory()->getAuctionBo();
     $auction = $auctionBo->selectAuctionByAuctionId($auctionId);
-    $auction->setAuctionState(2); //Etat Refusé
+    $auction->setAuctionState(5); //Etat Refusé
     $auctionBo->updateStartDateAndAuctionState($auction);
 
     $auctions = $auctionBo->selectAllAuctionsByAuctionState(0);
