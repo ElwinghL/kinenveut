@@ -129,7 +129,7 @@ class UserDaoImpl implements IUserDao
 
     try {
       $query = db()->prepare($request);
-      $query->execute([$user->getFirstName(), $user->getLastName(), $user->getEmail(), $user->getPassword(), $user->getBirthDate(), $user->getIsAuthorised()]);
+      $query->execute([utf8_decode($user->getFirstName()), utf8_decode($user->getLastName()), utf8_decode($user->getEmail()), $user->getPassword(), $user->getBirthDate(), $user->getIsAuthorised()]);
     } catch (PDOException $Exception) {
       throw new BDDException($Exception->getMessage(), (int)$Exception->getCode());
     }
@@ -161,7 +161,7 @@ class UserDaoImpl implements IUserDao
 
     try {
       $query = db()->prepare($request);
-      $success = $query->execute([$user->getFirstName(), $user->getLastName(), $user->getEmail(), $user->getId()]);
+      $success = $query->execute([utf8_decode($user->getFirstName()), utf8_decode($user->getLastName()), utf8_decode($user->getEmail()), $user->getId()]);
     } catch (PDOException $Exception) {
       throw new BDDException($Exception->getMessage(), (int)$Exception->getCode());
     }

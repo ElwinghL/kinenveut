@@ -105,8 +105,8 @@ $dataValue = isset($data['values']) ? $data['values'] : null;
 
       <!--Boutons-->
       <div class="form-group col-md-3">
+
         <input class="btn btn-primary" type="submit" name="createAuction" id="createAuction" value="Valider" />
-        <input class="btn btn-primary" type="submit" name="cancel" id="cancel" value="Annuler" />
       </div>
     </form>
   </div>

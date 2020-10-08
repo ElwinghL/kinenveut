@@ -33,7 +33,7 @@ class CategoryDaoImpl implements ICategoryDao
 
     try {
       $query = db()->prepare($request);
-      $query->execute([$categoryModel->getName()]);
+      $query->execute([utf8_decode($categoryModel->getName())]);
     } catch (PDOException $Exception) {
       throw new BDDException($Exception->getMessage(), (int)$Exception->getCode());
     }
@@ -76,7 +76,7 @@ class CategoryDaoImpl implements ICategoryDao
     $categoryModel = new CategoryModel();
     $categoryModel
       ->setId($category['id'])
-      ->setName($category['name']);
+      ->setName(protectStringToDisplay($category['name']));
 
     return $categoryModel;
   }
@@ -88,7 +88,7 @@ class CategoryDaoImpl implements ICategoryDao
 
     try {
       $query = db()->prepare($request);
-      $success = $query->execute(['id' => $categoryModel->getId(), 'name' => $categoryModel->getName()]);
+      $success = $query->execute(['id' => $categoryModel->getId(), 'name' => utf8_decode($categoryModel->getName())]);
     } catch (PDOException $Exception) {
       throw new BDDException($Exception->getMessage(), (int)$Exception->getCode());
     }

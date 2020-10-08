@@ -16,19 +16,23 @@ class CategorieController extends Controller
 
   public function update_page(): array
   {
-    $id = filter_var(parameters()['id'], FILTER_VALIDATE_INT);
     $data = null;
-    $categoryBo = App_BoFactory::getFactory()->getCategoryBo();
 
-    if ($id !== null) {
-      $category = $categoryBo->selectCategoryById($id);
-      if ($category !== null) {
-        $data = [
-          'category' => [
-            'id'   => $category->getId(),
-            'name' => $category->getName()
-          ]
-        ];
+    if (isset(parameters()['id'])) {
+      $id = filter_var(parameters()['id'], FILTER_VALIDATE_INT);
+
+      if ($id !== null) {
+        $categoryBo = App_BoFactory::getFactory()->getCategoryBo();
+        $category = $categoryBo->selectCategoryById($id);
+
+        if ($category !== null) {
+          $data = [
+            'category' => [
+              'id'   => $category->getId(),
+              'name' => $category->getName()
+            ]
+          ];
+        }
       }
     }
 
