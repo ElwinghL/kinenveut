@@ -119,13 +119,13 @@ class AuctionAccessStateDaoImpl implements IAuctionAccessStateDao
         ->setAuction($oneAuctionAccessStateModel
           ->getAuction()
           ->setId($oneAuctionAccessState['auctionId'])
-          ->setName($oneAuctionAccessState['auctionName'])
+          ->setName(protectStringToDisplay($oneAuctionAccessState['auctionName']))
           ->setSellerId($oneAuctionAccessState['sellerId']))
         ->setBidder($oneAuctionAccessStateModel
           ->getBidder()
           ->setId($oneAuctionAccessState['bidderId'])
-          ->setFirstName($oneAuctionAccessState['bidderFirstName'])
-          ->setLastName($oneAuctionAccessState['bidderLastName']))
+          ->setFirstName(protectStringToDisplay($oneAuctionAccessState['bidderFirstName']))
+          ->setLastName(protectStringToDisplay($oneAuctionAccessState['bidderLastName'])))
         ->setStateId($oneAuctionAccessState['stateId']);
 
       array_push($auctionAccessStateList, $oneAuctionAccessStateModel);

@@ -27,7 +27,7 @@ $categoryList = $data['categoryList'];
             <li id="category_<?php echo $oneCategory->getId(); ?>" class="list-group-item">
               <div style="display:flex;">
                 <div style="flex:1">
-                  <?php echo utf8_encode($oneCategory->getName()); ?>
+                  <?php echo $oneCategory->getName(); ?>
                 </div>
                 <div>
                   <button type="submit" class="btn btn-warning" onclick="window.location.href='?r=categorie/update_page&id=<?php echo $oneCategory->getId(); ?>'">

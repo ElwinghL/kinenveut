@@ -32,9 +32,9 @@ include_once 'src/view/page-header.php' ?>
               <li id="category_<?php echo $auction->getId(); ?>" class="list-group-item float">
                 <div class="col-md-5 mr-0 float-left">
                   <a href=<?php echo '?r=bid/index&auctionId=' . $auction->getId() ?>>
-                    <?php echo utf8_encode($auction->getName()); ?>
+                    <?php echo $auction->getName(); ?>
+                  </a>
                 </div>
-                </a>
                 <div class="col-md-4 mr-0 float-left">
                   <?php $minPrice = (($auction->getBestBid()->getBidPrice() != null) && ($auction->getBestBid()->getBidPrice() != null)) ? $auction->getBestBid()->getBidPrice() : $auction->getBasePrice();
                   echo $minPrice . '€'; ?>
