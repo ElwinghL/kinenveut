@@ -1,104 +1,104 @@
 /* GENERAL */
 
 .row-vertically-centered {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 .error-custom {
-    color: red;
-    font-style: italic;
+  color: red;
+  font-style: italic;
 }
 
 .big-logo {
-    margin-top: 20px;
+  margin-top: 20px;
 }
 
 /* PAGE HEADER */
 
 .page-header-custom {
-    border-bottom: 1px solid lightgrey;
-    margin-bottom: 10px;
+  border-bottom: 1px solid lightgrey;
+  margin-bottom: 10px;
 }
 
 /* HOME */
 .search-custom {
-    margin-bottom: 45px;
+  margin-bottom: 45px;
 }
 
 .search-button-custom {
-    margin-left: 10px;
+  margin-left: 10px;
 }
 
 .categories-custom {
-    margin-bottom: 10px;
+  margin-bottom: 10px;
 }
 
 .auctions-list-custom a {
-    color: black;
-    text-decoration: none; /* no underline */
+  color: black;
+  text-decoration: none; /* no underline */
 }
 
 .auction-custom {
-    padding: 10px 0;
-    margin-bottom: 25px;
+  padding: 10px 0;
+  margin-bottom: 25px;
 }
 
 .auction-custom:hover .auction-title-custom {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 .auction-price-custom {
-    margin-bottom: 0px;
-    font-weight: bold;
+  margin-bottom: 0px;
+  font-weight: bold;
 }
 
-div.hr{
-    margin-top: 20px;
-    margin-bottom: 20px;
-    border: 0;
-    width: 100%;
-    border-top: 1px solid lightgrey;
-    opacity: 0.5;
+div.hr {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border: 0;
+  width: 100%;
+  border-top: 1px solid lightgrey;
+  opacity: 0.5;
 }
 
 /* Auctions */
 
-.btn-ca{
-    background-color: orangered;
-    border-color: orangered;
+.btn-ca {
+  background-color: orangered;
+  border-color: orangered;
 }
 
-.btn-ca:hover{
-    background-color: red;
-    border-color: red;
+.btn-ca:hover {
+  background-color: red;
+  border-color: red;
 }
 
-.btn-ab{
-    background-color: darkgreen;
-    border-color: darkgreen;
+.btn-ab {
+  background-color: darkgreen;
+  border-color: darkgreen;
 }
-.btn-ab:hover{
-    background-color: forestgreen;
-    border-color: forestgreen;
-}
-
-.btn-add{
-    background-color: darkgray;
-    border-color: darkgray;
+.btn-ab:hover {
+  background-color: forestgreen;
+  border-color: forestgreen;
 }
 
-.btn-add:hover{
-    background-color: gray;
-    border-color: gray;
+.btn-add {
+  background-color: darkgray;
+  border-color: darkgray;
+}
+
+.btn-add:hover {
+  background-color: gray;
+  border-color: gray;
 }
 
 .head-list {
-    border-bottom-style: none;
-    font-weight: bold;
+  border-bottom-style: none;
+  font-weight: bold;
 }
 
 .title-line {
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
 }

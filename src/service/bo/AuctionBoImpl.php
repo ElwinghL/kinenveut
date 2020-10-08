@@ -2,7 +2,7 @@
 
 class AuctionBoImpl implements IAuctionBo
 {
-  public function selectAllAuctionsByAuctionState(int $auctionState) : array
+  public function selectAllAuctionsByAuctionState(int $auctionState): array
   {
     $auctionDao = App_DaoFactory::getFactory()->getAuctionDao();
     $auctionList = $auctionDao->selectAllAuctionsByAuctionState($auctionState);
@@ -26,7 +26,7 @@ class AuctionBoImpl implements IAuctionBo
     return $auctionList;
   }
 
-  public function insertAuction(AuctionModel $auction) : ?int
+  public function insertAuction(AuctionModel $auction): ?int
   {
     $auctionDao = App_DaoFactory::getFactory()->getAuctionDao();
     $auctionId = $auctionDao->insertAuction($auction);

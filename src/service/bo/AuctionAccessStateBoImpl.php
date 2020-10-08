@@ -26,7 +26,7 @@ class AuctionAccessStateBoImpl implements IAuctionAccessStateBo
     return $isUpdated;
   }
 
-  public function updateStateIdByAuctionIdAndBidderId(int $auctionId, int $bidderId, int $stateId)  : bool
+  public function updateStateIdByAuctionIdAndBidderId(int $auctionId, int $bidderId, int $stateId): bool
   {
     $auctionAccessStateDao = App_DaoFactory::getFactory()->getAuctionAccessStateDao();
     $isUpdated = $auctionAccessStateDao->updateStateIdByAuctionIdAndBidderId($auctionId, $bidderId, $stateId);
@@ -50,7 +50,7 @@ class AuctionAccessStateBoImpl implements IAuctionAccessStateBo
     return $auctionAccessStateList;
   }
 
-  public function selectNumberOfAuctionAccessStateBySellerId(int $sellerId) : int
+  public function selectNumberOfAuctionAccessStateBySellerId(int $sellerId): int
   {
     $auctionAccessStateDao = App_DaoFactory::getFactory()->getAuctionAccessStateDao();
     $auctionAccessStateList = $auctionAccessStateDao->selectNumberOfAuctionAccessStateBySellerId($sellerId);

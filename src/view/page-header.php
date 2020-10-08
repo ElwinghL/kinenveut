@@ -1,4 +1,3 @@
-
 <div class="container page-header-custom">
   <div class="row row-vertically-centered">
     <div class="col-md-10">
@@ -19,10 +18,10 @@
               <a class="dropdown-item" href="?r=account&userId=<?= isset($_SESSION['userId']) ? $_SESSION['userId'] : '1'; ?>">Mon compte</a>
               <a class="dropdown-item" href="?r=auction/sells/&userId=<?= isset($_SESSION['userId']) ? $_SESSION['userId'] : '1'; ?>">Mes ventes</a>
               <a class="dropdown-item" href="?r=auction/bids&userId=<?= isset($_SESSION['userId']) ? $_SESSION['userId'] : '1'; ?>">Mes enchères</a>
-              <a class="dropdown-item" href="?r=accessrequest/index">Demandes <?php  if ($nbDemandes > 0):?><span class="badge badge-danger"><?= $nbDemandes;?></span><?php endif;?></a>
+              <a class="dropdown-item" href="?r=accessRequest/index">Demandes <?php if ($nbDemandes > 0) : ?><span class="badge badge-danger"><?= $nbDemandes; ?></span><?php endif; ?></a>
               <?php if (isset($_SESSION['isAdmin']) && $_SESSION['isAdmin'] == 1) : ?>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="?r=user">Gestion des utilisateurs</a>
+                <a class="dropdown-item" href="?r=userManagement">Gestion des utilisateurs</a>
                 <a class="dropdown-item" href="?r=auctionManagement">Gestion des enchères</a>
                 <a class="dropdown-item" href="?r=categorie">Gestion des catégories</a>
               <?php endif; ?>

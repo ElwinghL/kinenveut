@@ -2,11 +2,11 @@
 
 interface IAuctionDao
 {
-  public function selectAllAuctionsByAuctionState(int $auctionState) : array;
+  public function selectAllAuctionsByAuctionState(int $auctionState): array;
 
-  public function selectAuctionByAuctionId(int $auctionId) : ?AuctionModel;
+  public function selectAuctionByAuctionId(int $auctionId): ?AuctionModel;
 
-  public function selectAllAuctionsBySellerId(int $userId) : array;
+  public function selectAllAuctionsBySellerId(int $userId): array;
 
   public function insertAuction(AuctionModel $auction): ?int;
 
@@ -14,5 +14,5 @@ interface IAuctionDao
 
   public function updateAuctionState(AuctionModel $auction): bool;
 
-  public function deleteAuctionById(int $auctionId) : bool;
+  public function deleteAuctionById(int $auctionId): bool;
 }

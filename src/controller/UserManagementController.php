@@ -2,63 +2,66 @@
 
 class UserManagementController extends Controller
 {
-  public function index()
+  public function index(): array
   {
     $userBo = App_BoFactory::getFactory()->getUserBo();
     $users = $userBo->selectUsersByState(0);
     $data = [
-      'users'=> $users
+      'users' => $users
     ];
-    $this->render('index', $data);
+
+    return ['render', 'index', $data];
   }
 
-  public function info()
+  public function info(): array
   {
-    $userId = $_GET['id'];
+    $userId = parameters()['id'];
 
     $userBo = App_BoFactory::getFactory()->getUserBo();
 
     $user = $userBo->selectUserByUserId($userId);
 
     $data = [
-      'user'=> $user
+      'user' => $user
     ];
 
     $accountController = new AccountController();
     $accountController->render('index', $data);
   }
 
-  public function validate()
+  public function validate(): array
   {
-    $userId = $_GET['id'];
+    $userId = parameters()['id'];
 
     $userBo = App_BoFactory::getFactory()->getUserBo();
 
     $user = $userBo->selectUserByUserId($userId);
-    $user->setIsAuthorised(1);//Etat Accepté
+    $user->setIsAuthorised(1); //Etat Accepté
 
     $userBo->updateUserIsAuthorised($user);
     $users = $userBo->selectUsersByState(0);
     $data = [
-      'users'=> $users
+      'users' => $users
     ];
-    $this->render('index', $data);
+
+    return ['render', 'index', $data];
   }
 
-  public function delete()
+  public function delete(): array
   {
-    $userId = $_GET['id'];
+    $userId = parameters()['id'];
 
     $userBo = App_BoFactory::getFactory()->getUserBo();
 
     $user = $userBo->selectUserByUserId($userId);
-    $user->setIsAuthorised(5);//Etat reffusé
+    $user->setIsAuthorised(5); //Etat reffusé
 
     $userBo->updateUserIsAuthorised($user);
     $users = $userBo->selectUsersByState(0);
     $data = [
-      'users'=> $users
+      'users' => $users
     ];
-    $this->render('index', $data);
+
+    return ['render', 'index', $data];
   }
 }
