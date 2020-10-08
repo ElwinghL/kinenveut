@@ -13,7 +13,7 @@ class UserManagementController extends Controller
     return ['render', 'index', $data];
   }
 
-  public function info(): array
+  public function info(): void
   {
     $userId = parameters()['id'];
 
