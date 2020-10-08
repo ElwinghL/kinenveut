@@ -18,16 +18,10 @@ class BidHistoryDaoImpl implements IBidHistoryDao
 
   public function deleteBidById(int $bidId): bool
   {
-    $success = null;
     $request = 'DELETE FROM BidHistory WHERE id=?';
 
-    try {
-      $query = db()->prepare($request);
-      $success = $query->execute([$bidId]);
-    } catch (PDOException $Exception) {
-      throw new BDDException($Exception->getMessage(), $Exception->getCode());
-    }
+    $query = db()->prepare($request);
 
-    return $success;
+    return $query->execute([$bidId]);
   }
 }

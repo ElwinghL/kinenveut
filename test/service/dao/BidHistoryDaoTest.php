@@ -9,11 +9,27 @@ include_once 'src/tools.php';
 
 class BidHistoryDaoTest extends TestCase
 {
+  const PRICE = 42;
+  const DATE = '2020-10-01';
+  const BIDDER_ID = 1;
+  const OBJECTIF_ID = 1;
+
+  private $bidHistoryDao = null;
+  private $bidHistory = null;
+
   /** @before */
   public function setUp(): void
   {
     parent::setUp();
     App_DaoFactory::setFactory(new App_DaoFactory());
+    $this->bidHistoryDao = App_DaoFactory::getFactory()->getBidHistoryDao();
+
+    $this->bidHistory = new BidModel();
+    $this->bidHistory
+      ->setBidPrice(self::PRICE)
+      ->setBidDate(self::DATE)
+      ->setBidderId(self::BIDDER_ID)
+      ->setObjectId(self::OBJECTIF_ID);
   }
 
   /**
@@ -22,21 +38,16 @@ class BidHistoryDaoTest extends TestCase
    */
   public function insertBidTest(): void
   {
-    $bidHistoryDao = App_DaoFactory::getFactory()->getBidHistoryDao();
-
-    $bidHistoryTest = new BidModel();
-    $bidHistoryTest
-            ->setBidPrice(42)
-            ->setBidDate('2020-10-01')
-            ->setBidderId(1)
-            ->setObjectId(1);
-
-    $bidHistoryId = $bidHistoryDao->insertBid($bidHistoryTest);
+    $bidHistoryId = $this->bidHistoryDao->insertBid($this->bidHistory);
 
     $this->assertNotNull($bidHistoryId);
     $this->assertTrue($bidHistoryId > 0);
 
-    $bidHistoryDao->deleteBidById($bidHistoryId);
+    $this->bidHistoryDao->deleteBidById($bidHistoryId);
+
+    $this->expectException(BDDException::class);
+    $bidHistoryEmpty = new BidModel();
+    $this->bidHistoryDao->insertBid($bidHistoryEmpty);
   }
 
   /**
@@ -45,18 +56,11 @@ class BidHistoryDaoTest extends TestCase
    */
   public function deleteBidTest(): void
   {
-    $bidHistoryDao = App_DaoFactory::getFactory()->getBidHistoryDao();
-    $bidHistoryTest = new BidModel();
-    $bidHistoryTest
-        ->setBidPrice(42)
-        ->setBidDate('2020-10-01')
-        ->setBidderId(1)
-        ->setObjectId(1);
+    $bidHistoryId = $this->bidHistoryDao->insertBid($this->bidHistory);
 
-    $bidHistoryId = $bidHistoryDao->insertBid($bidHistoryTest);
-
-    $success = $bidHistoryDao->deleteBidById($bidHistoryId);
+    $success = $this->bidHistoryDao->deleteBidById($bidHistoryId);
 
     $this->assertTrue($success);
+    $this->assertTrue($this->bidHistoryDao->deleteBidById(-1));
   }
 }
