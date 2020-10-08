@@ -34,10 +34,10 @@ class LoginController extends Controller
         case 5:
           $data['errors']['wrongIdentifiers'] = 'Utilisateur refusé';
           break;
-        case 5:
+        case 6:
           $data['errors']['wrongIdentifiers'] = 'Utilisateur banni';
           break;
-}
+      }
       if ($user->getIsAuthorised() == 1) {
       } else {
       }
