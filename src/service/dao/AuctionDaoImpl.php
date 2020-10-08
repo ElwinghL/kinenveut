@@ -2,7 +2,7 @@
 
 class AuctionDaoImpl implements IAuctionDao
 {
-  public function selectAllAuctionsByAuctionState($auctionSate) : array
+  public function selectAllAuctionsByAuctionState($auctionSate): array
   {
     $auctions = null;
     $request = 'SELECT Auction.id AS objectId,name,description,basePrice,reservePrice,pictureLink,startDate,duration,auctionState,sellerId,privacyId,categoryId
@@ -13,7 +13,7 @@ class AuctionDaoImpl implements IAuctionDao
 
     try {
       $query = db()->prepare($request);
-      $query->execute(['auctionSate'=>$auctionSate]);
+      $query->execute(['auctionSate' => $auctionSate]);
       $auctions = $query->fetchAll(PDO::FETCH_ASSOC);
     } catch (PDOException $Exception) {
       throw new BDDException($Exception->getMessage(), (int)$Exception->getCode());
@@ -23,27 +23,27 @@ class AuctionDaoImpl implements IAuctionDao
     foreach ($auctions as $oneAuction) {
       $theBestBid = new BidModel();
       $theBestBid
-            ->setId($oneAuction['bidId'])
-            ->setBidPrice($oneAuction['bidPrice'])
-            ->setBidDate($oneAuction['bidDate'])
-            ->setBidderId($oneAuction['bidderId'])
-            ->setObjectId($oneAuction['objectId']);
+        ->setId($oneAuction['bidId'])
+        ->setBidPrice($oneAuction['bidPrice'])
+        ->setBidDate($oneAuction['bidDate'])
+        ->setBidderId($oneAuction['bidderId'])
+        ->setObjectId($oneAuction['objectId']);
 
       $oneAuctionModel = new AuctionModel();
       $oneAuctionModel
-              ->setId($oneAuction['objectId'])
-                ->setName(protectStringToDisplay($oneAuction['name']))
-                ->setDescription(protectStringToDisplay($oneAuction['description']))
-                ->setBasePrice($oneAuction['basePrice'])
-                ->setReservePrice($oneAuction['reservePrice'])
-                ->setPictureLink($oneAuction['pictureLink'])
-                ->setStartDate($oneAuction['startDate'])
-                ->setDuration($oneAuction['duration'])
-                ->setAuctionState($oneAuction['auctionState'])
-                ->setSellerId($oneAuction['sellerId'])
-                ->setPrivacyId($oneAuction['privacyId'])
-                ->setCategoryId($oneAuction['categoryId'])
-                ->setBestBid($theBestBid);
+        ->setId($oneAuction['objectId'])
+        ->setName(protectStringToDisplay($oneAuction['name']))
+        ->setDescription(protectStringToDisplay($oneAuction['description']))
+        ->setBasePrice($oneAuction['basePrice'])
+        ->setReservePrice($oneAuction['reservePrice'])
+        ->setPictureLink($oneAuction['pictureLink'])
+        ->setStartDate($oneAuction['startDate'])
+        ->setDuration($oneAuction['duration'])
+        ->setAuctionState($oneAuction['auctionState'])
+        ->setSellerId($oneAuction['sellerId'])
+        ->setPrivacyId($oneAuction['privacyId'])
+        ->setCategoryId($oneAuction['categoryId'])
+        ->setBestBid($theBestBid);
 
       array_push($auctionList, $oneAuctionModel);
     }
@@ -62,7 +62,7 @@ class AuctionDaoImpl implements IAuctionDao
 
     try {
       $query = db()->prepare($request);
-      $query->execute(['id'=>$auctionId]);
+      $query->execute(['id' => $auctionId]);
       $oneAuction = $query->fetch();
     } catch (PDOException $Exception) {
       throw new BDDException($Exception->getMessage(), (int)$Exception->getCode());
@@ -74,32 +74,32 @@ class AuctionDaoImpl implements IAuctionDao
 
     $theBestBid = new BidModel();
     $theBestBid
-                ->setId($oneAuction['bidId'])
-                ->setBidPrice($oneAuction['bidPrice'])
-                ->setBidDate($oneAuction['bidDate'])
-                ->setBidderId($oneAuction['bidderId'])
-                ->setObjectId($oneAuction['objectId']);
+      ->setId($oneAuction['bidId'])
+      ->setBidPrice($oneAuction['bidPrice'])
+      ->setBidDate($oneAuction['bidDate'])
+      ->setBidderId($oneAuction['bidderId'])
+      ->setObjectId($oneAuction['objectId']);
 
     $oneAuctionModel = new AuctionModel();
     $oneAuctionModel
-                ->setId($oneAuction['objectId'])
-                ->setName($oneAuction['name'])
-                ->setDescription($oneAuction['description'])
-                ->setBasePrice($oneAuction['basePrice'])
-                ->setReservePrice($oneAuction['reservePrice'])
-                ->setPictureLink($oneAuction['pictureLink'])
-                ->setStartDate($oneAuction['startDate'])
-                ->setDuration($oneAuction['duration'])
-                ->setAuctionState($oneAuction['auctionState'])
-                ->setSellerId($oneAuction['sellerId'])
-                ->setPrivacyId($oneAuction['privacyId'])
-                ->setCategoryId($oneAuction['categoryId'])
-                ->setBestBid($theBestBid);
+      ->setId($oneAuction['objectId'])
+      ->setName($oneAuction['name'])
+      ->setDescription($oneAuction['description'])
+      ->setBasePrice($oneAuction['basePrice'])
+      ->setReservePrice($oneAuction['reservePrice'])
+      ->setPictureLink($oneAuction['pictureLink'])
+      ->setStartDate($oneAuction['startDate'])
+      ->setDuration($oneAuction['duration'])
+      ->setAuctionState($oneAuction['auctionState'])
+      ->setSellerId($oneAuction['sellerId'])
+      ->setPrivacyId($oneAuction['privacyId'])
+      ->setCategoryId($oneAuction['categoryId'])
+      ->setBestBid($theBestBid);
 
     return $oneAuctionModel;
   }
 
-  public function selectAllAuctionsBySellerId($sellerId) : array
+  public function selectAllAuctionsBySellerId($sellerId): array
   {
     $auctions = null;
     $request = 'SELECT Auction.id AS objectId,name,description,basePrice,reservePrice,pictureLink,startDate,duration,auctionState,sellerId,privacyId,categoryId
@@ -110,7 +110,7 @@ class AuctionDaoImpl implements IAuctionDao
 
     try {
       $query = db()->prepare($request);
-      $query->execute(['sellerId'=>$sellerId]);
+      $query->execute(['sellerId' => $sellerId]);
       $auctions = $query->fetchAll(PDO::FETCH_ASSOC);
     } catch (PDOException $Exception) {
       throw new BDDException($Exception->getMessage(), (int)$Exception->getCode());
@@ -120,27 +120,27 @@ class AuctionDaoImpl implements IAuctionDao
     foreach ($auctions as $oneAuction) {
       $theBestBid = new BidModel();
       $theBestBid
-                ->setId($oneAuction['bidId'])
-                ->setBidPrice($oneAuction['bidPrice'])
-                ->setBidDate($oneAuction['bidDate'])
-                ->setBidderId($oneAuction['bidderId'])
-                ->setObjectId($oneAuction['objectId']);
+        ->setId($oneAuction['bidId'])
+        ->setBidPrice($oneAuction['bidPrice'])
+        ->setBidDate($oneAuction['bidDate'])
+        ->setBidderId($oneAuction['bidderId'])
+        ->setObjectId($oneAuction['objectId']);
 
       $oneAuctionModel = new AuctionModel();
       $oneAuctionModel
-                ->setId($oneAuction['objectId'])
-                ->setName(protectStringToDisplay($oneAuction['name']))
-                ->setDescription(protectStringToDisplay($oneAuction['description']))
-                ->setBasePrice($oneAuction['basePrice'])
-                ->setReservePrice($oneAuction['reservePrice'])
-                ->setPictureLink($oneAuction['pictureLink'])
-                ->setStartDate($oneAuction['startDate'])
-                ->setDuration($oneAuction['duration'])
-                ->setAuctionState($oneAuction['auctionState'])
-                ->setSellerId($oneAuction['sellerId'])
-                ->setPrivacyId($oneAuction['privacyId'])
-                ->setCategoryId($oneAuction['categoryId'])
-                ->setBestBid($theBestBid);
+        ->setId($oneAuction['objectId'])
+        ->setName(protectStringToDisplay($oneAuction['name']))
+        ->setDescription(protectStringToDisplay($oneAuction['description']))
+        ->setBasePrice($oneAuction['basePrice'])
+        ->setReservePrice($oneAuction['reservePrice'])
+        ->setPictureLink($oneAuction['pictureLink'])
+        ->setStartDate($oneAuction['startDate'])
+        ->setDuration($oneAuction['duration'])
+        ->setAuctionState($oneAuction['auctionState'])
+        ->setSellerId($oneAuction['sellerId'])
+        ->setPrivacyId($oneAuction['privacyId'])
+        ->setCategoryId($oneAuction['categoryId'])
+        ->setBestBid($theBestBid);
 
       array_push($auctionList, $oneAuctionModel);
     }
@@ -148,7 +148,7 @@ class AuctionDaoImpl implements IAuctionDao
     return $auctionList;
   }
 
-  public function insertAuction(AuctionModel $auction):?int
+  public function insertAuction(AuctionModel $auction): ?int
   {
     $request = "INSERT INTO Auction(name, description, basePrice, reservePrice, pictureLink, /*startDate,*/ duration, auctionState, sellerId, privacyId, categoryId) VALUES (?, ?, ?, ?, ' ',/* ?,*/ ?, 0, ?, ?, ?)";
 
@@ -162,7 +162,7 @@ class AuctionDaoImpl implements IAuctionDao
     return db()->lastInsertId();
   }
 
-  public function deleteAuctionById(int $auctionId) : bool
+  public function deleteAuctionById(int $auctionId): bool
   {
     $success = null;
     $request = 'DELETE FROM Auction WHERE id=?';
@@ -185,7 +185,7 @@ class AuctionDaoImpl implements IAuctionDao
     if ($auction->getId() != null) {
       try {
         $query = db()->prepare($request);
-        $success = $query->execute(['id'=>$auction->getId(), 'startDate'=>$auction->getStartDate(), 'auctionState'=>$auction->getAuctionState()]);
+        $success = $query->execute(['id' => $auction->getId(), 'startDate' => $auction->getStartDate(), 'auctionState' => $auction->getAuctionState()]);
       } catch (PDOException $Exception) {
         throw new BDDException($Exception->getMessage(), (int)$Exception->getCode());
       }
@@ -201,7 +201,7 @@ class AuctionDaoImpl implements IAuctionDao
 
     try {
       $query = db()->prepare($request);
-      $success = $query->execute(['id'=>$auction->getId(), 'auctionState'=>$auction->getAuctionState()]);
+      $success = $query->execute(['id' => $auction->getId(), 'auctionState' => $auction->getAuctionState()]);
     } catch (PDOException $Exception) {
       throw new BDDException($Exception->getMessage(), (int)$Exception->getCode());
     }

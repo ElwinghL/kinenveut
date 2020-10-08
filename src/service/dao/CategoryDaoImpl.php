@@ -88,7 +88,7 @@ class CategoryDaoImpl implements ICategoryDao
 
     try {
       $query = db()->prepare($request);
-      $success = $query->execute(['id'=>$categoryModel->getId(), 'name'=>$categoryModel->getName()]);
+      $success = $query->execute(['id' => $categoryModel->getId(), 'name' => $categoryModel->getName()]);
     } catch (PDOException $Exception) {
       throw new BDDException($Exception->getMessage(), (int)$Exception->getCode());
     }
