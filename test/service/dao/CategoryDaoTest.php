@@ -9,108 +9,104 @@ include_once 'src/tools.php';
 
 class CategoryDaoTest extends TestCase
 {
+  const NAME = 'test';
+
+  private $categoryDao = null;
+  private $category = null;
+
   /** @before*/
-  public function setUp() : void
+  public function setUp(): void
   {
     parent::setUp();
     App_DaoFactory::setFactory(new App_DaoFactory());
+    $this->categoryDao = App_DaoFactory::getFactory()->getCategoryDao();
+    $this->category = new CategoryModel();
+    $this->category->setName(self::NAME);
   }
 
   /**
    * @test
    * @covers CategoryDaoImpl
    */
-  public function insertCategoryTest() : void
+  public function insertCategoryTest(): void
   {
-    $categoryDao = App_DaoFactory::getFactory()->getCategoryDao();
-
-    $categoryTest = new CategoryModel();
-    $categoryTest->setName('Test');
-
-    $categoryId = $categoryDao->insertCategory($categoryTest);
+    $categoryId = $this->categoryDao->insertCategory($this->category);
 
     $this->assertNotNull($categoryId);
     $this->assertTrue($categoryId > 0);
 
-    $categoryDao->deleteCategoryById($categoryId);
+    $this->categoryDao->deleteCategoryById($categoryId);
+
+    $categoryEmpty = new CategoryModel();
+    $categoryId = $this->categoryDao->insertCategory($categoryEmpty);
+    $this->assertNotNull($categoryId);
+    $this->categoryDao->deleteCategoryById($categoryId);
   }
 
   /**
    * @test
    * @covers CategoryDaoImpl
    */
-  public function deleteCategoryTest() : void
+  public function deleteCategoryTest(): void
   {
-    $categoryDao = App_DaoFactory::getFactory()->getCategoryDao();
-    $categoryTest = new CategoryModel();
-    $categoryTest->setName('Test');
+    $categoryId = $this->categoryDao->insertCategory($this->category);
 
-    $categoryId = $categoryDao->insertCategory($categoryTest);
-
-    $success = $categoryDao->deleteCategoryById($categoryId);
-
-    $this->assertTrue($success);
+    $this->assertTrue($this->categoryDao->deleteCategoryById($categoryId));
+    $this->assertTrue($this->categoryDao->deleteCategoryById(-1));
   }
 
   /**
    * @test
    * @covers CategoryDaoImpl
    */
-  public function selectAllCategoriesTest() : void
+  public function selectAllCategoriesTest(): void
   {
-    $categoryDao = App_DaoFactory::getFactory()->getCategoryDao();
-    $categoryTest = new CategoryModel();
-    $categoryTestName = 'Test';
-    $categoryTest->setName($categoryTestName);
+    $categoryId = $this->categoryDao->insertCategory($this->category);
 
-    $categoryId = $categoryDao->insertCategory($categoryTest);
-
-    $categoriesSelected = $categoryDao->selectAllCategories();
+    $categoriesSelected = $this->categoryDao->selectAllCategories();
 
     $this->assertTrue(is_array($categoriesSelected));
     $this->assertNotNull($categoriesSelected[0]->getName());
 
-    $categoryDao->deleteCategoryById($categoryId);
+    $this->categoryDao->deleteCategoryById($categoryId);
   }
 
   /**
    * @test
    * @covers CategoryDaoImpl
    */
-  public function selectCategoryByIdTest() : void
+  public function selectCategoryByIdTest(): void
   {
-    $categoryDao = App_DaoFactory::getFactory()->getCategoryDao();
-    $categoryTest = new CategoryModel();
-    $categoryTestName = 'Test';
-    $categoryTest->setName($categoryTestName);
+    $categoryId = $this->categoryDao->insertCategory($this->category);
 
-    $categoryId = $categoryDao->insertCategory($categoryTest);
+    $categorySelected = $this->categoryDao->selectCategoryById($categoryId);
 
-    $category = $categoryDao->selectCategoryById($categoryId);
+    $this->assertNotNull($categorySelected);
+    $this->assertSame(self::NAME, $categorySelected->getName());
 
-    $this->assertNotNull($category);
-    $this->assertSame($categoryTestName, $category->getName());
+    $this->categoryDao->deleteCategoryById($categoryId);
 
-    $categoryDao->deleteCategoryById($categoryId);
+    $this->assertNull($this->categoryDao->selectCategoryById(-1));
   }
 
   /**
    * @test
    * @covers CategoryDaoImpl
    */
-  public function updateCategoryTest() : void
+  public function updateCategoryTest(): void
   {
-    $categoryDao = App_DaoFactory::getFactory()->getCategoryDao();
-    $categoryTest = new CategoryModel();
     $expectedName = 'Edit-Test';
-    $categoryTest->setId($categoryDao->insertCategory($categoryTest->setName('Test')));
+    $this->category->setId($this->categoryDao->insertCategory($this->category));
 
-    $categoryDao->updateCategory($categoryTest->setName($expectedName));
-    $category = $categoryDao->selectCategoryById($categoryTest->getId());
+    $this->categoryDao->updateCategory($this->category->setName($expectedName));
+    $categorySelected = $this->categoryDao->selectCategoryById($this->category->getId());
 
-    $this->assertNotNull($category);
-    $this->assertSame($expectedName, $category->getName());
+    $this->assertNotNull($categorySelected);
+    $this->assertSame($expectedName, $categorySelected->getName());
 
-    $categoryDao->deleteCategoryById($categoryTest->getId());
+    $this->categoryDao->deleteCategoryById($categorySelected->getId());
+
+    $categoryEmpty = new CategoryModel();
+    $this->assertNotNull($this->categoryDao->updateCategory($categoryEmpty));
   }
 }
