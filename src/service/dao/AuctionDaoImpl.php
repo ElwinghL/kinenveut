@@ -154,7 +154,7 @@ class AuctionDaoImpl implements IAuctionDao
 
     try {
       $query = db()->prepare($request);
-      $query->execute([$auction->getName(), $auction->getDescription(), $auction->getBasePrice(), $auction->getReservePrice(), /*$auction->getPictureLink(), $auction->getStartDate(),*/ $auction->getDuration(), $auction->getSellerId(), $auction->getPrivacyId(), $auction->getCategoryId()]);
+      $query->execute([utf8_decode($auction->getName()), utf8_decode($auction->getDescription()), $auction->getBasePrice(), $auction->getReservePrice(), /*$auction->getPictureLink(), $auction->getStartDate(),*/ $auction->getDuration(), $auction->getSellerId(), $auction->getPrivacyId(), $auction->getCategoryId()]);
     } catch (PDOException $Exception) {
       throw new BDDException($Exception->getMessage(), (int)$Exception->getCode());
     }

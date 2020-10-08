@@ -57,7 +57,7 @@ class CategorieController extends Controller
     $name = filter_var(parameters()['name']);
     $categoryBo = App_BoFactory::getFactory()->getCategoryBo();
     $category = new CategoryModel();
-
+    
     $category
       ->setId($id)
       ->setName($name);
