@@ -11,7 +11,7 @@ class LoginController extends Controller
   {
     $userBo = App_BoFactory::getFactory()->getUserBo();
     $user = $userBo->selectUserByEmailAndPassword(parameters()['email'], parameters()['password']);
-    if ($user !== null) {      
+    if ($user !== null) {
       switch ($user->getIsAuthorised()) {
         case 0:
           $data['errors']['wrongIdentifiers'] = 'Utilisateur pas encore validé';
@@ -40,8 +40,6 @@ class LoginController extends Controller
 }
       if ($user->getIsAuthorised() == 1) {
       } else {
-
-        
       }
     } else {
       $data['errors']['wrongIdentifiers'] = 'Identifiants incorrects';
