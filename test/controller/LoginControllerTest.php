@@ -62,4 +62,196 @@ class LoginControllerTest extends TestCase
 
     unset($_SESSION['userId'], $_SESSION['isAdmin']);
   }
+
+  /**
+     * @test
+     * @covers LoginController
+     */
+  public function loginTestUnAuthorised()
+  {
+    global $parameters;
+    $parameters = ['email' => 'test@kinenveut.fr', 'password' => 'password'];
+    $loginController = new LoginController();
+    $expectedId = 42;
+    $expectedIsAdmin = true;
+    $userTest1 = new UserModel();
+    $userTest1
+      ->setId($expectedId)
+      ->setIsAdmin($expectedIsAdmin)
+      ->setIsAuthorised(0);
+
+    $userBoMock = $this->createPartialMock(UserBoImpl::class, ['selectUserByEmailAndPassword']);
+    $userBoMock->method('selectUserByEmailAndPassword')->will($this->onConsecutiveCalls($userTest1));
+
+    $app_BoFactoryMock = $this->createPartialMock(App_BoFactory::class, ['getUserBo']);
+    $app_BoFactoryMock->method('getUserBo')->willReturn($userBoMock);
+    App_BoFactory::setFactory($app_BoFactoryMock);
+
+    $data = $loginController->login();
+    $this->assertSame('render', $data[0]);
+    $this->assertSame('index', $data[1]);
+    $this->assertSame('Utilisateur pas encore validé', $data[2]['errors']['wrongIdentifiers']);
+
+    unset($_SESSION['userId'], $_SESSION['isAdmin']);
+  }
+
+  /**
+   * @test
+   * @covers LoginController
+   */
+  public function loginTestCanceled()
+  {
+    global $parameters;
+    $parameters = ['email' => 'test@kinenveut.fr', 'password' => 'password'];
+    $loginController = new LoginController();
+    $expectedId = 42;
+    $expectedIsAdmin = true;
+    $userTest1 = new UserModel();
+    $userTest1
+      ->setId($expectedId)
+      ->setIsAdmin($expectedIsAdmin)
+      ->setIsAuthorised(2);
+
+    $userBoMock = $this->createPartialMock(UserBoImpl::class, ['selectUserByEmailAndPassword']);
+    $userBoMock->method('selectUserByEmailAndPassword')->will($this->onConsecutiveCalls($userTest1));
+
+    $app_BoFactoryMock = $this->createPartialMock(App_BoFactory::class, ['getUserBo']);
+    $app_BoFactoryMock->method('getUserBo')->willReturn($userBoMock);
+    App_BoFactory::setFactory($app_BoFactoryMock);
+
+    $data = $loginController->login();
+    $this->assertSame('render', $data[0]);
+    $this->assertSame('index', $data[1]);
+    $this->assertSame('Utilisateur annulé', $data[2]['errors']['wrongIdentifiers']);
+
+    unset($_SESSION['userId'], $_SESSION['isAdmin']);
+  }
+
+  /**
+   * @test
+   * @covers LoginController
+   */
+  public function loginTestStopped()
+  {
+    global $parameters;
+    $parameters = ['email' => 'test@kinenveut.fr', 'password' => 'password'];
+    $loginController = new LoginController();
+    $expectedId = 42;
+    $expectedIsAdmin = true;
+    $userTest1 = new UserModel();
+    $userTest1
+      ->setId($expectedId)
+      ->setIsAdmin($expectedIsAdmin)
+      ->setIsAuthorised(3);
+
+    $userBoMock = $this->createPartialMock(UserBoImpl::class, ['selectUserByEmailAndPassword']);
+    $userBoMock->method('selectUserByEmailAndPassword')->will($this->onConsecutiveCalls($userTest1));
+
+    $app_BoFactoryMock = $this->createPartialMock(App_BoFactory::class, ['getUserBo']);
+    $app_BoFactoryMock->method('getUserBo')->willReturn($userBoMock);
+    App_BoFactory::setFactory($app_BoFactoryMock);
+
+    $data = $loginController->login();
+    $this->assertSame('render', $data[0]);
+    $this->assertSame('index', $data[1]);
+    $this->assertSame('Utilisateur arrété', $data[2]['errors']['wrongIdentifiers']);
+
+    unset($_SESSION['userId'], $_SESSION['isAdmin']);
+  }
+
+  /**
+   * @test
+   * @covers LoginController
+   */
+  public function loginTestTerminated()
+  {
+    global $parameters;
+    $parameters = ['email' => 'test@kinenveut.fr', 'password' => 'password'];
+    $loginController = new LoginController();
+    $expectedId = 42;
+    $expectedIsAdmin = true;
+    $userTest1 = new UserModel();
+    $userTest1
+      ->setId($expectedId)
+      ->setIsAdmin($expectedIsAdmin)
+      ->setIsAuthorised(4);
+
+    $userBoMock = $this->createPartialMock(UserBoImpl::class, ['selectUserByEmailAndPassword']);
+    $userBoMock->method('selectUserByEmailAndPassword')->will($this->onConsecutiveCalls($userTest1));
+
+    $app_BoFactoryMock = $this->createPartialMock(App_BoFactory::class, ['getUserBo']);
+    $app_BoFactoryMock->method('getUserBo')->willReturn($userBoMock);
+    App_BoFactory::setFactory($app_BoFactoryMock);
+
+    $data = $loginController->login();
+    $this->assertSame('render', $data[0]);
+    $this->assertSame('index', $data[1]);
+    $this->assertSame('Utilisateur terminé', $data[2]['errors']['wrongIdentifiers']);
+
+    unset($_SESSION['userId'], $_SESSION['isAdmin']);
+  }
+
+  /**
+   * @test
+   * @covers LoginController
+   */
+  public function loginTestRefused()
+  {
+    global $parameters;
+    $parameters = ['email' => 'test@kinenveut.fr', 'password' => 'password'];
+    $loginController = new LoginController();
+    $expectedId = 42;
+    $expectedIsAdmin = true;
+    $userTest1 = new UserModel();
+    $userTest1
+      ->setId($expectedId)
+      ->setIsAdmin($expectedIsAdmin)
+      ->setIsAuthorised(5);
+
+    $userBoMock = $this->createPartialMock(UserBoImpl::class, ['selectUserByEmailAndPassword']);
+    $userBoMock->method('selectUserByEmailAndPassword')->will($this->onConsecutiveCalls($userTest1));
+
+    $app_BoFactoryMock = $this->createPartialMock(App_BoFactory::class, ['getUserBo']);
+    $app_BoFactoryMock->method('getUserBo')->willReturn($userBoMock);
+    App_BoFactory::setFactory($app_BoFactoryMock);
+
+    $data = $loginController->login();
+    $this->assertSame('render', $data[0]);
+    $this->assertSame('index', $data[1]);
+    $this->assertSame('Utilisateur refusé', $data[2]['errors']['wrongIdentifiers']);
+
+    unset($_SESSION['userId'], $_SESSION['isAdmin']);
+  }
+
+  /**
+   * @test
+   * @covers LoginController
+   */
+  public function loginTestBanned()
+  {
+    global $parameters;
+    $parameters = ['email' => 'test@kinenveut.fr', 'password' => 'password'];
+    $loginController = new LoginController();
+    $expectedId = 42;
+    $expectedIsAdmin = true;
+    $userTest1 = new UserModel();
+    $userTest1
+      ->setId($expectedId)
+      ->setIsAdmin($expectedIsAdmin)
+      ->setIsAuthorised(6);
+
+    $userBoMock = $this->createPartialMock(UserBoImpl::class, ['selectUserByEmailAndPassword']);
+    $userBoMock->method('selectUserByEmailAndPassword')->will($this->onConsecutiveCalls($userTest1));
+
+    $app_BoFactoryMock = $this->createPartialMock(App_BoFactory::class, ['getUserBo']);
+    $app_BoFactoryMock->method('getUserBo')->willReturn($userBoMock);
+    App_BoFactory::setFactory($app_BoFactoryMock);
+
+    $data = $loginController->login();
+    $this->assertSame('render', $data[0]);
+    $this->assertSame('index', $data[1]);
+    $this->assertSame('Utilisateur banni', $data[2]['errors']['wrongIdentifiers']);
+
+    unset($_SESSION['userId'], $_SESSION['isAdmin']);
+  }
 }
