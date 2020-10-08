@@ -61,7 +61,7 @@ class UserDaoImpl implements IUserDao
     $firstUser = $query->fetch();
 
     $user = null;
-    if ($firstUser !== null && password_verify($password, $firstUser['password'])) {
+    if ($firstUser !== null && is_array($firstUser) && password_verify($password, $firstUser['password'])) {
       $user = new UserModel();
       $user
         ->setId($firstUser['id'])
