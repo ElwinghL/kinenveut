@@ -11,7 +11,7 @@ class CategoryDaoImpl implements ICategoryDao
       $query = db()->query($request);
       $categories = $query->fetchAll(PDO::FETCH_ASSOC);
     } catch (PDOException $Exception) {
-      throw new BDDException($Exception->getMessage(), (int)$Exception->getCode());
+      throw new BDDException($Exception->getMessage(), $Exception->getCode());
     }
 
     $categoryList = [];
@@ -35,7 +35,7 @@ class CategoryDaoImpl implements ICategoryDao
       $query = db()->prepare($request);
       $query->execute([utf8_decode($categoryModel->getName())]);
     } catch (PDOException $Exception) {
-      throw new BDDException($Exception->getMessage(), (int)$Exception->getCode());
+      throw new BDDException($Exception->getMessage(), $Exception->getCode());
     }
 
     return db()->lastInsertId();
@@ -50,7 +50,7 @@ class CategoryDaoImpl implements ICategoryDao
       $query = db()->prepare($request);
       $success = $query->execute([$categoryId]);
     } catch (PDOException $Exception) {
-      throw new BDDException($Exception->getMessage(), (int)$Exception->getCode());
+      throw new BDDException($Exception->getMessage(), $Exception->getCode());
     }
 
     return $success;
@@ -66,7 +66,7 @@ class CategoryDaoImpl implements ICategoryDao
       $query->execute([$categoryId]);
       $category = $query->fetch();
     } catch (PDOException $Exception) {
-      throw new BDDException($Exception->getMessage(), (int)$Exception->getCode());
+      throw new BDDException($Exception->getMessage(), $Exception->getCode());
     }
 
     if ($category == null) {
@@ -90,7 +90,7 @@ class CategoryDaoImpl implements ICategoryDao
       $query = db()->prepare($request);
       $success = $query->execute(['id' => $categoryModel->getId(), 'name' => utf8_decode($categoryModel->getName())]);
     } catch (PDOException $Exception) {
-      throw new BDDException($Exception->getMessage(), (int)$Exception->getCode());
+      throw new BDDException($Exception->getMessage(), $Exception->getCode());
     }
 
     return $success;

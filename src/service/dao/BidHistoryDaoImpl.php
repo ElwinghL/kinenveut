@@ -10,7 +10,7 @@ class BidHistoryDaoImpl implements IBidHistoryDao
       $query = db()->prepare($request);
       $query->execute([$bid->getBidPrice(), $bid->getObjectId(), $bid->getBidderId()]);
     } catch (PDOException $Exception) {
-      throw new BDDException($Exception->getMessage(), (int)$Exception->getCode());
+      throw new BDDException($Exception->getMessage(), $Exception->getCode());
     }
 
     return db()->lastInsertId();
@@ -25,7 +25,7 @@ class BidHistoryDaoImpl implements IBidHistoryDao
       $query = db()->prepare($request);
       $success = $query->execute([$bidId]);
     } catch (PDOException $Exception) {
-      throw new BDDException($Exception->getMessage(), (int)$Exception->getCode());
+      throw new BDDException($Exception->getMessage(), $Exception->getCode());
     }
 
     return $success;
