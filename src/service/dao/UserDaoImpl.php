@@ -26,12 +26,12 @@ class UserDaoImpl implements IUserDao
     return $user;
   }
 
-  public function selectUsersByState(?int $state): ?array
+  public function selectUsersByState(int $state): ?array
   {
-    $request = 'SELECT id, firstName, lastName, email, birthDate, isAuthorised, isAdmin FROM User WHERE isAuthorised' . ($state === null ? ' is ?' : '=?');
+    $request = 'SELECT id, firstName, lastName, email, birthDate, isAuthorised, isAdmin FROM User WHERE isAuthorised = :state';
 
     $query = db()->prepare($request);
-    $query->execute([$state]);
+    $query->execute(['state'=>$state]);
     $usersList = $query->fetchAll(PDO::FETCH_ASSOC);
 
     $users = [];
@@ -102,11 +102,11 @@ class UserDaoImpl implements IUserDao
 
   public function insertUser(UserModel $user): ?int
   {
-    $request = 'INSERT INTO User(firstName, lastName, email, password, birthDate, isAdmin,isAuthorised) VALUES (?, ?, ?, ?, ?, false,?)';
+    $request = 'INSERT INTO User(firstName, lastName, email, password, birthDate) VALUES (?, ?, ?, ?, ?)';
 
     try {
       $query = db()->prepare($request);
-      $query->execute([utf8_decode($user->getFirstName()), utf8_decode($user->getLastName()), utf8_decode($user->getEmail()), $user->getPassword(), $user->getBirthDate(), $user->getIsAuthorised()]);
+      $query->execute([utf8_decode($user->getFirstName()), utf8_decode($user->getLastName()), utf8_decode($user->getEmail()), $user->getPassword(), $user->getBirthDate()]);
     } catch (PDOException $Exception) {
       throw new BDDException($Exception->getMessage(), $Exception->getCode());
     }
