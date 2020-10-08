@@ -34,7 +34,8 @@ class LoginControllerTest extends TestCase
     $userTest1 = new UserModel();
     $userTest1
       ->setId($expectedId)
-      ->setIsAdmin($expectedIsAdmin);
+      ->setIsAdmin($expectedIsAdmin)
+      ->setIsAuthorised(1);
     $userTest2 = null;
 
     $userBoMock = $this->createPartialMock(UserBoImpl::class, ['selectUserByEmailAndPassword']);
