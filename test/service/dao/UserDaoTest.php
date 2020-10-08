@@ -177,7 +177,6 @@ class UserDaoTest extends TestCase
 
     $this->userDao->deleteUser($userModified->getId());
 
-    // $this->expectException(BDDException::class);
     $userEmpty = new UserModel();
     $this->assertTrue($this->userDao->updateUserIsAuthorised($userEmpty));
   }

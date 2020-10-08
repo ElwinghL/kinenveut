@@ -61,7 +61,7 @@ class UserDaoImpl implements IUserDao
     $firstUser = $query->fetch();
 
     $user = null;
-    if ($firstUser !== null && is_array($firstUser) && password_verify($password, $firstUser['password'])) {
+    if ($firstUser && is_array($firstUser) && password_verify($password, $firstUser['password'])) {
       $user = new UserModel();
       $user
         ->setId($firstUser['id'])
@@ -125,11 +125,17 @@ class UserDaoImpl implements IUserDao
 
   public function updateUser(UserModel $user): bool
   {
+    $success = null;
     $request = 'UPDATE User SET firstName = ?, lastName = ?, email = ? WHERE id = ?';
 
-    $query = db()->prepare($request);
+    try {
+      $query = db()->prepare($request);
+      $success = $query->execute([utf8_decode($user->getFirstName()), utf8_decode($user->getLastName()), utf8_decode($user->getEmail()), $user->getId()]);
+    } catch (PDOException $Exception) {
+      throw new BDDException($Exception->getMessage(), $Exception->getCode());
+    }
 
-    return  $query->execute([utf8_decode($user->getFirstName()), utf8_decode($user->getLastName()), utf8_decode($user->getEmail()), $user->getId()]);
+    return $success;
   }
 
   public function deleteUser(int $userId): bool
