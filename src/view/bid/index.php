@@ -92,9 +92,19 @@ $minPrice = (($bestBid->getBidPrice() != null) && ($bestBid->getBidPrice() != nu
     </div>
   </div>
 
-  <!--Line-->
-  <div class="hr"></div>
+    <!--Line-->
+    <div class="hr"></div>
 
+    <?php if ($_SESSION['userId'] == $auction->getSellerId()) : ?>
+        <a href=<?php echo '?r=auction/abort&auctionId=' . $auction->getId() ?>>
+            <button type="button" class="btn btn-secondary">Clôturer</button>
+        </a>
+        <a href=<?php echo '?r=auction/cancel&auctionId=' . $auction->getId() ?>>
+            <button type="button" class="btn btn-danger">Supprimer</button>
+        </a>
+        <!--Line-->
+        <div class="hr"></div>
+    <?php endif;?>
   <!--User-->
   <div class="row">
     <div class="col-md-9">
