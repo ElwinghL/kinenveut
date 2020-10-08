@@ -21,14 +21,14 @@ class AccessRequestController extends Controller
     }
   }
 
-  public function accept(): void
+  public function accept(): array
   {
-    $this->updateRequestStateId(1);
+    return $this->updateRequestStateId(1);
   }
 
-  public function refuse(): void
+  public function refuse(): array
   {
-    $this->updateRequestStateId(5);
+    return $this->updateRequestStateId(5);
   }
 
   private function updateRequestStateId($stateId): array
