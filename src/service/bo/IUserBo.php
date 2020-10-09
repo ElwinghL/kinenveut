@@ -4,7 +4,7 @@ interface IUserBo
 {
   public function selectUserByUserId(int $userId): ?UserModel;
 
-  public function selectUsersByState(?int $state): ?array;
+  public function selectUsersByState(int $state): ?array;
 
   public function selectUserByEmailAndPassword(string $email, string $password): ?UserModel;
 
