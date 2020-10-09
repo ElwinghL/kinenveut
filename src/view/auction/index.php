@@ -38,8 +38,8 @@ include_once 'src/view/page-header.php' ?>
                 <div class="col-md-4 mr-0 float-left">
                     <?php $minPrice = (($auction->getBestBid()->getBidPrice() != null) && ($auction->getBestBid()->getBidPrice() != null)) ? $auction->getBestBid()->getBidPrice() : $auction->getBasePrice();?>
                     <?php $isWinning = ($_SESSION['userId'] == $auction->getBestBid()->getBidderId());?>
-                    <?php if($_SESSION['userId'] != $auction->getSellerId()):?>
-                        <span class="text-<?php echo($isWinning)?'success':'danger';?>">
+                    <?php if ($_SESSION['userId'] != $auction->getSellerId()):?>
+                        <span class="text-<?php echo($isWinning) ? 'success' : 'danger';?>">
                             <?php echo $minPrice . ' €';?>
                         </span>
                     <?php else:?>
