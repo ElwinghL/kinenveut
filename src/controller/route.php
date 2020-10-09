@@ -33,5 +33,5 @@ if (isset(parameters()['r'])) {
 } elseif (!isset($_SESSION['userId'])) {
   header('Location: ?r=login');
 } else {
-  render('HomeController', 'index');
+  header('Location: ?r=home');
 }
