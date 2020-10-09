@@ -6,7 +6,7 @@ CREATE TABLE `Users` (
                         `email` VARCHAR(255) NOT NULL,
                         `password` VARCHAR(255) NOT NULL,
                         `birthDate` DATE NOT NULL,
-                        `isAuthorised` INT DEFAULT NULL, ##NULL : waiting for the admin decision, 0: NO/BAN, 1:YES
+                        `isAuthorised` INT DEFAULT NULL,
                         `isAdmin` BOOLEAN, ##0: NO, 1:YES
                         PRIMARY KEY (`id`),
                         UNIQUE `Unicite_Mail` (`email`)
