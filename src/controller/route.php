@@ -30,6 +30,8 @@ if (isset(parameters()['r'])) {
   }
   $controller = ucfirst($controller) . 'Controller';
   render($controller, $action);
+} elseif (!isset($_SESSION['userId'])) {
+  header('Location: ?r=login');
 } else {
   render('HomeController', 'index');
 }
