@@ -4,10 +4,15 @@ class CategoryDaoImpl implements ICategoryDao
 {
   public function selectAllCategories(): array
   {
+    $categories = null;
     $request = 'SELECT id, name FROM Category';
 
-    $query = db()->query($request);
-    $categories = $query->fetchAll(PDO::FETCH_ASSOC);
+    try {
+      $query = db()->query($request);
+      $categories = $query->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $Exception) {
+      throw new BDDException($Exception->getMessage(), $Exception->getCode());
+    }
 
     $categoryList = [];
     foreach ($categories as $oneCategory) {
@@ -38,20 +43,31 @@ class CategoryDaoImpl implements ICategoryDao
 
   public function deleteCategoryById(int $categoryId): bool
   {
+    $success = false;
     $request = 'DELETE FROM Category WHERE id=?';
 
-    $query = db()->prepare($request);
+    try {
+      $query = db()->prepare($request);
+      $success = $query->execute([$categoryId]);
+    } catch (PDOException $Exception) {
+      throw new BDDException($Exception->getMessage(), $Exception->getCode());
+    }
 
-    return $query->execute([$categoryId]);
+    return $success;
   }
 
   public function selectCategoryById(int $categoryId): ?CategoryModel
   {
+    $category = null;
     $request = 'SELECT id, name FROM Category WHERE id=?';
 
-    $query = db()->prepare($request);
-    $query->execute([$categoryId]);
-    $category = $query->fetch();
+    try {
+      $query = db()->prepare($request);
+      $query->execute([$categoryId]);
+      $category = $query->fetch();
+    } catch (PDOException $Exception) {
+      throw new BDDException($Exception->getMessage(), $Exception->getCode());
+    }
 
     $categoryModel = null;
     if ($category) {
@@ -64,9 +80,9 @@ class CategoryDaoImpl implements ICategoryDao
     return $categoryModel;
   }
 
-  public function updateCategory(CategoryModel $categoryModel): ?bool
+  public function updateCategory(CategoryModel $categoryModel): bool
   {
-    $success = null;
+    $success = false;
     $request = 'UPDATE Category SET name = :name WHERE id = :id';
 
     try {

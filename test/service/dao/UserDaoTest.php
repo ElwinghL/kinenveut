@@ -9,19 +9,38 @@ include_once 'src/tools.php';
 
 class UserDaoTest extends TestCase
 {
+  private $dbTampon;
+
   const FIRST_NAME = 'Francis';
   const LAST_NAME = 'Dupont';
   const BIRTH_DATE = '2000-01-13';
   const EMAIL = 'Francis.Dupont@gmail.com';
   const PASSWORD = 'password';
 
-  private $userDao = null;
-  private $user = null;
+  private $userDao;
+  private $user;
+
+  public function allFunctionToTest(): array
+  {
+    return [
+      ['insertUser', 1, new UserModel(), null],
+      ['deleteUser', 1, 0, null],
+      ['selectUserByEmail', 1, '', null],
+      ['selectUserByEmailAndPassword', 2, '', ''],
+      ['selectUserByUserId', 1, 0, null],
+      ['updateUser', 1, new UserModel(), null],
+      ['updateUserIsAuthorised', 1, new UserModel(), null],
+      ['selectUsersByState', 1, 0, null]
+    ];
+  }
 
   /** @before*/
   public function setUp(): void
   {
     parent::setUp();
+    if ($this->dbTampon == null) {
+      $this->dbTampon = db();
+    }
     App_DaoFactory::setFactory(new App_DaoFactory());
     $this->userDao = App_DaoFactory::getFactory()->getUserDao();
     $this->user = new UserModel();
@@ -33,6 +52,39 @@ class UserDaoTest extends TestCase
       ->setPassword(self::PASSWORD);
   }
 
+  /** @after */
+  public function tearDown() : void
+  {
+    parent::tearDown();
+    setDb($this->dbTampon);
+  }
+
+  /**
+   * @test
+   * @covers UserDaoImpl
+   * @dataProvider allFunctionToTest
+   */
+  public function dbTest($function, $nbArg, $arg1, $arg2): void
+  {
+    global $db;
+    $db = $this->createPartialMock(PDO::class, ['prepare', 'query']);
+    $db->method('prepare')->willThrowException(new PDOException());
+    $db->method('query')->willThrowException(new PDOException());
+
+    $this->expectException(BDDException::class);
+
+    switch ($nbArg) {
+      case 1:
+        $this->userDao->$function($arg1);
+        break;
+      case 2:
+        $this->userDao->$function($arg1, $arg2);
+        break;
+      default:
+        new Exception('nbArg not write');
+    }
+  }
+
   /**
    * @test
    * @covers UserDaoImpl
@@ -42,6 +94,7 @@ class UserDaoTest extends TestCase
     $userId = $this->userDao->insertUser($this->user);
 
     $this->assertNotNull($userId);
+    $this->assertTrue($userId > 0);
 
     $this->userDao->deleteUser($userId);
 
@@ -144,7 +197,7 @@ class UserDaoTest extends TestCase
     $userModified->setLastName($newLastName);
     $userModified->setEmail($newEmail);
 
-    $this->userDao->updateUser($userModified);
+    $this->assertTrue($this->userDao->updateUser($userModified));
 
     $userModifiedSelected = $this->userDao->selectUserByUserId($userModified->getId());
     $this->assertNotNull($userModifiedSelected);
@@ -169,7 +222,7 @@ class UserDaoTest extends TestCase
     $userModified = $this->userDao->selectUserByUserId($userId);
     $userModified->setIsAuthorised($isAuthorised);
 
-    $this->userDao->updateUserIsAuthorised($userModified);
+    $this->assertTrue($this->userDao->updateUserIsAuthorised($userModified));
 
     $userModifiedSelected = $this->userDao->selectUserByUserId($userModified->getId());
     $this->assertNotNull($userModifiedSelected);
@@ -182,6 +235,7 @@ class UserDaoTest extends TestCase
   }
 
   /**
+   *
    * @test
    * @covers UserDaoImpl
    */

@@ -4,11 +4,16 @@ class UserDaoImpl implements IUserDao
 {
   public function selectUserByUserId(int $userId): ?UserModel
   {
+    $userSelected = null;
     $request = 'SELECT id, firstName, lastName, email, birthDate, isAuthorised, isAdmin FROM User WHERE id=?';
 
-    $query = db()->prepare($request);
-    $query->execute([$userId]);
-    $userSelected = $query->fetch();
+    try {
+      $query = db()->prepare($request);
+      $query->execute([$userId]);
+      $userSelected = $query->fetch();
+    } catch (PDOException $Exception) {
+      throw new BDDException($Exception->getMessage(), $Exception->getCode());
+    }
 
     $user = null;
     if ($userSelected) {
@@ -26,13 +31,18 @@ class UserDaoImpl implements IUserDao
     return $user;
   }
 
-  public function selectUsersByState(int $state): ?array
+  public function selectUsersByState(int $state): array
   {
+    $usersList = null;
     $request = 'SELECT id, firstName, lastName, email, birthDate, isAuthorised, isAdmin FROM User WHERE isAuthorised = :state';
 
-    $query = db()->prepare($request);
-    $query->execute(['state'=>$state]);
-    $usersList = $query->fetchAll(PDO::FETCH_ASSOC);
+    try {
+      $query = db()->prepare($request);
+      $query->execute(['state' => $state]);
+      $usersList = $query->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $Exception) {
+      throw new BDDException($Exception->getMessage(), $Exception->getCode());
+    }
 
     $users = [];
     foreach ($usersList as $oneUser) {
@@ -54,11 +64,16 @@ class UserDaoImpl implements IUserDao
 
   public function selectUserByEmailAndPassword(string $email, string $password): ?UserModel
   {
+    $firstUser = null;
     $request = 'SELECT id, firstName, lastName, email, birthDate, isAuthorised, isAdmin, password FROM User WHERE email=?';
 
-    $query = db()->prepare($request);
-    $query->execute([$email]);
-    $firstUser = $query->fetch();
+    try {
+      $query = db()->prepare($request);
+      $query->execute([$email]);
+      $firstUser = $query->fetch();
+    } catch (PDOException $Exception) {
+      throw new BDDException($Exception->getMessage(), $Exception->getCode());
+    }
 
     $user = null;
     if ($firstUser && is_array($firstUser) && password_verify($password, $firstUser['password'])) {
@@ -78,11 +93,16 @@ class UserDaoImpl implements IUserDao
 
   public function selectUserByEmail(string $email): ?UserModel
   {
+    $firstUser = null;
     $request = 'SELECT * FROM User WHERE email=?';
 
-    $request = db()->prepare($request);
-    $request->execute([$email]);
-    $firstUser = $request->fetch();
+    try {
+      $query = db()->prepare($request);
+      $query->execute([$email]);
+      $firstUser = $query->fetch();
+    } catch (PDOException $Exception) {
+      throw new BDDException($Exception->getMessage(), $Exception->getCode());
+    }
 
     $user = null;
     if ($firstUser) {
@@ -116,11 +136,17 @@ class UserDaoImpl implements IUserDao
 
   public function updateUserIsAuthorised(UserModel $user): bool
   {
+    $success = false;
     $request = 'UPDATE User SET isAuthorised = :isAuthorised WHERE id = :id';
 
-    $query = db()->prepare($request);
+    try {
+      $query = db()->prepare($request);
+      $success = $query->execute(['id' => $user->getId(), 'isAuthorised' => $user->getIsAuthorised()]);
+    } catch (PDOException $Exception) {
+      throw new BDDException($Exception->getMessage(), $Exception->getCode());
+    }
 
-    return $query->execute(['id' => $user->getId(), 'isAuthorised' => $user->getIsAuthorised()]);
+    return $success;
   }
 
   public function updateUser(UserModel $user): bool
@@ -140,10 +166,16 @@ class UserDaoImpl implements IUserDao
 
   public function deleteUser(int $userId): bool
   {
+    $success = false;
     $request = 'DELETE FROM User WHERE id=?';
 
-    $query = db()->prepare($request);
+    try {
+      $query = db()->prepare($request);
+      $success = $query->execute([$userId]);
+    } catch (PDOException $Exception) {
+      throw new BDDException($Exception->getMessage(), $Exception->getCode());
+    }
 
-    return  $query->execute([$userId]);
+    return $success;
   }
 }
