@@ -9,6 +9,8 @@ include_once 'src/tools.php';
 
 class CategoryDaoTest extends TestCase
 {
+  private $dbTampon;
+
   const NAME = 'test';
 
   private $categoryDao;
@@ -29,10 +31,46 @@ class CategoryDaoTest extends TestCase
   public function setUp(): void
   {
     parent::setUp();
+    if ($this->dbTampon == null) {
+      $this->dbTampon = db();
+    }
     App_DaoFactory::setFactory(new App_DaoFactory());
     $this->categoryDao = App_DaoFactory::getFactory()->getCategoryDao();
     $this->category = new CategoryModel();
     $this->category->setName(self::NAME);
+  }
+
+  /** @after */
+  public function tearDown() : void
+  {
+    parent::tearDown();
+    setDb($this->dbTampon);
+  }
+
+  /**
+   * @test
+   * @covers CategoryDaoImpl
+   * @dataProvider allFunctionToTest
+   */
+  public function dbTest($function, $nbArg, $arg1): void
+  {
+    global $db;
+    $db = $this->createPartialMock(PDO::class, ['prepare', 'query']);
+    $db->method('prepare')->willThrowException(new PDOException());
+    $db->method('query')->willThrowException(new PDOException());
+
+    $this->expectException(BDDException::class);
+
+    switch ($nbArg) {
+      case 0:
+        $this->categoryDao->$function();
+        break;
+      case 1:
+        $this->categoryDao->$function($arg1);
+        break;
+      default:
+        new Exception('nbArg not write');
+    }
   }
 
   /**
@@ -118,32 +156,6 @@ class CategoryDaoTest extends TestCase
     $this->categoryDao->deleteCategoryById($categorySelected->getId());
 
     $categoryEmpty = new CategoryModel();
-    $this->assertTrue($this->categoryDao->updateCategory($categoryEmpty));
-  }
-
-  /**
-   * @test
-   * @covers CategoryDaoImpl
-   * @dataProvider allFunctionToTest
-   */
-  public function dbTest($function, $nbArg, $arg1): void
-  {
-    global $db;
-    $db = $this->createPartialMock(PDO::class, ['prepare', 'query']);
-    $db->method('prepare')->willThrowException(new PDOException());
-    $db->method('query')->willThrowException(new PDOException());
-
-    $this->expectException(BDDException::class);
-
-    switch ($nbArg) {
-      case 0:
-        $this->categoryDao->$function();
-        break;
-      case 1:
-        $this->categoryDao->$function($arg1);
-        break;
-      default:
-        new Exception('nbArg not write');
-    }
+    $this->assertNotNull($this->categoryDao->updateCategory($categoryEmpty));
   }
 }

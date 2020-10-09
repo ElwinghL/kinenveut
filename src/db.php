@@ -10,3 +10,9 @@ function db()
 
   return $db;
 }
+
+function setDb($newDb)
+{
+  global $db;
+  $db = $newDb;
+}

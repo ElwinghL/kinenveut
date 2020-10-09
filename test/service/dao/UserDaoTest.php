@@ -9,6 +9,8 @@ include_once 'src/tools.php';
 
 class UserDaoTest extends TestCase
 {
+  private $dbTampon;
+
   const FIRST_NAME = 'Francis';
   const LAST_NAME = 'Dupont';
   const BIRTH_DATE = '2000-01-13';
@@ -36,6 +38,9 @@ class UserDaoTest extends TestCase
   public function setUp(): void
   {
     parent::setUp();
+    if ($this->dbTampon == null) {
+      $this->dbTampon = db();
+    }
     App_DaoFactory::setFactory(new App_DaoFactory());
     $this->userDao = App_DaoFactory::getFactory()->getUserDao();
     $this->user = new UserModel();
@@ -45,6 +50,39 @@ class UserDaoTest extends TestCase
       ->setBirthDate(self::BIRTH_DATE)
       ->setEmail(self::EMAIL)
       ->setPassword(self::PASSWORD);
+  }
+
+  /** @after */
+  public function tearDown() : void
+  {
+    parent::tearDown();
+    setDb($this->dbTampon);
+  }
+
+  /**
+   * @test
+   * @covers UserDaoImpl
+   * @dataProvider allFunctionToTest
+   */
+  public function dbTest($function, $nbArg, $arg1, $arg2): void
+  {
+    global $db;
+    $db = $this->createPartialMock(PDO::class, ['prepare', 'query']);
+    $db->method('prepare')->willThrowException(new PDOException());
+    $db->method('query')->willThrowException(new PDOException());
+
+    $this->expectException(BDDException::class);
+
+    switch ($nbArg) {
+      case 1:
+        $this->userDao->$function($arg1);
+        break;
+      case 2:
+        $this->userDao->$function($arg1, $arg2);
+        break;
+      default:
+        new Exception('nbArg not write');
+    }
   }
 
   /**
@@ -223,30 +261,5 @@ class UserDaoTest extends TestCase
     $this->userDao->deleteUser($userId);
 
     $this->assertEmpty($this->userDao->selectUsersByState(-1));
-  }
-
-  /**
-   * @test
-   * @covers UserDaoImpl
-   * @dataProvider allFunctionToTest
-   */
-  public function dbTest($function, $nbArg, $arg1, $arg2): void
-  {
-    $db = $this->createPartialMock(PDO::class, ['prepare', 'query']);
-    $db->method('prepare')->willThrowException(new PDOException());
-    $db->method('query')->willThrowException(new PDOException());
-
-    $this->expectException(BDDException::class);
-
-    switch ($nbArg) {
-      case 1:
-        $this->userDao->$function($arg1);
-        break;
-      case 2:
-        $this->userDao->$function($arg1, $arg2);
-        break;
-      default:
-        new Exception('nbArg not write');
-    }
   }
 }
