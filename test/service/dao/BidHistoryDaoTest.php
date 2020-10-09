@@ -14,8 +14,16 @@ class BidHistoryDaoTest extends TestCase
   const BIDDER_ID = 1;
   const OBJECTIF_ID = 1;
 
-  private $bidHistoryDao = null;
-  private $bidHistory = null;
+  private $bidHistoryDao;
+  private $bidHistory;
+
+  public function allFunctionToTest(): array
+  {
+    return [
+      ['insertBid', 1, new BidModel()],
+      ['deleteBidById', 1, 0]
+    ];
+  }
 
   /** @before */
   public function setUp(): void
@@ -62,5 +70,28 @@ class BidHistoryDaoTest extends TestCase
 
     $this->assertTrue($success);
     $this->assertTrue($this->bidHistoryDao->deleteBidById(-1));
+  }
+
+  /**
+   * @test
+   * @covers BidHistoryDaoImpl
+   * @dataProvider allFunctionToTest
+   */
+  public function dbTest($function, $nbArg, $arg1): void
+  {
+    global $db;
+    $db = $this->createPartialMock(PDO::class, ['prepare', 'query']);
+    $db->method('prepare')->willThrowException(new PDOException());
+    $db->method('query')->willThrowException(new PDOException());
+
+    $this->expectException(BDDException::class);
+
+    switch ($nbArg) {
+      case 1:
+        $this->bidHistoryDao->$function($arg1);
+        break;
+      default:
+        new Exception('nbArg not write');
+    }
   }
 }
