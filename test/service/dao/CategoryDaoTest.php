@@ -11,8 +11,19 @@ class CategoryDaoTest extends TestCase
 {
   const NAME = 'test';
 
-  private $categoryDao = null;
-  private $category = null;
+  private $categoryDao;
+  private $category;
+
+  public function allFunctionToTest(): array
+  {
+    return [
+      ['insertCategory', 1, new CategoryModel()],
+      ['deleteCategoryById', 1, 0],
+      ['selectAllCategories', 0, null],
+      ['selectCategoryById', 1, 0],
+      ['updateCategory', 1, new CategoryModel()]
+    ];
+  }
 
   /** @before*/
   public function setUp(): void
@@ -98,7 +109,7 @@ class CategoryDaoTest extends TestCase
     $expectedName = 'Edit-Test';
     $this->category->setId($this->categoryDao->insertCategory($this->category));
 
-    $this->categoryDao->updateCategory($this->category->setName($expectedName));
+    $this->assertTrue($this->categoryDao->updateCategory($this->category->setName($expectedName)));
     $categorySelected = $this->categoryDao->selectCategoryById($this->category->getId());
 
     $this->assertNotNull($categorySelected);
@@ -107,6 +118,32 @@ class CategoryDaoTest extends TestCase
     $this->categoryDao->deleteCategoryById($categorySelected->getId());
 
     $categoryEmpty = new CategoryModel();
-    $this->assertNotNull($this->categoryDao->updateCategory($categoryEmpty));
+    $this->assertTrue($this->categoryDao->updateCategory($categoryEmpty));
+  }
+
+  /**
+   * @test
+   * @covers CategoryDaoImpl
+   * @dataProvider allFunctionToTest
+   */
+  public function dbTest($function, $nbArg, $arg1): void
+  {
+    global $db;
+    $db = $this->createPartialMock(PDO::class, ['prepare', 'query']);
+    $db->method('prepare')->willThrowException(new PDOException());
+    $db->method('query')->willThrowException(new PDOException());
+
+    $this->expectException(BDDException::class);
+
+    switch ($nbArg) {
+      case 0:
+        $this->categoryDao->$function();
+        break;
+      case 1:
+        $this->categoryDao->$function($arg1);
+        break;
+      default:
+        new Exception('nbArg not write');
+    }
   }
 }
