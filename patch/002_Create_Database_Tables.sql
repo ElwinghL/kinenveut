@@ -27,10 +27,9 @@ CREATE TABLE `Objects` (
                            `basePrice` INT NOT NULL,
                            `reservePrice` INT NOT NULL,
                            `pictureLink` TEXT NOT NULL,
-##`creationDate` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP, not used for now
                            `startDate` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
                            `duration` INT NOT NULL, ##definite the duration of the auction
-                           `auctionState` INT NULL, ##NULL : waiting for the admin decision, Refused, 1:Online, 2:Cancelled
+                           `auctionState` INT NULL,
                            `sellerId` INT NOT NULL,
                            `privacyId` INT NOT NULL,
                            `categoryId` INT NOT NULL,

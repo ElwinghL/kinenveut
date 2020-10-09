@@ -10,7 +10,7 @@ class UserBoImpl implements IUserBo
     return $user;
   }
 
-  public function selectUsersByState(?int $state): ?array
+  public function selectUsersByState(int $state): ?array
   {
     $userDao = App_DaoFactory::getFactory()->getUserDao();
     $users = $userDao->selectUsersBystate($state);
