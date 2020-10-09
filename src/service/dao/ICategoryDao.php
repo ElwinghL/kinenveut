@@ -10,5 +10,5 @@ interface ICategoryDao
 
   public function selectCategoryById(int $categoryId): ?CategoryModel;
 
-  public function updateCategory(CategoryModel $categoryModel): ?bool;
+  public function updateCategory(CategoryModel $categoryModel): bool;
 }

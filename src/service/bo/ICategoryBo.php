@@ -10,7 +10,7 @@ interface ICategoryBo
 
   public function selectCategoryById(int $categoryId): ?CategoryModel;
 
-  public function updateCategory(CategoryModel $categoryModel): ?bool;
+  public function updateCategory(CategoryModel $categoryModel): bool;
 
   public function addOrUpdateCategory(CategoryModel $categoryModel): int;
 }
