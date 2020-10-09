@@ -102,7 +102,7 @@ class AuctionDaoTest extends TestCase
 
     $auctionTest
             ->setId($auctionId)
-            ->setStartDate('2020-10-03')
+            ->setStartDate($currentDate)
             ->setAuctionState(1);
 
     $auctionDao->updateStartDateAndAuctionState($auctionTest);

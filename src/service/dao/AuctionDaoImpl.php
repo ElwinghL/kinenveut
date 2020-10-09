@@ -63,10 +63,16 @@ class AuctionDaoImpl implements IAuctionDao
     return $success;
   }
 
+  //Todo : utiliser v_auction
   public function selectAuctionByAuctionId(int $auctionId): ?AuctionModel
   {
     $oneAuction = null;
-    $request = 'SELECT Auction.id AS objectId,name,description,basePrice,reservePrice,pictureLink,startDate,duration,auctionState,sellerId,privacyId,categoryId
+    $request = 'SELECT Auction.id AS objectId,name,description,basePrice,reservePrice,pictureLink
+     ,startDate,duration
+     ,(CASE WHEN ((DATE_ADD(Auction.startDate,interval Auction.duration day)) > NOW()) THEN Auction.auctionState ELSE 4 END) AS auctionState
+     ,Auction.auctionState theReal
+     ,DATE_ADD(Auction.startDate, INTERVAL Auction.duration DAY) AS endDate
+     ,sellerId,privacyId,categoryId
     ,v_BestBid.id AS bidId,v_BestBid.bidPrice,v_BestBid.bidDate,v_BestBid.bidderId
     FROM Auction
     LEFT JOIN v_BestBid ON v_BestBid.objectId = Auction.id
@@ -111,10 +117,15 @@ class AuctionDaoImpl implements IAuctionDao
     return $oneAuctionModel;
   }
 
+  //Todo : utiliser v_Auction
   public function selectAllAuctionsByAuctionState($auctionState): array
   {
     $auctions = null;
-    $request = 'SELECT Auction.id AS objectId,name,description,basePrice,reservePrice,pictureLink,startDate,duration,auctionState,sellerId,privacyId,categoryId
+    $request = 'SELECT Auction.id AS objectId,name,description,basePrice,reservePrice,pictureLink
+     ,startDate,duration
+     ,(CASE WHEN DATE_ADD(Auction.startDate,interval Auction.duration day) > NOW() THEN Auction.auctionState ELSE 4 END) AS auctionState
+     ,DATE_ADD(Auction.startDate, INTERVAL Auction.duration DAY) AS endDate
+     ,sellerId,privacyId,categoryId
     ,v_BestBid.id AS bidId,v_BestBid.bidPrice,v_BestBid.bidDate,v_BestBid.bidderId
     FROM Auction
     LEFT JOIN v_BestBid ON v_BestBid.objectId = Auction.id
@@ -162,10 +173,15 @@ class AuctionDaoImpl implements IAuctionDao
     return $auctionList;
   }
 
+  //Todo:utiliser v_Auction
   public function selectAllAuctionsBySellerId($sellerId): array
   {
     $auctions = null;
-    $request = 'SELECT Auction.id AS objectId,name,description,basePrice,reservePrice,pictureLink,startDate,duration,auctionState,sellerId,privacyId,categoryId
+    $request = 'SELECT Auction.id AS objectId,name,description,basePrice,reservePrice,pictureLink
+     ,startDate,duration
+     ,(CASE WHEN DATE_ADD(Auction.startDate,interval Auction.duration day) > NOW() THEN Auction.auctionState ELSE 4 END) AS auctionState
+     ,DATE_ADD(Auction.startDate, INTERVAL Auction.duration DAY) AS endDate
+     ,sellerId,privacyId,categoryId
                     ,v_BestBid.id AS bidId,v_BestBid.bidPrice,v_BestBid.bidDate,v_BestBid.bidderId
                     FROM Auction
                     LEFT JOIN v_BestBid ON v_BestBid.objectId = Auction.id
@@ -211,10 +227,15 @@ class AuctionDaoImpl implements IAuctionDao
     return $auctionList;
   }
 
+  //Todo: utiliser v_Auction
   public function selectAcceptedConfidentialAuctionsByBidderId($userId): array
   {
     $auctions = null;
-    $request = 'SELECT Auction.id AS objectId,name,description,basePrice,reservePrice,pictureLink,startDate,duration,auctionState,sellerId,privacyId,categoryId
+    $request = 'SELECT Auction.id AS objectId,name,description,basePrice,reservePrice,pictureLink
+     ,startDate,duration
+    , (CASE WHEN DATE_ADD(Auction.startDate,interval Auction.duration day) > NOW() THEN Auction.auctionState ELSE 4 END) AS auctionState
+    , DATE_ADD(Auction.startDate,interval Auction.duration day) AS endDate
+     ,sellerId,privacyId,categoryId
     ,v_BestBid.id AS bidId,v_BestBid.bidPrice,v_BestBid.bidDate,v_BestBid.bidderId
     FROM Auction
     LEFT JOIN v_BestBid ON v_BestBid.objectId = Auction.id
@@ -272,7 +293,12 @@ class AuctionDaoImpl implements IAuctionDao
   public function selectAllAuctionsByBidderId($bidderId) : array
   {
     $auctions = null;
-    $request = 'SELECT DISTINCT v_Auction.*
+    $request = 'SELECT DISTINCT v_Auction.objectId, v_Auction.name, v_Auction.description, v_Auction.basePrice, v_Auction.reservePrice, v_Auction.pictureLink
+                    , v_Auction.startDate, v_Auction.endDate, v_Auction.duration
+                    , v_Auction.auctionState
+                    , v_Auction.endDate
+                    , v_Auction.sellerId, v_Auction.privacyId, v_Auction.categoryId
+                    , v_Auction.bidId, v_Auction.bidPrice, v_Auction.bidDate, v_Auction.bidderId
                 FROM v_Auction
                 LEFT JOIN (SELECT DISTINCT bidhistory.objectId
                             FROM BidHistory
@@ -282,6 +308,7 @@ class AuctionDaoImpl implements IAuctionDao
                 LEFT JOIN (SELECT DISTINCT AuctionAccessState.auctionId
                             FROM AuctionAccessState
                             WHERE AuctionAccessState.bidderId = :aas_bidderId
+                            AND stateId not in (0,2,5)
                     ) auctionaccessstate
                     ON v_Auction.objectId = auctionaccessstate.auctionId
                 WHERE auctionaccessstate.auctionId is not null
