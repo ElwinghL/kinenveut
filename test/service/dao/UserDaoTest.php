@@ -232,9 +232,9 @@ class UserDaoTest extends TestCase
    */
   public function dbTest($function, $nbArg, $arg1, $arg2): void
   {
-    global $db;
-    $db = $this->createPartialMock(PDO::class, ['prepare']);
+    $db = $this->createPartialMock(PDO::class, ['prepare', 'query']);
     $db->method('prepare')->willThrowException(new PDOException());
+    $db->method('query')->willThrowException(new PDOException());
 
     $this->expectException(BDDException::class);
 
