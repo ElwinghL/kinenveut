@@ -1,15 +1,31 @@
 <?php include_once 'src/view/page-header.php' ?>
 
 <?php
-$auction = (isset($data['auction'])) ? $data['auction'] : new AuctionModel();
-$auctionAccessState = (isset($data['auctionAccessState'])) ? $data['auctionAccessState'] : new AuctionAccessStateModel();
-$seller = (isset($data['seller'])) ? $data['seller'] : new UserModel();
 
-$bestBid = ($auction->getBestBid() != null) ? $auction->getBestBid() : new BidModel();
-$minPrice = (($bestBid->getBidPrice() != null) && ($bestBid->getBidPrice() != null)) ? $bestBid->getBidPrice() : $auction->getBasePrice();
+    date_default_timezone_set('Europe/Paris');
 
-$endDate = date('F j, Y h:i:s', strtotime($auction->getStartDate() . ' + ' . $auction->getDuration() . ' days'));
-$isFinished = $endDate < date('F j, Y h:i:s');
+    $dateFormat = 'm d, Y H:i:s';
+    $auction = (isset($data['auction'])) ? $data['auction'] : new AuctionModel();
+    $auctionAccessState = (isset($data['auctionAccessState'])) ? $data['auctionAccessState'] : new AuctionAccessStateModel();
+    $seller = (isset($data['seller'])) ? $data['seller'] : new UserModel();
+
+    $bestBid = ($auction->getBestBid() != null) ? $auction->getBestBid() : new BidModel();
+    $minPrice = (($bestBid->getBidPrice() != null) && ($bestBid->getBidPrice() != null)) ? $bestBid->getBidPrice() : $auction->getBasePrice();
+
+    $startDate = strtotime($auction->getStartDate());
+    $endDate = strtotime($auction->getStartDate() . ' + ' . $auction->getDuration() . ' days');
+    $nowDate = strtotime('now');
+    $nowDateBis = new DateTime('Now');
+    $endDateFormated = date('Y-m-d H:i:s', $endDate);
+
+    $isFinished = $nowDate > $endDate;
+
+    $dateBis = date('Y-m-d H:i:s', $endDate);
+    $nowDatetime = new DateTime();
+    $endDatetime = new DateTime('' . $dateBis);
+    $interval = $nowDatetime->diff($endDatetime);
+
+    $timingLeftFormated = $interval->format('%a jours %h:%i:%s');
 ?>
 
 <div class="container">
@@ -18,11 +34,25 @@ $isFinished = $endDate < date('F j, Y h:i:s');
   <div class="row">
     <div class="col-md-9">
       <h2><?php echo protectStringToDisplay($auction->getName()); ?> - <?php echo $minPrice ?>€</h2>
-        <div id="timer"></div>
+        <div id="timer">
+            <?php if ($isFinished):?>
+                L'enchère est terminée depuis le <?php echo date('d/m/Y H:i:s', $endDate);?>
+            <?php else:?>
+                Expire dans : <?php echo $timingLeftFormated;?>
+            <?php endif;?></div>
         <br/>
     </div>
     <div class="col-md-3">
-      <small><i>Mis en ligne le <?php echo $auction->getStartDate(); ?></i></small>
+        <small>
+            <i>
+                <?php if ($auction->getAuctionState() != 0):?>
+                Mis en ligne le
+                <?php else:?>
+                Créé le
+                <?php endif;?>
+                <?php echo date('d-m-Y', $startDate); ?>
+            </i>
+        </small>
     </div>
   </div>
 
@@ -44,7 +74,7 @@ $isFinished = $endDate < date('F j, Y h:i:s');
           <?php if ($_SESSION['userId'] != $bestBid->getBidderId()) : ?>
             <?php if ($auction->getPrivacyId() == 0 || $auctionAccessState->getStateId() == 1) : ?>
             <div id="formulairePourEncherir">
-            <?php if ($isFinished):?>
+            <?php if ($isFinished == false):?>
                   <form action="?r=bid/addBid&auctionId=<?= parameters()['auctionId']; ?>" method="post">
                       <div class="input-group mb-2">
                           <input class="form-control" name="bidPrice" type="number" id="bidPrice" value="" min="<?php echo $minPrice + 1; ?>" placeholder="Saisir votre enchère maximum" />
@@ -181,11 +211,54 @@ $isFinished = $endDate < date('F j, Y h:i:s');
 
     /*Gestion du timer*/
     // Set the date we're counting down to
-    var countDownDate = new Date("<?=$endDate?>").getTime();
+    var countDownDate = new Date("<?=$endDateFormated?>").getTime();
 
     // Update the count down every 1 second
     var x = setInterval(function() {
 
+        // Get today's date and time
+        var now = new Date().getTime();
+
+        // Find the distance between now and the count down date
+        var distance = countDownDate - now;
+
+        // Time calculations for days, hours, minutes and seconds
+        var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        var temps_restant = "";
+
+        if(days > 0){
+            temps_restant += days + " jours ";
+        }
+        if(temps_restant != "" || hours > 0){
+            if(hours < 10) temps_restant += 0;
+            temps_restant += hours + ":";
+        }
+        if(temps_restant != "" || minutes > 0){
+            if(minutes < 10) temps_restant += 0;
+            temps_restant += minutes + ":";
+        }
+        if(temps_restant != "" || seconds > 0){
+            if(seconds < 10) temps_restant += 0;
+            temps_restant += seconds + "";
+        }
+
+        // Display the result in the element with id="demo"
+        document.getElementById("timer").innerHTML = "Expire dans : " + temps_restant;
+
+        // If the count down is finished, write some text
+        if (distance < 0) {
+            clearInterval(x);
+            document.getElementById("timer").innerHTML = "L'enchère est terminée depuis le <?php echo date('d/m/Y H:i:s', $endDate);?>";
+            document.getElementById("formulairePourEncherir").innerHTML = " ";
+            document.getElementById("formulairePourEncherir").style.visibility="hidden";
+        }
+    }, 1000);
+
+    function replaceTimer(){
         // Get today's date and time
         var now = new Date().getTime();
 
@@ -219,9 +292,10 @@ $isFinished = $endDate < date('F j, Y h:i:s');
         // If the count down is finished, write some text
         if (distance < 0) {
             clearInterval(x);
-            document.getElementById("timer").innerHTML = "L'enchère est terminée.";
+            document.getElementById("timer").innerHTML = "L'enchère est terminée depuis le <?php echo date('d/m/Y H:i:s', $endDate);?>";
             document.getElementById("formulairePourEncherir").innerHTML = " ";
             document.getElementById("formulairePourEncherir").style.visibility="hidden";
+            //Todo : ici, on peut discrètement passer l'enchère à terminé ^^ si l'état est en cours
         }
-    }, 1000);
+    }
 </script>

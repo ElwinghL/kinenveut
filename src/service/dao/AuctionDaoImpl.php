@@ -10,9 +10,8 @@ class AuctionDaoImpl implements IAuctionDao
     FROM Auction
     LEFT JOIN v_BestBid ON v_BestBid.objectId = Auction.id
     WHERE auctionState = :auctionState
-        AND (CASE WHEN auctionState = 0 THEN privacyId is not null
-            ELSE privacyId in (0,1)
-            END);';
+        AND (CASE WHEN auctionState = 0 THEN 1 ELSE privacyId in (0,1) END)
+        AND (CASE WHEN auctionState = 1 THEN DATE_ADD(startDate,interval duration day) > NOW() ELSE 1 END);';
 
     try {
       $query = db()->prepare($request);
@@ -158,14 +157,20 @@ class AuctionDaoImpl implements IAuctionDao
     ,v_BestBid.id AS bidId,v_BestBid.bidPrice,v_BestBid.bidDate,v_BestBid.bidderId
     FROM Auction
     LEFT JOIN v_BestBid ON v_BestBid.objectId = Auction.id
-    INNER JOIN AuctionAccessState ON AuctionAccessState.auctionId = Auction.id
-    WHERE AuctionAccessState.bidderId = :bidderId
-        AND AuctionAccessState.stateId = 1
-        AND privacyId = 2';
+    LEFT JOIN AuctionAccessState ON AuctionAccessState.auctionId = Auction.id
+    LEFT JOIN User ON User.id = :userId
+    WHERE ((AuctionAccessState.bidderId = :bidderId
+                AND AuctionAccessState.stateId = 1
+            )
+            OR Auction.sellerId = :sellerId
+            OR User.isAdmin = 1)
+        AND Auction.privacyId = 2
+        AND Auction.auctionState = 1
+        AND DATE_ADD(Auction.startDate,interval Auction.duration day) > NOW()';
 
     try {
       $query = db()->prepare($request);
-      $query->execute(['bidderId' => $userId]);
+      $query->execute(['userId' => $userId, 'bidderId' => $userId, 'sellerId' => $userId]);
       $auctions = $query->fetchAll(PDO::FETCH_ASSOC);
     } catch (PDOException $Exception) {
       throw new BDDException($Exception->getMessage(), $Exception->getCode());
@@ -199,7 +204,7 @@ class AuctionDaoImpl implements IAuctionDao
 
       array_push($auctionList, $oneAuctionModel);
     }
-    
+
     return $auctionList;
   }
 
@@ -235,12 +240,12 @@ class AuctionDaoImpl implements IAuctionDao
   public function updateStartDateAndAuctionState(AuctionModel $auction): bool
   {
     $success = null;
-    $request = 'UPDATE Auction SET startDate = :startDate, auctionState = :auctionState WHERE id = :id';
+    $request = 'UPDATE Auction SET startDate = CURRENT_TIMESTAMP, auctionState = :auctionState WHERE id = :id';
 
     if ($auction->getId() != null) {
       try {
         $query = db()->prepare($request);
-        $success = $query->execute(['id' => $auction->getId(), 'startDate' => $auction->getStartDate(), 'auctionState' => $auction->getAuctionState()]);
+        $success = $query->execute(['id' => $auction->getId(), 'auctionState' => $auction->getAuctionState()]);
       } catch (PDOException $Exception) {
         throw new BDDException($Exception->getMessage(), $Exception->getCode());
       }
