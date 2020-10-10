@@ -81,12 +81,12 @@ class AuctionAccessStateDaoImpl implements IAuctionAccessStateDao
     if ($auctionAccessStateSelected) {
       $oneAuctionAccessStateModel = new AuctionAccessStateModel();
       $oneAuctionAccessStateModel
-      ->setId($auctionAccessStateSelected['auctionAccessStateId'])
-      ->setAuction($oneAuctionAccessStateModel->getAuction()
-        ->setId($auctionAccessStateSelected['auctionId']))
-      ->setBidder($oneAuctionAccessStateModel->getBidder()
-        ->setId($auctionAccessStateSelected['bidderId']))
-      ->setStateId($auctionAccessStateSelected['stateId']);
+        ->setId($auctionAccessStateSelected['auctionAccessStateId'])
+        ->setAuction($oneAuctionAccessStateModel->getAuction()
+          ->setId($auctionAccessStateSelected['auctionId']))
+        ->setBidder($oneAuctionAccessStateModel->getBidder()
+          ->setId($auctionAccessStateSelected['bidderId']))
+        ->setStateId($auctionAccessStateSelected['stateId']);
     }
 
     return $oneAuctionAccessStateModel;

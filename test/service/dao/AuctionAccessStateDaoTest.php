@@ -9,249 +9,234 @@ include_once 'src/tools.php';
 
 class AuctionAccessStateDaoTest extends TestCase
 {
+  private $dbTampon;
+
+  const AUCTION_ID = 1;
+  const BIDDER_ID = 1;
+  const SELLER_ID = 1;
+  const PRIVACY_ID = 1;
+  const CATEGORY_ID = 1;
+  const STATE_ID = 0;
+  const NAME = 'Object Test';
+  const DESCRIPTION = 'descr';
+  const BASE_PRICE = 3;
+  const RESERVE_PRICE = 10;
+  const DURATION = 7;
+
+  private $auctionAccessStateDao;
+  private $auctionDao;
+  private $auctionTest;
+
+  public function allFunctionToTest(): array
+  {
+    return [
+      ['insertAuctionAccessState', 2, 0, 0, null],
+      ['deleteAuctionAccessStateById', 1, 0, null, null],
+      ['updateStateIdByAuctionAccessStateId', 2, 0, 0, null],
+      ['updateStateIdByAuctionIdAndBidderId', 3, 0, 0, 0],
+      ['selectAuctionAccessStateByAuctionIdAndBidderId', 2, 0, 0, null],
+      ['selectAllAuctionAccessStateBySellerIdAndStateId', 2, 0, 0, null],
+      ['selectNumberOfAuctionAccessStateBySellerId', 1, 0, null, null]
+    ];
+  }
+
   /** @before */
   public function setUp(): void
   {
     parent::setUp();
+    if ($this->dbTampon == null) {
+      $this->dbTampon = db();
+    }
     App_DaoFactory::setFactory(new App_DaoFactory());
+    $this->auctionAccessStateDao = App_DaoFactory::getFactory()->getAuctionAccessStateDao();
+    $this->auctionDao = App_DaoFactory::getFactory()->getAuctionDao();
+    $this->auctionTest = new AuctionModel();
+    $this->auctionTest
+      ->setName(self::NAME)
+      ->setDescription(self::DESCRIPTION)
+      ->setBasePrice(self::BASE_PRICE)
+      ->setReservePrice(self::RESERVE_PRICE)
+      ->setDuration(self::DURATION)
+      ->setSellerId(self::SELLER_ID)
+      ->setPrivacyId(self::PRIVACY_ID)
+      ->setCategoryId(self::CATEGORY_ID);
+  }
+
+  /** @after */
+  public function tearDown(): void
+  {
+    parent::tearDown();
+    setDb($this->dbTampon);
   }
 
   /**
    * @test
    * @covers AuctionAccessStateDaoImpl
-   * @throws BDDException
+   * @dataProvider allFunctionToTest
+   */
+  public function dbTest($function, $nbArg, $arg1, $arg2, $arg3): void
+  {
+    global $db;
+    $db = $this->createPartialMock(PDO::class, ['prepare', 'query']);
+    $db->method('prepare')->willThrowException(new PDOException());
+    $db->method('query')->willThrowException(new PDOException());
+
+    $this->expectException(BDDException::class);
+
+    switch ($nbArg) {
+      case 1:
+        $this->auctionAccessStateDao->$function($arg1);
+        break;
+      case 2:
+        $this->auctionAccessStateDao->$function($arg1, $arg2);
+        break;
+      case 3:
+        $this->auctionAccessStateDao->$function($arg1, $arg2, $arg3);
+        break;
+      default:
+        new Exception('nbArg not write');
+    }
+  }
+
+  /**
+   * @test
+   * @covers AuctionAccessStateDaoImpl
    */
   public function insertAuctionAccessStateTest(): void
   {
-    $auctionAccessStateDao = App_DaoFactory::getFactory()->getAuctionAccessStateDao();
-
-    $auctionId = 1;
-    $bidderId = 1;
-
-    $auctionAccessStateId = $auctionAccessStateDao->insertAuctionAccessState($auctionId, $bidderId);
+    $auctionAccessStateId = $this->auctionAccessStateDao->insertAuctionAccessState(self::AUCTION_ID, self::BIDDER_ID);
 
     $this->assertNotNull($auctionAccessStateId);
     $this->assertTrue($auctionAccessStateId > 0);
 
-    $auctionAccessStateDao->deleteAuctionAccessStateById($auctionAccessStateId);
+    $this->auctionAccessStateDao->deleteAuctionAccessStateById($auctionAccessStateId);
+
+    $auctionAccessStateId = $this->auctionAccessStateDao->insertAuctionAccessState(-1, -1);
+    $this->assertNotNull($auctionAccessStateId);
+    $this->assertTrue($auctionAccessStateId > 0);
+
+    $this->auctionAccessStateDao->deleteAuctionAccessStateById($auctionAccessStateId);
   }
 
   /**
    * @test
    * @covers AuctionAccessStateDaoImpl
-   * @throws BDDException
    */
   public function deleteAuctionAccessStateByIdTest(): void
   {
-    $auctionAccessStateDao = App_DaoFactory::getFactory()->getAuctionAccessStateDao();
+    $auctionAccessStateId = $this->auctionAccessStateDao->insertAuctionAccessState(self::AUCTION_ID, self::BIDDER_ID);
 
-    $auctionId = 1;
-    $bidderId = 1;
-
-    $auctionAccessStateId = $auctionAccessStateDao->insertAuctionAccessState($auctionId, $bidderId);
-
-    $success = $auctionAccessStateDao->deleteAuctionAccessStateById($auctionAccessStateId);
-
-    $this->assertTrue($success);
+    $this->assertTrue($this->auctionAccessStateDao->deleteAuctionAccessStateById($auctionAccessStateId));
+    $this->assertTrue($this->auctionAccessStateDao->deleteAuctionAccessStateById(-1));
   }
 
   /**
    * @test
    * @covers AuctionAccessStateDaoImpl
-   * @throws BDDException
    */
   public function updateStateIdByAuctionAccessStateIdTest(): void
   {
-    //Todo : vérifier l'update
     $newStateId = 1;
+    $auctionAccessStateId = $this->auctionAccessStateDao->insertAuctionAccessState(self::AUCTION_ID, self::BIDDER_ID);
 
-    $auctionAccessStateDao = App_DaoFactory::getFactory()->getAuctionAccessStateDao();
+    $this->assertTrue($this->auctionAccessStateDao->updateStateIdByAuctionAccessStateId($auctionAccessStateId, $newStateId));
 
-    $auctionId = 1;
-    $bidderId = 1;
+    $auctionAccessStateSelected = $this->auctionAccessStateDao->selectAuctionAccessStateByAuctionIdAndBidderId(self::AUCTION_ID, self::BIDDER_ID);
 
-    $auctionAccessStateId = $auctionAccessStateDao->insertAuctionAccessState($auctionId, $bidderId);
+    $this->assertNotNull($auctionAccessStateSelected);
+    $this->assertSame($newStateId, $auctionAccessStateSelected->getStateId());
 
-    $success = $auctionAccessStateDao->updateStateIdByAuctionAccessStateId($auctionAccessStateId, $newStateId);
+    $this->auctionAccessStateDao->deleteAuctionAccessStateById($auctionAccessStateId);
 
-    $this->assertTrue($success);
-
-    $auctionAccessStateDao->deleteAuctionAccessStateById($auctionAccessStateId);
+    $this->assertTrue($this->auctionAccessStateDao->updateStateIdByAuctionAccessStateId(-1, -1));
   }
 
   /**
    * @test
    * @covers AuctionAccessStateDaoImpl
-   * @throws BDDException
    */
   public function updateStateIdByAuctionIdAndBidderIdTest(): void
   {
-    //Todo : vérifier l'update
     $newStateId = 1;
+    $auctionAccessStateId = $this->auctionAccessStateDao->insertAuctionAccessState(self::AUCTION_ID, self::BIDDER_ID);
 
-    $auctionAccessStateDao = App_DaoFactory::getFactory()->getAuctionAccessStateDao();
+    $this->assertTrue($this->auctionAccessStateDao->updateStateIdByAuctionIdAndBidderId(self::AUCTION_ID, self::BIDDER_ID, $newStateId));
 
-    $auctionId = 1;
-    $bidderId = 1;
+    $auctionAccessStateSelected = $this->auctionAccessStateDao->selectAuctionAccessStateByAuctionIdAndBidderId(self::AUCTION_ID, self::BIDDER_ID);
 
-    $auctionAccessStateId = $auctionAccessStateDao->insertAuctionAccessState($auctionId, $bidderId);
+    $this->assertNotNull($auctionAccessStateSelected);
+    $this->assertSame($newStateId, $auctionAccessStateSelected->getStateId());
 
-    $success = $auctionAccessStateDao->updateStateIdByAuctionIdAndBidderId($auctionId, $bidderId, $newStateId);
+    $this->auctionAccessStateDao->deleteAuctionAccessStateById($auctionAccessStateId);
 
-    $this->assertTrue($success);
-
-    $auctionAccessStateDao->deleteAuctionAccessStateById($auctionAccessStateId);
+    $this->assertTrue($this->auctionAccessStateDao->updateStateIdByAuctionIdAndBidderId(-1, -1, -1));
   }
 
   /**
    * @test
    * @covers AuctionAccessStateDaoImpl
-   * @throws BDDException
    */
   public function selectAuctionAccessStateByAuctionIdAndBidderIdTest(): void
   {
-    /*First step : create an auction & insert it*/
-    $auctionDao = App_DaoFactory::getFactory()->getAuctionDao();
+    $auctionId = $this->auctionDao->insertAuction($this->auctionTest);
+    $auctionAccessStateId = $this->auctionAccessStateDao->insertAuctionAccessState($auctionId, self::BIDDER_ID);
 
-    $auctionTest = new AuctionModel();
-    $auctionTest
-            ->setName('Object Test')
-            ->setDescription('descr')
-            ->setBasePrice(3)
-            ->setReservePrice(10)
-            ->setDuration(7)
-            ->setSellerId(1)
-            ->setPrivacyId(1)
-            ->setCategoryId(1);
+    $auctionAccessStateSelected = $this->auctionAccessStateDao->selectAuctionAccessStateByAuctionIdAndBidderId($auctionId, self::BIDDER_ID);
 
-    $auctionId = $auctionDao->insertAuction($auctionTest);
-
-    /*Second step : create an auctionAccessState*/
-    $auctionAccessStateDao = App_DaoFactory::getFactory()->getAuctionAccessStateDao();
-
-    $bidderId = 1;
-
-    /*Third step : insert the auctionAccessState*/
-    $auctionAccessStateId = $auctionAccessStateDao->insertAuctionAccessState($auctionId, $bidderId);
-
-    /*Fourth step : select an auctionAccessState*/
-    $auctionAccessStateSelected = $auctionAccessStateDao->selectAuctionAccessStateByAuctionIdAndBidderId($auctionId, $bidderId);
-
-    /*TEST*/
     $this->assertNotNull($auctionAccessStateSelected->getId());
     $this->assertSame($auctionAccessStateId, $auctionAccessStateSelected->getId());
-
     $this->assertNotNull($auctionAccessStateSelected->getAuction());
     $this->assertTrue($auctionAccessStateSelected->getAuction()->getId() > 0);
-
     $this->assertNotNull($auctionAccessStateSelected->getBidder());
     $this->assertTrue($auctionAccessStateSelected->getBidder()->getId() > 0);
-
     $this->assertNotNull($auctionAccessStateSelected->getStateId());
     $this->assertTrue($auctionAccessStateSelected->getStateId() >= 0);
 
-    /*Last step : delete the inserted auction & auctionAccessState*/
-    $auctionDao->deleteAuctionById($auctionId);
-    $auctionAccessStateDao->deleteAuctionAccessStateById($auctionAccessStateId);
+    $this->auctionDao->deleteAuctionById($auctionId);
+    $this->auctionAccessStateDao->deleteAuctionAccessStateById($auctionAccessStateId);
+
+    $this->assertNull($this->auctionAccessStateDao->selectAuctionAccessStateByAuctionIdAndBidderId($auctionId, self::BIDDER_ID));
   }
 
   /**
    * @test
    * @covers AuctionAccessStateDaoImpl
-   * @throws BDDException
    */
   public function selectAllAuctionAccessStateBySellerIdAndStateIdTest(): void
   {
-    $sellerId = 1;
-    $stateId = 0;
+    $auctionId = $this->auctionDao->insertAuction($this->auctionTest);
+    $auctionAccessStateId = $this->auctionAccessStateDao->insertAuctionAccessState($auctionId, self::BIDDER_ID);
 
-    /*First step : create an auction & insert it*/
-    $auctionDao = App_DaoFactory::getFactory()->getAuctionDao();
+    $auctionAccessStateSelectedList = $this->auctionAccessStateDao->selectAllAuctionAccessStateBySellerIdAndStateId(self::BIDDER_ID, self::STATE_ID);
 
-    $auctionTest = new AuctionModel();
-    $auctionTest
-          ->setName('Object Test')
-          ->setDescription('descr')
-          ->setBasePrice(3)
-          ->setReservePrice(10)
-          ->setDuration(7)
-          ->setSellerId($sellerId)
-          ->setPrivacyId(1)
-          ->setCategoryId(1);
+    $this->assertNotNull($auctionAccessStateSelectedList[0]->getId());
+    $this->assertTrue($auctionAccessStateSelectedList[0]->getId() > 0);
+    $this->assertSame($auctionAccessStateSelectedList[0]->getStateId(), self::STATE_ID);
+    $this->assertNotNull($auctionAccessStateSelectedList[0]->getAuction());
+    $this->assertTrue($auctionAccessStateSelectedList[0]->getAuction()->getId() > 0);
+    $this->assertSame($auctionAccessStateSelectedList[0]->getAuction()->getSellerId(), self::SELLER_ID);
+    $this->assertNotNull($auctionAccessStateSelectedList[0]->getBidder());
+    $this->assertTrue($auctionAccessStateSelectedList[0]->getBidder()->getId() > 0);
 
-    $auctionTestId = $auctionDao->insertAuction($auctionTest);
-
-    /*Second step : create an auctionAccessState*/
-    $auctionAccessStateDao = App_DaoFactory::getFactory()->getAuctionAccessStateDao();
-
-    $auctionId = $auctionTestId;
-    $bidderId = 1;
-
-    /*Third step : insert the auctionAccessState*/
-    $auctionAccessStateId = $auctionAccessStateDao->insertAuctionAccessState($auctionId, $bidderId);
-
-    /*Fourth step : select an auctionAccessState*/
-    $auctionAccessStateSelectedList = $auctionAccessStateDao->selectAllAuctionAccessStateBySellerIdAndStateId($sellerId, $stateId);
-
-    /*TEST*/
-    $auctionAccessStateSelected = $auctionAccessStateSelectedList[0];
-
-    $this->assertNotNull($auctionAccessStateSelected->getId());
-    $this->assertTrue($auctionAccessStateSelected->getId() > 0);
-
-    $this->assertSame($auctionAccessStateSelected->getStateId(), $stateId);
-
-    $this->assertNotNull($auctionAccessStateSelected->getAuction());
-    $this->assertTrue($auctionAccessStateSelected->getAuction()->getId() > 0);
-    $this->assertSame($auctionAccessStateSelected->getAuction()->getSellerId(), $sellerId);
-
-    $this->assertNotNull($auctionAccessStateSelected->getBidder());
-    $this->assertTrue($auctionAccessStateSelected->getBidder()->getId() > 0);
-
-    /*Last step : delete the inserted auction & auctionAccessState*/
-    $auctionDao->deleteAuctionById($auctionTestId);
-    $auctionAccessStateDao->deleteAuctionAccessStateById($auctionAccessStateId);
+    $this->auctionDao->deleteAuctionById($auctionId);
+    $this->auctionAccessStateDao->deleteAuctionAccessStateById($auctionAccessStateId);
   }
 
   /**
-     * @test
-     * @covers AuctionAccessStateDaoImpl
-     * @throws BDDException
-     */
-  public function selectNumberOfAuctionAccessStateBySellerIdTest() : void
+   * @test
+   * @covers AuctionAccessStateDaoImpl
+   */
+  public function selectNumberOfAuctionAccessStateBySellerIdTest(): void
   {
-    $sellerId = 1;
+    $auctionId = $this->auctionDao->insertAuction($this->auctionTest);
+    $auctionAccessStateId = $this->auctionAccessStateDao->insertAuctionAccessState($auctionId, self::BIDDER_ID);
 
-    /*First step : create an auction & insert it*/
-    $auctionDao = App_DaoFactory::getFactory()->getAuctionDao();
-
-    $auctionTest = new AuctionModel();
-    $auctionTest
-            ->setName('Object Test')
-            ->setDescription('descr')
-            ->setBasePrice(3)
-            ->setReservePrice(10)
-            ->setDuration(7)
-            ->setSellerId($sellerId)
-            ->setPrivacyId(1)
-            ->setCategoryId(1);
-
-    $auctionId = $auctionDao->insertAuction($auctionTest);
-
-    /*Second step : create an auctionAccessState & insert it*/
-    $auctionAccessStateDao = App_DaoFactory::getFactory()->getAuctionAccessStateDao();
-    $bidderId = 1;
-
-    $auctionAccessStateId = $auctionAccessStateDao->insertAuctionAccessState($auctionId, $bidderId);
-
-    /*Third step : let's select what we wanna get !*/
-    $numberOfAAS = $auctionAccessStateDao->selectNumberOfAuctionAccessStateBySellerId($sellerId);
+    $numberOfAAS = $this->auctionAccessStateDao->selectNumberOfAuctionAccessStateBySellerId(self::SELLER_ID);
 
     $this->assertNotNull($numberOfAAS);
     $this->assertTrue($numberOfAAS > 0);
 
-    /*Last step : delete the inserted auction & auctionAccessState*/
-    $auctionDao->deleteAuctionById($auctionId);
-    $auctionAccessStateDao->deleteAuctionAccessStateById($auctionAccessStateId);
+    $this->auctionDao->deleteAuctionById($auctionId);
+    $this->auctionAccessStateDao->deleteAuctionAccessStateById($auctionAccessStateId);
   }
 }
