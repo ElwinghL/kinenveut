@@ -35,14 +35,11 @@ class AuctionDaoImpl implements IAuctionDao
   {
     $success = null;
     $request = 'UPDATE Auction SET startDate = CURRENT_TIMESTAMP, auctionState = :auctionState WHERE id = :id';
-
-    if ($auction->getId() != null) {
-      try {
-        $query = db()->prepare($request);
-        $success = $query->execute(['id' => $auction->getId(), 'auctionState' => $auction->getAuctionState()]);
-      } catch (PDOException $Exception) {
-        throw new BDDException($Exception->getMessage(), $Exception->getCode());
-      }
+    try {
+      $query = db()->prepare($request);
+      $success = $query->execute(['id' => $auction->getId(), 'auctionState' => $auction->getAuctionState()]);
+    } catch (PDOException $Exception) {
+      throw new BDDException($Exception->getMessage(), $Exception->getCode());
     }
 
     return $success;
@@ -86,39 +83,38 @@ class AuctionDaoImpl implements IAuctionDao
       throw new BDDException($Exception->getMessage(), $Exception->getCode());
     }
 
-    if ($oneAuction === null) {
-      return null;
+    $oneAuctionModel = null;
+    if ($oneAuction) {
+      $theBestBid = new BidModel();
+      $theBestBid
+        ->setId($oneAuction['bidId'])
+        ->setBidPrice($oneAuction['bidPrice'])
+        ->setBidDate($oneAuction['bidDate'])
+        ->setBidderId($oneAuction['bidderId'])
+        ->setObjectId($oneAuction['objectId']);
+
+      $oneAuctionModel = new AuctionModel();
+      $oneAuctionModel
+        ->setId($oneAuction['objectId'])
+        ->setName($oneAuction['name'])
+        ->setDescription($oneAuction['description'])
+        ->setBasePrice($oneAuction['basePrice'])
+        ->setReservePrice($oneAuction['reservePrice'])
+        ->setPictureLink($oneAuction['pictureLink'])
+        ->setStartDate($oneAuction['startDate'])
+        ->setDuration($oneAuction['duration'])
+        ->setAuctionState($oneAuction['auctionState'])
+        ->setSellerId($oneAuction['sellerId'])
+        ->setPrivacyId($oneAuction['privacyId'])
+        ->setCategoryId($oneAuction['categoryId'])
+        ->setBestBid($theBestBid);
     }
-
-    $theBestBid = new BidModel();
-    $theBestBid
-            ->setId($oneAuction['bidId'])
-            ->setBidPrice($oneAuction['bidPrice'])
-            ->setBidDate($oneAuction['bidDate'])
-            ->setBidderId($oneAuction['bidderId'])
-            ->setObjectId($oneAuction['objectId']);
-
-    $oneAuctionModel = new AuctionModel();
-    $oneAuctionModel
-            ->setId($oneAuction['objectId'])
-            ->setName($oneAuction['name'])
-            ->setDescription($oneAuction['description'])
-            ->setBasePrice($oneAuction['basePrice'])
-            ->setReservePrice($oneAuction['reservePrice'])
-            ->setPictureLink($oneAuction['pictureLink'])
-            ->setStartDate($oneAuction['startDate'])
-            ->setDuration($oneAuction['duration'])
-            ->setAuctionState($oneAuction['auctionState'])
-            ->setSellerId($oneAuction['sellerId'])
-            ->setPrivacyId($oneAuction['privacyId'])
-            ->setCategoryId($oneAuction['categoryId'])
-            ->setBestBid($theBestBid);
 
     return $oneAuctionModel;
   }
 
   //Todo : utiliser v_Auction
-  public function selectAllAuctionsByAuctionState($auctionState): array
+  public function selectAllAuctionsByAuctionState(int $auctionState): array
   {
     $auctions = null;
     $request = 'SELECT Auction.id AS objectId,name,description,basePrice,reservePrice,pictureLink
@@ -145,27 +141,27 @@ class AuctionDaoImpl implements IAuctionDao
     foreach ($auctions as $oneAuction) {
       $theBestBid = new BidModel();
       $theBestBid
-                ->setId($oneAuction['bidId'])
-                ->setBidPrice($oneAuction['bidPrice'])
-                ->setBidDate($oneAuction['bidDate'])
-                ->setBidderId($oneAuction['bidderId'])
-                ->setObjectId($oneAuction['objectId']);
+        ->setId($oneAuction['bidId'])
+        ->setBidPrice($oneAuction['bidPrice'])
+        ->setBidDate($oneAuction['bidDate'])
+        ->setBidderId($oneAuction['bidderId'])
+        ->setObjectId($oneAuction['objectId']);
 
       $oneAuctionModel = new AuctionModel();
       $oneAuctionModel
-                ->setId($oneAuction['objectId'])
-                ->setName(protectStringToDisplay($oneAuction['name']))
-                ->setDescription(protectStringToDisplay($oneAuction['description']))
-                ->setBasePrice($oneAuction['basePrice'])
-                ->setReservePrice($oneAuction['reservePrice'])
-                ->setPictureLink($oneAuction['pictureLink'])
-                ->setStartDate($oneAuction['startDate'])
-                ->setDuration($oneAuction['duration'])
-                ->setAuctionState($oneAuction['auctionState'])
-                ->setSellerId($oneAuction['sellerId'])
-                ->setPrivacyId($oneAuction['privacyId'])
-                ->setCategoryId($oneAuction['categoryId'])
-                ->setBestBid($theBestBid);
+        ->setId($oneAuction['objectId'])
+        ->setName(protectStringToDisplay($oneAuction['name']))
+        ->setDescription(protectStringToDisplay($oneAuction['description']))
+        ->setBasePrice($oneAuction['basePrice'])
+        ->setReservePrice($oneAuction['reservePrice'])
+        ->setPictureLink($oneAuction['pictureLink'])
+        ->setStartDate($oneAuction['startDate'])
+        ->setDuration($oneAuction['duration'])
+        ->setAuctionState($oneAuction['auctionState'])
+        ->setSellerId($oneAuction['sellerId'])
+        ->setPrivacyId($oneAuction['privacyId'])
+        ->setCategoryId($oneAuction['categoryId'])
+        ->setBestBid($theBestBid);
 
       array_push($auctionList, $oneAuctionModel);
     }
@@ -174,7 +170,7 @@ class AuctionDaoImpl implements IAuctionDao
   }
 
   //Todo:utiliser v_Auction
-  public function selectAllAuctionsBySellerId($sellerId): array
+  public function selectAllAuctionsBySellerId(int $sellerId): array
   {
     $auctions = null;
     $request = 'SELECT Auction.id AS objectId,name,description,basePrice,reservePrice,pictureLink
@@ -199,27 +195,27 @@ class AuctionDaoImpl implements IAuctionDao
     foreach ($auctions as $oneAuction) {
       $theBestBid = new BidModel();
       $theBestBid
-                ->setId($oneAuction['bidId'])
-                ->setBidPrice($oneAuction['bidPrice'])
-                ->setBidDate($oneAuction['bidDate'])
-                ->setBidderId($oneAuction['bidderId'])
-                ->setObjectId($oneAuction['objectId']);
+        ->setId($oneAuction['bidId'])
+        ->setBidPrice($oneAuction['bidPrice'])
+        ->setBidDate($oneAuction['bidDate'])
+        ->setBidderId($oneAuction['bidderId'])
+        ->setObjectId($oneAuction['objectId']);
 
       $oneAuctionModel = new AuctionModel();
       $oneAuctionModel
-                ->setId($oneAuction['objectId'])
-                ->setName(protectStringToDisplay($oneAuction['name']))
-                ->setDescription(protectStringToDisplay($oneAuction['description']))
-                ->setBasePrice($oneAuction['basePrice'])
-                ->setReservePrice($oneAuction['reservePrice'])
-                ->setPictureLink($oneAuction['pictureLink'])
-                ->setStartDate($oneAuction['startDate'])
-                ->setDuration($oneAuction['duration'])
-                ->setAuctionState($oneAuction['auctionState'])
-                ->setSellerId($oneAuction['sellerId'])
-                ->setPrivacyId($oneAuction['privacyId'])
-                ->setCategoryId($oneAuction['categoryId'])
-                ->setBestBid($theBestBid);
+        ->setId($oneAuction['objectId'])
+        ->setName(protectStringToDisplay($oneAuction['name']))
+        ->setDescription(protectStringToDisplay($oneAuction['description']))
+        ->setBasePrice($oneAuction['basePrice'])
+        ->setReservePrice($oneAuction['reservePrice'])
+        ->setPictureLink($oneAuction['pictureLink'])
+        ->setStartDate($oneAuction['startDate'])
+        ->setDuration($oneAuction['duration'])
+        ->setAuctionState($oneAuction['auctionState'])
+        ->setSellerId($oneAuction['sellerId'])
+        ->setPrivacyId($oneAuction['privacyId'])
+        ->setCategoryId($oneAuction['categoryId'])
+        ->setBestBid($theBestBid);
 
       array_push($auctionList, $oneAuctionModel);
     }
@@ -228,7 +224,7 @@ class AuctionDaoImpl implements IAuctionDao
   }
 
   //Todo: utiliser v_Auction
-  public function selectAcceptedConfidentialAuctionsByBidderId($userId): array
+  public function selectAcceptedConfidentialAuctionsByBidderId(int $userId): array
   {
     $auctions = null;
     $request = 'SELECT Auction.id AS objectId,name,description,basePrice,reservePrice,pictureLink
@@ -262,27 +258,27 @@ class AuctionDaoImpl implements IAuctionDao
     foreach ($auctions as $oneAuction) {
       $theBestBid = new BidModel();
       $theBestBid
-                ->setId($oneAuction['bidId'])
-                ->setBidPrice($oneAuction['bidPrice'])
-                ->setBidDate($oneAuction['bidDate'])
-                ->setBidderId($oneAuction['bidderId'])
-                ->setObjectId($oneAuction['objectId']);
+        ->setId($oneAuction['bidId'])
+        ->setBidPrice($oneAuction['bidPrice'])
+        ->setBidDate($oneAuction['bidDate'])
+        ->setBidderId($oneAuction['bidderId'])
+        ->setObjectId($oneAuction['objectId']);
 
       $oneAuctionModel = new AuctionModel();
       $oneAuctionModel
-                ->setId($oneAuction['objectId'])
-                ->setName(protectStringToDisplay($oneAuction['name']))
-                ->setDescription(protectStringToDisplay($oneAuction['description']))
-                ->setBasePrice($oneAuction['basePrice'])
-                ->setReservePrice($oneAuction['reservePrice'])
-                ->setPictureLink($oneAuction['pictureLink'])
-                ->setStartDate($oneAuction['startDate'])
-                ->setDuration($oneAuction['duration'])
-                ->setAuctionState($oneAuction['auctionState'])
-                ->setSellerId($oneAuction['sellerId'])
-                ->setPrivacyId($oneAuction['privacyId'])
-                ->setCategoryId($oneAuction['categoryId'])
-                ->setBestBid($theBestBid);
+        ->setId($oneAuction['objectId'])
+        ->setName(protectStringToDisplay($oneAuction['name']))
+        ->setDescription(protectStringToDisplay($oneAuction['description']))
+        ->setBasePrice($oneAuction['basePrice'])
+        ->setReservePrice($oneAuction['reservePrice'])
+        ->setPictureLink($oneAuction['pictureLink'])
+        ->setStartDate($oneAuction['startDate'])
+        ->setDuration($oneAuction['duration'])
+        ->setAuctionState($oneAuction['auctionState'])
+        ->setSellerId($oneAuction['sellerId'])
+        ->setPrivacyId($oneAuction['privacyId'])
+        ->setCategoryId($oneAuction['categoryId'])
+        ->setBestBid($theBestBid);
 
       array_push($auctionList, $oneAuctionModel);
     }
@@ -290,7 +286,7 @@ class AuctionDaoImpl implements IAuctionDao
     return $auctionList;
   }
 
-  public function selectAllAuctionsByBidderId($bidderId) : array
+  public function selectAllAuctionsByBidderId(int $bidderId): array
   {
     $auctions = null;
     $request = 'SELECT DISTINCT v_Auction.objectId, v_Auction.name, v_Auction.description, v_Auction.basePrice, v_Auction.reservePrice, v_Auction.pictureLink
@@ -327,27 +323,27 @@ class AuctionDaoImpl implements IAuctionDao
     foreach ($auctions as $oneAuction) {
       $theBestBid = new BidModel();
       $theBestBid
-              ->setId($oneAuction['bidId'])
-              ->setBidPrice($oneAuction['bidPrice'])
-              ->setBidDate($oneAuction['bidDate'])
-              ->setBidderId($oneAuction['bidderId'])
-              ->setObjectId($oneAuction['objectId']);
+        ->setId($oneAuction['bidId'])
+        ->setBidPrice($oneAuction['bidPrice'])
+        ->setBidDate($oneAuction['bidDate'])
+        ->setBidderId($oneAuction['bidderId'])
+        ->setObjectId($oneAuction['objectId']);
 
       $oneAuctionModel = new AuctionModel();
       $oneAuctionModel
-              ->setId($oneAuction['objectId'])
-              ->setName(protectStringToDisplay($oneAuction['name']))
-              ->setDescription(protectStringToDisplay($oneAuction['description']))
-              ->setBasePrice($oneAuction['basePrice'])
-              ->setReservePrice($oneAuction['reservePrice'])
-              ->setPictureLink($oneAuction['pictureLink'])
-              ->setStartDate($oneAuction['startDate'])
-              ->setDuration($oneAuction['duration'])
-              ->setAuctionState($oneAuction['auctionState'])
-              ->setSellerId($oneAuction['sellerId'])
-              ->setPrivacyId($oneAuction['privacyId'])
-              ->setCategoryId($oneAuction['categoryId'])
-              ->setBestBid($theBestBid);
+        ->setId($oneAuction['objectId'])
+        ->setName(protectStringToDisplay($oneAuction['name']))
+        ->setDescription(protectStringToDisplay($oneAuction['description']))
+        ->setBasePrice($oneAuction['basePrice'])
+        ->setReservePrice($oneAuction['reservePrice'])
+        ->setPictureLink($oneAuction['pictureLink'])
+        ->setStartDate($oneAuction['startDate'])
+        ->setDuration($oneAuction['duration'])
+        ->setAuctionState($oneAuction['auctionState'])
+        ->setSellerId($oneAuction['sellerId'])
+        ->setPrivacyId($oneAuction['privacyId'])
+        ->setCategoryId($oneAuction['categoryId'])
+        ->setBestBid($theBestBid);
 
       array_push($auctionList, $oneAuctionModel);
     }

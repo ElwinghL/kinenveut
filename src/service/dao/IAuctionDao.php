@@ -16,7 +16,7 @@ interface IAuctionDao
 
   public function selectAllAuctionsBySellerId(int $userId): array;
 
-  public function selectAcceptedConfidentialAuctionsByBidderId($userId): array;
+  public function selectAcceptedConfidentialAuctionsByBidderId(int $userId): array;
 
-  public function selectAllAuctionsByBidderId($bidderId) : array;
+  public function selectAllAuctionsByBidderId(int $bidderId) : array;
 }
