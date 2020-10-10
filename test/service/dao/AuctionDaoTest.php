@@ -102,7 +102,7 @@ class AuctionDaoTest extends TestCase
 
     $auctionTest
             ->setId($auctionId)
-            ->setStartDate('2020-10-03')
+            ->setStartDate($currentDate)
             ->setAuctionState(1);
 
     $auctionDao->updateStartDateAndAuctionState($auctionTest);
@@ -345,7 +345,45 @@ class AuctionDaoTest extends TestCase
     $this->assertTrue(is_array($AuctionsSelected));
     $this->assertNotNull($AuctionsSelected[0]->getName());
 
-    /*Last step : selete all what you inserted*/
+    /*Last step : delete all what you inserted*/
+    $auctionDao->deleteAuctionById($auctionId);
+    $auctionAccessStateDao->deleteAuctionAccessStateById($auctionAccessStateId);
+  }
+
+  /**
+    * @test
+    * @covers AuctionDaoImpl
+    */
+  public function selectAllAuctionsByBidderIdTest() : void
+  {
+    /*Step one : create an auction*/
+    $auctionDao = App_DaoFactory::getFactory()->getAuctionDao();
+
+    $auctionTest = new AuctionModel();
+    $auctionTest
+          ->setName('Object Test')
+          ->setDescription('descr')
+          ->setBasePrice(3)
+          ->setReservePrice(10)
+          ->setDuration(7)
+          ->setSellerId(1)
+          ->setPrivacyId(2)
+          ->setCategoryId(1);
+
+    $auctionId = $auctionDao->insertAuction($auctionTest);
+
+    /*Second step : Create an AAS and accept it*/
+    $bidderId = 2;
+    $auctionAccessStateDao = App_DaoFactory::getFactory()->getAuctionAccessStateDao();
+    $auctionAccessStateId = $auctionAccessStateDao->insertAuctionAccessState($auctionId, $bidderId);
+    $auctionAccessStateDao->updateStateIdByAuctionIdAndBidderId($auctionId, $bidderId, 1); //AAS acceptée
+
+    $AuctionsSelected = $auctionDao->selectAllAuctionsByBidderId($bidderId);
+
+    $this->assertTrue(is_array($AuctionsSelected));
+    $this->assertNotNull($AuctionsSelected[0]->getName());
+
+    /*Last step : delete all what you inserted*/
     $auctionDao->deleteAuctionById($auctionId);
     $auctionAccessStateDao->deleteAuctionAccessStateById($auctionAccessStateId);
   }

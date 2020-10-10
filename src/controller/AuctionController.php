@@ -34,14 +34,14 @@ class AuctionController extends Controller
     }
   }
 
-  /*Return page with auctions for wich ones the user participated*/
+  /*Return page with auctions for which ones the user participated*/
   public function bids(): array
   {
     $bidderId = parameters()['userId'];
     $userId = $_SESSION['userId'];
 
     $auctionBo = App_BoFactory::getFactory()->getAuctionBo();
-    $auctionList = []; //$auctionBo->selectAllAuctionsByBidderId($bidderId);
+    $auctionList = $auctionBo->selectAllAuctionsByBidderId($bidderId);
 
     if ($bidderId == $userId) {
       if (is_array($auctionList) && sizeof($auctionList) > 0) {

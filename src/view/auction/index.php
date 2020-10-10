@@ -36,8 +36,15 @@ include_once 'src/view/page-header.php' ?>
                   </a>
                 </div>
                 <div class="col-md-4 mr-0 float-left">
-                  <?php $minPrice = (($auction->getBestBid()->getBidPrice() != null) && ($auction->getBestBid()->getBidPrice() != null)) ? $auction->getBestBid()->getBidPrice() : $auction->getBasePrice();
-                  echo $minPrice . '€'; ?>
+                    <?php $minPrice = (($auction->getBestBid()->getBidPrice() != null) && ($auction->getBestBid()->getBidPrice() != null)) ? $auction->getBestBid()->getBidPrice() : $auction->getBasePrice();?>
+                    <?php $isWinning = ($_SESSION['userId'] == $auction->getBestBid()->getBidderId());?>
+                    <?php if ($_SESSION['userId'] != $auction->getSellerId()):?>
+                        <span class="text-<?php echo($isWinning) ? 'success' : 'danger';?>">
+                            <?php echo $minPrice . ' €';?>
+                        </span>
+                    <?php else:?>
+                        <?php echo $minPrice . '€'; ?>
+                    <?php endif;?>
                 </div>
                 <div class="col-md- mr-0 float-right">
                   <?php
@@ -57,23 +64,23 @@ include_once 'src/view/page-header.php' ?>
                         <a href=<?php echo '?r=auction/cancel&auctionId=' . $auction->getId() ?>>
                           <button type="button" class="btn btn-primary btn-ca">Annuler</button></a>
                   <?php } else {
-                        echo 'Enchère en cours';
+                        echo '<span class="badge badge-success">En cours</span>';
                       }
                       break;
                     case 2:
-                      echo 'Annulée';
+                      echo '<span class="badge badge-danger">Annulée</span>';
                       break;
                     case 3:
-                      echo 'Clôturée';
+                      echo '<span class="badge badge-secondary">Clôturée</span>';
                       break;
                     case 4:
-                      echo 'Terminée';
+                      echo '<span class="badge badge-secondary">Terminée</span>';
                       break;
                     case 5:
-                      echo 'Refusée';
+                      echo '<span class="badge badge-dark">Refusée</span>';
                       break;
                     case 6:
-                      echo 'Bannie';
+                      echo '<span class="badge badge-dark">Bannie</span>';
                       break;
                   }
                   ?>
