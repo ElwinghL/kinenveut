@@ -255,7 +255,7 @@ class AuctionDaoTest extends TestCase
    * @test
    * @covers AuctionDaoImpl
    */
-  public function selectAcceptedConfidentialAuctionsByBidderId(): void
+  public function selectAcceptedConfidentialAuctionsByBidderIdTest(): void
   {
     $this->auctionTest
       ->setAuctionState(1)
