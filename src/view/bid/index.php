@@ -77,7 +77,7 @@
             <?php if ($isFinished == false):?>
                   <form action="?r=bid/addBid&auctionId=<?= parameters()['auctionId']; ?>" method="post">
                       <div class="input-group mb-2">
-                          <input class="form-control" name="bidPrice" type="number" id="bidPrice" value="" min="<?php echo $minPrice + 1; ?>" placeholder="Saisir votre enchère maximum" />
+                          <input class="form-control" name="bidPrice" type="number" id="bidPrice" value="" min="<?php echo ($auction->getBasePrice() == $minPrice && $bestBid->getBidPrice() != $minPrice) ? $minPrice : $minPrice + 1; ?>" placeholder="Saisir votre enchère maximum" />
                           <div class="input-group-prepend">
                               <div class="input-group-btn">
                                   <input class="btn btn-light" name="makeabid" type="submit" value="Enchérir" />
