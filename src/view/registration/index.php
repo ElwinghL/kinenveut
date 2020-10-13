@@ -41,7 +41,7 @@
                     <label for="birthDate">Date de naissance</label>
                     <input class="form-control" name="birthDate" id="birthDate" type="date" value="<?php if (isset($data['values']['birthDate'])) {
           echo $data['values']['birthDate'];
-        } ?>" maxlength="10" required />
+        } ?>" maxlength="10" placeholder="jj/mm/aaaa" required />
                     <?php if (isset($data['errors']['birthDate'])) : ?>
                       <div class="invalid-feedback d-block"><?php echo $data['errors']['birthDate'] ?></div>
                     <?php endif; ?>
