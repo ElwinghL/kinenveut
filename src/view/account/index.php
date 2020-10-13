@@ -23,4 +23,9 @@ $user = isset($data['user']) ? $data['user'] : new UserModel();
   <?php if ($_SESSION['userId'] == $user->getId()) : ?>
     <a href="?r=account/edit&userId=<?= $user->getId(); ?>">Modifier mes informations</a>
   <?php endif; ?>
+
+    <?php if ($_SESSION['isAdmin'] == true) : ?>
+        <br/>
+        <a href="?r=UserManagement/ban&id=<?php echo $user->getId(); ?>" class="btn btn-danger">Bannir</a>
+    <?php endif; ?>
 </div>
