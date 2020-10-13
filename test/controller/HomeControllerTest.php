@@ -52,12 +52,12 @@ class HomeControllerTest extends TestCase
     $homeController = new HomeController();
 
     $auction = new AuctionModel();
-    $auction->setName("Maillot de bain");
+    $auction->setName('Maillot de bain');
     $auction->setPrivacyId(1);
     $auction->setCategoryId(1);
 
     $auction2 = new AuctionModel();
-    $auction2->setName("Renault Express");
+    $auction2->setName('Renault Express');
     $auction2->setPrivacyId(2);
     $auction2->setCategoryId(2);
 
@@ -65,9 +65,9 @@ class HomeControllerTest extends TestCase
     $confidentialAuctionList = [];
     $categoryList = ['c'];
 
-    $categoryType = "1";
-    $offerType = "1";
-    $searchInput = "Maillot de bain";
+    $categoryType = '1';
+    $offerType = '1';
+    $searchInput = 'Maillot de bain';
     setParameters(['categoryType' => $categoryType, 'offerType' => $offerType, 'searchInput' => $searchInput]);
     $_SESSION['userId'] = 1;
 
@@ -88,8 +88,8 @@ class HomeControllerTest extends TestCase
     $this->assertSame('render', $data[0]);
     $this->assertSame('index', $data[1]);
     $this->assertSame([
-      'categoryList' => $categoryList,
-      'auctionList'  => [$auction],
+      'categoryList'      => $categoryList,
+      'auctionList'       => [$auction],
       'selectedCategory'  => $categoryType,
       'selectedOfferType' => $offerType,
       'searchInput'       => $searchInput

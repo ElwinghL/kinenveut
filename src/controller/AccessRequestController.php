@@ -7,9 +7,9 @@ class AccessRequestController extends Controller
     $sellerId = $_SESSION['userId'];
     $stateId = 0;
 
-    $auctionAccessStateDao = App_DaoFactory::getFactory()->getAuctionAccessStateDao();
+    $auctionAccessStateBo = App_DaoFactory::getFactory()->getAuctionAccessStateBo();
     try {
-      $auctionAccessStateList = $auctionAccessStateDao->selectAllAuctionAccessStateBySellerIdAndStateId($sellerId, $stateId);
+      $auctionAccessStateList = $auctionAccessStateBo->selectAllAuctionAccessStateBySellerIdAndStateId($sellerId, $stateId);
 
       $data = [
         'auctionAccessStateList' => $auctionAccessStateList
