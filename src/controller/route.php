@@ -10,11 +10,7 @@ function render(string $controller, string $action): void
   $path = $data[1];
   $data = isset($data[2]) ? $data[2] : null;
 
-  if (isset($_SESSION['userId']) || $c instanceof LoginController || $c instanceof RegistrationController) {
-    $c->$action($path, $data);
-  } else {
-    header('Location: ?r=login');
-  }
+  $c->$action($path, $data);
   exit();
 }
 
@@ -28,10 +24,16 @@ if (isset(parameters()['r'])) {
   } else {
     list($controller, $action) = explode('/', $route);
   }
+
   $controller = ucfirst($controller) . 'Controller';
-  render($controller, $action);
+
+  if (isset($_SESSION['userId']) || new $controller() instanceof LoginController || new $controller() instanceof RegistrationController) {
+    render($controller, $action);
+  } else {
+    header('Location: ?r=login');
+  }
 } elseif (!isset($_SESSION['userId'])) {
   header('Location: ?r=login');
 } else {
-  render('HomeController', 'index');
+  header('Location: ?r=home');
 }

@@ -20,3 +20,9 @@ function parameters(): array
 
   return $parameters;
 }
+
+function setParameters($newParameters): void
+{
+  global $parameters;
+  $parameters = $newParameters;
+}

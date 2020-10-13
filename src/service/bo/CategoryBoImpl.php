@@ -33,7 +33,7 @@ class CategoryBoImpl implements ICategoryBo
     return $categoryDao->selectCategoryById($categoryId);
   }
 
-  public function updateCategory(CategoryModel $categoryModel): ?bool
+  public function updateCategory(CategoryModel $categoryModel): bool
   {
     $categoryDao = App_DaoFactory::getFactory()->getCategoryDao();
 

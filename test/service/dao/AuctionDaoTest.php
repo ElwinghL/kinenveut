@@ -9,11 +9,86 @@ include_once 'src/tools.php';
 
 class AuctionDaoTest extends TestCase
 {
+  private $dbTampon;
+
+  const SELLER_ID = 1;
+  const CATEGORY_ID = 1;
+  const PRIVACY_ID = 0;
+  const NAME = 'Object Test';
+  const DESCRIPTION = 'descr';
+  const BASE_PRICE = 3;
+  const RESERVE_PRICE = 10;
+  const DURATION = 7;
+
+  private $auctionDao;
+  private $auctionTest;
+
+  public function allFunctionToTest(): array
+  {
+    return [
+      ['insertAuction', 1, new AuctionModel()],
+      ['selectAuctionByAuctionId', 1, 0],
+      ['updateStartDateAndAuctionState', 1, new AuctionModel()],
+      ['updateAuctionState', 1, new AuctionModel()],
+      ['deleteAuctionById', 1, 0],
+      ['selectAllAuctionsByAuctionState', 1, 0],
+      ['selectAllAuctionsBySellerId', 1, 0],
+      ['selectAuctionByAuctionId', 1, 0],
+      ['selectAcceptedConfidentialAuctionsByBidderId', 1, 0],
+      ['selectAllAuctionsByBidderId', 1, 0]
+    ];
+  }
+
   /** @before */
   public function setUp(): void
   {
     parent::setUp();
+    if ($this->dbTampon == null) {
+      $this->dbTampon = db();
+    }
     App_DaoFactory::setFactory(new App_DaoFactory());
+    $this->auctionDao = App_DaoFactory::getFactory()->getAuctionDao();
+    $this->auctionTest = new AuctionModel();
+    $this->auctionTest
+      ->setName(self::NAME)
+      ->setDescription(self::DESCRIPTION)
+      ->setBasePrice(self::BASE_PRICE)
+      ->setReservePrice(self::RESERVE_PRICE)
+      ->setDuration(self::DURATION)
+      ->setSellerId(self::SELLER_ID)
+      ->setPrivacyId(self::PRIVACY_ID)
+      ->setCategoryId(self::CATEGORY_ID)
+      ->setStartDate(new DateTime());
+  }
+
+  /** @after */
+  public function tearDown(): void
+  {
+    parent::tearDown();
+    setDb($this->dbTampon);
+  }
+
+  /**
+   * @test
+   * @covers AuctionDaoImpl
+   * @dataProvider allFunctionToTest
+   */
+  public function dbTest($function, $nbArg, $arg1): void
+  {
+    global $db;
+    $db = $this->createPartialMock(PDO::class, ['prepare', 'query']);
+    $db->method('prepare')->willThrowException(new PDOException());
+    $db->method('query')->willThrowException(new PDOException());
+
+    $this->expectException(BDDException::class);
+
+    switch ($nbArg) {
+      case 1:
+        $this->auctionDao->$function($arg1);
+        break;
+      default:
+        new Exception('nbArg not write');
+    }
   }
 
   /**
@@ -22,25 +97,12 @@ class AuctionDaoTest extends TestCase
    */
   public function insertAuctionTest(): void
   {
-    $auctionDao = App_DaoFactory::getFactory()->getAuctionDao();
-
-    $auctionTest = new AuctionModel();
-    $auctionTest
-            ->setName('Object Test')
-            ->setDescription('descr')
-            ->setBasePrice(3)
-            ->setReservePrice(10)
-            ->setDuration(7)
-            ->setSellerId(1)
-            ->setPrivacyId(0)
-            ->setCategoryId(1);
-
-    $auctionId = $auctionDao->insertAuction($auctionTest);
+    $auctionId = $this->auctionDao->insertAuction($this->auctionTest);
 
     $this->assertNotNull($auctionId);
     $this->assertTrue($auctionId > 0);
 
-    $auctionDao->deleteAuctionById($auctionId);
+    $this->auctionDao->deleteAuctionById($auctionId);
   }
 
   /**
@@ -49,30 +111,14 @@ class AuctionDaoTest extends TestCase
    */
   public function selectAuctionByAuctionIdTest()
   {
-    $currentDate = new DateTime();
+    $auctionId = $this->auctionDao->insertAuction($this->auctionTest);
 
-    $auctionDao = App_DaoFactory::getFactory()->getAuctionDao();
-
-    $auctionTest = new AuctionModel();
-    $auctionTest
-            ->setName('Object Test')
-            ->setDescription('descr')
-            ->setBasePrice(3)
-            ->setReservePrice(10)
-            ->setStartDate($currentDate)
-            ->setDuration(7)
-            ->setSellerId(1)
-            ->setPrivacyId(0)
-            ->setCategoryId(1);
-
-    $auctionId = $auctionDao->insertAuction($auctionTest);
-
-    $auctionSelected = $auctionDao->selectAuctionByAuctionId($auctionId);
+    $auctionSelected = $this->auctionDao->selectAuctionByAuctionId($auctionId);
 
     $this->assertNotNull($auctionSelected);
-    $this->assertSame($auctionTest->getName(), $auctionSelected->getName());
+    $this->assertSame($this->auctionTest->getName(), $auctionSelected->getName());
 
-    $auctionDao->deleteAuctionById($auctionId);
+    $this->auctionDao->deleteAuctionById($auctionId);
   }
 
   /**
@@ -81,38 +127,20 @@ class AuctionDaoTest extends TestCase
    */
   public function updateStartDateAndAuctionStateTest(): void
   {
-    $currentDate = new DateTime();
+    $auctionId = $this->auctionDao->insertAuction($this->auctionTest);
+    $auctionInserted = $this->auctionDao->selectAuctionByAuctionId($auctionId);
 
-    $auctionDao = App_DaoFactory::getFactory()->getAuctionDao();
+    $this->auctionTest
+      ->setId($auctionId)
+      ->setAuctionState(1);
 
-    $auctionTest = new AuctionModel();
-    $auctionTest
-            ->setName('Object Test')
-            ->setDescription('descr')
-            ->setBasePrice(3)
-            ->setReservePrice(10)
-            ->setStartDate($currentDate)
-            ->setDuration(7)
-            ->setSellerId(1)
-            ->setPrivacyId(0)
-            ->setCategoryId(1);
-
-    $auctionId = $auctionDao->insertAuction($auctionTest);
-    $auctionInserted = $auctionDao->selectAuctionByAuctionId($auctionId);
-
-    $auctionTest
-            ->setId($auctionId)
-            ->setStartDate('2020-10-03')
-            ->setAuctionState(1);
-
-    $auctionDao->updateStartDateAndAuctionState($auctionTest);
-    $auctionUpdated = $auctionDao->selectAuctionByAuctionId($auctionId);
+    $this->assertTrue($this->auctionDao->updateStartDateAndAuctionState($this->auctionTest));
+    $auctionUpdated = $this->auctionDao->selectAuctionByAuctionId($auctionId);
 
     $this->assertSame($auctionInserted->getId(), $auctionUpdated->getId());
-    //$this->assertNotSame($auctionInserted->getStartDate(), $auctionUpdated->getStartDate());
     $this->assertNotSame($auctionInserted->getAuctionState(), $auctionUpdated->getAuctionState());
 
-    $auctionDao->deleteAuctionById($auctionId);
+    $this->auctionDao->deleteAuctionById($auctionId);
   }
 
   /**
@@ -121,36 +149,20 @@ class AuctionDaoTest extends TestCase
    */
   public function updateAuctionStateTest(): void
   {
-    $currentDate = new DateTime();
+    $auctionId = $this->auctionDao->insertAuction($this->auctionTest);
+    $auctionInserted = $this->auctionDao->selectAuctionByAuctionId($auctionId);
 
-    $auctionDao = App_DaoFactory::getFactory()->getAuctionDao();
+    $this->auctionTest
+      ->setId($auctionId)
+      ->setAuctionState(1);
 
-    $auctionTest = new AuctionModel();
-    $auctionTest
-            ->setName('Object Test')
-            ->setDescription('descr')
-            ->setBasePrice(3)
-            ->setReservePrice(10)
-            ->setStartDate($currentDate)
-            ->setDuration(7)
-            ->setSellerId(1)
-            ->setPrivacyId(0)
-            ->setCategoryId(1);
-
-    $auctionId = $auctionDao->insertAuction($auctionTest);
-    $auctionInserted = $auctionDao->selectAuctionByAuctionId($auctionId);
-
-    $auctionTest
-            ->setId($auctionId)
-            ->setAuctionState(1);
-
-    $auctionDao->updateAuctionState($auctionTest);
-    $auctionUpdated = $auctionDao->selectAuctionByAuctionId($auctionId);
+    $this->assertTrue($this->auctionDao->updateAuctionState($this->auctionTest));
+    $auctionUpdated = $this->auctionDao->selectAuctionByAuctionId($auctionId);
 
     $this->assertSame($auctionInserted->getId(), $auctionUpdated->getId());
     $this->assertNotSame($auctionInserted->getAuctionState(), $auctionUpdated->getAuctionState());
 
-    $auctionDao->deleteAuctionById($auctionId);
+    $this->auctionDao->deleteAuctionById($auctionId);
   }
 
   /**
@@ -159,23 +171,9 @@ class AuctionDaoTest extends TestCase
    */
   public function deleteAuctionTest(): void
   {
-    $currentDate = new DateTime();
-    $auctionDao = App_DaoFactory::getFactory()->getAuctionDao();
-    $auctionTest = new AuctionModel();
-    $auctionTest
-        ->setName('Object Test')
-        ->setDescription('descr')
-        ->setBasePrice(3)
-        ->setReservePrice(10)
-        ->setStartDate($currentDate)
-        ->setDuration(7)
-        ->setSellerId(1)
-        ->setPrivacyId(0)
-        ->setCategoryId(1);
+    $auctionId = $this->auctionDao->insertAuction($this->auctionTest);
 
-    $auctionId = $auctionDao->insertAuction($auctionTest);
-
-    $success = $auctionDao->deleteAuctionById($auctionId);
+    $success = $this->auctionDao->deleteAuctionById($auctionId);
 
     $this->assertTrue($success);
   }
@@ -186,32 +184,17 @@ class AuctionDaoTest extends TestCase
    */
   public function selectAllAuctionsByAuctionStateTest(): void
   {
-    $currentDate = new DateTime();
-    $auctionDao = App_DaoFactory::getFactory()->getAuctionDao();
-
     $auctionState = 0;
+    $this->auctionTest->setAuctionState($auctionState);
 
-    $auctionTest = new AuctionModel();
-    $auctionTest
-            ->setName('Object Test')
-            ->setDescription('descr')
-            ->setBasePrice(3)
-            ->setReservePrice(10)
-            ->setStartDate($currentDate)
-            ->setDuration(7)
-            ->setAuctionState($auctionState)
-            ->setSellerId(1)
-            ->setPrivacyId(0)
-            ->setCategoryId(1);
+    $auctionId = $this->auctionDao->insertAuction($this->auctionTest);
 
-    $auctionId = $auctionDao->insertAuction($auctionTest);
-
-    $AuctionsSelected = $auctionDao->selectAllAuctionsByAuctionState($auctionState);
+    $AuctionsSelected = $this->auctionDao->selectAllAuctionsByAuctionState($auctionState);
 
     $this->assertTrue(is_array($AuctionsSelected));
     $this->assertNotNull($AuctionsSelected[0]->getName());
 
-    $auctionDao->deleteAuctionById($auctionId);
+    $this->auctionDao->deleteAuctionById($auctionId);
   }
 
   /**
@@ -220,33 +203,16 @@ class AuctionDaoTest extends TestCase
    */
   public function selectAllAuctionsBySellerIdTest(): void
   {
-    $currentDate = new DateTime();
+    $this->auctionTest->setAuctionState(1);
 
-    $auctionDao = App_DaoFactory::getFactory()->getAuctionDao();
+    $auctionId = $this->auctionDao->insertAuction($this->auctionTest);
 
-    $sellerId = 7;
-
-    $auctionTest = new AuctionModel();
-    $auctionTest
-            ->setName('Object Test')
-            ->setDescription('descr')
-            ->setBasePrice(3)
-            ->setReservePrice(10)
-            ->setStartDate($currentDate)
-            ->setDuration(7)
-            ->setAuctionState(1)
-            ->setSellerId($sellerId)
-            ->setPrivacyId(0)
-            ->setCategoryId(1);
-
-    $auctionId = $auctionDao->insertAuction($auctionTest);
-
-    $AuctionsSelected = $auctionDao->selectAllAuctionsBySellerId($sellerId);
+    $AuctionsSelected = $this->auctionDao->selectAllAuctionsBySellerId(self::SELLER_ID);
 
     $this->assertTrue(is_array($AuctionsSelected));
     $this->assertNotNull($AuctionsSelected[0]->getName());
 
-    $auctionDao->deleteAuctionById($auctionId);
+    $this->auctionDao->deleteAuctionById($auctionId);
   }
 
   /**
@@ -255,41 +221,24 @@ class AuctionDaoTest extends TestCase
    */
   public function getBestBidFrom_selectAuctionByAuctionIdTest(): void
   {
-    $currentDate = new DateTime();
-
-    /*First step : create an auction*/
-    $auctionDao = App_DaoFactory::getFactory()->getAuctionDao();
-
-    $auctionTest = new AuctionModel();
-    $auctionTest
-            ->setName('Object Test')
-            ->setDescription('descr')
-            ->setBasePrice(3)
-            ->setReservePrice(10)
-            ->setStartDate($currentDate)
-            ->setDuration(7)
-            ->setSellerId(1)
-            ->setPrivacyId(0)
-            ->setCategoryId(1);
-
     /*Second step : insert the auction*/
-    $auctionId = $auctionDao->insertAuction($auctionTest);
+    $auctionId = $this->auctionDao->insertAuction($this->auctionTest);
 
     /*Third step : create a bid*/
     $bidHistoryDao = App_DaoFactory::getFactory()->getBidHistoryDao();
 
     $bidTest = new BidModel();
     $bidTest
-          ->setBidPrice(42)
-          ->setBidDate('2020-10-01')
-          ->setBidderId(1)
-          ->setObjectId($auctionId);
+      ->setBidPrice(42)
+      ->setBidDate('2020-10-01')
+      ->setBidderId(1)
+      ->setObjectId($auctionId);
 
     /*Fourth step : insert the bid*/
     $bidHistoryId = $bidHistoryDao->insertBid($bidTest);
 
     /*Fifth step : select an auction with the best bid**/
-    $auctionSelected = $auctionDao->selectAuctionByAuctionId($auctionId);
+    $auctionSelected = $this->auctionDao->selectAuctionByAuctionId($auctionId);
 
     $this->assertNotNull($auctionSelected->getBestBid());
     $this->assertNotNull($auctionSelected->getBestBid()->getId());
@@ -299,40 +248,26 @@ class AuctionDaoTest extends TestCase
     $bidHistoryDao->deleteBidById($bidHistoryId);
 
     /*Seventh step : delete the inserted auction**/
-    $auctionDao->deleteAuctionById($auctionId);
+    $this->auctionDao->deleteAuctionById($auctionId);
   }
 
   /**
    * @test
    * @covers AuctionDaoImpl
    */
-  public function selectAcceptedConfidentialAuctionsByBidderId(): void
+  public function selectAcceptedConfidentialAuctionsByBidderIdTest(): void
   {
-    $currentDate = new DateTime();
+    $this->auctionTest
+      ->setAuctionState(1)
+      ->setPrivacyId(2);
 
-    /*Step one : create an auction*/
-    $auctionDao = App_DaoFactory::getFactory()->getAuctionDao();
-
-    $auctionTest = new AuctionModel();
-    $auctionTest
-            ->setName('Object Test')
-            ->setDescription('descr')
-            ->setBasePrice(3)
-            ->setReservePrice(10)
-            ->setStartDate($currentDate)
-            ->setDuration(7)
-            ->setAuctionState(1)
-            ->setSellerId(1)
-            ->setPrivacyId(2)
-            ->setCategoryId(1);
-
-    $auctionId = $auctionDao->insertAuction($auctionTest);
+    $auctionId = $this->auctionDao->insertAuction($this->auctionTest);
 
     /*Step two : Accept the auction*/
-    $auctionTest
-        ->setId($auctionId)
-        ->setAuctionState(1);
-    $auctionDao->updateStartDateAndAuctionState($auctionTest); //Auction acceptée
+    $this->auctionTest
+      ->setId($auctionId)
+      ->setAuctionState(1);
+    $this->auctionDao->updateStartDateAndAuctionState($this->auctionTest); //Auction acceptée
 
     /*Third step : Create an AAS and accept it*/
     $bidderId = 2;
@@ -340,13 +275,38 @@ class AuctionDaoTest extends TestCase
     $auctionAccessStateId = $auctionAccessStateDao->insertAuctionAccessState($auctionId, $bidderId);
     $auctionAccessStateDao->updateStateIdByAuctionIdAndBidderId($auctionId, $bidderId, 1); //AAS acceptée
 
-    $AuctionsSelected = $auctionDao->selectAcceptedConfidentialAuctionsByBidderId($bidderId);
+    $AuctionsSelected = $this->auctionDao->selectAcceptedConfidentialAuctionsByBidderId($bidderId);
 
     $this->assertTrue(is_array($AuctionsSelected));
     $this->assertNotNull($AuctionsSelected[0]->getName());
 
-    /*Last step : selete all what you inserted*/
-    $auctionDao->deleteAuctionById($auctionId);
+    /*Last step : delete all what you inserted*/
+    $this->auctionDao->deleteAuctionById($auctionId);
+    $auctionAccessStateDao->deleteAuctionAccessStateById($auctionAccessStateId);
+  }
+
+  /**
+   * @test
+   * @covers AuctionDaoImpl
+   */
+  public function selectAllAuctionsByBidderIdTest(): void
+  {
+    /*Step one : create an auction*/
+    $auctionId = $this->auctionDao->insertAuction($this->auctionTest);
+
+    /*Second step : Create an AAS and accept it*/
+    $bidderId = 2;
+    $auctionAccessStateDao = App_DaoFactory::getFactory()->getAuctionAccessStateDao();
+    $auctionAccessStateId = $auctionAccessStateDao->insertAuctionAccessState($auctionId, $bidderId);
+    $auctionAccessStateDao->updateStateIdByAuctionIdAndBidderId($auctionId, $bidderId, 1); //AAS acceptée
+
+    $AuctionsSelected = $this->auctionDao->selectAllAuctionsByBidderId($bidderId);
+
+    $this->assertTrue(is_array($AuctionsSelected));
+    $this->assertNotNull($AuctionsSelected[0]->getName());
+
+    /*Last step : delete all what you inserted*/
+    $this->auctionDao->deleteAuctionById($auctionId);
     $auctionAccessStateDao->deleteAuctionAccessStateById($auctionAccessStateId);
   }
 }

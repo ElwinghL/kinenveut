@@ -65,4 +65,12 @@ class AuctionBoImpl implements IAuctionBo
 
     return $isUpdated;
   }
+
+  public function selectAllAuctionsByBidderId($bidderId) : array
+  {
+    $auctionDao = App_DaoFactory::getFactory()->getAuctionDao();
+    $auctionList = $auctionDao->selectAllAuctionsByBidderId($bidderId);
+
+    return $auctionList;
+  }
 }
