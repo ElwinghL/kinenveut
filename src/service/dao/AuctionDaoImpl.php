@@ -296,7 +296,7 @@ class AuctionDaoImpl implements IAuctionDao
                     , v_Auction.sellerId, v_Auction.privacyId, v_Auction.categoryId
                     , v_Auction.bidId, v_Auction.bidPrice, v_Auction.bidDate, v_Auction.bidderId
                 FROM v_Auction
-                LEFT JOIN (SELECT DISTINCT bidhistory.objectId
+                LEFT JOIN (SELECT DISTINCT BidHistory.objectId
                             FROM BidHistory
                             WHERE BidHistory.bidderId = :bh_bidderId
                     ) bidhistory
@@ -316,7 +316,7 @@ class AuctionDaoImpl implements IAuctionDao
       $query->execute(['aas_bidderId' => $bidderId, 'bh_bidderId' => $bidderId]);
       $auctions = $query->fetchAll(PDO::FETCH_ASSOC);
     } catch (PDOException $Exception) {
-      throw new BDDException($Exception->getMessage(), $Exception->getCode());
+      throw new BDDException($Exception->getMessage(), (int)$Exception->getCode());
     }
 
     $auctionList = [];
