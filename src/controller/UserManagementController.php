@@ -38,7 +38,7 @@ class UserManagementController extends Controller
     $userBo = App_BoFactory::getFactory()->getUserBo();
 
     $user = $userBo->selectUserByUserId($userId);
-    $user->setIsAuthorised(5); //Etat reffusé
+    $user->setIsAuthorised(5); //Etat refusé
 
     $userBo->updateUserIsAuthorised($user);
     $users = $userBo->selectUsersByState(0);
