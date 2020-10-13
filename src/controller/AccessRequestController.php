@@ -7,7 +7,7 @@ class AccessRequestController extends Controller
     $sellerId = $_SESSION['userId'];
     $stateId = 0;
 
-    $auctionAccessStateBo = App_DaoFactory::getFactory()->getAuctionAccessStateBo();
+    $auctionAccessStateBo = App_BoFactory::getFactory()->getAuctionAccessStateBo();
     try {
       $auctionAccessStateList = $auctionAccessStateBo->selectAllAuctionAccessStateBySellerIdAndStateId($sellerId, $stateId);
 
@@ -34,9 +34,9 @@ class AccessRequestController extends Controller
   private function updateRequestStateId($stateId): array
   {
     $aasid = parameters()['aasid'];
-    $auctionAccessStateDao = App_DaoFactory::getFactory()->getAuctionAccessStateDao();
+    $auctionAccessStateBo = App_BoFactory::getFactory()->getAuctionAccessStateBoo();
     try {
-      $auctionAccessStateDao->updateStateIdByAuctionAccessStateId($aasid, $stateId);
+      $auctionAccessStateBo->updateStateIdByAuctionAccessStateId($aasid, $stateId);
     } catch (BDDException $e) {
       return ['redirect', '?r=home'];
     }
