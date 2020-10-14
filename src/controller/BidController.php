@@ -17,11 +17,15 @@ class BidController extends Controller
       $auctionAccessState = $auctionAccessStateBo->selectAuctionAccessStateByAuctionIdAndBidderId($auctionId, $_SESSION['userId']);
 
       $data = [
+        'return' => '?home',
         'auction'            => $auction,
         'seller'             => $seller,
         'auctionAccessState' => $auctionAccessState
       ];
 
+        if(isset($_SESSION['isAdmin']) && $_SESSION['isAdmin'] == true && isset($_SERVER['HTTP_REFERER'])){
+            $data['return'] =  $_SERVER['HTTP_REFERER'];
+        }
       return ['render', 'index', $data];
     } else {
       //Todo : redirection page erreur
@@ -33,11 +37,13 @@ class BidController extends Controller
   {
     $auctionId = parameters()['auctionId'];
 
+    $data = ['auctionId' => $auctionId];
+
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       if (!isset(parameters()['bidPrice']) || parameters()['bidPrice'] === '') {
         $_SESSION['errors']['noBidPrice'] = 'Veuillez renseigner un montant à enchérir';
 
-        return ['redirect', '?r=bid/index', ['auctionId' => $auctionId]];
+        return ['redirect', '?r=bid', $data];
       }
 
       $newBid = new BidModel();
@@ -50,17 +56,20 @@ class BidController extends Controller
       $bidHistoryBo->insertBid($newBid);
     }
 
-    return ['redirect', '?r=bid', ['auctionId' => $auctionId]];
+    return ['redirect', '?r=bid', $data];
   }
 
   public function makeAuctionAccessRequest(): array
   {
     $bidderId = $_SESSION['userId'];
     $auctionId = parameters()['auctionId'];
+
     $auctionAccessStateBo = App_BoFactory::getFactory()->getAuctionAccessStateBo();
+
     try {
       $auctionAccessStateBo->insertAuctionAccessState($auctionId, $bidderId);
     } catch (BDDException $e) {
+        $auctionAccessStateBo->updateStateIdByAuctionIdAndBidderId($auctionId, $bidderId, 0);
     }
 
     return ['redirect', '?r=bid', ['auctionId' => $auctionId]];
@@ -72,6 +81,7 @@ class BidController extends Controller
     $auctionId = parameters()['auctionId'];
 
     $auctionAccessStateBo = App_BoFactory::getFactory()->getAuctionAccessStateBo();
+
     try {
       $auctionAccessStateBo->updateStateIdByAuctionIdAndBidderId($auctionId, $bidderId, 2);
     } catch (BDDException $e) {
