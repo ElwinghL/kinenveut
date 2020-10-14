@@ -34,7 +34,7 @@ class AccessRequestController extends Controller
   private function updateRequestStateId($stateId): array
   {
     $aasid = parameters()['aasid'];
-    $auctionAccessStateBo = App_BoFactory::getFactory()->getAuctionAccessStateBoo();
+    $auctionAccessStateBo = App_BoFactory::getFactory()->getAuctionAccessStateBo();
     try {
       $auctionAccessStateBo->updateStateIdByAuctionAccessStateId($aasid, $stateId);
     } catch (BDDException $e) {
