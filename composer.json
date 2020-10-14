@@ -17,8 +17,9 @@
     "test": "phpunit test",
     "coverage": "phpunit --coverage-text",
     "coverage-html": "phpunit --coverage-html test/coverage/",
-    "behat-add": "behat --dry-run --append-snippets --colors",
-    "behat": "behat --colors"
+    "behat": "behat --colors",
+    "update-bdd": "sh update_bdd.sh",
+    "update-gherkin": "sh update_gherkin.sh"
   },
   "config": {
     "process-timeout": 0
