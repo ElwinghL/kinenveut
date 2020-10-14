@@ -27,6 +27,7 @@ class CategorieController extends Controller
 
         if ($category !== null) {
           $data = [
+            'return'   => '?r=categorie',
             'category' => [
               'id'   => $category->getId(),
               'name' => $category->getName()
@@ -44,7 +45,7 @@ class CategorieController extends Controller
     $id = filter_var(parameters()['id'], FILTER_VALIDATE_INT);
     $categoryBo = App_BoFactory::getFactory()->getCategoryBo();
 
-    if ($id !== null) {
+    if ($id !== null && $id != 1) {
       $categoryBo->deleteCategoryById($id);
     }
 
