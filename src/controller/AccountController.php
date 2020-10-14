@@ -10,9 +10,10 @@ class AccountController extends Controller
     $userSelected = $userBo->selectUserByUserId($userId);
 
     if (isset($userSelected) && $userSelected->getId() > 0) {
-      $data = [
-        'user' => $userSelected
-      ];
+        if(isset($_SESSION['isAdmin']) && $_SESSION['isAdmin'] == true && isset($_SERVER['HTTP_REFERER'])){
+            $data['return'] = $_SERVER['HTTP_REFERER'];
+        }
+      $data['user'] = $userSelected;
 
       return ['render', 'index', $data];
     } else {
@@ -29,6 +30,7 @@ class AccountController extends Controller
 
     if (isset($userSelected) && $userSelected->getId() > 0) {
       $data = [
+          'return' => '?r=account&userId='.$userId,
         'user' => $userSelected
       ];
 
