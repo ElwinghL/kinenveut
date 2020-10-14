@@ -26,7 +26,6 @@ class AuctionController extends Controller
       $data2 = ['auctionList' => $auctionList];
       $data = array_merge($data, $data2);
 
-
       return ['render', 'index', $data];
     } else {
       //Todo : Gérer le cas où il y a 0 enchère :)
@@ -107,7 +106,6 @@ class AuctionController extends Controller
       $values['reservePrice'] = parameters()['reservePrice'];
       $errors['reservePrice'] = 'Le prix de réserve ne doit pas contenir de virgule';
     }
-
 
     $data = ['errors' => $errors, 'values' => $values];
 

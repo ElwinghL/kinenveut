@@ -101,9 +101,9 @@
             <?php else : ?>
               <?php if ($auctionAccessState->getStateId() !== null && $auctionAccessState->getStateId() == 0) : ?>
                 <a class="btn btn-secondary" href="?r=bid/cancelAuctionAccessRequest&auctionId=<?= parameters()['auctionId']; ?>">Annuler ma demande</a>
-              <?php elseif($auctionAccessState->getStateId() == null || $auctionAccessState->getStateId() == 2) : ?>
+              <?php elseif ($auctionAccessState->getStateId() == null || $auctionAccessState->getStateId() == 2) : ?>
                 <a class="btn btn-primary" href="?r=bid/makeAuctionAccessRequest&auctionId=<?= parameters()['auctionId']; ?>">Demander à participer à l'enchère</a>
-              <?php elseif($auctionAccessState->getStateId() == 5):?>
+              <?php elseif ($auctionAccessState->getStateId() == 5):?>
                   <i>Vous n'êtes pas autorisé à participer à cette enchère</i>
               <?php else:?>
               <?php endif; ?>
@@ -171,7 +171,7 @@
         <?php if ($_SESSION['userId'] == $auction->getSellerId()) : ?>
         <div class="col-md-12">
             <br/>
-            <?php if($bestBid != null && $bestBid->getBidPrice() > 0 && $minPrice >= $auction->getReservePrice()):?>
+            <?php if ($bestBid != null && $bestBid->getBidPrice() > 0 && $minPrice >= $auction->getReservePrice()):?>
                 <a href=<?php echo '?r=auction/abort&auctionId=' . $auction->getId() ?>>
                     <button class="btn btn-secondary">Clôturer</button>
                 </a>

@@ -8,7 +8,7 @@ include_once 'src/view/page-header.php' ?>
 <div class="container">
   <h2>
     <?php echo $titlePage ?>
-      <?php if($pageUser == true):?>
+      <?php if ($pageUser == true):?>
           <a href=<?php echo '?r=auction/create' ?>>
               <button type="button" class="btn btn-primary btn-add">+</button>
           </a>

@@ -24,7 +24,7 @@ $user = isset($data['user']) ? $data['user'] : new UserModel();
     <a href="?r=account/edit&userId=<?= $user->getId(); ?>">Modifier mes informations</a>
   <?php elseif ($_SESSION['isAdmin'] == true) : ?>
     <br/>
-    <?php if($user->getIsAuthorised() == 0):?>
+    <?php if ($user->getIsAuthorised() == 0):?>
       <a href="?r=userManagement/validate&id=<?php echo $user->getId(); ?>" class="btn btn-success">
           Accepter
       </a>

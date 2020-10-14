@@ -31,7 +31,7 @@ class RegistrationControllerTest extends TestCase
     $registrationController = new RegistrationController();
     $expectedAnswer = 42;
 
-    $userBoMock = $this->createPartialMock(UserBoImpl::class, ['selectUserByEmail'],['insertUserBo']);
+    $userBoMock = $this->createPartialMock(UserBoImpl::class, ['selectUserByEmail'], ['insertUserBo']);
     $userBoMock->method('selectUserByEmail')->willReturn(null);
     $userBoMock->method('insertUserBo')->willReturn($expectedAnswer);
 
