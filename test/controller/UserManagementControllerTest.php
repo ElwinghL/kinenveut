@@ -43,6 +43,32 @@ class UserManagementControllerTest extends TestCase
    */
   public function deleteTest()
   {
-    //Please help me with this
+    $userTest1 = new UserModel();
+    $userTest2 = new UserModel();
+    $expectedId = 42;
+    $expectedIsAdmin = true;
+    $userTest1
+      ->setId($expectedId)
+      ->setIsAdmin($expectedIsAdmin)
+      ->setIsAuthorised(0);
+    $userTest2
+      ->setId($expectedId + 1)
+      ->setIsAdmin($expectedIsAdmin)
+      ->setIsAuthorised(0);
+
+    $userBoMock = $this->createPartialMock(UserBoImpl::class, ['selectUsersByState']);
+    $userBoMock->method('selectUsersByState')->willReturn([$userTest1, $userTest2]);
+
+    $app_BoFactoryMock = $this->createPartialMock(App_BoFactory::class, ['getUserBo']);
+    $app_BoFactoryMock->method('getUserBo')->willReturn($userBoMock);
+
+    App_BoFactory::setFactory($app_BoFactoryMock);
+
+    $userMCtrtrler = new UserManagementController();
+    $data = $userMCtrtrler->index();
+
+    $this->assertSame('render', $data[0]);
+    $this->assertSame('index', $data[1]);
+    $this->assertSame(['users'=>[$userTest1]], $data[2]);
   }
 }
