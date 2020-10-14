@@ -48,7 +48,7 @@ class BidControllerTest extends TestCase
     $this->assertSame('index', $data[1]);
     $this->assertSame(
       [
-        'return' => '?home',
+        'return'             => '?home',
         'auction'            => $auction,
         'seller'             => $seller,
         'auctionAccessState' => $auctionAccessState
@@ -102,7 +102,7 @@ class BidControllerTest extends TestCase
    */
   public function addBid()
   {
-      $_SERVER['REQUEST_METHOD'] = 'POST';
+    $_SERVER['REQUEST_METHOD'] = 'POST';
 
     $_SESSION['userId'] = 42;
     $auctionId = 42;
@@ -130,7 +130,7 @@ class BidControllerTest extends TestCase
    */
   public function addBidNoBidPriceTest()
   {
-      $_SERVER['REQUEST_METHOD'] = 'POST';
+    $_SERVER['REQUEST_METHOD'] = 'POST';
 
     $auctionId = 42;
     setParameters(['auctionId' => $auctionId, 'bidPrice' => '']);

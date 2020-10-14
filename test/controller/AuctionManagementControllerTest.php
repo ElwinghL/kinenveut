@@ -27,10 +27,12 @@ class AuctionManagementControllerTest extends TestCase
 
     $this->assertSame('render', $data[0]);
     $this->assertSame('index', $data[1]);
-    $this->assertSame([
-      'auctions' => [$auction]
-    ],
-    $data[2]);
+    $this->assertSame(
+      [
+        'auctions' => [$auction]
+      ],
+      $data[2]
+    );
   }
 
   /**
@@ -57,10 +59,12 @@ class AuctionManagementControllerTest extends TestCase
 
     $this->assertSame('render', $data[0]);
     $this->assertSame('index', $data[1]);
-    $this->assertSame([
-      'auctions' => [$auction]
-    ],
-    $data[2]);
+    $this->assertSame(
+      [
+        'auctions' => [$auction]
+      ],
+      $data[2]
+    );
   }
 
   /**
@@ -87,9 +91,11 @@ class AuctionManagementControllerTest extends TestCase
 
     $this->assertSame('render', $data[0]);
     $this->assertSame('index', $data[1]);
-    $this->assertSame([
-      'auctions' => [$auction]
-    ],
-    $data[2]);
+    $this->assertSame(
+      [
+        'auctions' => [$auction]
+      ],
+      $data[2]
+    );
   }
 }

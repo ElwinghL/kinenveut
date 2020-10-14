@@ -17,15 +17,16 @@ class BidController extends Controller
       $auctionAccessState = $auctionAccessStateBo->selectAuctionAccessStateByAuctionIdAndBidderId($auctionId, $_SESSION['userId']);
 
       $data = [
-        'return' => '?home',
+        'return'             => '?home',
         'auction'            => $auction,
         'seller'             => $seller,
         'auctionAccessState' => $auctionAccessState
       ];
 
-        if(isset($_SESSION['isAdmin']) && $_SESSION['isAdmin'] == true && isset($_SERVER['HTTP_REFERER'])){
-            $data['return'] =  $_SERVER['HTTP_REFERER'];
-        }
+      if (isset($_SESSION['isAdmin']) && $_SESSION['isAdmin'] == true && isset($_SERVER['HTTP_REFERER'])) {
+        $data['return'] = $_SERVER['HTTP_REFERER'];
+      }
+
       return ['render', 'index', $data];
     } else {
       //Todo : redirection page erreur
@@ -69,7 +70,7 @@ class BidController extends Controller
     try {
       $auctionAccessStateBo->insertAuctionAccessState($auctionId, $bidderId);
     } catch (BDDException $e) {
-        $auctionAccessStateBo->updateStateIdByAuctionIdAndBidderId($auctionId, $bidderId, 0);
+      $auctionAccessStateBo->updateStateIdByAuctionIdAndBidderId($auctionId, $bidderId, 0);
     }
 
     return ['redirect', '?r=bid', ['auctionId' => $auctionId]];
