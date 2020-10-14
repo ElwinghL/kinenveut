@@ -28,22 +28,21 @@ class RegistrationControllerTest extends TestCase
   {
     setParameters(['firstName' => 'Jean', 'lastName' => 'Claude', 'birthDate' => '2000-05-05', 'email' => 'jean@claude.fr', 'password' => 'password']);
 
-    $userBoMock = $this->createPartialMock(UserBoImpl::class, ['selectUserByEmail']);
+    $registrationController = new RegistrationController();
+    $expectedAnswer = 42;
+
+    $userBoMock = $this->createPartialMock(UserBoImpl::class, ['selectUserByEmail', 'insertUser']);
     $userBoMock->method('selectUserByEmail')->willReturn(null);
+    $userBoMock->method('insertUser')->willReturn($expectedAnswer);
 
     $app_BoFactoryMock = $this->createPartialMock(App_BoFactory::class, ['getUserBo']);
     $app_BoFactoryMock->method('getUserBo')->willReturn($userBoMock);
     App_BoFactory::setFactory($app_BoFactoryMock);
 
-    $registrationController = new RegistrationController();
     $data = $registrationController->register();
 
     $this->assertSame('redirect', $data[0]);
     $this->assertSame('?r=login', $data[1]);
-    $this->assertNotNull($data[2]);
-
-    $userBo = App_BoFactory::getFactory()->getUserBo();
-    $userBo->deleteUser($data[2]);
   }
 
   /**

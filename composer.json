@@ -1,26 +1,30 @@
 {
-    "require-dev": {
-        "friendsofphp/php-cs-fixer": "^2.16",
-        "phpunit/phpunit": "^9.3.9",
-        "phpunit/php-code-coverage": "^9.2",
-        "codeception/codeception": "^4.1",
-        "codeception/module-phpbrowser": "^1.0.0",
-        "codeception/module-asserts": "^1.0.0"
-    },
-    "require": {
-        "vlucas/phpdotenv": "^5.2",
-        "ext-pdo": "*",
-        "ext-json": "*"
-    },
-    "scripts": {
-        "format": [
-            "watch php-cs-fixer fix"
-        ],
-        "test": "phpunit test",
-        "coverage": "phpunit --coverage-text",
-        "coverage-html": "phpunit --coverage-html test/coverage/"
-    },
-    "config": {
-        "process-timeout": 0
-    }
+  "require-dev": {
+    "friendsofphp/php-cs-fixer": "^2.16",
+    "phpunit/phpunit": "^9.3.9",
+    "phpunit/php-code-coverage": "^9.2",
+    "behat/behat": "^3.7",
+    "codeception/codeception": "^4.1",
+    "codeception/module-phpbrowser": "^1.0.0",
+    "codeception/module-asserts": "^1.0.0"
+  },
+  "require": {
+    "vlucas/phpdotenv": "^5.2",
+    "ext-pdo": "*",
+    "ext-json": "*"
+  },
+  "scripts": {
+    "format": [
+      "watch php-cs-fixer fix"
+    ],
+    "test": "phpunit test",
+    "coverage": "phpunit --coverage-text",
+    "coverage-html": "phpunit --coverage-html test/coverage/",
+    "behat": "behat --colors",
+    "update-bdd": "sh update_bdd.sh",
+    "update-gherkin": "sh update_gherkin.sh"
+  },
+  "config": {
+    "process-timeout": 0
+  }
 }

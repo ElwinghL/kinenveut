@@ -1,0 +1,18 @@
+default:
+  autoload:
+    '': 'test/acceptance'
+  suites:
+    default:
+      contexts:
+        - tc51Context
+        - tc362Context
+        - tc274Context
+        - tc268Context
+        - tc160Context
+        - tc158Context
+        - tc130Context
+        - tc107Context
+        - tc104Context
+      paths:
+        features: test/resources
+        bootstrap: test/acceptance

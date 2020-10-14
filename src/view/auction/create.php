@@ -41,7 +41,7 @@ $dataValue = isset($data['values']) ? $data['values'] : null;
             </svg>
           </span>
         </label>
-        <input class="form-control" name="basePrice" type="number" id="basePrice" value="<?php echo isset($dataValue['basePrice']) ? $dataValue['basePrice'] : 0; ?>" placeholder="0" min="0" step="any" />
+        <input class="form-control" name="basePrice" type="number" id="basePrice" value="<?php echo isset($dataValue['basePrice']) ? $dataValue['basePrice'] : 0; ?>" placeholder="0" min="0" step="1" />
         <?php if (isset($dataError['basePrice'])) : ?>
           <div class="invalid-feedback d-block"><?php echo $dataError['basePrice']; ?></div>
         <?php endif; ?>
@@ -55,7 +55,7 @@ $dataValue = isset($data['values']) ? $data['values'] : null;
             </svg>
           </span>
         </label>
-        <input class="form-control" name="reservePrice" type="number" id="reservePrice" value="<?php echo isset($dataValue['reservePrice']) ? $dataValue['reservePrice'] : 0; ?>" placeholder="0" min="0" step="any" />
+        <input class="form-control" name="reservePrice" type="number" id="reservePrice" value="<?php echo isset($dataValue['reservePrice']) ? $dataValue['reservePrice'] : 0; ?>" placeholder="0" min="0" step="1"/>
         <?php if (isset($dataError['reservePrice'])) : ?>
           <div class="invalid-feedback d-block"><?php echo $dataError['reservePrice'] ?></div>
         <?php endif; ?>
@@ -76,7 +76,7 @@ $dataValue = isset($data['values']) ? $data['values'] : null;
       <!--Durée-->
       <div class="form-group col-md-3">
         <label for="duration">Durée (Nombre de jours)</label>
-        <input class="form-control" type="number" name="duration" id="duration" value="<?php echo isset($dataValue['duration']) ? $dataValue['duration'] : '7'; ?>" min="0" max="30" placeholder="Durée" required />
+        <input class="form-control" type="number" name="duration" id="duration" value="<?php echo isset($dataValue['duration']) ? $dataValue['duration'] : '7'; ?>" min="1" max="30" placeholder="Durée" step="1" required />
         <?php if (isset($dataError['duration'])) : ?>
           <div class="invalid-feedback d-block"><?php echo $dataError['duration'] ?></div>
         <?php endif; ?>

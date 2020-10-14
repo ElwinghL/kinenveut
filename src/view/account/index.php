@@ -23,7 +23,16 @@ $user = isset($data['user']) ? $data['user'] : new UserModel();
   <?php if ($_SESSION['userId'] == $user->getId()) : ?>
     <a href="?r=account/edit&userId=<?= $user->getId(); ?>">Modifier mes informations</a>
   <?php elseif ($_SESSION['isAdmin'] == true) : ?>
-        <br/>
+    <br/>
+    <?php if ($user->getIsAuthorised() == 0):?>
+      <a href="?r=userManagement/validate&id=<?php echo $user->getId(); ?>" class="btn btn-success">
+          Accepter
+      </a>
+      <a href="?r=userManagement/delete&id=<?php echo $user->getId(); ?>" class="btn btn-danger">
+          Refuser
+      </a>
+    <?php elseif ($user->getIsAuthorised() == 1):?>
         <a href="?r=UserManagement/ban&id=<?php echo $user->getId(); ?>" class="btn btn-danger">Bannir</a>
     <?php endif; ?>
+  <?php endif; ?>
 </div>

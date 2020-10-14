@@ -33,7 +33,14 @@
   <!--Titre-->
   <div class="row">
     <div class="col-md-9">
-      <h2><?php echo protectStringToDisplay($auction->getName()); ?> - <?php echo $minPrice ?>€</h2>
+      <h2><?php echo protectStringToDisplay($auction->getName()); ?>
+          <?php if ($auction->getPrivacyId() == 0
+                    || ($auction->getPrivacyId() == 1 && ($auctionAccessState->getStateId() == 1))
+                    || ($auction->getPrivacyId() == 2 && ($auctionAccessState->getStateId() == 1))
+                    || $_SESSION['userId'] == $auction->getSellerId()) : ?>
+          - <?php echo $minPrice ?>€
+        <?php endif;?>
+      </h2>
         <div id="timer">
             <?php if ($isFinished):?>
                 L'enchère est terminée depuis le <?php echo date('d/m/Y H:i:s', $endDate);?>
@@ -77,15 +84,15 @@
             <?php if ($isFinished == false):?>
                   <form action="?r=bid/addBid&auctionId=<?= parameters()['auctionId']; ?>" method="post">
                       <div class="input-group mb-2">
-                          <input class="form-control" name="bidPrice" type="number" id="bidPrice" value="" min="<?php echo ($auction->getBasePrice() == $minPrice && $bestBid->getBidPrice() != $minPrice) ? $minPrice : $minPrice + 1; ?>" placeholder="Saisir votre enchère maximum" />
+                          <input class="form-control" name="bidPrice" type="number" id="bidPrice" value="" min="<?php echo ($auction->getBasePrice() == $minPrice && $bestBid->getBidPrice() != $minPrice) ? $minPrice : $minPrice + 1; ?>" placeholder="<?=$minPrice?>" step="1" />
                           <div class="input-group-prepend">
                               <div class="input-group-btn">
-                                  <input class="btn btn-light" name="makeabid" type="submit" value="Enchérir" />
+                                  <input class="btn btn-warning" name="makeabid" type="submit" value="Enchérir" />
                               </div>
                           </div>
                       </div>
                       <?php if (isset($_SESSION['errors']['noBidPrice'])) : ?>
-                          <span class='error-custom'><?= $_SESSION['errors']['noBidPrice'] ?></span>;
+                          <span class='error-custom'><?= $_SESSION['errors']['noBidPrice'] ?></span>
                           <?php unset($_SESSION['errors']['noBidPrice']); ?>
                       <?php endif; ?>
                   </form>
@@ -94,8 +101,11 @@
             <?php else : ?>
               <?php if ($auctionAccessState->getStateId() !== null && $auctionAccessState->getStateId() == 0) : ?>
                 <a class="btn btn-secondary" href="?r=bid/cancelAuctionAccessRequest&auctionId=<?= parameters()['auctionId']; ?>">Annuler ma demande</a>
-              <?php else : ?>
+              <?php elseif ($auctionAccessState->getStateId() == null || $auctionAccessState->getStateId() == 2) : ?>
                 <a class="btn btn-primary" href="?r=bid/makeAuctionAccessRequest&auctionId=<?= parameters()['auctionId']; ?>">Demander à participer à l'enchère</a>
+              <?php elseif ($auctionAccessState->getStateId() == 5):?>
+                  <i>Vous n'êtes pas autorisé à participer à cette enchère</i>
+              <?php else:?>
               <?php endif; ?>
             <?php endif; ?>
           <?php else : ?>
@@ -131,12 +141,13 @@
     </div>
   </div>
 
-    <!--Line-->
-    <div class="hr"></div>
+  <!--Line-->
+  <div class="hr"></div>
 
-    <?php if ($auction->getAuctionState() == 1):?>
+  <?php if ($auction->getAuctionState() == 1):?>
+    <!--Partager-->
     <div class="row">
-        <?php if ($auction->getPrivacyId() == 0 || $auction->getPrivacyId() == 1 || $_SESSION['userId'] == $auction->getSellerId()) : ?>
+        <?php if ($auction->getPrivacyId() == 0 || ($auction->getPrivacyId() == 1 && ($auctionAccessState->getStateId() == 1)) || $_SESSION['userId'] == $auction->getSellerId()) : ?>
         <div class="col-md-12">
             <h3>Partager</h3>
             <div class="col-md-6">
@@ -150,17 +161,21 @@
                 </div>
             </div>
         </div>
-                <!--Line-->
+
+        <!--Line-->
         <div class="hr"></div>
         <?php endif;?>
-
-
+    </div>
+    <div class="row">
+        <!--Gestion-->
         <?php if ($_SESSION['userId'] == $auction->getSellerId()) : ?>
         <div class="col-md-12">
             <br/>
-            <a href=<?php echo '?r=auction/abort&auctionId=' . $auction->getId() ?>>
-                <button class="btn btn-secondary">Clôturer</button>
-            </a>
+            <?php if ($bestBid != null && $bestBid->getBidPrice() > 0 && $minPrice >= $auction->getReservePrice()):?>
+                <a href=<?php echo '?r=auction/abort&auctionId=' . $auction->getId() ?>>
+                    <button class="btn btn-secondary">Clôturer</button>
+                </a>
+            <?php endif;?>
             <a href=<?php echo '?r=auction/cancel&auctionId=' . $auction->getId() ?>>
                 <button class="btn btn-danger">Supprimer</button>
             </a>
