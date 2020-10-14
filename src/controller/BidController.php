@@ -33,21 +33,24 @@ class BidController extends Controller
   {
     $auctionId = parameters()['auctionId'];
 
-    if (!isset(parameters()['bidPrice']) || parameters()['bidPrice'] === '') {
-      $_SESSION['errors']['noBidPrice'] = 'Veuillez renseigner un montant à enchérir';
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+      if (!isset(parameters()['bidPrice']) || parameters()['bidPrice'] === '') {
+        $_SESSION['errors']['noBidPrice'] = 'Veuillez renseigner un montant à enchérir';
 
-      return ['redirect', '?r=bid/index', ['auctionId' => $auctionId]];
+        return ['redirect', '?r=bid/index', ['auctionId' => $auctionId]];
+      }
+
+      $newBid = new BidModel();
+      $newBid
+        ->setBidPrice(parameters()['bidPrice'])
+        ->setBidderId($_SESSION['userId'])
+        ->setObjectId($auctionId);
+
+      $bidHistoryBo = App_BoFactory::getFactory()->getBidHistoryBo();
+      $bidHistoryBo->insertBid($newBid);
     }
 
-    $newBid = new BidModel();
-    $newBid
-      ->setBidPrice(parameters()['bidPrice'])
-      ->setBidderId($_SESSION['userId'])
-      ->setObjectId($auctionId);
-
-    $bidHistoryBo = App_BoFactory::getFactory()->getBidHistoryBo();
-    $bidHistoryBo->insertBid($newBid);
-    return ['redirect', htmlspecialchars_decode('?r=bid/index&auctionId=').$auctionId];
+    return ['redirect', '?r=bid', ['auctionId' => $auctionId]];
   }
 
   public function makeAuctionAccessRequest(): array
