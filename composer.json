@@ -1,23 +1,26 @@
 {
-  "require-dev": {
-    "friendsofphp/php-cs-fixer": "^2.16",
-    "phpunit/phpunit": "^9.3.9",
-    "phpunit/php-code-coverage": "^9.2"
-  },
-  "require": {
-    "vlucas/phpdotenv": "^5.2",
-    "ext-pdo": "*",
-    "ext-json": "*"
-  },
-  "scripts": {
-    "format": [
-      "watch php-cs-fixer fix"
-    ],
-    "test": "phpunit test",
-    "coverage": "phpunit --coverage-text",
-    "coverage-html": "phpunit --coverage-html test/coverage/"
-  },
-  "config": {
-    "process-timeout": 0
-  }
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^2.16",
+        "phpunit/phpunit": "^9.3.9",
+        "phpunit/php-code-coverage": "^9.2",
+        "codeception/codeception": "^4.1",
+        "codeception/module-phpbrowser": "^1.0.0",
+        "codeception/module-asserts": "^1.0.0"
+    },
+    "require": {
+        "vlucas/phpdotenv": "^5.2",
+        "ext-pdo": "*",
+        "ext-json": "*"
+    },
+    "scripts": {
+        "format": [
+            "watch php-cs-fixer fix"
+        ],
+        "test": "phpunit test",
+        "coverage": "phpunit --coverage-text",
+        "coverage-html": "phpunit --coverage-html test/coverage/"
+    },
+    "config": {
+        "process-timeout": 0
+    }
 }

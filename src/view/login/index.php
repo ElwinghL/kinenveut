@@ -16,7 +16,7 @@
             </div>
             <div class="card-body">
                 <div class="row">
-                    <form action="?r=login/login" method="post" class="<?php if (!empty($data['errors'])) {
+                    <form id="login_form" action="?r=login/login" method="post" class="<?php if (!empty($data['errors'])) {
                         echo 'was-validated';
                     } ?>" style="margin: 0 auto;">
                         <div class="form-group col-md-12">
