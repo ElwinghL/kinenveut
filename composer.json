@@ -2,7 +2,8 @@
   "require-dev": {
     "friendsofphp/php-cs-fixer": "^2.16",
     "phpunit/phpunit": "^9.3.9",
-    "phpunit/php-code-coverage": "^9.2"
+    "phpunit/php-code-coverage": "^9.2",
+    "behat/behat": "^3.7"
   },
   "require": {
     "vlucas/phpdotenv": "^5.2",
@@ -15,7 +16,10 @@
     ],
     "test": "phpunit test",
     "coverage": "phpunit --coverage-text",
-    "coverage-html": "phpunit --coverage-html test/coverage/"
+    "coverage-html": "phpunit --coverage-html test/coverage/",
+    "behat": "behat --colors",
+    "update-bdd": "sh update_bdd.sh",
+    "update-gherkin": "sh update_gherkin.sh"
   },
   "config": {
     "process-timeout": 0

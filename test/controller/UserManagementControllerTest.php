@@ -36,13 +36,4 @@ class UserManagementControllerTest extends TestCase
     $this->assertSame('index', $data[1]);
     $this->assertSame(['users'=>[$userTest1]], $data[2]);
   }
-
-  /**
-   * @test
-   * @covers UserManagementController
-   */
-  public function deleteTest()
-  {
-    //Please help me with this
-  }
 }
