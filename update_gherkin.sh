@@ -17,5 +17,9 @@ do
   then
     sed -i '/- '$nameContext'/d' behat.yml
     rm $eachfile
+    if [ -z "$(cat test/acceptance/$nameContext.php | grep "@")" ]
+    then
+      rm test/acceptance/$nameContext.php
+    fi
   fi
 done
