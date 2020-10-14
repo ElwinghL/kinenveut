@@ -26,8 +26,8 @@ class RegistrationControllerTest extends TestCase
    */
   public function registerTest()
   {
-    setParameters(['firstName' => 'Jean', 'lastName' => 'Claude', 'birthDate' => '2000-05-05', 'email' => 'jean@claude.fr', 'password' => 'password' ]);
-    
+    setParameters(['firstName' => 'Jean', 'lastName' => 'Claude', 'birthDate' => '2000-05-05', 'email' => 'jean@claude.fr', 'password' => 'password']);
+
     $userBoMock = $this->createPartialMock(UserBoImpl::class, ['selectUserByEmail']);
     $userBoMock->method('selectUserByEmail')->willReturn(null);
 
@@ -48,9 +48,9 @@ class RegistrationControllerTest extends TestCase
    */
   public function registerWithInvalidFirstNameTest()
   {
-    setParameters(['firstName' => 'JeanJeanJeanJeanJeanJeanJeanJeanJeanJeanJeanJeanJeanJeanJeanJeanJeanJeanJean', 
-    'lastName' => 'Claude', 'birthDate' => '2000-05-05', 'email' => 'jean@claude.fr', 'password' => 'password' ]);
-    
+    setParameters(['firstName' => 'JeanJeanJeanJeanJeanJeanJeanJeanJeanJeanJeanJeanJeanJeanJeanJeanJeanJeanJean',
+      'lastName'               => 'Claude', 'birthDate' => '2000-05-05', 'email' => 'jean@claude.fr', 'password' => 'password']);
+
     $userBoMock = $this->createPartialMock(UserBoImpl::class, ['selectUserByEmail']);
     $userBoMock->method('selectUserByEmail')->willReturn(null);
 
@@ -72,10 +72,10 @@ class RegistrationControllerTest extends TestCase
    */
   public function registerWithInvalidLastNameTest()
   {
-    setParameters(['firstName' => 'Jean', 
-    'lastName' => 'ClaudeClaudeClaudeClaudeClaudeClaudeClaudeClaudeClaudeClaudeClaudeClaudeClaudeClaudeClaudeClaude', 
-    'birthDate' => '2000-05-05', 'email' => 'jean@claude.fr', 'password' => 'password' ]);
-    
+    setParameters(['firstName' => 'Jean',
+      'lastName'               => 'ClaudeClaudeClaudeClaudeClaudeClaudeClaudeClaudeClaudeClaudeClaudeClaudeClaudeClaudeClaudeClaude',
+      'birthDate'              => '2000-05-05', 'email' => 'jean@claude.fr', 'password' => 'password']);
+
     $userBoMock = $this->createPartialMock(UserBoImpl::class, ['selectUserByEmail']);
     $userBoMock->method('selectUserByEmail')->willReturn(null);
 
