@@ -26,23 +26,23 @@ class RegistrationControllerTest extends TestCase
    */
   public function registerTest()
   {
-    setParameters(['firstName' => 'Jean', 'lastName' => 'Claude', 'birthDate' => '2000-05-05', 'email' => 'jean@claude.fr', 'password' => 'password' ]);
-    
-    $userBoMock = $this->createPartialMock(UserBoImpl::class, ['selectUserByEmail']);
+    setParameters(['firstName' => 'Jean', 'lastName' => 'Claude', 'birthDate' => '2000-05-05', 'email' => 'jean@claude.fr', 'password' => 'password']);
+
+    $registrationController = new RegistrationController();
+    $expectedAnswer = 42;
+
+    $userBoMock = $this->createPartialMock(UserBoImpl::class, ['selectUserByEmail'], ['insertUserBo']);
     $userBoMock->method('selectUserByEmail')->willReturn(null);
+    $userBoMock->method('insertUserBo')->willReturn($expectedAnswer);
 
     $app_BoFactoryMock = $this->createPartialMock(App_BoFactory::class, ['getUserBo']);
     $app_BoFactoryMock->method('getUserBo')->willReturn($userBoMock);
     App_BoFactory::setFactory($app_BoFactoryMock);
 
-    $registrationController = new RegistrationController();
     $data = $registrationController->register();
 
     $this->assertSame('redirect', $data[0]);
     $this->assertSame('?r=login', $data[1]);
-
-    $userBo = App_BoFactory::getFactory()->getUserBo();
-    $userBo->deleteUser($data[2]);
   }
 
   /**
@@ -51,9 +51,9 @@ class RegistrationControllerTest extends TestCase
    */
   public function registerWithInvalidFirstNameTest()
   {
-    setParameters(['firstName' => 'JeanJeanJeanJeanJeanJeanJeanJeanJeanJeanJeanJeanJeanJeanJeanJeanJeanJeanJean', 
-    'lastName' => 'Claude', 'birthDate' => '2000-05-05', 'email' => 'jean@claude.fr', 'password' => 'password' ]);
-    
+    setParameters(['firstName' => 'JeanJeanJeanJeanJeanJeanJeanJeanJeanJeanJeanJeanJeanJeanJeanJeanJeanJeanJean',
+      'lastName'               => 'Claude', 'birthDate' => '2000-05-05', 'email' => 'jean@claude.fr', 'password' => 'password']);
+
     $userBoMock = $this->createPartialMock(UserBoImpl::class, ['selectUserByEmail']);
     $userBoMock->method('selectUserByEmail')->willReturn(null);
 
@@ -75,10 +75,10 @@ class RegistrationControllerTest extends TestCase
    */
   public function registerWithInvalidLastNameTest()
   {
-    setParameters(['firstName' => 'Jean', 
-    'lastName' => 'ClaudeClaudeClaudeClaudeClaudeClaudeClaudeClaudeClaudeClaudeClaudeClaudeClaudeClaudeClaudeClaude', 
-    'birthDate' => '2000-05-05', 'email' => 'jean@claude.fr', 'password' => 'password' ]);
-    
+    setParameters(['firstName' => 'Jean',
+      'lastName'               => 'ClaudeClaudeClaudeClaudeClaudeClaudeClaudeClaudeClaudeClaudeClaudeClaudeClaudeClaudeClaudeClaude',
+      'birthDate'              => '2000-05-05', 'email' => 'jean@claude.fr', 'password' => 'password']);
+
     $userBoMock = $this->createPartialMock(UserBoImpl::class, ['selectUserByEmail']);
     $userBoMock->method('selectUserByEmail')->willReturn(null);
 
@@ -100,8 +100,8 @@ class RegistrationControllerTest extends TestCase
    */
   public function registerWithInvalidBirthdateTest()
   {
-    setParameters(['firstName' => 'Jean', 'lastName' => 'Claude', 'birthDate' => '2000-1500', 'email' => 'jean@claude.fr', 'password' => 'password' ]);
-    
+    setParameters(['firstName' => 'Jean', 'lastName' => 'Claude', 'birthDate' => '2000-1500', 'email' => 'jean@claude.fr', 'password' => 'password']);
+
     $userBoMock = $this->createPartialMock(UserBoImpl::class, ['selectUserByEmail']);
     $userBoMock->method('selectUserByEmail')->willReturn(null);
 
@@ -123,8 +123,8 @@ class RegistrationControllerTest extends TestCase
    */
   public function registerWithInvalidEmailTest()
   {
-    setParameters(['firstName' => 'Jean', 'lastName' => 'Claude', 'birthDate' => '2000-05-05', 'email' => 'jeanclaude.fr', 'password' => 'password' ]);
-    
+    setParameters(['firstName' => 'Jean', 'lastName' => 'Claude', 'birthDate' => '2000-05-05', 'email' => 'jeanclaude.fr', 'password' => 'password']);
+
     $userBoMock = $this->createPartialMock(UserBoImpl::class, ['selectUserByEmail']);
     $userBoMock->method('selectUserByEmail')->willReturn(null);
 
@@ -146,8 +146,8 @@ class RegistrationControllerTest extends TestCase
    */
   public function registerWithInvalidEmail2Test()
   {
-    setParameters(['firstName' => 'Jean', 'lastName' => 'Claude', 'birthDate' => '2000-05-05', 'email' => 'jean@claude.fr', 'password' => 'password' ]);
-    
+    setParameters(['firstName' => 'Jean', 'lastName' => 'Claude', 'birthDate' => '2000-05-05', 'email' => 'jean@claude.fr', 'password' => 'password']);
+
     $userBoMock = $this->createPartialMock(UserBoImpl::class, ['selectUserByEmail']);
     $userBoMock->method('selectUserByEmail')->willReturn(new UserModel());
 
@@ -169,8 +169,8 @@ class RegistrationControllerTest extends TestCase
    */
   public function registerWithInvalidPasswordTest()
   {
-    setParameters(['firstName' => 'Jean', 'lastName' => 'Claude', 'birthDate' => '2000-05-05', 'email' => 'jean@claude.fr', 'password' => 'pass' ]);
-    
+    setParameters(['firstName' => 'Jean', 'lastName' => 'Claude', 'birthDate' => '2000-05-05', 'email' => 'jean@claude.fr', 'password' => 'pass']);
+
     $userBoMock = $this->createPartialMock(UserBoImpl::class, ['selectUserByEmail']);
     $userBoMock->method('selectUserByEmail')->willReturn(null);
 
