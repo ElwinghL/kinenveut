@@ -1,0 +1,55 @@
+default:
+  autoload:
+    '': 'test/acceptance'
+  suites:
+    default:
+      contexts:
+        - FeatureContext
+        - tc23Context
+        - tc30Context
+        - tc31Context
+        - tc32Context
+        - tc34Context
+        - tc36Context
+        - tc38Context
+        - tc44Context
+        - tc49Context
+        - tc51Context
+        - tc52Context
+        - tc54Context
+        - tc63Context
+        - tc71Context
+        - tc95Context
+        - tc104Context
+        - tc106Context
+        - tc107Context
+        - tc108Context
+        - tc110Context
+        - tc114Context
+        - tc130Context
+        - tc133Context
+        - tc137Context
+        - tc154Context
+        - tc158Context
+        - tc159Context
+        - tc160Context
+        - tc165Context
+        - tc262Context
+        - tc266Context
+        - tc267Context
+        - tc268Context
+        - tc274Context
+        - tc275Context
+        - tc277Context
+        - tc279Context
+        - tc280Context
+        - tc287Context
+        - tc288Context
+        - tc289Context
+        - tc339Context
+        - tc340Context
+        - tc342Context
+        - tc362Context
+      paths:
+        features: test/resources
+        bootstrap: test/acceptance
