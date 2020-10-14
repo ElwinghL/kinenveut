@@ -8,8 +8,11 @@ include_once 'src/view/page-header.php' ?>
 <div class="container">
   <h2>
     <?php echo $titlePage ?>
-    <a href=<?php echo '?r=auction/create' ?>>
-      <button type="button" class="btn btn-primary btn-add">+</button></a>
+      <?php if($pageUser == true):?>
+          <a href=<?php echo '?r=auction/create' ?>>
+              <button type="button" class="btn btn-primary btn-add">+</button>
+          </a>
+      <?php endif;?>
   </h2>
 
   <?php if (isset($data['auctionList'])) { ?>
