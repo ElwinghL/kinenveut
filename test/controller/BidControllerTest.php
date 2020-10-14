@@ -15,7 +15,7 @@ class BidControllerTest extends TestCase
   {
     $_SESSION['userId'] = 42;
     setParameters(['auctionId' => 42]);
-    
+
     $auction = new AuctionModel();
     $auction->setName('Maillot de bain');
     $auction->setSellerId(1);
@@ -46,12 +46,14 @@ class BidControllerTest extends TestCase
 
     $this->assertSame('render', $data[0]);
     $this->assertSame('index', $data[1]);
-    $this->assertSame([
+    $this->assertSame(
+      [
         'auction'            => $auction,
         'seller'             => $seller,
         'auctionAccessState' => $auctionAccessState
       ],
-       $data[2]);
+      $data[2]
+    );
 
     unset($_SESSION['userId']);
   }
@@ -114,7 +116,7 @@ class BidControllerTest extends TestCase
     $data = $bidController->addBid();
 
     $this->assertSame('redirect', $data[0]);
-    $this->assertSame('?r=bid/index&auctionId='.$auctionId, $data[1]);
+    $this->assertSame('?r=bid/index&auctionId=' . $auctionId, $data[1]);
 
     unset($_SESSION['userId']);
   }
@@ -136,10 +138,10 @@ class BidControllerTest extends TestCase
     $this->assertSame(['auctionId' => $auctionId], $data[2]);
   }
 
-/**
-   * @test
-   * @covers BidController
-   */
+  /**
+     * @test
+     * @covers BidController
+     */
   public function makeAuctionAccessRequestTest()
   {
     $auctionId = 42;
@@ -161,7 +163,7 @@ class BidControllerTest extends TestCase
     $this->assertSame('?r=bid', $data[1]);
     $this->assertSame(['auctionId' => $auctionId], $data[2]);
   }
-  
+
   /**
    * @test
    * @covers BidController
