@@ -58,7 +58,7 @@ class RegistrationController extends Controller
     $userId = $userBo->insertUser($user);
 
     if ($userId !== null) {
-      return ['redirect', '?r=login', null];
+      return ['redirect', '?r=login'];
     }
   }
 }
