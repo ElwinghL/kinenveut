@@ -46,9 +46,8 @@ class BidController extends Controller
       ->setObjectId($auctionId);
 
     $bidHistoryBo = App_BoFactory::getFactory()->getBidHistoryBo();
-    $bidId = $bidHistoryBo->insertBid($newBid);
-    
-    return ['redirect', htmlspecialchars_decode('?r=bid/index&auctionId=').$auctionId, $bidId];
+    $bidHistoryBo->insertBid($newBid);
+    return ['redirect', htmlspecialchars_decode('?r=bid/index&auctionId=').$auctionId];
   }
 
   public function makeAuctionAccessRequest(): array

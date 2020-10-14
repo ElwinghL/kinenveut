@@ -40,7 +40,6 @@ class RegistrationControllerTest extends TestCase
 
     $this->assertSame('redirect', $data[0]);
     $this->assertSame('?r=login', $data[1]);
-    $this->assertIsInt($data[2]);
 
     $userBo = App_BoFactory::getFactory()->getUserBo();
     $userBo->deleteUser($data[2]);

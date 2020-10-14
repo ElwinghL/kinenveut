@@ -103,15 +103,18 @@ class BidControllerTest extends TestCase
     $auctionId = 42;
     setParameters(['auctionId' => $auctionId, 'bidPrice' => '15']);
 
+    $bidHistoryBoMock = $this->createPartialMock(BidHistoryBoImpl::class, ['insertBid']);
+    $bidHistoryBoMock->method('insertBid')->willReturn(15);
+
+    $app_BoFactoryMock = $this->createPartialMock(App_BoFactory::class, ['getBidHistoryBo']);
+    $app_BoFactoryMock->method('getBidHistoryBo')->willReturn($bidHistoryBoMock);
+    App_BoFactory::setFactory($app_BoFactoryMock);
+
     $bidController = new BidController();
     $data = $bidController->addBid();
 
     $this->assertSame('redirect', $data[0]);
     $this->assertSame('?r=bid/index&auctionId='.$auctionId, $data[1]);
-    $this->assertIsInt($data[2]);
-
-    $bidHistoryBo = App_BoFactory::getFactory()->getBidHistoryBo();
-    $bidHistoryBo->deleteBidById($data[2]);
 
     unset($_SESSION['userId']);
   }
