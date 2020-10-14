@@ -17,8 +17,12 @@ $auctionAccessSateList = $data['auctionAccessStateList'];
             <?php $auction = $oneAuctionAccessSate->getAuction(); ?>
             <?php $bidder = $oneAuctionAccessSate->getBidder(); ?>
             <div class="col-md-10 mr-0 float-left">
-              <b><?php echo $bidder->getFirstName() . ' ' . $bidder->getLastName(); ?></b>
-              a demandé à pouvoir accéder à l'enchère "<?php echo $auction->getName(); ?>".
+              <b>
+                  <a href = "?r=account&userId=<?=$bidder->getId();?>" style="all:unset;">
+                      <?php echo $bidder->getFirstName() . ' ' . $bidder->getLastName(); ?>
+                  </a>
+              </b>
+              a demandé à pouvoir accéder à l'enchère "<a href = "?r=bid&auctionId=<?=$auction->getId();?>" style="all:unset;"><?php echo $auction->getName(); ?></a>".
             </div>
             <div class="col-md- mr-0 float-right">
               <a href="?r=accessRequest/accept&aasid=<?php echo $oneAuctionAccessSate->getId(); ?>" class="btn btn-success">

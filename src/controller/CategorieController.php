@@ -27,6 +27,7 @@ class CategorieController extends Controller
 
         if ($category !== null) {
           $data = [
+            'return'   => '?r=categorie',
             'category' => [
               'id'   => $category->getId(),
               'name' => $category->getName()
