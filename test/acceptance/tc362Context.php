@@ -1,5 +1,6 @@
 <?php
 
+use Behat\Behat\Tester\Exception\PendingException;
 use Behat\Behat\Context\Context;
 
 /**
@@ -16,5 +17,29 @@ class tc362Context implements Context
    */
   public function __construct()
   {
+  }
+
+  /**
+   * @Given une demande d'inscription est présente
+   */
+  public function uneDemandeDinscriptionEstPresente()
+  {
+    throw new PendingException();
+  }
+
+  /**
+   * @When l'admin valide l'inscription
+   */
+  public function ladminValideLinscription()
+  {
+    throw new PendingException();
+  }
+
+  /**
+   * @Then l'inscription de l'utilisateur devient effective
+   */
+  public function linscriptionDeLutilisateurDevientEffective()
+  {
+    throw new PendingException();
   }
 }
