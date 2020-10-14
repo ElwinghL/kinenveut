@@ -92,7 +92,7 @@
                           </div>
                       </div>
                       <?php if (isset($_SESSION['errors']['noBidPrice'])) : ?>
-                          <span class='error-custom'><?= $_SESSION['errors']['noBidPrice'] ?></span>;
+                          <span class='error-custom'><?= $_SESSION['errors']['noBidPrice'] ?></span>
                           <?php unset($_SESSION['errors']['noBidPrice']); ?>
                       <?php endif; ?>
                   </form>
