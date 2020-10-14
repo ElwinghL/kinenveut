@@ -13,8 +13,8 @@ class BidController extends Controller
       $userBo = App_BoFactory::getFactory()->getUserBo();
       $seller = $userBo->selectUserByUserId($auction->getSellerId());
 
-      $auctionAccessSateBo = App_BoFactory::getFactory()->getAuctionAccessStateBo();
-      $auctionAccessState = $auctionAccessSateBo->selectAuctionAccessStateByAuctionIdAndBidderId($auctionId, $_SESSION['userId']);
+      $auctionAccessStateBo = App_BoFactory::getFactory()->getAuctionAccessStateBo();
+      $auctionAccessState = $auctionAccessStateBo->selectAuctionAccessStateByAuctionIdAndBidderId($auctionId, $_SESSION['userId']);
 
       $data = [
         'auction'            => $auction,
@@ -57,11 +57,10 @@ class BidController extends Controller
   {
     $bidderId = $_SESSION['userId'];
     $auctionId = parameters()['auctionId'];
-    $auctionAccessStateDao = App_DaoFactory::getFactory()->getAuctionAccessStateDao();
+    $auctionAccessStateBo = App_BoFactory::getFactory()->getAuctionAccessStateBo();
     try {
-      $auctionAccessStateDao->insertAuctionAccessState($auctionId, $bidderId);
+      $auctionAccessStateBo->insertAuctionAccessState($auctionId, $bidderId);
     } catch (BDDException $e) {
-      $auctionAccessStateDao->updateStateIdByAuctionIdAndBidderId($auctionId, $bidderId, 0);
     }
 
     return ['redirect', '?r=bid', ['auctionId' => $auctionId]];
@@ -72,9 +71,9 @@ class BidController extends Controller
     $bidderId = $_SESSION['userId'];
     $auctionId = parameters()['auctionId'];
 
-    $auctionAccessStateDao = App_DaoFactory::getFactory()->getAuctionAccessStateDao();
+    $auctionAccessStateBo = App_BoFactory::getFactory()->getAuctionAccessStateBo();
     try {
-      $auctionAccessStateDao->updateStateIdByAuctionIdAndBidderId($auctionId, $bidderId, 2);
+      $auctionAccessStateBo->updateStateIdByAuctionIdAndBidderId($auctionId, $bidderId, 2);
     } catch (BDDException $e) {
     }
 
