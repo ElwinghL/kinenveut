@@ -12,13 +12,13 @@ $user = isset($data['user']) ? $data['user'] : new UserModel();
 } ?>">
       <div class="form-group col-md-12">
         <label for="firstName">Prénom</label>
-        <input class="form-control" name="firstName" type="text" id="firstName" value="<?php echo protectStringToDisplay($user->getFirstName()) ?>" placeholder="" maxlength="100" required />
+        <input class="form-control" name="firstName" type="text" id="firstName" value="<?php echo ($user->getFirstName()) ?>" placeholder="" maxlength="100" required />
         <br />
         <label for="lastName">Nom</label>
-        <input class="form-control" name="lastName" id="lastName" type="text" value="<?php echo protectStringToDisplay($user->getLastName()) ?>" placeholder="" maxlength="100" required />
+        <input class="form-control" name="lastName" id="lastName" type="text" value="<?php echo ($user->getLastName()) ?>" placeholder="" maxlength="100" required />
         <br />
         <label for="email">Email</label>
-        <input class="form-control" name="email" id="email" type="email" value="<?php echo protectStringToDisplay($user->getEmail()) ?>" placeholder="" maxlength="255" required />
+        <input class="form-control" name="email" id="email" type="email" value="<?php echo ($user->getEmail()) ?>" placeholder="" maxlength="255" required />
         <?php if (isset($data['errors']['email'])) : ?>
           <div class="invalid-feedback d-block"><?php echo $data['errors']['email'] ?></div>
         <?php endif; ?>
