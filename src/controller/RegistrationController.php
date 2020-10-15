@@ -57,8 +57,6 @@ class RegistrationController extends Controller
       ->setIsAuthorised(0);
     $userId = $userBo->insertUser($user);
 
-    if ($userId !== null) {
-      return ['redirect', '?r=login'];
-    }
+    return ['redirect', '?r=login'];
   }
 }
