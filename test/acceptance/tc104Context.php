@@ -3,6 +3,8 @@
 use Behat\Behat\Tester\Exception\PendingException;
 use Behat\Behat\Context\Context;
 
+include_once 'src/tools.php';
+
 /**
  * Defines application features from the specific context.
  */
@@ -13,7 +15,10 @@ class tc104Context implements Context
    */
   public function lutilisateurEstUnAdmin()
   {
-    throw new PendingException();
+    $user = new UserModel();
+    $user->setEmail('admin@kinenveut.fr');
+    $user->setPassword('password');
+    Universe::getUniverse()->setUser($user);
   }
 
   /**
