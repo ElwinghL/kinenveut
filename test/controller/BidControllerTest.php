@@ -155,15 +155,22 @@ class BidControllerTest extends TestCase
     $_SESSION['userId'] = 42;
     setParameters(['auctionId' => $auctionId]);
 
-    $auctionAccessStateBoMock = $this->createPartialMock(AuctionAccessStateBoImpl::class, ['insertAuctionAccessState', 'updateStateIdByAuctionIdAndBidderId']);
+    $auctionAccessStateBoMock = $this->createPartialMock(AuctionAccessStateBoImpl::class, ['insertAuctionAccessState', 'updateStateIdByAuctionIdAndBidderId', 'selectAuctionAccessStateByAuctionIdAndBidderId']);
     $auctionAccessStateBoMock->method('insertAuctionAccessState')->willReturn(5);
-    $auctionAccessStateBoMock->method('updateStateIdByAuctionIdAndBidderId')->willReturn(false);
+    $auctionAccessStateBoMock->method('updateStateIdByAuctionIdAndBidderId')->willReturn(true);
+    $auctionAccessStateBoMock->method('selectAuctionAccessStateByAuctionIdAndBidderId')->will($this->onConsecutiveCalls(new AuctionAccessStateModel(), null));
 
     $app_BoFactoryMock = $this->createPartialMock(App_BoFactory::class, ['getAuctionAccessStateBo']);
     $app_BoFactoryMock->method('getAuctionAccessStateBo')->willReturn($auctionAccessStateBoMock);
     App_BoFactory::setFactory($app_BoFactoryMock);
 
     $bidController = new BidController();
+    $data = $bidController->makeAuctionAccessRequest();
+
+    $this->assertSame('redirect', $data[0]);
+    $this->assertSame('?r=bid', $data[1]);
+    $this->assertSame(['auctionId' => $auctionId], $data[2]);
+
     $data = $bidController->makeAuctionAccessRequest();
 
     $this->assertSame('redirect', $data[0]);
