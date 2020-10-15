@@ -4,11 +4,11 @@ class AuctionDaoImpl implements IAuctionDao
 {
   public function insertAuction(AuctionModel $auction): ?int
   {
-    $request = "INSERT INTO Auction(name, description, basePrice, reservePrice, pictureLink, /*startDate,*/ duration, auctionState, sellerId, privacyId, categoryId) VALUES (?, ?, ?, ?, ' ',/* ?,*/ ?, 0, ?, ?, ?)";
+    $request = "INSERT INTO Auction(name, description, basePrice, reservePrice, pictureLink, duration, auctionState, sellerId, privacyId, categoryId) VALUES (?, ?, ?, ?, ' ', ?, 0, ?, ?, ?)";
 
     try {
       $query = db()->prepare($request);
-      $query->execute([utf8_decode($auction->getName()), utf8_decode($auction->getDescription()), $auction->getBasePrice(), $auction->getReservePrice(), /*$auction->getPictureLink(), $auction->getStartDate(),*/ $auction->getDuration(), $auction->getSellerId(), $auction->getPrivacyId(), $auction->getCategoryId()]);
+      $query->execute([utf8_decode($auction->getName()), utf8_decode($auction->getDescription()), $auction->getBasePrice(), $auction->getReservePrice(), /*$auction->getPictureLink(),*/ $auction->getDuration(), $auction->getSellerId(), $auction->getPrivacyId(), $auction->getCategoryId()]);
     } catch (PDOException $Exception) {
       throw new BDDException($Exception->getMessage(), $Exception->getCode());
     }
@@ -101,7 +101,7 @@ class AuctionDaoImpl implements IAuctionDao
         ->setBasePrice($oneAuction['basePrice'])
         ->setReservePrice($oneAuction['reservePrice'])
         ->setPictureLink($oneAuction['pictureLink'])
-        ->setStartDate($oneAuction['startDate'])
+        ->setStartDate(new DateTime($oneAuction['startDate']))
         ->setDuration($oneAuction['duration'])
         ->setAuctionState($oneAuction['auctionState'])
         ->setSellerId($oneAuction['sellerId'])
@@ -155,7 +155,7 @@ class AuctionDaoImpl implements IAuctionDao
         ->setBasePrice($oneAuction['basePrice'])
         ->setReservePrice($oneAuction['reservePrice'])
         ->setPictureLink($oneAuction['pictureLink'])
-        ->setStartDate($oneAuction['startDate'])
+        ->setStartDate(new DateTime($oneAuction['startDate']))
         ->setDuration($oneAuction['duration'])
         ->setAuctionState($oneAuction['auctionState'])
         ->setSellerId($oneAuction['sellerId'])
@@ -209,7 +209,7 @@ class AuctionDaoImpl implements IAuctionDao
         ->setBasePrice($oneAuction['basePrice'])
         ->setReservePrice($oneAuction['reservePrice'])
         ->setPictureLink($oneAuction['pictureLink'])
-        ->setStartDate($oneAuction['startDate'])
+        ->setStartDate(new DateTime($oneAuction['startDate']))
         ->setDuration($oneAuction['duration'])
         ->setAuctionState($oneAuction['auctionState'])
         ->setSellerId($oneAuction['sellerId'])
@@ -272,7 +272,7 @@ class AuctionDaoImpl implements IAuctionDao
         ->setBasePrice($oneAuction['basePrice'])
         ->setReservePrice($oneAuction['reservePrice'])
         ->setPictureLink($oneAuction['pictureLink'])
-        ->setStartDate($oneAuction['startDate'])
+        ->setStartDate(new DateTime($oneAuction['startDate']))
         ->setDuration($oneAuction['duration'])
         ->setAuctionState($oneAuction['auctionState'])
         ->setSellerId($oneAuction['sellerId'])
@@ -337,7 +337,7 @@ class AuctionDaoImpl implements IAuctionDao
         ->setBasePrice($oneAuction['basePrice'])
         ->setReservePrice($oneAuction['reservePrice'])
         ->setPictureLink($oneAuction['pictureLink'])
-        ->setStartDate($oneAuction['startDate'])
+        ->setStartDate(new DateTime($oneAuction['startDate']))
         ->setDuration($oneAuction['duration'])
         ->setAuctionState($oneAuction['auctionState'])
         ->setSellerId($oneAuction['sellerId'])
