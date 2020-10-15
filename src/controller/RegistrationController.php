@@ -51,7 +51,7 @@ class RegistrationController extends Controller
     $user
       ->setFirstName($data['values']['firstName'])
       ->setLastName($data['values']['lastName'])
-      ->setBirthDate($data['values']['birthDate'])
+      ->setBirthDate(new DateTime($data['values']['birthDate']))
       ->setEmail($data['values']['email'])
       ->setPassword($data['values']['password'])
       ->setIsAuthorised(0);

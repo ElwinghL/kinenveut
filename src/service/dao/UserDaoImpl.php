@@ -23,7 +23,7 @@ class UserDaoImpl implements IUserDao
         ->setFirstName(protectStringToDisplay($userSelected['firstName']))
         ->setLastName(protectStringToDisplay($userSelected['lastName']))
         ->setEmail(protectStringToDisplay($userSelected['email']))
-        ->setBirthDate($userSelected['birthDate'])
+        ->setBirthDate(new DateTime($userSelected['birthDate']))
         ->setIsAuthorised($userSelected['isAuthorised'])
         ->setIsAdmin($userSelected['isAdmin']);
     }
@@ -52,7 +52,7 @@ class UserDaoImpl implements IUserDao
         ->setFirstName(protectStringToDisplay($oneUser['firstName']))
         ->setLastName(protectStringToDisplay($oneUser['lastName']))
         ->setEmail(protectStringToDisplay($oneUser['email']))
-        ->setBirthDate($oneUser['birthDate'])
+        ->setBirthDate(new DateTime($oneUser['birthDate']))
         ->setIsAuthorised($oneUser['isAuthorised'])
         ->setIsAdmin($oneUser['isAdmin']);
 
@@ -83,7 +83,7 @@ class UserDaoImpl implements IUserDao
         ->setFirstName(protectStringToDisplay($firstUser['firstName']))
         ->setLastName(protectStringToDisplay($firstUser['lastName']))
         ->setEmail(protectStringToDisplay($firstUser['email']))
-        ->setBirthDate($firstUser['birthDate'])
+        ->setBirthDate(new DateTime($firstUser['birthDate']))
         ->setIsAuthorised($firstUser['isAuthorised'])
         ->setIsAdmin($firstUser['isAdmin']);
     }
@@ -112,7 +112,7 @@ class UserDaoImpl implements IUserDao
         ->setFirstName(protectStringToDisplay($firstUser['firstName']))
         ->setLastName(protectStringToDisplay($firstUser['lastName']))
         ->setEmail(protectStringToDisplay($firstUser['email']))
-        ->setBirthDate($firstUser['birthDate'])
+        ->setBirthDate(new DateTime($firstUser['birthDate']))
         ->setIsAuthorised($firstUser['isAuthorised'])
         ->setIsAdmin($firstUser['isAdmin']);
     }
@@ -125,8 +125,9 @@ class UserDaoImpl implements IUserDao
     $request = 'INSERT INTO User(firstName, lastName, email, password, birthDate) VALUES (?, ?, ?, ?, ?)';
 
     try {
+      $birthDate = ($user->getBirthDate() != null) ? ($user->getBirthDate())->format('Y-m-d') : null;
       $query = db()->prepare($request);
-      $query->execute([utf8_decode($user->getFirstName()), utf8_decode($user->getLastName()), utf8_decode($user->getEmail()), $user->getPassword(), $user->getBirthDate()]);
+      $query->execute([utf8_decode($user->getFirstName()), utf8_decode($user->getLastName()), utf8_decode($user->getEmail()), $user->getPassword(), $birthDate]);
     } catch (PDOException $Exception) {
       throw new BDDException($Exception->getMessage(), $Exception->getCode());
     }
