@@ -41,22 +41,69 @@ class UserManagementControllerTest extends TestCase
    * @test
    * @covers UserManagementController
    */
-  public function updateUserStateTest()
+  public function deleteTest()
   {
-    setParameters(['id' => 42]);
     $userTest1 = new UserModel();
+    $userTest2 = new UserModel();
+    $expectedId = 42;
+    $expectedIsAdmin = true;
     $userTest1
-      ->setId(42)
-      ->setIsAdmin(true)
+      ->setId($expectedId)
+      ->setIsAdmin($expectedIsAdmin)
+      ->setIsAuthorised(0);
+    $userTest2
+      ->setId($expectedId + 1)
+      ->setIsAdmin($expectedIsAdmin)
       ->setIsAuthorised(0);
 
-    $userBoMock = $this->createPartialMock(UserBoImpl::class, ['selectUserByUserId', 'selectUsersByState', 'updateUserIsAuthorised']);
-    $userBoMock->method('selectUserByUserId')->willReturn($userTest1);
-    $userBoMock->method('updateUserIsAuthorised')->willReturn(true);
+    setParameters(['id'=>43]);
+
+    $userBoMock = $this->createPartialMock(UserBoImpl::class, ['selectUsersByState','selectUserByUserId']);
     $userBoMock->method('selectUsersByState')->willReturn([$userTest1]);
+    $userBoMock->method('selectUserbyUserId')->willReturn($userTest2);
 
     $app_BoFactoryMock = $this->createPartialMock(App_BoFactory::class, ['getUserBo']);
     $app_BoFactoryMock->method('getUserBo')->willReturn($userBoMock);
+
+    App_BoFactory::setFactory($app_BoFactoryMock);
+
+    $userMCtrtrler = new UserManagementController();
+    $data = $userMCtrtrler->delete();
+
+    $this->assertSame('render', $data[0]);
+    $this->assertSame('index', $data[1]);
+    $this->assertSame(['users'=>[$userTest1]], $data[2]);
+    $this->assertSame(5,$userTest2->getIsAuthorised());
+  }
+
+    /**
+   * @test
+   * @covers UserManagementController
+   */
+  public function validateTest()
+  {
+    $userTest1 = new UserModel();
+    $userTest2 = new UserModel();
+    $expectedId = 42;
+    $expectedIsAdmin = true;
+    $userTest1
+      ->setId($expectedId)
+      ->setIsAdmin($expectedIsAdmin)
+      ->setIsAuthorised(0);
+    $userTest2
+      ->setId($expectedId + 1)
+      ->setIsAdmin($expectedIsAdmin)
+      ->setIsAuthorised(0);
+
+    setParameters(['id'=>43]);
+
+    $userBoMock = $this->createPartialMock(UserBoImpl::class, ['selectUsersByState','selectUserByUserId']);
+    $userBoMock->method('selectUsersByState')->willReturn([$userTest1]);
+    $userBoMock->method('selectUserbyUserId')->willReturn($userTest2);
+
+    $app_BoFactoryMock = $this->createPartialMock(App_BoFactory::class, ['getUserBo']);
+    $app_BoFactoryMock->method('getUserBo')->willReturn($userBoMock);
+
     App_BoFactory::setFactory($app_BoFactoryMock);
 
     $userMCtrtrler = new UserManagementController();
@@ -65,17 +112,45 @@ class UserManagementControllerTest extends TestCase
     $this->assertSame('render', $data[0]);
     $this->assertSame('index', $data[1]);
     $this->assertSame(['users'=>[$userTest1]], $data[2]);
+    $this->assertSame(1,$userTest2->getIsAuthorised());
+  }
 
-    $data = $userMCtrtrler->delete();
+      /**
+   * @test
+   * @covers UserManagementController
+   */
+  public function banTest()
+  {
+    $userTest1 = new UserModel();
+    $userTest2 = new UserModel();
+    $expectedId = 42;
+    $expectedIsAdmin = true;
+    $userTest1
+      ->setId($expectedId)
+      ->setIsAdmin($expectedIsAdmin)
+      ->setIsAuthorised(0);
+    $userTest2
+      ->setId($expectedId + 1)
+      ->setIsAdmin($expectedIsAdmin)
+      ->setIsAuthorised(0);
 
-    $this->assertSame('render', $data[0]);
-    $this->assertSame('index', $data[1]);
-    $this->assertSame(['users'=>[$userTest1]], $data[2]);
+    setParameters(['id'=>43]);
 
+    $userBoMock = $this->createPartialMock(UserBoImpl::class, ['selectUsersByState','selectUserByUserId']);
+    $userBoMock->method('selectUsersByState')->willReturn([$userTest1]);
+    $userBoMock->method('selectUserbyUserId')->willReturn($userTest2);
+
+    $app_BoFactoryMock = $this->createPartialMock(App_BoFactory::class, ['getUserBo']);
+    $app_BoFactoryMock->method('getUserBo')->willReturn($userBoMock);
+
+    App_BoFactory::setFactory($app_BoFactoryMock);
+
+    $userMCtrtrler = new UserManagementController();
     $data = $userMCtrtrler->ban();
 
     $this->assertSame('render', $data[0]);
     $this->assertSame('index', $data[1]);
     $this->assertSame(['users'=>[$userTest1]], $data[2]);
+    $this->assertSame(6,$userTest2->getIsAuthorised());
   }
 }
