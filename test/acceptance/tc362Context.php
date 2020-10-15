@@ -9,17 +9,6 @@ use Behat\Behat\Context\Context;
 class tc362Context implements Context
 {
   /**
-   * Initializes context.
-   *
-   * Every scenario gets its own context instance.
-   * You can also pass arbitrary arguments to the
-   * context constructor through behat.yml.
-   */
-  public function __construct()
-  {
-  }
-
-  /**
    * @Given une demande d'inscription est présente
    */
   public function uneDemandeDinscriptionEstPresente()

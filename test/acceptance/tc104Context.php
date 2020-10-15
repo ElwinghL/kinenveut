@@ -3,28 +3,22 @@
 use Behat\Behat\Tester\Exception\PendingException;
 use Behat\Behat\Context\Context;
 
+include_once 'src/tools.php';
+
 /**
  * Defines application features from the specific context.
  */
 class tc104Context implements Context
 {
   /**
-   * Initializes context.
-   *
-   * Every scenario gets its own context instance.
-   * You can also pass arbitrary arguments to the
-   * context constructor through behat.yml.
-   */
-  public function __construct()
-  {
-  }
-
-  /**
    * @Given L'utilisateur est un admin
    */
   public function lutilisateurEstUnAdmin()
   {
-    throw new PendingException();
+    $user = new UserModel();
+    $user->setEmail('admin@kinenveut.fr');
+    $user->setPassword('password');
+    Universe::getUniverse()->setUser($user);
   }
 
   /**

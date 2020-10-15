@@ -21,10 +21,10 @@
 } ?>" style="margin: 0 auto;">
                         <div class="form-group col-md-12">
                             <label for="email">Email</label>
-                            <input class="form-control" type="email" name="email" id="email" maxlength="255" required />
+                            <input class="form-control" type="email" name="email" maxlength="255" required />
 
                             <label for="password">Mot de passe</label>
-                            <input class="form-control" type="password" name="password" id="password" maxlength="255" required />
+                            <input class="form-control" type="password" name="password" maxlength="255" required />
 
                             <br />
                             <?php if (isset($data['errors']['wrongIdentifiers'])) : ?>
@@ -47,4 +47,3 @@
         </div>
     </div>
 </div>
-

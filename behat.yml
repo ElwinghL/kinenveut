@@ -1,6 +1,9 @@
 default:
   autoload:
     '': 'test/acceptance'
+  extensions:
+    Behat\MinkExtension:
+      goutte: ~
   suites:
     default:
       contexts:
@@ -13,6 +16,7 @@ default:
         - tc130Context
         - tc107Context
         - tc104Context
+        - defaultContext
       paths:
         features: test/resources
         bootstrap: test/acceptance
