@@ -44,11 +44,11 @@ class AccesRequestControllerTest extends TestCase
           ->setPrivacyId($privacyId)
           ->setCategoryId($categoryId);
 
-    $auctionAccessStateBoMock = $this->createPartialMock(AuctionAccessStateBoImplBo::class, ['selectAllAuctionAccessStateBySellerIdAndStateId']);
+    $auctionAccessStateBoMock = $this->createPartialMock(AuctionAccessStateBoImpl::class, ['selectAllAuctionAccessStateBySellerIdAndStateId']);
     $auctionAccessStateBoMock->method('selectAllAuctionAccessStateBySellerIdAndStateId')->will($this->onConsecutiveCalls($auction));
 
-    $app_BoFactoryMock = $this->createPartialMock(App_BoFactory::class, ['getAuctionAccessStateBoImplBo']);
-    $app_BoFactoryMock->method('getAuctionAccessStateBoImplBo')->willReturn($auctionAccessStateBoMock);
+    $app_BoFactoryMock = $this->createPartialMock(App_BoFactory::class, ['getAuctionAccessStateBo']);
+    $app_BoFactoryMock->method('getAuctionAccessStateBo')->willReturn($auctionAccessStateBoMock);
     App_BoFactory::setFactory($app_BoFactoryMock);
 
     $data = $accessController->index();
@@ -96,11 +96,11 @@ class AccesRequestControllerTest extends TestCase
           ->setPrivacyId($privacyId)
           ->setCategoryId($categoryId);
 
-    $auctionAccessStateBoMock = $this->createPartialMock(AuctionAccessStateBoImplBo::class, ['updateStateIdByAuctionAccessStateId']);
+    $auctionAccessStateBoMock = $this->createPartialMock(AuctionAccessStateBoImpl::class, ['updateStateIdByAuctionAccessStateId']);
     $auctionAccessStateBoMock->method('updateStateIdByAuctionAccessStateId')->will($this->onConsecutiveCalls($auction));
 
-    $app_BoFactoryMock = $this->createPartialMock(App_BoFactory::class, ['getAuctionAccessStateBoImplBo']);
-    $app_BoFactoryMock->method('getAuctionAccessStateBoImplBo')->willReturn($auctionAccessStateBoMock);
+    $app_BoFactoryMock = $this->createPartialMock(App_BoFactory::class, ['getAuctionAccessStateBo']);
+    $app_BoFactoryMock->method('getAuctionAccessStateBo')->willReturn($auctionAccessStateBoMock);
     App_BoFactory::setFactory($app_BoFactoryMock);
 
     $data = $accessController->accept();
@@ -122,7 +122,7 @@ class AccesRequestControllerTest extends TestCase
   private function updateRequestStateId($stateId): array
   {
     $aasid = parameters()['aasid'];
-    $auctionAccessStateDao = App_BoFactory::getFactory()->getAuctionAccessStateBoImplBo();
+    $auctionAccessStateDao = App_BoFactory::getFactory()->getAuctionAccessStateBo();
 
     $auctionAccessStateDao->updateStateIdByAuctionAccessStateId($aasid, $stateId);
 
