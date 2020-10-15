@@ -17,10 +17,10 @@ class RegistrationController extends Controller
     $values['password'] = filter_var(parameters()['password'], FILTER_UNSAFE_RAW);
 
     if ($values['firstName'] && strlen($values['firstName']) > 29) {
-      $errors['firstName'] = 'Le Prénom n\'est pas valide';
+      $errors['firstName'] = 'Le prénom n\'est pas valide';
     }
     if ($values['lastName'] && strlen($values['lastName']) > 29) {
-      $errors['firstName'] = 'La zone Nom n\'est pas valide';
+      $errors['lastName'] = 'Le nom n\'est pas valide';
     }
     if (!(preg_match('#^(\d{4})-(\d{2})-(\d{2})$#', $values['birthDate'], $matches)
       && checkdate($matches[2], $matches[3], $matches[1])

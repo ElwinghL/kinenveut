@@ -26,8 +26,7 @@ class LoginControllerTest extends TestCase
    */
   public function loginTest()
   {
-    global $parameters;
-    $parameters = ['email' => 'test@kinenveut.fr', 'password' => 'password'];
+    setParameters(['email' => 'test@kinenveut.fr', 'password' => 'password']);
     $loginController = new LoginController();
     $expectedId = 42;
     $expectedIsAdmin = true;

@@ -26,7 +26,6 @@ class AuctionController extends Controller
       $data2 = ['auctionList' => $auctionList];
       $data = array_merge($data, $data2);
 
-      //Todo: créer une vue différente !
       return ['render', 'index', $data];
     } else {
       //Todo : Gérer le cas où il y a 0 enchère :)
@@ -40,10 +39,10 @@ class AuctionController extends Controller
     $bidderId = parameters()['userId'];
     $userId = $_SESSION['userId'];
 
-    $auctionBo = App_BoFactory::getFactory()->getAuctionBo();
-    $auctionList = $auctionBo->selectAllAuctionsByBidderId($bidderId);
-
     if ($bidderId == $userId) {
+      $auctionBo = App_BoFactory::getFactory()->getAuctionBo();
+      $auctionList = $auctionBo->selectAllAuctionsByBidderId($bidderId);
+
       if (is_array($auctionList) && sizeof($auctionList) > 0) {
         $titlePage = 'Mes enchères';
         $data = [
@@ -51,7 +50,6 @@ class AuctionController extends Controller
           'auctionList' => $auctionList
         ];
 
-        //Todo: créer une vue différente !
         return ['render', 'index', $this->createDataForm($data)];
       } else {
         //Todo : Gérer le cas où il y a 0 enchère :)
@@ -91,8 +89,22 @@ class AuctionController extends Controller
     $values['privacyId'] = filter_var(parameters()['privacyId'], FILTER_VALIDATE_INT);
     $values['categoryId'] = filter_var(parameters()['categoryId'], FILTER_VALIDATE_INT);
 
-    if ($values['basePrice'] > $values['reservePrice']) {
-      $errors['basePrice'] = 'Le prix de départ ne peut pas être supérieur au prix de réserve';
+    if ((int)(parameters()['basePrice']) > (int)(parameters()['reservePrice'])) {
+      $errors['basePrice'] = 'Le prix de base ne peut pas être supérieur au prix de réserve';
+    }
+
+    if ($values['duration'] < 1) {
+      $errors['duration'] = 'L\'enchère doit durer minimum 24h (soit 1 jour)';
+    }
+
+    if ((int)(parameters()['basePrice']) != parameters()['basePrice']) {
+      $values['basePrice'] = parameters()['basePrice'];
+      $errors['basePrice'] = 'Le prix de base ne doit pas contenir de virgule';
+    }
+
+    if ((int)(parameters()['reservePrice']) != parameters()['reservePrice']) {
+      $values['reservePrice'] = parameters()['reservePrice'];
+      $errors['reservePrice'] = 'Le prix de réserve ne doit pas contenir de virgule';
     }
 
     $data = ['errors' => $errors, 'values' => $values];
@@ -141,7 +153,7 @@ class AuctionController extends Controller
   }
 
   /*Upadte the auction state*/
-  private function updateAuctionState(int $auctionState) : bool
+  private function updateAuctionState(int $auctionState): bool
   {
     $auctionId = parameters()['auctionId'];
 
@@ -151,8 +163,10 @@ class AuctionController extends Controller
     if ($_SESSION['userId'] == $auction->getSellerId()) {
       $auction->setAuctionState($auctionState);
       $isUpdated = $auctionBo->updateAuctionState($auction);
+
+      return $isUpdated;
     }
 
-    return $isUpdated;
+    return false;
   }
 }

@@ -7,7 +7,7 @@ class AccessRequestController extends Controller
     $sellerId = parameters()['userId'];
     $stateId = 0;
 
-    $auctionAccessStateBo = App_BoFactory::getFactory()->getAuctionAccessStateBoImplBo();
+    $auctionAccessStateBo = App_BoFactory::getFactory()->getAuctionAccessStateBo();
     $auctionAccessStateList = $auctionAccessStateBo->selectAllAuctionAccessStateBySellerIdAndStateId($sellerId, $stateId);
 
     $data = [
@@ -30,9 +30,8 @@ class AccessRequestController extends Controller
   private function updateRequestStateId($stateId): array
   {
     $aasid = parameters()['aasid'];
-    $auctionAccessStateDao = App_BoFactory::getFactory()->getAuctionAccessStateBoImplBo();
-
-    $auctionAccessStateDao->updateStateIdByAuctionAccessStateId($aasid, $stateId);
+    $auctionAccessStateBo = App_BoFactory::getFactory()->getAuctionAccessStateBo();
+    $auctionAccessStateBo->updateStateIdByAuctionAccessStateId($aasid, $stateId);
 
     return ['redirect', '?r=accessRequest'];
   }
