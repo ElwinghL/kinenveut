@@ -8,9 +8,9 @@ class AuctionModel
   private $basePrice;
   private $reservePrice;
   private $pictureLink;
-    private $startDate;
+  private $startDate;
   private $duration;
-    private $endDate;
+  private $endDate;
   private $auctionState;
   private $sellerId;
   private $privacyId;
@@ -114,17 +114,17 @@ class AuctionModel
     return $this;
   }
 
-    public function getEndDate() : ?DateTime
-    {
-        return $this->endDate;
-    }
+  public function getEndDate() : ?DateTime
+  {
+    return $this->endDate;
+  }
 
-    public function setEndDate(?DateTime $endDate): AuctionModel
-    {
-        $this->endDate = $endDate;
+  public function setEndDate(?DateTime $endDate): AuctionModel
+  {
+    $this->endDate = $endDate;
 
-        return $this;
-    }
+    return $this;
+  }
 
   public function getAuctionState(): ?int
   {

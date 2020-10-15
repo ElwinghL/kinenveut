@@ -104,7 +104,8 @@ class AuctionAccessStateDaoImpl implements IAuctionAccessStateDao
                 INNER JOIN User
                     ON User.id = aas.bidderId
                 WHERE Auction.sellerId = :sellerId
-                    AND aas.stateId = :stateId';
+                    AND aas.stateId = :stateId
+                ORDER BY aas.id DESC';
 
     try {
       $query = db()->prepare($request);
