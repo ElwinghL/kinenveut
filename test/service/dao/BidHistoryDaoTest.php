@@ -32,7 +32,7 @@ class BidHistoryDaoTest extends TestCase
     $this->bidHistory = new BidModel();
     $this->bidHistory
       ->setBidPrice(self::PRICE)
-      ->setBidDate(self::DATE)
+      ->setBidDate(new DateTime(self::DATE))
       ->setBidderId(self::BIDDER_ID)
       ->setObjectId(self::OBJECTIF_ID);
   }

@@ -89,7 +89,7 @@ class AuctionDaoImpl implements IAuctionDao
       $theBestBid
         ->setId($oneAuction['bidId'])
         ->setBidPrice($oneAuction['bidPrice'])
-        ->setBidDate($oneAuction['bidDate'])
+        ->setBidDate(new DateTime($oneAuction['bidDate']))
         ->setBidderId($oneAuction['bidderId'])
         ->setObjectId($oneAuction['objectId']);
 
@@ -143,7 +143,7 @@ class AuctionDaoImpl implements IAuctionDao
       $theBestBid
         ->setId($oneAuction['bidId'])
         ->setBidPrice($oneAuction['bidPrice'])
-        ->setBidDate($oneAuction['bidDate'])
+        ->setBidDate(new DateTime($oneAuction['bidDate']))
         ->setBidderId($oneAuction['bidderId'])
         ->setObjectId($oneAuction['objectId']);
 
@@ -197,7 +197,7 @@ class AuctionDaoImpl implements IAuctionDao
       $theBestBid
         ->setId($oneAuction['bidId'])
         ->setBidPrice($oneAuction['bidPrice'])
-        ->setBidDate($oneAuction['bidDate'])
+        ->setBidDate(new DateTime($oneAuction['bidDate']))
         ->setBidderId($oneAuction['bidderId'])
         ->setObjectId($oneAuction['objectId']);
 
@@ -260,7 +260,7 @@ class AuctionDaoImpl implements IAuctionDao
       $theBestBid
         ->setId($oneAuction['bidId'])
         ->setBidPrice($oneAuction['bidPrice'])
-        ->setBidDate($oneAuction['bidDate'])
+        ->setBidDate(new DateTime($oneAuction['bidDate']))
         ->setBidderId($oneAuction['bidderId'])
         ->setObjectId($oneAuction['objectId']);
 
@@ -325,7 +325,7 @@ class AuctionDaoImpl implements IAuctionDao
       $theBestBid
         ->setId($oneAuction['bidId'])
         ->setBidPrice($oneAuction['bidPrice'])
-        ->setBidDate($oneAuction['bidDate'])
+        ->setBidDate(new DateTime($oneAuction['bidDate']))
         ->setBidderId($oneAuction['bidderId'])
         ->setObjectId($oneAuction['objectId']);
 

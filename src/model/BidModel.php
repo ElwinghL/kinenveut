@@ -32,12 +32,12 @@ class BidModel
     return $this;
   }
 
-  public function getBidDate()
+  public function getBidDate() : ?DateTime
   {
-    return $this->bidDate;
+      return $this->bidDate;
   }
 
-  public function setBidDate($bidDate): BidModel
+  public function setBidDate(?DateTime $bidDate): BidModel
   {
     $this->bidDate = $bidDate;
 
