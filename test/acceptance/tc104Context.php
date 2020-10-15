@@ -9,17 +9,6 @@ use Behat\Behat\Context\Context;
 class tc104Context implements Context
 {
   /**
-   * Initializes context.
-   *
-   * Every scenario gets its own context instance.
-   * You can also pass arbitrary arguments to the
-   * context constructor through behat.yml.
-   */
-  public function __construct()
-  {
-  }
-
-  /**
    * @Given L'utilisateur est un admin
    */
   public function lutilisateurEstUnAdmin()
