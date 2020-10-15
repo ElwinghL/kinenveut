@@ -30,9 +30,10 @@ class AccessRequestController extends Controller
   private function updateRequestStateId($stateId): array
   {
     $aasid = parameters()['aasid'];
+    $userId = parameters()['userId'];
     $auctionAccessStateBo = App_BoFactory::getFactory()->getAuctionAccessStateBo();
     $auctionAccessStateBo->updateStateIdByAuctionAccessStateId($aasid, $stateId);
 
-    return ['redirect', '?r=accessRequest'];
+    return ['redirect', '?r=accessRequest&userId='.$userId];
   }
 }
