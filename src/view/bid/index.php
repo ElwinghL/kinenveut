@@ -173,6 +173,23 @@
     </div>
     <?php endif;?>
 
+    <!--Gestion Admin-->
+    <?php if($auction->getAuctionState() == 0 && $_SESSION['isAdmin'] == true):?>
+        <div class="row">
+            <div class="col-md-12">
+                <a href="?r=auctionManagement/validate&id=<?php echo $auction->getId(); ?>" class="btn btn-success">
+                    Accepter
+                </a>
+                <a href="?r=auctionManagement/delete&id=<?php echo $auction->getId(); ?>" class="btn btn-danger">
+                    Refuser
+                </a>
+            </div>
+        </div>
+
+        <!--Line-->
+        <div class="hr"></div>
+    <?php endif;?>
+
   <!--User-->
   <div class="row">
     <div class="col-md-9">
