@@ -32,7 +32,7 @@
             <?php if ($isFinished):?>
                 L'enchère est terminée depuis le <?php echo dateTimeFormat($auction->getEndDate());?>
             <?php else:?>
-                Expire dans : <?php echo ((new DateTime('Now'))->diff($auction->getEndDate()))->format('%a jours %h:%i:%s');?>
+                Expire dans : <?php echo((new DateTime('Now'))->diff($auction->getEndDate()))->format('%a jours %h:%i:%s');?>
             <?php endif;?></div>
         <br/>
     </div>

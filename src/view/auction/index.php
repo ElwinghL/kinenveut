@@ -37,7 +37,7 @@
                             <li id="category_<?php echo $auction->getId(); ?>" class="list-group-item float">
 
                                 <div class="col-md-5 mr-0 float-left">
-                                    <a href="<?='?r=bid/index&auctionId='.$auction->getId()?>">
+                                    <a href="<?='?r=bid/index&auctionId=' . $auction->getId()?>">
                                         <?=$auction->getName();?>
                                     </a>
                                 </div>
@@ -47,15 +47,15 @@
                                     <?php $isWinning = ($_SESSION['userId'] == $auction->getBestBid()->getBidderId());?>
                                     <?php if ($_SESSION['userId'] != $auction->getSellerId()):?>
                                         <span class="text-<?php echo($isWinning) ? 'success' : 'danger';?>">
-                                            <?=$minPrice.' €';?>
+                                            <?=$minPrice . ' €';?>
                                         </span>
                                     <?php else:?>
-                                        <?=$minPrice.' €'; ?>
+                                        <?=$minPrice . ' €'; ?>
                                     <?php endif;?>
                                 </div>
 
                                 <div class="col-md- mr-0 float-right">
-                                    <?php switch($auction->getAuctionState()):
+                                    <?php switch ($auction->getAuctionState()):
                                         case 0:?>
                                             <?php if ($pageUser): ?>
                                                 <a href="<?= '?r=auction/cancel&auctionId=' . $auction->getId() ?>">

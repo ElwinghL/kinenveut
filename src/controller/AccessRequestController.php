@@ -34,6 +34,6 @@ class AccessRequestController extends Controller
     $auctionAccessStateBo = App_BoFactory::getFactory()->getAuctionAccessStateBo();
     $auctionAccessStateBo->updateStateIdByAuctionAccessStateId($aasid, $stateId);
 
-    return ['redirect', '?r=accessRequest&userId='.$userId];
+    return ['redirect', '?r=accessRequest&userId=' . $userId];
   }
 }

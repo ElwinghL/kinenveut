@@ -79,7 +79,7 @@ class AccesRequestControllerTest extends TestCase
     $data = $accessController->accept();
 
     $this->assertSame('redirect', $data[0]);
-    $this->assertSame('?r=accessRequest&userId='.$parameters['userId'], $data[1]);
+    $this->assertSame('?r=accessRequest&userId=' . $parameters['userId'], $data[1]);
   }
 
   /**
@@ -103,6 +103,6 @@ class AccesRequestControllerTest extends TestCase
     $data = $accessController->refuse();
 
     $this->assertSame('redirect', $data[0]);
-    $this->assertSame('?r=accessRequest&userId='.$parameters['userId'], $data[1]);
+    $this->assertSame('?r=accessRequest&userId=' . $parameters['userId'], $data[1]);
   }
 }

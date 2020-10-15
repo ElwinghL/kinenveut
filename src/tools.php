@@ -38,18 +38,18 @@ function protectStringToDisplay($str) : String
 
 function dateFormat($date) : String
 {
-    return ($date)->format('d/m/Y');
+  return ($date)->format('d/m/Y');
 }
 function dateTimeFormat($dateTime) : String
 {
-    return ($dateTime)->format('d/m/Y H:i');
+  return ($dateTime)->format('d/m/Y H:i');
 }
 function dateTimeFormatWithSeconds($dateTime) : String
 {
-    return ($dateTime)->format('d/m/Y H:i:s');
+  return ($dateTime)->format('d/m/Y H:i:s');
 }
 
 function strtotimeFormat($strtotime) : String
 {
-    return date('d/m/Y', $strtotime);
+  return date('d/m/Y', $strtotime);
 }

@@ -34,7 +34,7 @@ class BidModel
 
   public function getBidDate() : ?DateTime
   {
-      return $this->bidDate;
+    return $this->bidDate;
   }
 
   public function setBidDate(?DateTime $bidDate): BidModel

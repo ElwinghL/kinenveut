@@ -79,6 +79,7 @@ class UserModel
   public function setBirthDate(?DateTime $birthDate): UserModel
   {
     $this->birthDate = $birthDate;
+
     return $this;
   }
 
