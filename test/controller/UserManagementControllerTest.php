@@ -36,4 +36,46 @@ class UserManagementControllerTest extends TestCase
     $this->assertSame('index', $data[1]);
     $this->assertSame(['users'=>[$userTest1]], $data[2]);
   }
+
+  /**
+   * @test
+   * @covers UserManagementController
+   */
+  public function updateUserStateTest()
+  {
+    setParameters(['id' => 42]);
+    $userTest1 = new UserModel();
+    $userTest1
+      ->setId(42)
+      ->setIsAdmin(true)
+      ->setIsAuthorised(0);
+
+    $userBoMock = $this->createPartialMock(UserBoImpl::class, ['selectUserByUserId', 'selectUsersByState', 'updateUserIsAuthorised']);
+    $userBoMock->method('selectUserByUserId')->willReturn($userTest1);
+    $userBoMock->method('updateUserIsAuthorised')->willReturn(true);
+    $userBoMock->method('selectUsersByState')->willReturn([$userTest1]);
+
+    $app_BoFactoryMock = $this->createPartialMock(App_BoFactory::class, ['getUserBo']);
+    $app_BoFactoryMock->method('getUserBo')->willReturn($userBoMock);
+    App_BoFactory::setFactory($app_BoFactoryMock);
+
+    $userMCtrtrler = new UserManagementController();
+    $data = $userMCtrtrler->validate();
+
+    $this->assertSame('render', $data[0]);
+    $this->assertSame('index', $data[1]);
+    $this->assertSame(['users'=>[$userTest1]], $data[2]);
+
+    $data = $userMCtrtrler->delete();
+
+    $this->assertSame('render', $data[0]);
+    $this->assertSame('index', $data[1]);
+    $this->assertSame(['users'=>[$userTest1]], $data[2]);
+
+    $data = $userMCtrtrler->ban();
+
+    $this->assertSame('render', $data[0]);
+    $this->assertSame('index', $data[1]);
+    $this->assertSame(['users'=>[$userTest1]], $data[2]);
+  }
 }

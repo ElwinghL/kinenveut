@@ -67,9 +67,9 @@ class BidController extends Controller
 
     $auctionAccessStateBo = App_BoFactory::getFactory()->getAuctionAccessStateBo();
 
-    try {
+    if ($auctionAccessStateBo->selectAuctionAccessStateByAuctionIdAndBidderId($auctionId, $bidderId) === null) {
       $auctionAccessStateBo->insertAuctionAccessState($auctionId, $bidderId);
-    } catch (BDDException $e) {
+    } else {
       $auctionAccessStateBo->updateStateIdByAuctionIdAndBidderId($auctionId, $bidderId, 0);
     }
 
@@ -83,10 +83,7 @@ class BidController extends Controller
 
     $auctionAccessStateBo = App_BoFactory::getFactory()->getAuctionAccessStateBo();
 
-    try {
-      $auctionAccessStateBo->updateStateIdByAuctionIdAndBidderId($auctionId, $bidderId, 2);
-    } catch (BDDException $e) {
-    }
+    $auctionAccessStateBo->updateStateIdByAuctionIdAndBidderId($auctionId, $bidderId, 2);
 
     return ['redirect', '?r=bid', ['auctionId' => $auctionId]];
   }
