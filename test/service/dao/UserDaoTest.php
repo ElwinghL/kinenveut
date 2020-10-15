@@ -47,7 +47,7 @@ class UserDaoTest extends TestCase
     $this->user
       ->setFirstName(self::FIRST_NAME)
       ->setLastName(self::LAST_NAME)
-      ->setBirthDate(self::BIRTH_DATE)
+      ->setBirthDate(new DateTime(self::BIRTH_DATE))
       ->setEmail(self::EMAIL)
       ->setPassword(self::PASSWORD);
   }
@@ -130,7 +130,7 @@ class UserDaoTest extends TestCase
     $this->assertNotNull($userSelected);
     $this->assertEquals(self::FIRST_NAME, $userSelected->getFirstName());
     $this->assertEquals(self::LAST_NAME, $userSelected->getLastName());
-    $this->assertEquals(self::BIRTH_DATE, $userSelected->getBirthDate());
+    $this->assertEquals(new DateTime(self::BIRTH_DATE), $userSelected->getBirthDate());
     $this->assertEquals(self::EMAIL, $userSelected->getEmail());
 
     $this->userDao->deleteUser($userId);
@@ -152,7 +152,7 @@ class UserDaoTest extends TestCase
     $this->assertNotNull($userSelected);
     $this->assertEquals(self::FIRST_NAME, $userSelected->getFirstName());
     $this->assertEquals(self::LAST_NAME, $userSelected->getLastName());
-    $this->assertEquals(self::BIRTH_DATE, $userSelected->getBirthDate());
+    $this->assertEquals(new DateTime(self::BIRTH_DATE), $userSelected->getBirthDate());
     $this->assertEquals(self::EMAIL, $userSelected->getEmail());
 
     $this->userDao->deleteUser($userId);
@@ -174,7 +174,7 @@ class UserDaoTest extends TestCase
     $this->assertEquals($userId, $userSelected->getId());
     $this->assertEquals(self::FIRST_NAME, $userSelected->getFirstName());
     $this->assertEquals(self::LAST_NAME, $userSelected->getLastName());
-    $this->assertEquals(self::BIRTH_DATE, $userSelected->getBirthDate());
+    $this->assertEquals(new DateTime(self::BIRTH_DATE), $userSelected->getBirthDate());
     $this->assertEquals(self::EMAIL, $userSelected->getEmail());
 
     $this->userDao->deleteUser($userId);

@@ -28,10 +28,28 @@ function my_autoloader($name)
 
 spl_autoload_register('my_autoloader');
 
-function protectStringToDisplay($str)
+function protectStringToDisplay($str) : String
 {
   $str = trim($str);
   $str = utf8_encode($str);
 
   return htmlentities($str, ENT_QUOTES, 'UTF-8');
+}
+
+function dateFormat($date) : String
+{
+  return ($date)->format('d/m/Y');
+}
+function dateTimeFormat($dateTime) : String
+{
+  return ($dateTime)->format('d/m/Y H:i');
+}
+function dateTimeFormatWithSeconds($dateTime) : String
+{
+  return ($dateTime)->format('d/m/Y H:i:s');
+}
+
+function strtotimeFormat($strtotime) : String
+{
+  return date('d/m/Y', $strtotime);
 }
