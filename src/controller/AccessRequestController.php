@@ -4,21 +4,17 @@ class AccessRequestController extends Controller
 {
   public function index(): array
   {
-    $sellerId = $_SESSION['userId'];
+    $sellerId = parameters()['userId'];
     $stateId = 0;
 
     $auctionAccessStateBo = App_BoFactory::getFactory()->getAuctionAccessStateBo();
-    try {
-      $auctionAccessStateList = $auctionAccessStateBo->selectAllAuctionAccessStateBySellerIdAndStateId($sellerId, $stateId);
+    $auctionAccessStateList = $auctionAccessStateBo->selectAllAuctionAccessStateBySellerIdAndStateId($sellerId, $stateId);
 
-      $data = [
-        'auctionAccessStateList' => $auctionAccessStateList
-      ];
+    $data = [
+      'auctionAccessStateList' => $auctionAccessStateList
+    ];
 
-      return ['render', 'index', $data];
-    } catch (BDDException $e) {
-      return ['redirect', '?r=home'];
-    }
+    return ['render', 'index', $data];
   }
 
   public function accept(): array
@@ -35,11 +31,7 @@ class AccessRequestController extends Controller
   {
     $aasid = parameters()['aasid'];
     $auctionAccessStateBo = App_BoFactory::getFactory()->getAuctionAccessStateBo();
-    try {
-      $auctionAccessStateBo->updateStateIdByAuctionAccessStateId($aasid, $stateId);
-    } catch (BDDException $e) {
-      return ['redirect', '?r=home'];
-    }
+    $auctionAccessStateBo->updateStateIdByAuctionAccessStateId($aasid, $stateId);
 
     return ['redirect', '?r=accessRequest'];
   }
