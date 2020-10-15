@@ -123,7 +123,8 @@ class AuctionDaoImpl implements IAuctionDao
     FROM v_Auction
     WHERE auctionState = :auctionState
         AND (CASE WHEN auctionState = 0 THEN 1 ELSE privacyId in (0,1) END)
-        AND (CASE WHEN auctionState = 1 THEN endDate > NOW() ELSE 1 END);';
+        AND (CASE WHEN auctionState = 1 THEN endDate > NOW() ELSE 1 END)
+    ORDER BY v_Auction.objectId DESC;';
 
     try {
       $query = db()->prepare($request);
@@ -170,13 +171,14 @@ class AuctionDaoImpl implements IAuctionDao
   {
     $auctions = null;
     $request = 'SELECT v_Auction.objectId,name,description,basePrice,reservePrice,pictureLink
-     ,startDate,duration
-     ,v_Auction.auctionState
-     ,v_Auction.endDate
-     ,sellerId,privacyId,categoryId
-                    ,v_Auction.bidId,v_Auction.bidPrice,v_Auction.bidDate,v_Auction.bidderId
-                    FROM v_Auction
-                    WHERE sellerId = :sellerId';
+                 ,startDate,duration
+                 ,v_Auction.auctionState
+                 ,v_Auction.endDate
+                 ,sellerId,privacyId,categoryId
+                ,v_Auction.bidId,v_Auction.bidPrice,v_Auction.bidDate,v_Auction.bidderId
+                FROM v_Auction
+                WHERE sellerId = :sellerId
+                ORDER BY v_Auction.objectId DESC';
 
     try {
       $query = db()->prepare($request);
@@ -237,7 +239,8 @@ class AuctionDaoImpl implements IAuctionDao
             OR v_Auction.sellerId = :sellerId
             OR User.isAdmin = 1)
         AND v_Auction.privacyId = 2
-        AND v_Auction.auctionState = 1';
+        AND v_Auction.auctionState = 1
+    ORDER BY v_Auction.objectId DESC';
 
     try {
       $query = db()->prepare($request);
