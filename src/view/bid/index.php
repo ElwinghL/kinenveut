@@ -174,7 +174,7 @@
     <?php endif;?>
 
     <!--Gestion Admin-->
-    <?php if($auction->getAuctionState() == 0 && $_SESSION['isAdmin'] == true):?>
+    <?php if ($auction->getAuctionState() == 0 && $_SESSION['isAdmin'] == true):?>
         <div class="row">
             <div class="col-md-12">
                 <a href="?r=auctionManagement/validate&id=<?php echo $auction->getId(); ?>" class="btn btn-success">

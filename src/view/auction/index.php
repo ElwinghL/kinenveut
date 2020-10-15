@@ -67,7 +67,7 @@
                                             <?php break;?>
                                         <?php case 1: ?>
                                             <?php if ($pageUser): ?>
-                                                <?php if($auction->getBestBid() != null && $auction->getBestBid()->getBidPrice() >= $auction->getReservePrice() && $auction->getBestBid()->getBidPrice() > 0):?>
+                                                <?php if ($auction->getBestBid() != null && $auction->getBestBid()->getBidPrice() >= $auction->getReservePrice() && $auction->getBestBid()->getBidPrice() > 0):?>
                                                     <a href="<?= '?r=auction/abort&auctionId=' . $auction->getId() ?>">
                                                         <button class="btn btn-primary">Clôturer</button>
                                                     </a>
