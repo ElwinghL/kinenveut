@@ -34,7 +34,6 @@ class AccessRequestController extends Controller
 
     $auctionAccessStateDao->updateStateIdByAuctionAccessStateId($aasid, $stateId);
 
-
     return ['redirect', '?r=accessRequest'];
   }
 }

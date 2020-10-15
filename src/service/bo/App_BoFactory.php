@@ -27,6 +27,7 @@ class App_BoFactory
   {
     return new AuctionBoImpl();
   }
+
   public function getAuctionAccessStateBoImplBo(): AuctionAccessStateBoImpl
   {
     return new AuctionAccessStateBoImpl();
