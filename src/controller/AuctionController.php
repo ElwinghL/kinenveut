@@ -163,6 +163,7 @@ class AuctionController extends Controller
     if ($_SESSION['userId'] == $auction->getSellerId()) {
       $auction->setAuctionState($auctionState);
       $isUpdated = $auctionBo->updateAuctionState($auction);
+
       return $isUpdated;
     }
 
