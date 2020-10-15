@@ -16,6 +16,8 @@ class AccountControllerTest extends TestCase
     global $parameters;
     $parameters = ['userId'=>42];
     $accountController = new AccountController();
+    $_SERVER['HTTP_REFERER'] = 'urltest';
+    $_SESSION['isAdmin'] = true;
 
     $expectedId = 42;
     $expectedIsAdmin = false;
@@ -26,7 +28,7 @@ class AccountControllerTest extends TestCase
           ->setIsAuthorised(0);
 
     $userBoMock = $this->createPartialMock(UserBoImpl::class, ['selectUserByUserId']);
-    $userBoMock->method('selectUserByUserId')->will($this->onConsecutiveCalls($userTest1));
+    $userBoMock->method('selectUserByUserId')->willReturn($userTest1);
 
     $app_BoFactoryMock = $this->createPartialMock(App_BoFactory::class, ['getUserBo']);
     $app_BoFactoryMock->method('getUserBo')->willReturn($userBoMock);
@@ -36,6 +38,11 @@ class AccountControllerTest extends TestCase
 
     $this->assertSame('render', $data[0]);
     $this->assertSame('index', $data[1]);
+    $this->assertSame('urltest', $data[2]['return']);
+    $this->assertSame($expectedId, $data[2]['user']->getId());
+    $this->assertSame($expectedIsAdmin, $data[2]['user']->getIsAdmin());
+    $this->assertSame(0, $data[2]['user']->getIsAuthorised());
+    unset($_SESSION['isAdmin'], $_SERVER['HTTP_REFERER']);
   }
 
   /**

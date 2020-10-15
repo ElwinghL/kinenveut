@@ -5,62 +5,50 @@ use PHPUnit\Framework\TestCase;
 include_once 'src/tools.php';
 include_once 'src/parameters.php';
 
-class AccesRequestControllerTest extends TestCase
+class AccessRequestControllerTest extends TestCase
 {
   /**
    * @test
-   * @covers AccesRequestController
+   * @covers AccessRequestController
    */
   public function indexTest()
   {
     setParameters(['userId'=>42]);
-    $accessController = new AccessRequestController();
 
     //Todo : à revoir
     $auction = new AuctionModel();
-    $id = 0;
-    $name = 'Ma belle Auction';
-    $description = 'Vend un OBJECT pour cause de PAS UTILISE';
-    $basePrice = 0;
-    $reservePrice = 100;
-    $pictureLink = 'www.perdu.com';
-    $startDate = new DateTime();
-    $duration = 14;
-    $auctionState = 0;
-    $sellerId = 0;
-    $privacyId = 0;
-    $categoryId = 0;
-
     $auction
-          ->setId($id)
-          ->setName($name)
-          ->setDescription($description)
-          ->setBasePrice($basePrice)
-          ->setReservePrice($reservePrice)
-          ->setPictureLink($pictureLink)
-          ->setStartDate($startDate)
-          ->setDuration($duration)
-          ->setAuctionState($auctionState)
-          ->setSellerId($sellerId)
-          ->setPrivacyId($privacyId)
-          ->setCategoryId($categoryId);
+      ->setId(0)
+      ->setName('Ma belle Auction')
+      ->setDescription('Vend un OBJECT pour cause de PAS UTILISE')
+      ->setBasePrice(0)
+      ->setReservePrice(100)
+      ->setPictureLink('www.perdu.com')
+      ->setStartDate(new DateTime())
+      ->setDuration(14)
+      ->setAuctionState(0)
+      ->setSellerId(0)
+      ->setPrivacyId(0)
+      ->setCategoryId(0);
 
     $auctionAccessStateBoMock = $this->createPartialMock(AuctionAccessStateBoImpl::class, ['selectAllAuctionAccessStateBySellerIdAndStateId']);
-    $auctionAccessStateBoMock->method('selectAllAuctionAccessStateBySellerIdAndStateId')->will($this->onConsecutiveCalls([$auction]));
+    $auctionAccessStateBoMock->method('selectAllAuctionAccessStateBySellerIdAndStateId')->willReturn([$auction]);
 
     $app_BoFactoryMock = $this->createPartialMock(App_BoFactory::class, ['getAuctionAccessStateBo']);
     $app_BoFactoryMock->method('getAuctionAccessStateBo')->willReturn($auctionAccessStateBoMock);
     App_BoFactory::setFactory($app_BoFactoryMock);
 
+    $accessController = new AccessRequestController();
     $data = $accessController->index();
 
     $this->assertSame('render', $data[0]);
     $this->assertSame('index', $data[1]);
+    $this->assertSame(['auctionAccessStateList'=>[$auction]], $data[2]);
   }
 
   /**
    * @test
-   * @covers AccesRequestController
+   * @covers AccessRequestController
    */
   public function acceptTest()
   {
@@ -85,7 +73,7 @@ class AccesRequestControllerTest extends TestCase
 
   /**
    * @test
-   * @covers AccesRequestController
+   * @covers AccessRequestController
    */
   public function refuseTest()
   {

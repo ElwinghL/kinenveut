@@ -20,6 +20,7 @@ class AuctionModelTest extends TestCase
     $reservePrice = 100;
     $pictureLink = 'www.perdu.com';
     $startDate = new DateTime();
+    $endDate = new DateTime();
     $duration = 14;
     $auctionState = 0;
     $sellerId = 0;
@@ -34,6 +35,7 @@ class AuctionModelTest extends TestCase
       ->setReservePrice($reservePrice)
       ->setPictureLink($pictureLink)
       ->setStartDate($startDate)
+      ->setEndDate($endDate)
       ->setDuration($duration)
       ->setAuctionState($auctionState)
       ->setSellerId($sellerId)
@@ -47,6 +49,7 @@ class AuctionModelTest extends TestCase
     $this->assertSame($auction->getReservePrice(), $reservePrice);
     $this->assertSame($auction->getPictureLink(), $pictureLink);
     $this->assertSame($auction->getStartDate(), $startDate);
+    $this->assertSame($auction->getEndDate(), $endDate);
     $this->assertSame($auction->getDuration(), $duration);
     $this->assertSame($auction->getAuctionState(), $auctionState);
     $this->assertSame($auction->getSellerId(), $sellerId);
