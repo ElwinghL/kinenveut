@@ -10,6 +10,7 @@ class AuctionModel
   private $pictureLink;
   private $startDate;
   private $duration;
+  private $endDate;
   private $auctionState;
   private $sellerId;
   private $privacyId;
@@ -22,7 +23,7 @@ class AuctionModel
     return $this->id;
   }
 
-  public function setId($id): AuctionModel
+  public function setId(?int $id): AuctionModel
   {
     $this->id = $id;
 
@@ -89,12 +90,12 @@ class AuctionModel
     return $this;
   }
 
-  public function getStartDate()
+  public function getStartDate() : ?DateTime
   {
     return $this->startDate;
   }
 
-  public function setStartDate($startDate): AuctionModel
+  public function setStartDate(?DateTime $startDate): AuctionModel
   {
     $this->startDate = $startDate;
 
@@ -109,6 +110,18 @@ class AuctionModel
   public function setDuration(?int $duration): AuctionModel
   {
     $this->duration = $duration;
+
+    return $this;
+  }
+
+  public function getEndDate() : ?DateTime
+  {
+    return $this->endDate;
+  }
+
+  public function setEndDate(?DateTime $endDate): AuctionModel
+  {
+    $this->endDate = $endDate;
 
     return $this;
   }

@@ -61,7 +61,7 @@ class UserBoTest extends TestCase
     $expectedUser
       ->setFirstName('Francis')
       ->setLastName('Dupont')
-      ->setBirthDate(2000 - 01 - 13)
+      ->setBirthDate(new DateTime('2000-01-13'))
       ->setEmail('Francis.Dupont@gmail.com')
       ->setIsAdmin('false');
     $userBo = App_BoFactory::getFactory()->getUserBo();
@@ -86,7 +86,7 @@ class UserBoTest extends TestCase
     $expectedUser
       ->setFirstName('Francis')
       ->setLastName('Dupont')
-      ->setBirthDate(2000 - 01 - 13)
+      ->setBirthDate(new DateTime('2000-01-13'))
       ->setEmail('Francis.Dupont@gmail.com')
       ->setIsAdmin('false');
     $userBo = App_BoFactory::getFactory()->getUserBo();
@@ -113,7 +113,7 @@ class UserBoTest extends TestCase
             ->setId($idTest)
             ->setFirstName('Francis')
             ->setLastName('Dupont')
-            ->setBirthDate(2000 - 01 - 13)
+            ->setBirthDate(new DateTime('2000-01-13'))
             ->setEmail('Francis.Dupont@gmail.com')
             ->setIsAdmin('false');
     $userBo = App_BoFactory::getFactory()->getUserBo();
@@ -141,7 +141,7 @@ class UserBoTest extends TestCase
             ->setId(42)
             ->setFirstName('Francis')
             ->setLastName('Dupont')
-            ->setBirthDate(2000 - 01 - 13)
+            ->setBirthDate(new DateTime('2000-01-13'))
             ->setEmail('Francis.Dupont@gmail.com')
             ->setIsAdmin('false');
     $userBo = App_BoFactory::getFactory()->getUserBo();
@@ -169,7 +169,7 @@ class UserBoTest extends TestCase
             ->setId(42)
             ->setFirstName('Francis')
             ->setLastName('Dupont')
-            ->setBirthDate(2000 - 01 - 13)
+            ->setBirthDate(new DateTime('2000-01-13'))
             ->setEmail('Francis.Dupont@gmail.com')
             ->setIsAdmin('false');
     $userBo = App_BoFactory::getFactory()->getUserBo();
@@ -196,7 +196,7 @@ class UserBoTest extends TestCase
             ->setId(42)
             ->setFirstName('Francis')
             ->setLastName('Dupont')
-            ->setBirthDate(2000 - 01 - 13)
+            ->setBirthDate(new DateTime('2000-01-13'))
             ->setEmail('Francis.Dupont@gmail.com')
             ->setIsAdmin('false');
 

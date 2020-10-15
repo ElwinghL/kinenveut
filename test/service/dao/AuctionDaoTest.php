@@ -230,7 +230,7 @@ class AuctionDaoTest extends TestCase
     $bidTest = new BidModel();
     $bidTest
       ->setBidPrice(42)
-      ->setBidDate('2020-10-01')
+      ->setBidDate(new DateTime('2020-10-01'))
       ->setBidderId(1)
       ->setObjectId($auctionId);
 

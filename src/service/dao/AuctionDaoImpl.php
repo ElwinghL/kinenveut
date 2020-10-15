@@ -4,11 +4,11 @@ class AuctionDaoImpl implements IAuctionDao
 {
   public function insertAuction(AuctionModel $auction): ?int
   {
-    $request = "INSERT INTO Auction(name, description, basePrice, reservePrice, pictureLink, /*startDate,*/ duration, auctionState, sellerId, privacyId, categoryId) VALUES (?, ?, ?, ?, ' ',/* ?,*/ ?, 0, ?, ?, ?)";
+    $request = "INSERT INTO Auction(name, description, basePrice, reservePrice, pictureLink, duration, auctionState, sellerId, privacyId, categoryId) VALUES (?, ?, ?, ?, ' ', ?, 0, ?, ?, ?)";
 
     try {
       $query = db()->prepare($request);
-      $query->execute([utf8_decode($auction->getName()), utf8_decode($auction->getDescription()), $auction->getBasePrice(), $auction->getReservePrice(), /*$auction->getPictureLink(), $auction->getStartDate(),*/ $auction->getDuration(), $auction->getSellerId(), $auction->getPrivacyId(), $auction->getCategoryId()]);
+      $query->execute([utf8_decode($auction->getName()), utf8_decode($auction->getDescription()), $auction->getBasePrice(), $auction->getReservePrice(), /*$auction->getPictureLink(),*/ $auction->getDuration(), $auction->getSellerId(), $auction->getPrivacyId(), $auction->getCategoryId()]);
     } catch (PDOException $Exception) {
       throw new BDDException($Exception->getMessage(), $Exception->getCode());
     }
@@ -60,20 +60,17 @@ class AuctionDaoImpl implements IAuctionDao
     return $success;
   }
 
-  //Todo : utiliser v_auction
   public function selectAuctionByAuctionId(int $auctionId): ?AuctionModel
   {
     $oneAuction = null;
-    $request = 'SELECT Auction.id AS objectId,name,description,basePrice,reservePrice,pictureLink
+    $request = 'SELECT v_Auction.objectId,name,description,basePrice,reservePrice,pictureLink
      ,startDate,duration
-     ,(CASE WHEN ((DATE_ADD(Auction.startDate,interval Auction.duration day)) > NOW()) THEN Auction.auctionState ELSE 4 END) AS auctionState
-     ,Auction.auctionState theReal
-     ,DATE_ADD(Auction.startDate, INTERVAL Auction.duration DAY) AS endDate
+     ,v_Auction.auctionState 
+     ,v_Auction.endDate
      ,sellerId,privacyId,categoryId
-    ,v_BestBid.id AS bidId,v_BestBid.bidPrice,v_BestBid.bidDate,v_BestBid.bidderId
-    FROM Auction
-    LEFT JOIN v_BestBid ON v_BestBid.objectId = Auction.id
-    WHERE Auction.id = :id';
+    ,v_Auction.bidId,v_Auction.bidPrice,v_Auction.bidDate,v_Auction.bidderId
+    FROM v_Auction
+    WHERE v_Auction.objectId = :id';
 
     try {
       $query = db()->prepare($request);
@@ -89,7 +86,7 @@ class AuctionDaoImpl implements IAuctionDao
       $theBestBid
         ->setId($oneAuction['bidId'])
         ->setBidPrice($oneAuction['bidPrice'])
-        ->setBidDate($oneAuction['bidDate'])
+        ->setBidDate(new DateTime($oneAuction['bidDate']))
         ->setBidderId($oneAuction['bidderId'])
         ->setObjectId($oneAuction['objectId']);
 
@@ -101,8 +98,9 @@ class AuctionDaoImpl implements IAuctionDao
         ->setBasePrice($oneAuction['basePrice'])
         ->setReservePrice($oneAuction['reservePrice'])
         ->setPictureLink($oneAuction['pictureLink'])
-        ->setStartDate($oneAuction['startDate'])
+        ->setStartDate(new DateTime($oneAuction['startDate']))
         ->setDuration($oneAuction['duration'])
+        ->setEndDate(new DateTime($oneAuction['endDate']))
         ->setAuctionState($oneAuction['auctionState'])
         ->setSellerId($oneAuction['sellerId'])
         ->setPrivacyId($oneAuction['privacyId'])
@@ -113,21 +111,20 @@ class AuctionDaoImpl implements IAuctionDao
     return $oneAuctionModel;
   }
 
-  //Todo : utiliser v_Auction
   public function selectAllAuctionsByAuctionState(int $auctionState): array
   {
     $auctions = null;
-    $request = 'SELECT Auction.id AS objectId,name,description,basePrice,reservePrice,pictureLink
+    $request = 'SELECT v_Auction.objectId,name,description,basePrice,reservePrice,pictureLink
      ,startDate,duration
-     ,(CASE WHEN DATE_ADD(Auction.startDate,interval Auction.duration day) > NOW() THEN Auction.auctionState ELSE 4 END) AS auctionState
-     ,DATE_ADD(Auction.startDate, INTERVAL Auction.duration DAY) AS endDate
+     ,v_Auction.auctionState
+     ,v_Auction.endDate
      ,sellerId,privacyId,categoryId
-    ,v_BestBid.id AS bidId,v_BestBid.bidPrice,v_BestBid.bidDate,v_BestBid.bidderId
-    FROM Auction
-    LEFT JOIN v_BestBid ON v_BestBid.objectId = Auction.id
+    ,v_Auction.bidId,v_Auction.bidPrice,v_Auction.bidDate,v_Auction.bidderId
+    FROM v_Auction
     WHERE auctionState = :auctionState
         AND (CASE WHEN auctionState = 0 THEN 1 ELSE privacyId in (0,1) END)
-        AND (CASE WHEN auctionState = 1 THEN DATE_ADD(startDate,interval duration day) > NOW() ELSE 1 END);';
+        AND (CASE WHEN auctionState = 1 THEN endDate > NOW() ELSE 1 END)
+    ORDER BY v_Auction.objectId DESC;';
 
     try {
       $query = db()->prepare($request);
@@ -143,7 +140,7 @@ class AuctionDaoImpl implements IAuctionDao
       $theBestBid
         ->setId($oneAuction['bidId'])
         ->setBidPrice($oneAuction['bidPrice'])
-        ->setBidDate($oneAuction['bidDate'])
+        ->setBidDate(new DateTime($oneAuction['bidDate']))
         ->setBidderId($oneAuction['bidderId'])
         ->setObjectId($oneAuction['objectId']);
 
@@ -155,8 +152,9 @@ class AuctionDaoImpl implements IAuctionDao
         ->setBasePrice($oneAuction['basePrice'])
         ->setReservePrice($oneAuction['reservePrice'])
         ->setPictureLink($oneAuction['pictureLink'])
-        ->setStartDate($oneAuction['startDate'])
+        ->setStartDate(new DateTime($oneAuction['startDate']))
         ->setDuration($oneAuction['duration'])
+          ->setEndDate(new DateTime($oneAuction['endDate']))
         ->setAuctionState($oneAuction['auctionState'])
         ->setSellerId($oneAuction['sellerId'])
         ->setPrivacyId($oneAuction['privacyId'])
@@ -169,19 +167,18 @@ class AuctionDaoImpl implements IAuctionDao
     return $auctionList;
   }
 
-  //Todo:utiliser v_Auction
   public function selectAllAuctionsBySellerId(int $sellerId): array
   {
     $auctions = null;
-    $request = 'SELECT Auction.id AS objectId,name,description,basePrice,reservePrice,pictureLink
-     ,startDate,duration
-     ,(CASE WHEN DATE_ADD(Auction.startDate,interval Auction.duration day) > NOW() THEN Auction.auctionState ELSE 4 END) AS auctionState
-     ,DATE_ADD(Auction.startDate, INTERVAL Auction.duration DAY) AS endDate
-     ,sellerId,privacyId,categoryId
-                    ,v_BestBid.id AS bidId,v_BestBid.bidPrice,v_BestBid.bidDate,v_BestBid.bidderId
-                    FROM Auction
-                    LEFT JOIN v_BestBid ON v_BestBid.objectId = Auction.id
-                    WHERE sellerId = :sellerId ORDER BY auctionState';
+    $request = 'SELECT v_Auction.objectId,name,description,basePrice,reservePrice,pictureLink
+                 ,startDate,duration
+                 ,v_Auction.auctionState
+                 ,v_Auction.endDate
+                 ,sellerId,privacyId,categoryId
+                ,v_Auction.bidId,v_Auction.bidPrice,v_Auction.bidDate,v_Auction.bidderId
+                FROM v_Auction
+                WHERE sellerId = :sellerId
+                ORDER BY v_Auction.objectId DESC';
 
     try {
       $query = db()->prepare($request);
@@ -197,7 +194,7 @@ class AuctionDaoImpl implements IAuctionDao
       $theBestBid
         ->setId($oneAuction['bidId'])
         ->setBidPrice($oneAuction['bidPrice'])
-        ->setBidDate($oneAuction['bidDate'])
+        ->setBidDate(new DateTime($oneAuction['bidDate']))
         ->setBidderId($oneAuction['bidderId'])
         ->setObjectId($oneAuction['objectId']);
 
@@ -209,8 +206,9 @@ class AuctionDaoImpl implements IAuctionDao
         ->setBasePrice($oneAuction['basePrice'])
         ->setReservePrice($oneAuction['reservePrice'])
         ->setPictureLink($oneAuction['pictureLink'])
-        ->setStartDate($oneAuction['startDate'])
+        ->setStartDate(new DateTime($oneAuction['startDate']))
         ->setDuration($oneAuction['duration'])
+          ->setEndDate(new DateTime($oneAuction['endDate']))
         ->setAuctionState($oneAuction['auctionState'])
         ->setSellerId($oneAuction['sellerId'])
         ->setPrivacyId($oneAuction['privacyId'])
@@ -223,35 +221,33 @@ class AuctionDaoImpl implements IAuctionDao
     return $auctionList;
   }
 
-  //Todo: utiliser v_Auction
   public function selectAcceptedConfidentialAuctionsByBidderId(int $userId): array
   {
     $auctions = null;
-    $request = 'SELECT Auction.id AS objectId,name,description,basePrice,reservePrice,pictureLink
+    $request = 'SELECT v_Auction.objectId,name,description,basePrice,reservePrice,pictureLink
      ,startDate,duration
-    , (CASE WHEN DATE_ADD(Auction.startDate,interval Auction.duration day) > NOW() THEN Auction.auctionState ELSE 4 END) AS auctionState
-    , DATE_ADD(Auction.startDate,interval Auction.duration day) AS endDate
+    , v_Auction.auctionState
+    , v_Auction.endDate
      ,sellerId,privacyId,categoryId
-    ,v_BestBid.id AS bidId,v_BestBid.bidPrice,v_BestBid.bidDate,v_BestBid.bidderId
-    FROM Auction
-    LEFT JOIN v_BestBid ON v_BestBid.objectId = Auction.id
-    LEFT JOIN AuctionAccessState ON AuctionAccessState.auctionId = Auction.id
+    ,v_Auction.bidId,v_Auction.bidPrice,v_Auction.bidDate,v_Auction.bidderId
+    FROM v_Auction
+    LEFT JOIN AuctionAccessState ON AuctionAccessState.auctionId = v_Auction.objectId
     LEFT JOIN User ON User.id = :userId
     WHERE ((AuctionAccessState.bidderId = :bidderId
                 AND AuctionAccessState.stateId = 1
             )
-            OR Auction.sellerId = :sellerId
+            OR v_Auction.sellerId = :sellerId
             OR User.isAdmin = 1)
-        AND Auction.privacyId = 2
-        AND Auction.auctionState = 1
-        AND DATE_ADD(Auction.startDate,interval Auction.duration day) > NOW()';
+        AND v_Auction.privacyId = 2
+        AND v_Auction.auctionState = 1
+    ORDER BY v_Auction.objectId DESC';
 
     try {
       $query = db()->prepare($request);
       $query->execute(['userId' => $userId, 'bidderId' => $userId, 'sellerId' => $userId]);
       $auctions = $query->fetchAll(PDO::FETCH_ASSOC);
     } catch (PDOException $Exception) {
-      throw new BDDException($Exception->getMessage(), $Exception->getCode());
+      throw new BDDException($Exception->getMessage(), (int)$Exception->getCode());
     }
 
     $auctionList = [];
@@ -260,7 +256,7 @@ class AuctionDaoImpl implements IAuctionDao
       $theBestBid
         ->setId($oneAuction['bidId'])
         ->setBidPrice($oneAuction['bidPrice'])
-        ->setBidDate($oneAuction['bidDate'])
+        ->setBidDate(new DateTime($oneAuction['bidDate']))
         ->setBidderId($oneAuction['bidderId'])
         ->setObjectId($oneAuction['objectId']);
 
@@ -272,8 +268,9 @@ class AuctionDaoImpl implements IAuctionDao
         ->setBasePrice($oneAuction['basePrice'])
         ->setReservePrice($oneAuction['reservePrice'])
         ->setPictureLink($oneAuction['pictureLink'])
-        ->setStartDate($oneAuction['startDate'])
+        ->setStartDate(new DateTime($oneAuction['startDate']))
         ->setDuration($oneAuction['duration'])
+          ->setEndDate(new DateTime($oneAuction['endDate']))
         ->setAuctionState($oneAuction['auctionState'])
         ->setSellerId($oneAuction['sellerId'])
         ->setPrivacyId($oneAuction['privacyId'])
@@ -325,7 +322,7 @@ class AuctionDaoImpl implements IAuctionDao
       $theBestBid
         ->setId($oneAuction['bidId'])
         ->setBidPrice($oneAuction['bidPrice'])
-        ->setBidDate($oneAuction['bidDate'])
+        ->setBidDate(new DateTime($oneAuction['bidDate']))
         ->setBidderId($oneAuction['bidderId'])
         ->setObjectId($oneAuction['objectId']);
 
@@ -337,8 +334,9 @@ class AuctionDaoImpl implements IAuctionDao
         ->setBasePrice($oneAuction['basePrice'])
         ->setReservePrice($oneAuction['reservePrice'])
         ->setPictureLink($oneAuction['pictureLink'])
-        ->setStartDate($oneAuction['startDate'])
+        ->setStartDate(new DateTime($oneAuction['startDate']))
         ->setDuration($oneAuction['duration'])
+          ->setEndDate(new DateTime($oneAuction['endDate']))
         ->setAuctionState($oneAuction['auctionState'])
         ->setSellerId($oneAuction['sellerId'])
         ->setPrivacyId($oneAuction['privacyId'])
