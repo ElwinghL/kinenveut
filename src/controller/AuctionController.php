@@ -39,10 +39,10 @@ class AuctionController extends Controller
     $bidderId = parameters()['userId'];
     $userId = $_SESSION['userId'];
 
-    $auctionBo = App_BoFactory::getFactory()->getAuctionBo();
-    $auctionList = $auctionBo->selectAllAuctionsByBidderId($bidderId);
-
     if ($bidderId == $userId) {
+      $auctionBo = App_BoFactory::getFactory()->getAuctionBo();
+      $auctionList = $auctionBo->selectAllAuctionsByBidderId($bidderId);
+
       if (is_array($auctionList) && sizeof($auctionList) > 0) {
         $titlePage = 'Mes enchères';
         $data = [
@@ -89,11 +89,11 @@ class AuctionController extends Controller
     $values['privacyId'] = filter_var(parameters()['privacyId'], FILTER_VALIDATE_INT);
     $values['categoryId'] = filter_var(parameters()['categoryId'], FILTER_VALIDATE_INT);
 
-    if ($values['basePrice'] > $values['reservePrice']) {
+    if ((int)(parameters()['basePrice']) > (int)(parameters()['reservePrice'])) {
       $errors['basePrice'] = 'Le prix de base ne peut pas être supérieur au prix de réserve';
     }
 
-    if ($values['duration'] < $values['reservePrice']) {
+    if ($values['duration'] < 1) {
       $errors['duration'] = 'L\'enchère doit durer minimum 24h (soit 1 jour)';
     }
 
@@ -153,7 +153,7 @@ class AuctionController extends Controller
   }
 
   /*Upadte the auction state*/
-  private function updateAuctionState(int $auctionState) : bool
+  private function updateAuctionState(int $auctionState): bool
   {
     $auctionId = parameters()['auctionId'];
 
@@ -163,8 +163,9 @@ class AuctionController extends Controller
     if ($_SESSION['userId'] == $auction->getSellerId()) {
       $auction->setAuctionState($auctionState);
       $isUpdated = $auctionBo->updateAuctionState($auction);
+      return $isUpdated;
     }
 
-    return $isUpdated;
+    return false;
   }
 }
