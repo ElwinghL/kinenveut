@@ -67,11 +67,18 @@
                                             <?php break;?>
                                         <?php case 1: ?>
                                             <?php if ($pageUser): ?>
-                                                <a href="<?= '?r=auction/abort&auctionId=' . $auction->getId() ?>">
-                                                    <button type="button" class="btn btn-primary btn-ab">Clôturer</button>
-                                                </a>
+                                                <?php if ($auction->getBestBid() != null && $auction->getBestBid()->getBidPrice() >= $auction->getReservePrice() && $auction->getBestBid()->getBidPrice() > 0):?>
+                                                    <a href="<?= '?r=auction/abort&auctionId=' . $auction->getId() ?>">
+                                                        <button class="btn btn-primary">Clôturer</button>
+                                                    </a>
+                                                <?php else:?>
+                                                    <a href="<?= '?r=auction/abort&auctionId=' . $auction->getId() ?>"
+                                                    title="Vous ne pouvez pas clôturer cette enchère car elle n'a pas atteint son prix de réserve">
+                                                        <button class="btn btn-primary" disabled>Clôturer</button>
+                                                    </a>
+                                                <?php endif; ?>
                                                 <a href="<?= '?r=auction/cancel&auctionId=' . $auction->getId() ?>">
-                                                    <button type="button" class="btn btn-primary btn-ca">Annuler</button>
+                                                    <button type="button" class="btn btn-primary btn-ca">Supprimer</button>
                                                 </a>
                                             <?php else: ?>
                                                 <span class="badge badge-success">En cours</span>
