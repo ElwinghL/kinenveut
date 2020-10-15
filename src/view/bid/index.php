@@ -12,20 +12,7 @@
     $bestBid = ($auction->getBestBid() != null) ? $auction->getBestBid() : new BidModel();
     $minPrice = (($bestBid->getBidPrice() != null) && ($bestBid->getBidPrice() != null)) ? $bestBid->getBidPrice() : $auction->getBasePrice();
 
-    $startDate = strtotime($auction->getStartDate());
-    $endDate = strtotime($auction->getStartDate() . ' + ' . $auction->getDuration() . ' days');
-    $nowDate = strtotime('now');
-    $nowDateBis = new DateTime('Now');
-    $endDateFormated = date('Y-m-d H:i:s', $endDate);
-
-    $isFinished = $nowDate > $endDate;
-
-    $dateBis = date('Y-m-d H:i:s', $endDate);
-    $nowDatetime = new DateTime();
-    $endDatetime = new DateTime('' . $dateBis);
-    $interval = $nowDatetime->diff($endDatetime);
-
-    $timingLeftFormated = $interval->format('%a jours %h:%i:%s');
+    $isFinished = ($auction->getAuctionState() == 4);
 ?>
 
 <div class="container">
@@ -43,9 +30,9 @@
       </h2>
         <div id="timer">
             <?php if ($isFinished):?>
-                L'enchère est terminée depuis le <?php echo date('d/m/Y H:i:s', $endDate);?>
+                L'enchère est terminée depuis le <?php echo dateTimeFormat($auction->getEndDate());?>
             <?php else:?>
-                Expire dans : <?php echo $timingLeftFormated;?>
+                Expire dans : <?php echo ((new DateTime('Now'))->diff($auction->getEndDate()))->format('%a jours %h:%i:%s');?>
             <?php endif;?></div>
         <br/>
     </div>
@@ -57,7 +44,7 @@
                 <?php else:?>
                 Créé le
                 <?php endif;?>
-                <?php echo date('d-m-Y', $startDate); ?>
+                <?php echo dateFormat($auction->getStartDate()); ?>
             </i>
         </small>
     </div>
@@ -226,7 +213,7 @@
 
     /*Gestion du timer*/
     // Set the date we're counting down to
-    var countDownDate = new Date("<?=$endDateFormated?>").getTime();
+    var countDownDate = new Date("<?=($auction->getEndDate())->format('Y-m-d H:i:s');?>").getTime();
 
     // Update the count down every 1 second
     var x = setInterval(function() {
@@ -267,7 +254,7 @@
         // If the count down is finished, write some text
         if (distance < 0) {
             clearInterval(x);
-            document.getElementById("timer").innerHTML = "L'enchère est terminée depuis le <?php echo date('d/m/Y H:i:s', $endDate);?>";
+            document.getElementById("timer").innerHTML = "L'enchère est terminée depuis le <?php echo dateTimeFormatWithSeconds($auction->getEndDate());?>";
             document.getElementById("formulairePourEncherir").innerHTML = " ";
             document.getElementById("formulairePourEncherir").style.visibility="hidden";
         }
@@ -307,7 +294,7 @@
         // If the count down is finished, write some text
         if (distance < 0) {
             clearInterval(x);
-            document.getElementById("timer").innerHTML = "L'enchère est terminée depuis le <?php echo date('d/m/Y H:i:s', $endDate);?>";
+            document.getElementById("timer").innerHTML = "L'enchère est terminée depuis le <?php echo dateTimeFormatWithSeconds($auction->getEndDate());?>";
             document.getElementById("formulairePourEncherir").innerHTML = " ";
             document.getElementById("formulairePourEncherir").style.visibility="hidden";
             //Todo : ici, on peut discrètement passer l'enchère à terminé ^^ si l'état est en cours
