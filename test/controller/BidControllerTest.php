@@ -14,6 +14,8 @@ class BidControllerTest extends TestCase
   public function indexTest()
   {
     $_SESSION['userId'] = 42;
+    $_SERVER['HTTP_REFERER'] = 'urltest';
+    $_SESSION['isAdmin'] = true;
     setParameters(['auctionId' => 42]);
 
     $auction = new AuctionModel();
@@ -48,7 +50,7 @@ class BidControllerTest extends TestCase
     $this->assertSame('index', $data[1]);
     $this->assertSame(
       [
-        'return'             => '?home',
+        'return'             => 'urltest',
         'auction'            => $auction,
         'seller'             => $seller,
         'auctionAccessState' => $auctionAccessState
@@ -56,7 +58,7 @@ class BidControllerTest extends TestCase
       $data[2]
     );
 
-    unset($_SESSION['userId']);
+    unset($_SESSION['userId'], $_SESSION['isAdmin'], $_SERVER['HTTP_REFERER']);
   }
 
   /**
