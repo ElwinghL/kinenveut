@@ -16,10 +16,10 @@ class UserModelTest extends TestCase
     $id = 0;
     $firstName = 'Francis';
     $lastName = 'Dupont';
-    $birthDate = '2000-01-13';
+    $birthDate = new DateTime('2000-01-13');
     $email = 'Francis.Dupont@gmail.com';
     $password = 'password';
-    $isAuthorize = true;
+    $isAuthorize = 1;
     $isAdmin = false;
 
     $user

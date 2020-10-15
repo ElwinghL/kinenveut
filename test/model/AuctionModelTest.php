@@ -21,7 +21,7 @@ class AuctionModelTest extends TestCase
     $pictureLink = 'www.perdu.com';
     $startDate = new DateTime();
     $duration = 14;
-    $auctionState = null; //(null: attente d'acceptation, 0: EnchèreEnCours, 1: Annulée)
+    $auctionState = 0;
     $sellerId = 0;
     $privacyId = 0;
     $categoryId = 0;

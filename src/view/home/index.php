@@ -72,7 +72,7 @@ $searchInput = isset($data['searchInput']) ? $data['searchInput'] : '';
           <a class="auction-custom card card-product" href=<?php echo '?r=bid/index&auctionId=' . $auction->getId() ?>>
             <div class="thumbnail text-center">
               <h4 class="text-danger auction-title-custom"> <?php echo $auction->getName(); ?> </h4>
-              <p>Expiration : <?php echo date('d/m/Y h:m', strtotime($auction->getStartDate() . ' + ' . $auction->getDuration() . ' days')); ?></p>
+              <p>Expiration : <?php echo dateTimeFormat($auction->getEndDate()); ?></p>
               <hr class="line" />
               <div class="row">
                 <div class="col-md-12">
