@@ -45,7 +45,7 @@ class AccesRequestControllerTest extends TestCase
           ->setCategoryId($categoryId);
 
     $auctionAccessStateBoMock = $this->createPartialMock(AuctionAccessStateBoImpl::class, ['selectAllAuctionAccessStateBySellerIdAndStateId']);
-    $auctionAccessStateBoMock->method('selectAllAuctionAccessStateBySellerIdAndStateId')->will($this->onConsecutiveCalls($auction));
+    $auctionAccessStateBoMock->method('selectAllAuctionAccessStateBySellerIdAndStateId')->will($this->onConsecutiveCalls([$auction]));
 
     $app_BoFactoryMock = $this->createPartialMock(App_BoFactory::class, ['getAuctionAccessStateBo']);
     $app_BoFactoryMock->method('getAuctionAccessStateBo')->willReturn($auctionAccessStateBoMock);
@@ -97,7 +97,7 @@ class AccesRequestControllerTest extends TestCase
           ->setCategoryId($categoryId);
 
     $auctionAccessStateBoMock = $this->createPartialMock(AuctionAccessStateBoImpl::class, ['updateStateIdByAuctionAccessStateId']);
-    $auctionAccessStateBoMock->method('updateStateIdByAuctionAccessStateId')->will($this->onConsecutiveCalls($auction));
+    $auctionAccessStateBoMock->method('updateStateIdByAuctionAccessStateId')->will($this->onConsecutiveCalls(true));
 
     $app_BoFactoryMock = $this->createPartialMock(App_BoFactory::class, ['getAuctionAccessStateBo']);
     $app_BoFactoryMock->method('getAuctionAccessStateBo')->willReturn($auctionAccessStateBoMock);
@@ -109,24 +109,55 @@ class AccesRequestControllerTest extends TestCase
     $this->assertSame('?r=accessRequest', $data[1]);
   }
 
-  /*  public function accept(): array
+  /**
+   * @test
+   * @covers AccesRequestController
+   */
+  public function refuseTest()
   {
-    return $this->updateRequestStateId(1);
+    $accessController = new AccessRequestController();
+
+    global $parameters;
+    $parameters = ['aasid'=>42];
+
+    $auction = new AuctionModel();
+    $id = 0;
+    $name = 'Ma belle Auction';
+    $description = 'Vend un OBJECT pour cause de PAS UTILISE';
+    $basePrice = 0;
+    $reservePrice = 100;
+    $pictureLink = 'www.perdu.com';
+    $startDate = new DateTime();
+    $duration = 14;
+    $auctionState = null; //(null: attente d'acceptation, 0: EnchèreEnCours, 1: Annulée)
+    $sellerId = 0;
+    $privacyId = 0;
+    $categoryId = 0;
+
+    $auction
+          ->setId($id)
+          ->setName($name)
+          ->setDescription($description)
+          ->setBasePrice($basePrice)
+          ->setReservePrice($reservePrice)
+          ->setPictureLink($pictureLink)
+          ->setStartDate($startDate)
+          ->setDuration($duration)
+          ->setAuctionState($auctionState)
+          ->setSellerId($sellerId)
+          ->setPrivacyId($privacyId)
+          ->setCategoryId($categoryId);
+
+    $auctionAccessStateBoMock = $this->createPartialMock(AuctionAccessStateBoImpl::class, ['updateStateIdByAuctionAccessStateId']);
+    $auctionAccessStateBoMock->method('updateStateIdByAuctionAccessStateId')->will($this->onConsecutiveCalls(true));
+
+    $app_BoFactoryMock = $this->createPartialMock(App_BoFactory::class, ['getAuctionAccessStateBo']);
+    $app_BoFactoryMock->method('getAuctionAccessStateBo')->willReturn($auctionAccessStateBoMock);
+    App_BoFactory::setFactory($app_BoFactoryMock);
+
+    $data = $accessController->refuse();
+
+    $this->assertSame('redirect', $data[0]);
+    $this->assertSame('?r=accessRequest', $data[1]);
   }
-
-  public function refuse(): array
-  {
-    return $this->updateRequestStateId(5);
-  }
-
-  private function updateRequestStateId($stateId): array
-  {
-    $aasid = parameters()['aasid'];
-    $auctionAccessStateDao = App_BoFactory::getFactory()->getAuctionAccessStateBo();
-
-    $auctionAccessStateDao->updateStateIdByAuctionAccessStateId($aasid, $stateId);
-
-
-    return ['redirect', '?r=accessRequest'];
-  }*/
 }
