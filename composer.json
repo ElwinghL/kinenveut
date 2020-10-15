@@ -4,14 +4,10 @@
     "phpunit/phpunit": "^9.3.9",
     "phpunit/php-code-coverage": "^9.2",
     "behat/behat": "^3.7",
-    "codeception/codeception": "^4.1",
-    "codeception/module-phpbrowser": "^1.0.0",
-    "codeception/module-asserts": "^1.0.0"
+    "behat/mink": "^1.8"
   },
   "require": {
-    "vlucas/phpdotenv": "^5.2",
-    "ext-pdo": "*",
-    "ext-json": "*"
+    "vlucas/phpdotenv": "^5.2"
   },
   "scripts": {
     "format": [
