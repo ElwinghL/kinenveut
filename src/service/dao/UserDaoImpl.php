@@ -189,7 +189,7 @@ class UserDaoImpl implements IUserDao
     $request = 'SELECT id, firstName, lastName, email, birthDate, isAuthorised, isAdmin
                     FROM User
                     WHERE isAuthorised != :state
-                    ORDER BY User.id DESC';
+                    ORDER BY User.isAuthorised ASC  ';
 
     try {
       $query = db()->prepare($request);
