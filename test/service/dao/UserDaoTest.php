@@ -283,6 +283,7 @@ class UserDaoTest extends TestCase
    */
   public function selectAllUserExceptState0Test(): void
   {
+    $expected = count($this->userDao->selectAllUserExceptState0());
     $isAuthorised = '1';
     $userId = $this->userDao->insertUser($this->user);
     $this->user->setId($userId);
@@ -292,14 +293,14 @@ class UserDaoTest extends TestCase
     $usersSelected = $this->userDao->selectAllUserExceptState0();
 
     $this->assertTrue(is_array($usersSelected));
-    $this->assertEquals(1, count($usersSelected));
+    $this->assertEquals($expected, count($usersSelected));
 
     $this->user->setIsAuthorised($isAuthorised);
     $this->userDao->updateUserIsAuthorised($this->user);
 
     $usersSelected = $this->userDao->selectAllUserExceptState0();
 
-    $this->assertEquals(2, count($usersSelected));
+    $this->assertEquals($expected + 1, count($usersSelected));
 
     $this->userDao->deleteUser($userId);
     $this->userDao->deleteUser($userId2);
