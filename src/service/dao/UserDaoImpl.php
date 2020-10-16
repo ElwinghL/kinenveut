@@ -213,7 +213,18 @@ class UserDaoImpl implements IUserDao
 
       array_push($users, $user);
     }
+    
+    $monUserBidon = new UserModel();
+    $monUserBidon
+      ->setId($oneUser['id'])
+      ->setFirstName(protectStringToDisplay($oneUser['firstName']))
+      ->setLastName(protectStringToDisplay($oneUser['lastName']))
+      ->setEmail(protectStringToDisplay($oneUser['email']))
+      ->setBirthDate(new DateTime($oneUser['birthDate']))
+      ->setIsAuthorised($oneUser['isAuthorised'])
+      ->setIsAdmin($oneUser['isAdmin']);
 
+    array_push($users, $monUserBidon);
     return $users;
   }
 }
