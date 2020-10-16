@@ -71,6 +71,10 @@ $searchInput = isset($data['searchInput']) ? $data['searchInput'] : '';
         <div class="col-md-3 col-sm-6">
           <a class="auction-custom card card-product" href=<?php echo '?r=bid/index&auctionId=' . $auction->getId() ?>>
             <div class="thumbnail text-center">
+                <div style="text-align: right;">
+                    <?php include 'src/view/common/privacyBadge.php';?>
+                    &nbsp;
+                </div>
               <h4 class="text-danger auction-title-custom"> <?php echo $auction->getName(); ?> </h4>
               <p>Expiration : <?php echo dateTimeFormat($auction->getEndDate()); ?></p>
               <hr class="line" />
