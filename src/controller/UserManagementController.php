@@ -6,8 +6,10 @@ class UserManagementController extends Controller
   {
     $userBo = App_BoFactory::getFactory()->getUserBo();
     $users = $userBo->selectUsersByState(0);
+    $allUsers = $userBo->selectAllUserExceptState0();
     $data = [
-      'users' => $users
+      'users'    => $users,
+      'allUsers' => $allUsers
     ];
 
     return ['render', 'index', $data];
@@ -28,6 +30,11 @@ class UserManagementController extends Controller
     return $this->updateUserState(6); //Etat ban
   }
 
+  public function unban()
+  {
+    return $this->validate();
+  }
+
   private function updateUserState($stateId)
   {
     $userId = parameters()['id'];
@@ -39,8 +46,10 @@ class UserManagementController extends Controller
 
     $userBo->updateUserIsAuthorised($user);
     $users = $userBo->selectUsersByState(0);
+    $allUsers = $userBo->selectAllUserExceptState0();
     $data = [
-      'users' => $users
+      'users'    => $users,
+      'allUsers' => $allUsers
     ];
 
     return ['render', 'index', $data];
