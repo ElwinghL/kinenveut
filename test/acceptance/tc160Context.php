@@ -9,41 +9,9 @@ use Behat\Behat\Context\Context;
 class tc160Context implements Context
 {
   /**
-   * @Given l'utilisateur est sur la page d'une enchère
-   */
-  public function lutilisateurEstSurLaPageDuneEnchere()
-  {
-    throw new PendingException();
-  }
-
-  /**
-   * @Given l'utilisateur peut participer à l'enchère
-   */
-  public function lutilisateurPeutParticiperALenchere()
-  {
-    throw new PendingException();
-  }
-
-  /**
-   * @Given l'utilisateur a entré au préalable le montant de l'enchère
-   */
-  public function lutilisateurAEntreAuPrealableLeMontantDeLenchere()
-  {
-    throw new PendingException();
-  }
-
-  /**
    * @When l'utilisateur clique sur le bouton d'envoi de l'enchère
    */
   public function lutilisateurCliqueSurLeBoutonDenvoiDeLenchere()
-  {
-    throw new PendingException();
-  }
-
-  /**
-   * @When l'utilisateur a choisi un montant valide
-   */
-  public function lutilisateurAChoisiUnMontantValide()
   {
     throw new PendingException();
   }
@@ -65,25 +33,9 @@ class tc160Context implements Context
   }
 
   /**
-   * @When l'utilisateur clique sur le bouton d'enchère
-   */
-  public function lutilisateurCliqueSurLeBoutonDenchere()
-  {
-    throw new PendingException();
-  }
-
-  /**
    * @When l'utilisateur a choisi un montant invalide
    */
   public function lutilisateurAChoisiUnMontantInvalide()
-  {
-    throw new PendingException();
-  }
-
-  /**
-   * @When l'enchère est ouverte
-   */
-  public function lenchereEstOuverte()
   {
     throw new PendingException();
   }

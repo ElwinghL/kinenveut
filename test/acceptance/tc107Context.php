@@ -9,14 +9,6 @@ use Behat\Behat\Context\Context;
 class tc107Context implements Context
 {
   /**
-   * @Given l'utilisateur est sur la page de gestion d'une enchère
-   */
-  public function lutilisateurEstSurLaPageDeGestionDuneEnchere()
-  {
-    throw new PendingException();
-  }
-
-  /**
    * @Given l'utilisateur est un administrateur de l'enchère
    */
   public function lutilisateurEstUnAdministrateurDeLenchere()
@@ -25,41 +17,65 @@ class tc107Context implements Context
   }
 
   /**
-   * @When l'utilisateur clique sur le bouton d'éjection d'un acheteur
+   * @Given il se connecte
    */
-  public function lutilisateurCliqueSurLeBoutonDejectionDunAcheteur()
+  public function ilSeConnecte()
   {
     throw new PendingException();
   }
 
   /**
-   * @Then cet acheteur ne fait plus partie de l'enchère
+   * @Given il accèdes à la page des demandes d'accès à ses enchères
    */
-  public function cetAcheteurNeFaitPlusPartieDeLenchere()
+  public function ilAccedesALaPageDesDemandesDaccesASesEncheres()
   {
     throw new PendingException();
   }
 
   /**
-   * @Then l'acheteur éjecté n'y a plus accès
+   * @When l'utilisateur clique sur le bouton d'éjection d'une personne ayant demandée à participer à l'enchère
    */
-  public function lacheteurEjecteNyAPlusAcces()
+  public function lutilisateurCliqueSurLeBoutonDejectionDunePersonneAyantDemandeeAParticiperALenchere()
   {
     throw new PendingException();
   }
 
   /**
-   * @When l'utilisateur clique sur le bouton de suppression du bannissement d'un acheteur
+   * @Then cette personne est refusée
    */
-  public function lutilisateurCliqueSurLeBoutonDeSuppressionDuBannissementDunAcheteur()
+  public function cettePersonneEstRefusee()
   {
     throw new PendingException();
   }
 
   /**
-   * @Then cet acheteur a de nouveau accès à l'enchère
+   * @Then ne peut pas participer à cette enchère privée
    */
-  public function cetAcheteurADeNouveauAccesALenchere()
+  public function nePeutPasParticiperACetteEncherePrivee()
+  {
+    throw new PendingException();
+  }
+
+  /**
+   * @When l'utilisateur clique sur le bouton d'acceptation d'une personne ayant demandée à participer à l'enchère
+   */
+  public function lutilisateurCliqueSurLeBoutonDacceptationDunePersonneAyantDemandeeAParticiperALenchere()
+  {
+    throw new PendingException();
+  }
+
+  /**
+   * @Then cette personne est acceptée
+   */
+  public function cettePersonneEstAcceptee()
+  {
+    throw new PendingException();
+  }
+
+  /**
+   * @Then peut alors participer à cette enchère privée
+   */
+  public function peutAlorsParticiperACetteEncherePrivee()
   {
     throw new PendingException();
   }

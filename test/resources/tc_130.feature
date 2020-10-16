@@ -4,9 +4,9 @@ Fonctionnalité: Suppression d'une catégorie
   Plan du Scénario: Mise à jour des catégories
     Etant donné L'utilisateur est un admin
     Et l'utilisateur consulte les catégories d'enchères
-    Et la liste de catégories contient <nom>
-    Quand l'utilisateur supprime la catégorie <nom>
-    Alors les enchères avec la catégorie <nom> sont remis à la catégorie par défaut
+    Et la liste de catégories contient "<nom>"
+    Quand l'utilisateur supprime la catégorie "<nom>"
+    Alors les enchères avec la catégorie "<nom>" sont remis à la catégorie par défaut
     Exemples:
       | nom        |
       | cuisine    |
