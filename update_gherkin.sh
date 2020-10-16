@@ -15,8 +15,9 @@ do
   eachfile=$(echo "$eachfile" | cut -c 3-)
   if ! vendor/bin/behat --dry-run --append-snippets --colors --snippets-for=$nameContext $eachfile;
   then
-    sed -i '/- '$nameContext'/d' behat.yml
+    echo $eachfile >> error_gherkin.txt
     rm $eachfile
+    sed -i '/- '$nameContext'/d' behat.yml
     if [ -z "$(cat test/acceptance/$nameContext.php | grep "@")" ]
     then
       rm test/acceptance/$nameContext.php
