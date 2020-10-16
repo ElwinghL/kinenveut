@@ -163,8 +163,8 @@ class AuctionControllerTest extends TestCase
     $auctionController = new AuctionController();
     $data = $auctionController->bids();
 
-    $this->assertSame('redirect', $data[0]);
-    $this->assertSame('?r=home', $data[1]);
+    $this->assertSame('render', $data[0]);
+    $this->assertSame('index', $data[1]);
 
     unset($_SESSION['userId']);
   }
