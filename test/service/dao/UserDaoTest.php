@@ -15,6 +15,7 @@ class UserDaoTest extends TestCase
   const LAST_NAME = 'Dupont';
   const BIRTH_DATE = '2000-01-13';
   const EMAIL = 'Francis.Dupont@gmail.com';
+  const EMAIL2 = 'Francis.Dupon2@gmail.com';
   const PASSWORD = 'password';
 
   private $userDao;
@@ -30,7 +31,8 @@ class UserDaoTest extends TestCase
       ['selectUserByUserId', 1, 0, null],
       ['updateUser', 1, new UserModel(), null],
       ['updateUserIsAuthorised', 1, new UserModel(), null],
-      ['selectUsersByState', 1, 0, null]
+      ['selectUsersByState', 1, 0, null],
+      ['selectAllUserExceptState0', 0, null, null]
     ];
   }
 
@@ -49,6 +51,14 @@ class UserDaoTest extends TestCase
       ->setLastName(self::LAST_NAME)
       ->setBirthDate(new DateTime(self::BIRTH_DATE))
       ->setEmail(self::EMAIL)
+      ->setPassword(self::PASSWORD);
+
+    $this->user2 = new UserModel();
+    $this->user2
+      ->setFirstName(self::FIRST_NAME)
+      ->setLastName(self::LAST_NAME)
+      ->setBirthDate(new DateTime(self::BIRTH_DATE))
+      ->setEmail(self::EMAIL2)
       ->setPassword(self::PASSWORD);
   }
 
@@ -74,6 +84,9 @@ class UserDaoTest extends TestCase
     $this->expectException(BDDException::class);
 
     switch ($nbArg) {
+      case 0:
+        $this->userDao->$function();
+      break;
       case 1:
         $this->userDao->$function($arg1);
         break;
@@ -259,6 +272,37 @@ class UserDaoTest extends TestCase
     $this->assertNotNull($usersSelected[0]->getId());
 
     $this->userDao->deleteUser($userId);
+
+    $this->assertEmpty($this->userDao->selectUsersByState(-1));
+  }
+
+  /**
+   *
+   * @test
+   * @covers UserDaoImpl
+   */
+  public function selectAllUserExceptState0Test(): void
+  {
+    $isAuthorised = '1';
+    $userId = $this->userDao->insertUser($this->user);
+    $this->user->setId($userId);
+    $userId2 = $this->userDao->insertUser($this->user2);
+    $this->user2->setId($userId2);
+
+    $usersSelected = $this->userDao->selectAllUserExceptState0();
+
+    $this->assertTrue(is_array($usersSelected));
+    $this->assertEquals(1, count($usersSelected));
+
+    $this->user->setIsAuthorised($isAuthorised);
+    $this->userDao->updateUserIsAuthorised($this->user);
+
+    $usersSelected = $this->userDao->selectAllUserExceptState0();
+
+    $this->assertEquals(2, count($usersSelected));
+
+    $this->userDao->deleteUser($userId);
+    $this->userDao->deleteUser($userId2);
 
     $this->assertEmpty($this->userDao->selectUsersByState(-1));
   }
