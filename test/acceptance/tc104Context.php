@@ -26,7 +26,14 @@ class tc104Context implements Context
    */
   public function lutilisateurConsulteLesCategoriesDencheres()
   {
-    throw new PendingException();
+    $session = Universe::getUniverse()->getSession();
+    $session->visit('http://localhost/kinenveut/?r=categorie');
+    if ($session->getStatusCode() !== 200) {
+      throw new Exception('status code is not 200');
+    }
+    if ($session->getCurrentUrl() !== 'http://localhost/kinenveut/?r=categorie') {
+      throw new Exception('url is not "http://localhost/kinenveut/?r=categorie"');
+    }
   }
 
   /**
@@ -42,7 +49,23 @@ class tc104Context implements Context
    */
   public function lutilisateurAjouteUneCategorieAvecLeNomCuisine()
   {
-    throw new PendingException();
+    $session = Universe::getUniverse()->getSession();
+
+    $session->visit('http://localhost/kinenveut/?r=categorie/update_page');
+    if ($session->getStatusCode() !== 200) {
+      throw new Exception('status code is not 200');
+    }
+    if ($session->getCurrentUrl() !== 'http://localhost/kinenveut/?r=categorie/update_page') {
+      throw new Exception('url is not "http://localhost/kinenveut/?r=categorie/update_page"');
+    }
+    $session->getPage()->find(
+      'css',
+      'input[name="name"]'
+    )->setValue("Cuisine");
+    $session->getPage()->find(
+      'css',
+      'input[name="createCategory"]'
+    )->click();
   }
 
   /**
@@ -50,7 +73,21 @@ class tc104Context implements Context
    */
   public function uneNouvelleCategorieNommeeCuisineApparait()
   {
-    throw new PendingException();
+    $session = Universe::getUniverse()->getSession();
+
+    $session->visit('http://localhost/kinenveut/?r=categorie');
+    if ($session->getStatusCode() !== 200) {
+      throw new Exception('status code is not 200');
+    }
+    if ($session->getCurrentUrl() !== 'http://localhost/kinenveut/?r=categorie') {
+      throw new Exception('url is not "http://localhost/kinenveut/?r=categorie"');
+    }
+    if ($session->getPage()->find(
+      'css',
+      '.list-group-item'
+    )->getText() != "Cuisine") {
+      throw new Exception('category was not found');
+    }
   }
 
   /**
