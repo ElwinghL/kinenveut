@@ -1,15 +1,18 @@
 # language: fr
 Fonctionnalité: Filtrer les acheteurs inscrits à une enchère privée
   
-  Scénario: Ejection d'un utilisateur inscrit
-    Etant donné l'utilisateur est sur la page de gestion d'une enchère
-    Et l'utilisateur est un administrateur de l'enchère
-    Quand l'utilisateur clique sur le bouton d'éjection d'un acheteur
-    Alors cet acheteur ne fait plus partie de l'enchère
-    Et l'acheteur éjecté n'y a plus accès
-  
-  Scénario: Levée d'un bannissement
-    Etant donné l'utilisateur est sur la page de gestion d'une enchère
-    Et l'utilisateur est un administrateur de l'enchère
-    Quand l'utilisateur clique sur le bouton de suppression du bannissement d'un acheteur
-    Alors cet acheteur a de nouveau accès à l'enchère
+  Scénario: Refuser l'inscription d'un utilisateur à l'enchère
+    Etant donné que l'utilisateur est un administrateur de l'enchère
+    Et qu'il se connecte
+    Et il accèdes à la page des demandes d'accès à ses enchères
+    Quand l'utilisateur clique sur le bouton d'éjection d'une personne ayant demandée à participer à l'enchère 
+    Alors cette personne est refusée 
+    Et ne peut pas participer à cette enchère privée
+    
+  Scénario: Accepter l'inscription d'un utilisateur à l'enchère
+    Etant donné que l'utilisateur est un administrateur de l'enchère
+    Et qu'il se connecte
+    Et il accèdes à la page des demandes d'accès à ses enchères
+    Quand l'utilisateur clique sur le bouton d'acceptation d'une personne ayant demandée à participer à l'enchère 
+    Alors cette personne est acceptée 
+    Et peut alors participer à cette enchère privée 

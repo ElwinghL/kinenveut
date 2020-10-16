@@ -9,6 +9,14 @@ use Behat\Behat\Context\Context;
 class tc287Context implements Context
 {
   /**
+   * @Given l'utilisateur est sur la page de gestion d'une enchère
+   */
+  public function lutilisateurEstSurLaPageDeGestionDuneEnchere()
+  {
+    throw new PendingException();
+  }
+
+  /**
    * @When l'utilisateur choisi un autre utilisateur à inviter
    */
   public function lutilisateurChoisiUnAutreUtilisateurAInviter()

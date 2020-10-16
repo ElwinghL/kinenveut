@@ -4,9 +4,9 @@ Fonctionnalité: Bannissement d'un utilisateur
    Plan du Scénario: suppression d'un utilisateur
     Etant donné L'utilisateur est un admin
     Et l'utilisateur consulte les users
-    Et la liste des users contient <nom>
-    Quand l'admin bannit <nom>
-    Alors l'utilisateur <nom> est banni
+    Et la liste des users contient "<nom>"
+    Quand l'admin bannit "<nom>"
+    Alors l'utilisateur "<nom>" est banni
     Exemples:
       | nom           |
       | Auréchou      |

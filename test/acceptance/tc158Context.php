@@ -46,65 +46,25 @@ class tc158Context implements Context
   }
 
   /**
-   * @When l'admin bannit Auréchou
+   * @Given la liste des users contient :arg1
    */
-  public function ladminBannitAurechou()
+  public function laListeDesUsersContient($arg1)
   {
     throw new PendingException();
   }
 
   /**
-   * @Then l'utilisateur Auréchou est banni
+   * @When l'admin bannit :arg1
    */
-  public function lutilisateurAurechouEstBanni()
+  public function ladminBannit($arg1)
   {
     throw new PendingException();
   }
 
   /**
-   * @Given la liste des users contient Waxel
+   * @Then l'utilisateur :arg1 est banni
    */
-  public function laListeDesUsersContientWaxel()
-  {
-    throw new PendingException();
-  }
-
-  /**
-   * @When l'admin bannit Waxel
-   */
-  public function ladminBannitWaxel()
-  {
-    throw new PendingException();
-  }
-
-  /**
-   * @Then l'utilisateur Waxel est banni
-   */
-  public function lutilisateurWaxelEstBanni()
-  {
-    throw new PendingException();
-  }
-
-  /**
-   * @Given la liste des users contient Gauthier
-   */
-  public function laListeDesUsersContientGauthier()
-  {
-    throw new PendingException();
-  }
-
-  /**
-   * @When l'admin bannit Gauthier
-   */
-  public function ladminBannitGauthier()
-  {
-    throw new PendingException();
-  }
-
-  /**
-   * @Then l'utilisateur Gauthier est banni
-   */
-  public function lutilisateurGauthierEstBanni()
+  public function lutilisateurEstBanni($arg1)
   {
     throw new PendingException();
   }
