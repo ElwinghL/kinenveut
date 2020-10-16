@@ -51,7 +51,14 @@ class tc51Context extends MinkContext implements Context
    */
   public function lutilisateurConsulteLaListeDesEncheres()
   {
-    throw new PendingException();
+    $session = Universe::getUniverse()->getSession();
+    $session->visit('http://localhost/kinenveut/?r=auctionManagement');
+    if ($session->getStatusCode() !== 200) {
+      throw new Exception('status code is not 200');
+    }
+    if ($session->getCurrentUrl() !== 'http://localhost/kinenveut/?r=auctionManagement') {
+      throw new Exception('url is not "http://localhost/kinenveut/?r=auctionManagement"');
+    }
   }
 
   /**
@@ -59,7 +66,13 @@ class tc51Context extends MinkContext implements Context
    */
   public function laListeDesEncheresPubliquesEstVisible()
   {
-    throw new PendingException();
+    $session = Universe::getUniverse()->getSession();
+    if ($session->getPage()->find(
+      'css',
+      'h2'
+    )->getText() != "Liste des enchères") {
+      throw new Exception('the auction validation page is not displayed');
+    }
   }
 
   /**
@@ -67,7 +80,13 @@ class tc51Context extends MinkContext implements Context
    */
   public function laListeDesEncheresPriveesEstVisible()
   {
-    throw new PendingException();
+    $session = Universe::getUniverse()->getSession();
+    if ($session->getPage()->find(
+      'css',
+      'h2'
+    )->getText() != "Liste des enchères") {
+      throw new Exception('the auction validation page is not displayed');
+    }
   }
 
   /**
@@ -75,6 +94,12 @@ class tc51Context extends MinkContext implements Context
    */
   public function laListeDesEncheresConfidentiellesEstVisible()
   {
-    throw new PendingException();
+    $session = Universe::getUniverse()->getSession();
+    if ($session->getPage()->find(
+      'css',
+      'h2'
+    )->getText() != "Liste des enchères") {
+      throw new Exception('the auction validation page is not displayed');
+    }
   }
 }
