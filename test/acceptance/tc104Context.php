@@ -11,17 +11,6 @@ include_once 'src/tools.php';
 class tc104Context implements Context
 {
   /**
-   * @Given L'utilisateur est un admin
-   */
-  public function lutilisateurEstUnAdmin()
-  {
-    $user = new UserModel();
-    $user->setEmail('admin@kinenveut.fr');
-    $user->setPassword('password');
-    Universe::getUniverse()->setUser($user);
-  }
-
-  /**
    * @Given l'utilisateur consulte les catégories d'enchères
    */
   public function lutilisateurConsulteLesCategoriesDencheres()
@@ -87,7 +76,10 @@ class tc104Context implements Context
    */
   public function lutilisateurEstUnAdministrateur()
   {
-    throw new PendingException();
+    $user = new UserModel();
+    $user->setEmail('admin@kinenveut.fr');
+    $user->setPassword('password');
+    Universe::getUniverse()->setUser($user);
   }
 
   /**
@@ -95,7 +87,34 @@ class tc104Context implements Context
    */
   public function lutilisateurSeConnecte()
   {
-    throw new PendingException();
+    $session = Universe::getUniverse()->getSession();
+    $user = Universe::getUniverse()->getUser();
+    $session->visit('http://localhost/kinenveut/');
+    if ($session->getStatusCode() !== 200) {
+      throw new Exception('status code is not 200');
+    }
+    if ($session->getCurrentUrl() !== 'http://localhost/kinenveut/?r=login') {
+      throw new Exception('url is not "http://localhost/kinenveut/?r=login"');
+    }
+    $session->getPage()->find(
+      'css',
+      'input[name="email"]'
+    )->setValue($user->getEmail());
+    $session->getPage()->find(
+      'css',
+      'input[name="password"]'
+    )->setValue($user->getPassword());
+    $session->getPage()->find(
+      'css',
+      'input[name="connection"]'
+    )->click();
+
+    if ($session->getStatusCode() !== 200) {
+      throw new Exception('status code is not 200');
+    }
+    if ($session->getCurrentUrl() !== 'http://localhost/kinenveut/?r=home') {
+      throw new Exception('url is not "http://localhost/kinenveut/?r=home"');
+    }
   }
 
   /**
