@@ -152,5 +152,8 @@ class UserManagementControllerTest extends TestCase
     $this->assertSame('index', $data[1]);
     $this->assertSame([$userTest1], $data[2]['users']);
     $this->assertSame(6, $userTest2->getIsAuthorised());
+
+    $data = $userMCtrtrler->unban();
+    $this->assertSame(1, $userTest2->getIsAuthorised());
   }
 }

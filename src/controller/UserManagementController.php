@@ -30,6 +30,11 @@ class UserManagementController extends Controller
     return $this->updateUserState(6); //Etat ban
   }
 
+  public function unban()
+  {
+    return $this->validate();
+  }
+
   private function updateUserState($stateId)
   {
     $userId = parameters()['id'];
