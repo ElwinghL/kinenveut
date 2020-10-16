@@ -43,18 +43,14 @@ class AuctionController extends Controller
       $auctionBo = App_BoFactory::getFactory()->getAuctionBo();
       $auctionList = $auctionBo->selectAllAuctionsByBidderId($bidderId);
 
+      $data['titlePage'] = 'Mes enchères';
+      
       if (is_array($auctionList) && sizeof($auctionList) > 0) {
-        $titlePage = 'Mes enchères';
-        $data = [
-          'titlePage'   => $titlePage,
-          'auctionList' => $auctionList
-        ];
-
-        return ['render', 'index', $this->createDataForm($data)];
-      } else {
-        //Todo : Gérer le cas où il y a 0 enchère :)
-        return ['redirect', '?r=home'];
+        $data['auctionList'] = $auctionList;
       }
+
+      return ['render', 'index', $this->createDataForm($data)];
+
     } else {
       //Todo : Gérer le cas où l'accès est interdit
       return ['redirect', '?r=home'];
