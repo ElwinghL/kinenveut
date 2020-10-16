@@ -9,17 +9,6 @@ use Behat\Behat\Context\Context;
 class tc32Context implements Context
 {
   /**
-   * Initializes context.
-   *
-   * Every scenario gets its own context instance.
-   * You can also pass arbitrary arguments to the
-   * context constructor through behat.yml.
-   */
-  public function __construct()
-  {
-  }
-
-  /**
    * @When l'utilisateur choisis une catégorie
    */
   public function lutilisateurChoisisUneCategorie()
