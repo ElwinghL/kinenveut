@@ -1,9 +1,6 @@
 <?php
 
-use Behat\Behat\Tester\Exception\PendingException;
 use Behat\Behat\Context\Context;
-
-include_once 'src/tools.php';
 
 /**
  * Defines application features from the specific context.
@@ -50,7 +47,14 @@ class tc51Context implements Context
    */
   public function lutilisateurConsulteLaListeDesEncheres()
   {
-    throw new PendingException();
+    $session = Universe::getUniverse()->getSession();
+    $session->visit('http://localhost/kinenveut/?r=auctionManagement');
+    if ($session->getStatusCode() !== 200) {
+      throw new Exception('status code is not 200');
+    }
+    if ($session->getCurrentUrl() !== 'http://localhost/kinenveut/?r=auctionManagement') {
+      throw new Exception('url is not "http://localhost/kinenveut/?r=auctionManagement"');
+    }
   }
 
   /**
@@ -58,7 +62,43 @@ class tc51Context implements Context
    */
   public function laListeDesEncheresPubliquesEstVisible()
   {
-    throw new PendingException();
+    $session = Universe::getUniverse()->getSession();
+
+    $session->visit('http://localhost/kinenveut/?r=auction/create');
+    if ($session->getStatusCode() !== 200) {
+      throw new Exception('status code is not 200');
+    }
+    if ($session->getCurrentUrl() !== 'http://localhost/kinenveut/?r=auction/create') {
+      throw new Exception('url is not "http://localhost/kinenveut/?r=auction/create"');
+    }
+    $session->getPage()->find(
+      'css',
+      'input[name="name"]'
+    )->setValue('Chaussette');
+    $session->getPage()->find(
+      'css',
+      'input[name="createAuction"]'
+    )->click();
+
+    $session->visit('http://localhost/kinenveut/?r=auctionManagement');
+    if ($session->getStatusCode() !== 200) {
+      throw new Exception('status code is not 200');
+    }
+    if ($session->getCurrentUrl() !== 'http://localhost/kinenveut/?r=auctionManagement') {
+      throw new Exception('url is not "http://localhost/kinenveut/?r=auctionManagement"');
+    }
+    if ($session->getPage()->find(
+      'css',
+      'h2'
+    )->getText() != 'Liste des enchères') {
+      throw new Exception('the auction validation page is not displayed');
+    }
+    if ($session->getPage()->find(
+      'css',
+      '.privacy0'
+    )->getText() != 'Chaussette') {
+      throw new Exception('public auction was not found');
+    }
   }
 
   /**
@@ -66,7 +106,47 @@ class tc51Context implements Context
    */
   public function laListeDesEncheresPriveesEstVisible()
   {
-    throw new PendingException();
+    $session = Universe::getUniverse()->getSession();
+
+    $session->visit('http://localhost/kinenveut/?r=auction/create');
+    if ($session->getStatusCode() !== 200) {
+      throw new Exception('status code is not 200');
+    }
+    if ($session->getCurrentUrl() !== 'http://localhost/kinenveut/?r=auction/create') {
+      throw new Exception('url is not "http://localhost/kinenveut/?r=auction/create"');
+    }
+    $session->getPage()->find(
+      'css',
+      'input[name="name"]'
+    )->setValue('Chaussette');
+    $session->getPage()->find(
+      'css',
+      '#privacyId'
+    )->selectOption(1);
+    $session->getPage()->find(
+      'css',
+      'input[name="createAuction"]'
+    )->click();
+
+    $session->visit('http://localhost/kinenveut/?r=auctionManagement');
+    if ($session->getStatusCode() !== 200) {
+      throw new Exception('status code is not 200');
+    }
+    if ($session->getCurrentUrl() !== 'http://localhost/kinenveut/?r=auctionManagement') {
+      throw new Exception('url is not "http://localhost/kinenveut/?r=auctionManagement"');
+    }
+    if ($session->getPage()->find(
+      'css',
+      'h2'
+    )->getText() != 'Liste des enchères') {
+      throw new Exception('the auction validation page is not displayed');
+    }
+    if ($session->getPage()->find(
+      'css',
+      '.privacy1'
+    )->getText() != 'Chaussette') {
+      throw new Exception('private auction was not found');
+    }
   }
 
   /**
@@ -74,6 +154,46 @@ class tc51Context implements Context
    */
   public function laListeDesEncheresConfidentiellesEstVisible()
   {
-    throw new PendingException();
+    $session = Universe::getUniverse()->getSession();
+
+    $session->visit('http://localhost/kinenveut/?r=auction/create');
+    if ($session->getStatusCode() !== 200) {
+      throw new Exception('status code is not 200');
+    }
+    if ($session->getCurrentUrl() !== 'http://localhost/kinenveut/?r=auction/create') {
+      throw new Exception('url is not "http://localhost/kinenveut/?r=auction/create"');
+    }
+    $session->getPage()->find(
+      'css',
+      'input[name="name"]'
+    )->setValue('Chaussette');
+    $session->getPage()->find(
+      'css',
+      '#privacyId'
+    )->selectOption(2);
+    $session->getPage()->find(
+      'css',
+      'input[name="createAuction"]'
+    )->click();
+
+    $session->visit('http://localhost/kinenveut/?r=auctionManagement');
+    if ($session->getStatusCode() !== 200) {
+      throw new Exception('status code is not 200');
+    }
+    if ($session->getCurrentUrl() !== 'http://localhost/kinenveut/?r=auctionManagement') {
+      throw new Exception('url is not "http://localhost/kinenveut/?r=auctionManagement"');
+    }
+    if ($session->getPage()->find(
+      'css',
+      'h2'
+    )->getText() != 'Liste des enchères') {
+      throw new Exception('the auction validation page is not displayed');
+    }
+    if ($session->getPage()->find(
+      'css',
+      '.privacy2'
+    )->getText() != 'Chaussette') {
+      throw new Exception('confidential auction was not found');
+    }
   }
 }
