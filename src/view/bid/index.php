@@ -17,6 +17,11 @@
 
 <div class="container">
 
+    <div style="text-align: right;">
+        <?php include 'src/view/common/privacyBadge.php';?>
+        &nbsp;
+    </div>
+
   <!--Titre-->
   <div class="row">
     <div class="col-md-9">
@@ -36,6 +41,8 @@
             <?php endif;?></div>
         <br/>
     </div>
+
+
     <div class="col-md-3">
         <small>
             <i>
@@ -49,6 +56,7 @@
         </small>
     </div>
   </div>
+
 
   <!--Image-->
   <div class="row">
