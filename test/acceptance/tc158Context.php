@@ -13,7 +13,14 @@ class tc158Context implements Context
    */
   public function lutilisateurConsulteLesUsers()
   {
-    throw new PendingException();
+    $session = Universe::getUniverse()->getSession();
+    $session->visit('http://localhost/kinenveut/?r=userManagement');
+    if ($session->getStatusCode() !== 200) {
+      throw new Exception('status code is not 200');
+    }
+    if ($session->getCurrentUrl() !== 'http://localhost/kinenveut/?r=userManagement') {
+      throw new Exception('url is not "http://localhost/kinenveut/?r=userManagement"');
+    }
   }
 
   /**
@@ -21,7 +28,21 @@ class tc158Context implements Context
    */
   public function laListeDesUsersContientAurechou()
   {
-    throw new PendingException();
+    $session = Universe::getUniverse()->getSession();
+
+    $session->visit('http://localhost/kinenveut/?r=userManagement');
+    if ($session->getStatusCode() !== 200) {
+      throw new Exception('status code is not 200');
+    }
+    if ($session->getCurrentUrl() !== 'http://localhost/kinenveut/?r=userManagement') {
+      throw new Exception('url is not "http://localhost/kinenveut/?r=userManagement"');
+    }
+    if ($session->getPage()->find(
+      'css',
+      '.list-group-item'
+    )->getText() != "Auréchou") {
+      throw new Exception('user was not found');
+    }
   }
 
   /**
