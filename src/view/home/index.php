@@ -91,6 +91,14 @@ $searchInput = isset($data['searchInput']) ? $data['searchInput'] : '';
           </a>
         </div>
       <?php endforeach; ?>
+    <?php else: ?>
+        <div class="col-md-12">
+        <i>
+            Oh bah ça alors... Il semblerait qu'il n'ait aucune enchère en cours !
+            <br/>
+            Cliquez  sur "<b>Menu</b>"/"<b>Vendre</b>" pour créer une enchère.
+        </i>
+        </div>
     <?php endif; ?>
     <!-- END PRODUCTS -->
   </div>

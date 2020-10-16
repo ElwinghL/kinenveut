@@ -1,5 +1,5 @@
 <span class="badge
-    <?php if($auction->getPrivacyId() == 2):?>
+    <?php if ($auction->getPrivacyId() == 2):?>
         badge-dark
     <?php elseif ($auction->getPrivacyId() == 1):?>
         badge-danger
@@ -7,7 +7,7 @@
         badge-light
     <?php endif;?>
     badge-pill">
-    <?php if($auction->getPrivacyId() == 2):?>
+    <?php if ($auction->getPrivacyId() == 2):?>
         Secret
     <?php elseif ($auction->getPrivacyId() == 1):?>
         Privée

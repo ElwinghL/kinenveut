@@ -44,13 +44,12 @@ class AuctionController extends Controller
       $auctionList = $auctionBo->selectAllAuctionsByBidderId($bidderId);
 
       $data['titlePage'] = 'Mes enchères';
-      
+
       if (is_array($auctionList) && sizeof($auctionList) > 0) {
         $data['auctionList'] = $auctionList;
       }
 
       return ['render', 'index', $this->createDataForm($data)];
-
     } else {
       //Todo : Gérer le cas où l'accès est interdit
       return ['redirect', '?r=home'];

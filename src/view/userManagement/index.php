@@ -89,6 +89,8 @@ $allUsers = $data['allUsers']
           </li>
         <?php endforeach; ?>
       </ul>
+    <?php else: ?>
+        <i>Toutes les demandes d'inscription ont été traitées.</i>
     <?php endif; ?>
   </div>
 </div>
