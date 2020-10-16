@@ -40,7 +40,7 @@ class tc158Context implements Context
     if ($session->getPage()->find(
       'css',
       '.list-group-item'
-    )->getText() != "Auréchou") {
+    )->getText() != 'Auréchou') {
       throw new Exception('user was not found');
     }
   }

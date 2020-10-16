@@ -12,7 +12,7 @@ $auctions = $data['auctions'];
     <?php if (sizeof($auctions) > 0) : ?>
       <ul class="list-group">
         <?php foreach ($auctions as $auction) : ?>
-          <li id="auction_<?php echo $auction->getId(); ?>" class="<?php echo "list-group-item float privacy".$auction->getPrivacyId(); ?>">
+          <li id="auction_<?php echo $auction->getId(); ?>" class="<?php echo 'list-group-item float privacy' . $auction->getPrivacyId(); ?>">
 
             <div class="col-md-10 mr-0 float-left">
               <?php echo $auction->getName(); ?>

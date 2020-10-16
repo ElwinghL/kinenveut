@@ -61,7 +61,7 @@ class tc104Context implements Context
     $session->getPage()->find(
       'css',
       'input[name="name"]'
-    )->setValue("Cuisine");
+    )->setValue('Cuisine');
     $session->getPage()->find(
       'css',
       'input[name="createCategory"]'
@@ -85,7 +85,7 @@ class tc104Context implements Context
     if ($session->getPage()->find(
       'css',
       '.list-group-item'
-    )->getText() != "Cuisine") {
+    )->getText() != 'Cuisine') {
       throw new Exception('category was not found');
     }
   }

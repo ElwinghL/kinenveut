@@ -1,6 +1,5 @@
 <?php
 
-use Behat\Behat\Tester\Exception\PendingException;
 use Behat\Behat\Context\Context;
 
 /**
@@ -75,7 +74,7 @@ class tc51Context implements Context
     $session->getPage()->find(
       'css',
       'input[name="name"]'
-    )->setValue("Chaussette");
+    )->setValue('Chaussette');
     $session->getPage()->find(
       'css',
       'input[name="createAuction"]'
@@ -91,13 +90,13 @@ class tc51Context implements Context
     if ($session->getPage()->find(
       'css',
       'h2'
-    )->getText() != "Liste des enchères") {
+    )->getText() != 'Liste des enchères') {
       throw new Exception('the auction validation page is not displayed');
     }
     if ($session->getPage()->find(
       'css',
       '.privacy0'
-    )->getText() != "Chaussette") {
+    )->getText() != 'Chaussette') {
       throw new Exception('public auction was not found');
     }
   }
@@ -119,7 +118,7 @@ class tc51Context implements Context
     $session->getPage()->find(
       'css',
       'input[name="name"]'
-    )->setValue("Chaussette");
+    )->setValue('Chaussette');
     $session->getPage()->find(
       'css',
       '#privacyId'
@@ -139,13 +138,13 @@ class tc51Context implements Context
     if ($session->getPage()->find(
       'css',
       'h2'
-    )->getText() != "Liste des enchères") {
+    )->getText() != 'Liste des enchères') {
       throw new Exception('the auction validation page is not displayed');
     }
     if ($session->getPage()->find(
       'css',
       '.privacy1'
-    )->getText() != "Chaussette") {
+    )->getText() != 'Chaussette') {
       throw new Exception('private auction was not found');
     }
   }
@@ -167,7 +166,7 @@ class tc51Context implements Context
     $session->getPage()->find(
       'css',
       'input[name="name"]'
-    )->setValue("Chaussette");
+    )->setValue('Chaussette');
     $session->getPage()->find(
       'css',
       '#privacyId'
@@ -187,13 +186,13 @@ class tc51Context implements Context
     if ($session->getPage()->find(
       'css',
       'h2'
-    )->getText() != "Liste des enchères") {
+    )->getText() != 'Liste des enchères') {
       throw new Exception('the auction validation page is not displayed');
     }
     if ($session->getPage()->find(
       'css',
       '.privacy2'
-    )->getText() != "Chaussette") {
+    )->getText() != 'Chaussette') {
       throw new Exception('confidential auction was not found');
     }
   }
