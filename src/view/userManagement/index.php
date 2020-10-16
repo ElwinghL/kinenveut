@@ -16,6 +16,9 @@ $allUsers = $data['allUsers']
           <li id="user_<?php echo $user->getId(); ?>" class="list-group-item float">
 
             <div class="col-md-10 mr-0 float-left">
+            <span class="label-custom">
+              (En Attente)
+            </span>
               <?php echo $user->getFirstName() . ' ' . $user->getLastName(); ?>
             </div>
             <div class="col-md- mr-0 float-right">
@@ -55,7 +58,25 @@ $allUsers = $data['allUsers']
         <?php foreach ($allUsers as $user) : ?>
           <li id="user_<?php echo $user->getId(); ?>" class="list-group-item float">
             <div class="col-md-10 mr-0 float-left">
-              <?php echo $user->getFirstName() . ' ' . $user->getLastName(); ?>
+            <span class="label-custom">
+              <?php
+                switch ($user->getIsAuthorised()) {
+                  case 0:
+                    echo '(En Attente)';
+                  break;
+                  case 1:
+                    echo '(Validé)    ';
+                  break;
+                  case 5:
+                    echo '(Refusé)    ';
+                  break;
+                  case 6:
+                    echo '(Banni)     ';
+                  break;
+                }
+              ?>
+            </span>  
+            <?php echo $user->getFirstName() . ' ' . $user->getLastName(); ?>
             </div>
             <div class="col-md- mr-0 float-right">
               <a href="?r=account/index&userId=<?php echo utf8_encode($user->getId()); ?>" class="btn btn-primary">
