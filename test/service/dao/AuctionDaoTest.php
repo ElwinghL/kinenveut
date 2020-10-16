@@ -200,7 +200,7 @@ class AuctionDaoTest extends TestCase
 
     $this->assertSame(1, $auctionInserted->getCategoryId());
 
-    //Last step : Delete inserted Category and Auction
+    //Last step : Delete inserted Category & Auction
     $categoryDao->deleteCategoryById($categoryId);
     $this->auctionDao->deleteAuctionById($auctionId);
   }
@@ -212,6 +212,18 @@ class AuctionDaoTest extends TestCase
   public function cancelOnlineAuctionsBySellerIdTest() : void
   {
     $onlineAuctionState = 1;
+
+    //First step : insert a user
+    App_DaoFactory::setFactory(new App_DaoFactory());
+    $userDao = App_DaoFactory::getFactory()->getUserDao();
+    $userTest = new UserModel();
+    $userTest
+          ->setFirstName('Francis')
+          ->setLastName('Dupont')
+          ->setBirthDate(new DateTime('1970-01-13'))
+          ->setEmail('francis@kinenveut.fr')
+          ->setPassword('password');
+    $userId = $userDao->insertUser($userTest);
 
     //First step : Insert a new Auction
     $auctionId = $this->auctionDao->insertAuction($this->auctionTest);
@@ -233,8 +245,9 @@ class AuctionDaoTest extends TestCase
     $auctionInserted = $this->auctionDao->selectAuctionByAuctionId($auctionId);
     $this->assertSame(2, $auctionInserted->getAuctionState());
 
-    //Last step : Delete inserted Category and Auction
+    //Last step : Delete inserted Auction & User
     $this->auctionDao->deleteAuctionById($auctionId);
+    $userDao->deleteUser($userId);
   }
 
   /**

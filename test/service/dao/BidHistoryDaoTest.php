@@ -124,6 +124,18 @@ class BidHistoryDaoTest extends TestCase
    */
   public function deleteCurrentBidsByBidderIdTest() : void
   {
+    //First step : insert a user
+    App_DaoFactory::setFactory(new App_DaoFactory());
+    $userDao = App_DaoFactory::getFactory()->getUserDao();
+    $userTest = new UserModel();
+    $userTest
+          ->setFirstName('Francis')
+          ->setLastName('Dupont')
+          ->setBirthDate(new DateTime('1970-01-13'))
+          ->setEmail('francis@kinenveut.fr')
+          ->setPassword('password');
+    $userId = $userDao->insertUser($userTest);
+
     App_DaoFactory::setFactory(new App_DaoFactory());
     $this->auctionAccessStateDao = App_DaoFactory::getFactory()->getAuctionAccessStateDao();
     $this->auctionDao = App_DaoFactory::getFactory()->getAuctionDao();
@@ -153,9 +165,10 @@ class BidHistoryDaoTest extends TestCase
     //Fourth step : Delete every online bids for one user
     $success = $this->bidHistoryDao->deleteCurrentBidsByBidderId(self::BIDDER_ID);
 
-    //Delete inserted Auction & BidHistory
+    //Delete inserted Auction & BidHistory & User
     $this->bidHistoryDao->deleteBidById($bidHistoryId);
     $this->auctionDao->deleteAuctionById($auctionId);
+    $userDao->deleteUser($userId);
 
     $this->assertTrue($success);
     $this->assertTrue($this->bidHistoryDao->deleteCurrentBidsByBidderId(-1));

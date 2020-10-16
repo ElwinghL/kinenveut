@@ -178,11 +178,23 @@ class AuctionAccessStateDaoTest extends TestCase
    */
   public function cancelAuctionAccessStateByUserIdTest() : void
   {
+    //First step : insert a user
+    App_DaoFactory::setFactory(new App_DaoFactory());
+    $userDao = App_DaoFactory::getFactory()->getUserDao();
+    $userTest = new UserModel();
+    $userTest
+          ->setFirstName('Francis')
+          ->setLastName('Dupont')
+          ->setBirthDate(new DateTime('1970-01-13'))
+          ->setEmail('francis@kinenveut.fr')
+          ->setPassword('password');
+    $userId = $userDao->insertUser($userTest);
+
     //First step : Insert a new Auction
     $auctionId = $this->auctionDao->insertAuction($this->auctionTest);
 
     //Second step : Insert a new AAS
-    $auctionAccessStateId = $this->auctionAccessStateDao->insertAuctionAccessState($auctionId, self::BIDDER_ID);
+    $auctionAccessStateId = $this->auctionAccessStateDao->insertAuctionAccessState($auctionId, $userId);
 
     //Third step : Accept the Inserted Auction
     $localAuctionTest = $this->auctionTest
@@ -191,19 +203,20 @@ class AuctionAccessStateDaoTest extends TestCase
     $auctionIsUpdated = $this->auctionDao->updateAuctionState($localAuctionTest);
 
     //Forth step : Cancel all the AAS for the user
-    $this->assertTrue($this->auctionAccessStateDao->cancelAuctionAccessStateByUserId(self::BIDDER_ID));
+    $this->assertTrue($this->auctionAccessStateDao->cancelAuctionAccessStateByUserId($userId));
 
     //Fifth step : Select last inserted AAS
-    $auctionAccessStateSelected = $this->auctionAccessStateDao->selectAuctionAccessStateByAuctionIdAndBidderId($auctionId, self::BIDDER_ID);
+    $auctionAccessStateSelected = $this->auctionAccessStateDao->selectAuctionAccessStateByAuctionIdAndBidderId($auctionId, $userId);
 
     $this->assertNotNull($auctionAccessStateSelected);
     $this->assertSame(2, $auctionAccessStateSelected->getStateId());
 
-    //Delete inserted Auction & AAS
+    //Delete inserted Auction & AAS & User
     $this->auctionAccessStateDao->deleteAuctionAccessStateById($auctionAccessStateId);
     $this->auctionDao->deleteAuctionById($auctionId);
+    $userDao->deleteUser($userId);
 
-    $this->assertTrue($this->auctionAccessStateDao->cancelAuctionAccessStateByUserId(self::BIDDER_ID));
+    $this->assertTrue($this->auctionAccessStateDao->cancelAuctionAccessStateByUserId($userId));
   }
 
   /**
