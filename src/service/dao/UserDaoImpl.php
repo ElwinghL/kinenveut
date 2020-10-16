@@ -182,4 +182,38 @@ class UserDaoImpl implements IUserDao
 
     return $users;
   }
+
+  public function selectAllUserExceptState0(): array
+  {
+    $usersList = null;
+    $request = 'SELECT id, firstName, lastName, email, birthDate, isAuthorised, isAdmin
+                    FROM User
+                    WHERE isAuthorised != :state
+                    ORDER BY User.id DESC';
+
+    try {
+      $query = db()->prepare($request);
+      $query->execute(['state' => 0]);
+      $usersList = $query->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $Exception) {
+      throw new BDDException($Exception->getMessage(), $Exception->getCode());
+    }
+
+    $users = [];
+    foreach ($usersList as $oneUser) {
+      $user = new UserModel();
+      $user
+                ->setId($oneUser['id'])
+                ->setFirstName(protectStringToDisplay($oneUser['firstName']))
+                ->setLastName(protectStringToDisplay($oneUser['lastName']))
+                ->setEmail(protectStringToDisplay($oneUser['email']))
+                ->setBirthDate(new DateTime($oneUser['birthDate']))
+                ->setIsAuthorised($oneUser['isAuthorised'])
+                ->setIsAdmin($oneUser['isAdmin']);
+
+      array_push($users, $user);
+    }
+
+    return $users;
+  }
 }

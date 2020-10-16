@@ -6,8 +6,10 @@ class UserManagementController extends Controller
   {
     $userBo = App_BoFactory::getFactory()->getUserBo();
     $users = $userBo->selectUsersByState(0);
+    $allUsers = $userBo->selectAllUserExceptState0();
     $data = [
-      'users' => $users
+      'users'    => $users,
+      'allUsers' => $allUsers
     ];
 
     return ['render', 'index', $data];
@@ -39,8 +41,10 @@ class UserManagementController extends Controller
 
     $userBo->updateUserIsAuthorised($user);
     $users = $userBo->selectUsersByState(0);
+    $allUsers = $userBo->selectAllUserExceptState0();
     $data = [
-      'users' => $users
+      'users'    => $users,
+      'allUsers' => $allUsers
     ];
 
     return ['render', 'index', $data];

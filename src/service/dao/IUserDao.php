@@ -6,6 +6,8 @@ interface IUserDao
 
   public function selectUsersByState(int $state): array;
 
+  public function selectAllUserExceptState0(): array;
+
   public function selectUserByEmailAndPassword(string $email, string $password): ?UserModel;
 
   public function selectUserByEmail(string $email): ?UserModel;
