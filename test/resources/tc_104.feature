@@ -2,7 +2,8 @@
 Fonctionnalité: Modification des catégories existantes
   
   Plan du Scénario: création d'une catégorie
-    Etant donné L'utilisateur est un admin
+    Etant donné l'utilisateur est un administrateur
+    Et l'utilisateur se connecte
     Et l'utilisateur consulte les catégories d'enchères
     Et la liste de catégories est vide
     Quand l'utilisateur ajoute une catégorie avec le nom "<nom>"
@@ -14,7 +15,8 @@ Fonctionnalité: Modification des catégories existantes
       | auto    |
 
   Plan du Scénario: modification d'une catégorie
-    Etant donné L'utilisateur est un admin
+    Etant donné l'utilisateur est un administrateur
+    Et l'utilisateur se connecte
     Et l'utilisateur consulte les catégories d'enchères
     Et la liste de catégories est vide
     Quand l'utilisateur renomme la catégorie avec le nom "<nom1>" en "<nom2>"
@@ -26,7 +28,8 @@ Fonctionnalité: Modification des catégories existantes
       | concert      | musique  |
      
   Plan du Scénario: suppression d'une catégorie
-    Etant donné L'utilisateur est un admin
+    Etant donné l'utilisateur est un administrateur
+    Et l'utilisateur se connecte
     Et l'utilisateur consulte les catégories d'enchères
     Et la liste de catégories contient "<nom>"
     Quand l'utilisateur supprime la catégorie "<nom>"

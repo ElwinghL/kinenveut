@@ -83,6 +83,22 @@ class tc104Context implements Context
   }
 
   /**
+   * @Given l'utilisateur est un administrateur
+   */
+  public function lutilisateurEstUnAdministrateur()
+  {
+    throw new PendingException();
+  }
+
+  /**
+   * @Given l'utilisateur se connecte
+   */
+  public function lutilisateurSeConnecte()
+  {
+    throw new PendingException();
+  }
+
+  /**
    * @Given la liste de catégories est vide
    */
   public function laListeDeCategoriesEstVide()
