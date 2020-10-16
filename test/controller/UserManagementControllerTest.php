@@ -58,7 +58,7 @@ class UserManagementControllerTest extends TestCase
 
     setParameters(['id'=>43]);
 
-    $userBoMock = $this->createPartialMock(UserBoImpl::class, ['selectUsersByState','selectUserByUserId']);
+    $userBoMock = $this->createPartialMock(UserBoImpl::class, ['selectUsersByState', 'selectUserByUserId']);
     $userBoMock->method('selectUsersByState')->willReturn([$userTest1]);
     $userBoMock->method('selectUserbyUserId')->willReturn($userTest2);
 
@@ -73,10 +73,10 @@ class UserManagementControllerTest extends TestCase
     $this->assertSame('render', $data[0]);
     $this->assertSame('index', $data[1]);
     $this->assertSame(['users'=>[$userTest1]], $data[2]);
-    $this->assertSame(5,$userTest2->getIsAuthorised());
+    $this->assertSame(5, $userTest2->getIsAuthorised());
   }
 
-    /**
+  /**
    * @test
    * @covers UserManagementController
    */
@@ -97,7 +97,7 @@ class UserManagementControllerTest extends TestCase
 
     setParameters(['id'=>43]);
 
-    $userBoMock = $this->createPartialMock(UserBoImpl::class, ['selectUsersByState','selectUserByUserId']);
+    $userBoMock = $this->createPartialMock(UserBoImpl::class, ['selectUsersByState', 'selectUserByUserId']);
     $userBoMock->method('selectUsersByState')->willReturn([$userTest1]);
     $userBoMock->method('selectUserbyUserId')->willReturn($userTest2);
 
@@ -112,10 +112,10 @@ class UserManagementControllerTest extends TestCase
     $this->assertSame('render', $data[0]);
     $this->assertSame('index', $data[1]);
     $this->assertSame(['users'=>[$userTest1]], $data[2]);
-    $this->assertSame(1,$userTest2->getIsAuthorised());
+    $this->assertSame(1, $userTest2->getIsAuthorised());
   }
 
-      /**
+  /**
    * @test
    * @covers UserManagementController
    */
@@ -136,7 +136,7 @@ class UserManagementControllerTest extends TestCase
 
     setParameters(['id'=>43]);
 
-    $userBoMock = $this->createPartialMock(UserBoImpl::class, ['selectUsersByState','selectUserByUserId']);
+    $userBoMock = $this->createPartialMock(UserBoImpl::class, ['selectUsersByState', 'selectUserByUserId']);
     $userBoMock->method('selectUsersByState')->willReturn([$userTest1]);
     $userBoMock->method('selectUserbyUserId')->willReturn($userTest2);
 
@@ -151,6 +151,6 @@ class UserManagementControllerTest extends TestCase
     $this->assertSame('render', $data[0]);
     $this->assertSame('index', $data[1]);
     $this->assertSame(['users'=>[$userTest1]], $data[2]);
-    $this->assertSame(6,$userTest2->getIsAuthorised());
+    $this->assertSame(6, $userTest2->getIsAuthorised());
   }
 }
