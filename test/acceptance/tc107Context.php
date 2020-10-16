@@ -17,14 +17,6 @@ class tc107Context implements Context
   }
 
   /**
-   * @Given il se connecte
-   */
-  public function ilSeConnecte()
-  {
-    throw new PendingException();
-  }
-
-  /**
    * @Given il accèdes à la page des demandes d'accès à ses enchères
    */
   public function ilAccedesALaPageDesDemandesDaccesASesEncheres()

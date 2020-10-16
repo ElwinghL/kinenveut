@@ -9,14 +9,6 @@ use Behat\Behat\Context\Context;
 class tc274Context implements Context
 {
   /**
-   * @Given L'utilisateur est connecté.
-   */
-  public function lutilisateurEstConnecte()
-  {
-    throw new PendingException();
-  }
-
-  /**
    * @Given l'utilisateur a reçu au moins un message
    */
   public function lutilisateurARecuAuMoinsUnMessage()

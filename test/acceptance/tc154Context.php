@@ -9,22 +9,6 @@ use Behat\Behat\Context\Context;
 class tc154Context implements Context
 {
   /**
-   * @Given l'utilisateur est un administrateur
-   */
-  public function lutilisateurEstUnAdministrateur()
-  {
-    throw new PendingException();
-  }
-
-  /**
-   * @Given l'utilisateur se connecte
-   */
-  public function lutilisateurSeConnecte()
-  {
-    throw new PendingException();
-  }
-
-  /**
    * @Given il existe un ou plusieurs membres en attente de validation d'inscription
    */
   public function ilExisteUnOuPlusieursMembresEnAttenteDeValidationDinscription()

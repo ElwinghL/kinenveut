@@ -17,14 +17,6 @@ class tc289Context implements Context
   }
 
   /**
-   * @When l'utilisateur clique sur le bouton valider
-   */
-  public function lutilisateurCliqueSurLeBoutonValider()
-  {
-    throw new PendingException();
-  }
-
-  /**
    * @Then cette enchère est mise à jour
    */
   public function cetteEnchereEstMiseAJour()
