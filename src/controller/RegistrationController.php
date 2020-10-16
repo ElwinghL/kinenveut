@@ -16,6 +16,12 @@ class RegistrationController extends Controller
     $values['email'] = filter_var(parameters()['email'], FILTER_VALIDATE_EMAIL);
     $values['password'] = filter_var(parameters()['password'], FILTER_UNSAFE_RAW);
 
+    //If date is in French format (jj/mm/aaaa) then change it into American format (aaaa-mm-jj)
+    if (preg_match('#^(\d{2})/(\d{2})/(\d{4})$#', $values['birthDate'], $matches)
+      && checkdate($matches[2], $matches[1], $matches[3])) {
+      $values['birthDate'] = $matches[3] . '-' . $matches[2] . '-' . $matches[1];
+    }
+
     if ($values['firstName'] && strlen($values['firstName']) > 29) {
       $errors['firstName'] = 'Le prénom n\'est pas valide';
     }
@@ -23,7 +29,7 @@ class RegistrationController extends Controller
       $errors['lastName'] = 'Le nom n\'est pas valide';
     }
     if (!(preg_match('#^(\d{4})-(\d{2})-(\d{2})$#', $values['birthDate'], $matches)
-      && checkdate($matches[2], $matches[3], $matches[1]))
+            && checkdate($matches[2], $matches[3], $matches[1]))
       || new DateTime($values['birthDate']) >= new DateTime()) {
       $errors['birthDate'] = 'La date de naissance n\'est pas valide';
     }
