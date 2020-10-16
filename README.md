@@ -59,16 +59,16 @@ kinenveut
 └── .php_cs
 ```
 
-- `patch` : contiens les différents patch pour la bdd ;
-- `resources` : contiens les ressources du projet ;
-- `src/controller` : contiens tous les contrôleurs ;
-- `src/css` : contiens les styles du projet ;
-- `src/exception` : contiens les exceptions du projet ;
-- `src/model` : contiens les models, objet qui transit entre les contrôleurs, les bos et les daos ;
-- `src/service/bo` : contiens les bos, bo signifie Business Object, elle traite toute la partie métier, elle peut être appelée par un contrôleur ou un autre bo ;
-- `src/service/dao` : contiens les daos, traite toute la partie bdd, elle est appelée par un bo ;
-- `view` : contiens toutes les vues ;
-- `test` : contiens touts les tests suivant la même arborescence que `src` avec en plus les fichier .feature dans le dossier - `test/resources` et leurs tests dans `test/acceptance`.
+- `patch` : contient les différents patch pour la bdd ;
+- `resources` : contient les ressources du projet ;
+- `src/controller` : contient tous les contrôleurs ;
+- `src/css` : contient les styles du projet ;
+- `src/exception` : contient les exceptions du projet ;
+- `src/model` : contient les models, objet qui transit entre les contrôleurs, les bos et les daos ;
+- `src/service/bo` : contient les bos, bo signifie Business Object, elle traite toute la partie métier, elle peut être appelée par un contrôleur ou un autre bo ;
+- `src/service/dao` : contient les daos, traite toute la partie bdd, elle est appelée par un bo ;
+- `view` : contient toutes les vues ;
+- `test` : contient touts les tests suivant la même arborescence que `src` avec en plus les fichier .feature dans le dossier - `test/resources` et leurs tests dans `test/acceptance`.
 
 ## Installation de l'environnement de dev :
 
