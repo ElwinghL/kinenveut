@@ -2,14 +2,13 @@
 
 use Behat\Behat\Tester\Exception\PendingException;
 use Behat\Behat\Context\Context;
-use Behat\MinkExtension\Context\MinkContext;
 
 include_once 'src/tools.php';
 
 /**
  * Defines application features from the specific context.
  */
-class tc51Context extends MinkContext implements Context
+class tc51Context implements Context
 {
   /**
    * @Given l'utilisateur est connecté sur la page admin
