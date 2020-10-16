@@ -7,6 +7,15 @@ default:
   suites:
     default:
       contexts:
+        - tc54Context
+        - tc30Context
+        - tc275Context
+        - tc262Context
+        - tc165Context
+        - tc137Context
+        - tc133Context
+        - tc108Context
+        - tc106Context
         - tc95Context
         - tc71Context
         - tc63Context

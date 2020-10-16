@@ -9,6 +9,14 @@ use Behat\Behat\Context\Context;
 class tc110Context implements Context
 {
   /**
+   * @Given L'utilisateur est connecté.
+   */
+  public function lutilisateurEstConnecte()
+  {
+    throw new PendingException();
+  }
+
+  /**
    * @Given L'utilisateur est sur la page de recherche
    */
   public function lutilisateurEstSurLaPageDeRecherche()
