@@ -34,7 +34,7 @@ class UserManagementControllerTest extends TestCase
 
     $this->assertSame('render', $data[0]);
     $this->assertSame('index', $data[1]);
-    $this->assertSame(['users'=>[$userTest1]], $data[2]);
+    $this->assertSame([$userTest1], $data[2]['users']);
   }
 
   /**
@@ -72,7 +72,7 @@ class UserManagementControllerTest extends TestCase
 
     $this->assertSame('render', $data[0]);
     $this->assertSame('index', $data[1]);
-    $this->assertSame(['users'=>[$userTest1]], $data[2]);
+    $this->assertSame([$userTest1], $data[2]['users']);
     $this->assertSame(5, $userTest2->getIsAuthorised());
   }
 
@@ -111,7 +111,7 @@ class UserManagementControllerTest extends TestCase
 
     $this->assertSame('render', $data[0]);
     $this->assertSame('index', $data[1]);
-    $this->assertSame(['users'=>[$userTest1]], $data[2]);
+    $this->assertSame([$userTest1], $data[2]['users']);
     $this->assertSame(1, $userTest2->getIsAuthorised());
   }
 
@@ -150,7 +150,10 @@ class UserManagementControllerTest extends TestCase
 
     $this->assertSame('render', $data[0]);
     $this->assertSame('index', $data[1]);
-    $this->assertSame(['users'=>[$userTest1]], $data[2]);
+    $this->assertSame([$userTest1], $data[2]['users']);
     $this->assertSame(6, $userTest2->getIsAuthorised());
+
+    $data = $userMCtrtrler->unban();
+    $this->assertSame(1, $userTest2->getIsAuthorised());
   }
 }

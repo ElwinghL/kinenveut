@@ -10,6 +10,15 @@
   font-style: italic;
 }
 
+.label-custom {
+  text-align: right;
+  display: inline-block;
+  min-width: 80px;
+  width: 5vw;
+  color: lightslategray;
+  font-style: italic;
+}
+
 .big-logo {
   margin-top: 20px;
 }

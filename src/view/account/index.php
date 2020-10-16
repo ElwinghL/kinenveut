@@ -35,6 +35,8 @@
       </a>
     <?php elseif ($user->getIsAuthorised() == 1):?>
         <a href="?r=UserManagement/ban&id=<?php echo $user->getId(); ?>" class="btn btn-danger">Bannir</a>
+    <?php elseif ($user->getIsAuthorised() == 6):?>
+        <a href="?r=UserManagement/unban&id=<?php echo $user->getId(); ?>" class="btn btn-danger">Dé-Bannir</a>
     <?php endif; ?>
   <?php endif; ?>
 </div>

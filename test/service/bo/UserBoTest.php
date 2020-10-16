@@ -214,4 +214,44 @@ class UserBoTest extends TestCase
 
     $this->assertSame($expecteduserList, $userList);
   }
+
+  /**
+   * @test
+   * @covers UserBoImpl
+   */
+  public function selectAllUserExceptState0Test() : void
+  {
+    $expecteduser = new UserModel();
+    $expecteduser
+      ->setId(42)
+      ->setFirstName('Francis')
+      ->setLastName('Dupont')
+      ->setBirthDate(new DateTime('2000-01-13'))
+      ->setEmail('Francis.Dupont@gmail.com')
+      ->setIsAdmin('false');
+
+    $expecteduser2 = new UserModel();
+    $expecteduser2
+      ->setId(43)
+      ->setFirstName('Francoise')
+      ->setLastName('Dupond')
+      ->setBirthDate(new DateTime('2000-01-13'))
+      ->setEmail('Francoise.Dupond@gmail.com')
+      ->setIsAdmin('false')
+      ->setIsAuthorised(1);
+
+    $expecteduserList = [$expecteduser, $expecteduser2];
+
+    $userBo = App_BoFactory::getFactory()->getUserBo();
+    $userDaoImpMock = $this->createPartialMock(UserDaoImpl::class, ['selectAllUserExceptState0']);
+    $userDaoImpMock->method('selectAllUserExceptState0')->willReturn([$expecteduser2]);
+
+    $app_DaoFactoryMock = $this->createPartialMock(App_DaoFactory::class, ['getUserDao']);
+    $app_DaoFactoryMock->method('getUserDao')->willReturn($userDaoImpMock);
+    App_DaoFactory::setFactory($app_DaoFactoryMock);
+
+    $userList = $userBo->selectAllUserExceptState0();
+
+    $this->assertSame([$expecteduser2], $userList);
+  }
 }

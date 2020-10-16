@@ -1,6 +1,7 @@
 <?php include_once 'src/view/page-header.php' ?>
 <?php
 $users = $data['users'];
+$allUsers = $data['allUsers']
 ?>
 <div class="container">
   <h2>
@@ -15,6 +16,9 @@ $users = $data['users'];
           <li id="user_<?php echo $user->getId(); ?>" class="list-group-item float">
 
             <div class="col-md-10 mr-0 float-left">
+            <span class="label-custom">
+              (En Attente)
+            </span>
               <?php echo $user->getFirstName() . ' ' . $user->getLastName(); ?>
             </div>
             <div class="col-md- mr-0 float-right">
@@ -39,6 +43,49 @@ $users = $data['users'];
             </div>
 
 
+          </li>
+        <?php endforeach; ?>
+      </ul>
+    <?php endif; ?>
+  </div>
+
+  <h2>
+    Membres déjà inscrits
+  </h2>
+  <div class="col-md-12">
+    <?php if (sizeof($allUsers) > 0) : ?>
+      <ul class="list-group">
+        <?php foreach ($allUsers as $user) : ?>
+          <li id="user_<?php echo $user->getId(); ?>" class="list-group-item float">
+            <div class="col-md-10 mr-0 float-left">
+            <span class="label-custom">
+              <?php
+                switch ($user->getIsAuthorised()) {
+                  case 0:
+                    echo '(En Attente)';
+                  break;
+                  case 1:
+                    echo '(Validé)    ';
+                  break;
+                  case 5:
+                    echo '(Refusé)    ';
+                  break;
+                  case 6:
+                    echo '(Banni)     ';
+                  break;
+                }
+              ?>
+            </span>  
+            <?php echo $user->getFirstName() . ' ' . $user->getLastName(); ?>
+            </div>
+            <div class="col-md- mr-0 float-right">
+              <a href="?r=account/index&userId=<?php echo utf8_encode($user->getId()); ?>" class="btn btn-primary">
+                <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-info" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M8.93 6.588l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588z" />
+                  <circle cx="8" cy="4.5" r="1" />
+                </svg>
+              </a>
+            </div>
           </li>
         <?php endforeach; ?>
       </ul>
