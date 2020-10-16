@@ -37,17 +37,9 @@ class tc104Context implements Context
   }
 
   /**
-   * @Given la liste de catégories est vide
+   * @When l'utilisateur ajoute une catégorie avec le nom :arg1
    */
-  public function laListeDeCategoriesEstVide()
-  {
-    throw new PendingException();
-  }
-
-  /**
-   * @When l'utilisateur ajoute une catégorie avec le nom cuisine
-   */
-  public function lutilisateurAjouteUneCategorieAvecLeNomCuisine()
+  public function lutilisateurAjouteUneCategorieAvecLeNom($arg1)
   {
     $session = Universe::getUniverse()->getSession();
 
@@ -61,7 +53,7 @@ class tc104Context implements Context
     $session->getPage()->find(
       'css',
       'input[name="name"]'
-    )->setValue('Cuisine');
+    )->setValue($arg1);
     $session->getPage()->find(
       'css',
       'input[name="createCategory"]'
@@ -69,9 +61,9 @@ class tc104Context implements Context
   }
 
   /**
-   * @Then une nouvelle catégorie nommée cuisine apparaît
+   * @Then une nouvelle catégorie nommée :arg1 apparaît
    */
-  public function uneNouvelleCategorieNommeeCuisineApparait()
+  public function uneNouvelleCategorieNommeeApparait($arg1)
   {
     $session = Universe::getUniverse()->getSession();
 
@@ -85,159 +77,55 @@ class tc104Context implements Context
     if ($session->getPage()->find(
       'css',
       '.list-group-item'
-    )->getText() != 'Cuisine') {
+    )->getText() != $arg1) {
       throw new Exception('category was not found');
     }
   }
 
   /**
-   * @When l'utilisateur ajoute une catégorie avec le nom radio
+   * @Given la liste de catégories est vide
    */
-  public function lutilisateurAjouteUneCategorieAvecLeNomRadio()
+  public function laListeDeCategoriesEstVide()
   {
     throw new PendingException();
   }
 
   /**
-   * @Then une nouvelle catégorie nommée radio apparaît
+   * @When l'utilisateur renomme la catégorie avec le nom :arg1 en :arg2
    */
-  public function uneNouvelleCategorieNommeeRadioApparait()
+  public function lutilisateurRenommeLaCategorieAvecLeNomEn($arg1, $arg2)
   {
     throw new PendingException();
   }
 
   /**
-   * @When l'utilisateur ajoute une catégorie avec le nom auto
+   * @Then l'ancienne catégorie :arg1 prend le nom :arg2
    */
-  public function lutilisateurAjouteUneCategorieAvecLeNomAuto()
+  public function lancienneCategoriePrendLeNom($arg1, $arg2)
   {
     throw new PendingException();
   }
 
   /**
-   * @Then une nouvelle catégorie nommée auto apparaît
+   * @Given la liste de catégories contient :arg1
    */
-  public function uneNouvelleCategorieNommeeAutoApparait()
+  public function laListeDeCategoriesContient($arg1)
   {
     throw new PendingException();
   }
 
   /**
-   * @When l'utilisateur renomme la catégorie avec le nom cuisinel en cuisine
+   * @When l'utilisateur supprime la catégorie :arg1
    */
-  public function lutilisateurRenommeLaCategorieAvecLeNomCuisinelEnCuisine()
+  public function lutilisateurSupprimeLaCategorie($arg1)
   {
     throw new PendingException();
   }
 
   /**
-   * @Then l'ancienne catégorie cuisinel prend le nom cuisine
+   * @Then la catégorie :arg1 disparaît
    */
-  public function lancienneCategorieCuisinelPrendLeNomCuisine()
-  {
-    throw new PendingException();
-  }
-
-  /**
-   * @When l'utilisateur renomme la catégorie avec le nom radiophonie en radio
-   */
-  public function lutilisateurRenommeLaCategorieAvecLeNomRadiophonieEnRadio()
-  {
-    throw new PendingException();
-  }
-
-  /**
-   * @Then l'ancienne catégorie radiophonie prend le nom radio
-   */
-  public function lancienneCategorieRadiophoniePrendLeNomRadio()
-  {
-    throw new PendingException();
-  }
-
-  /**
-   * @When l'utilisateur renomme la catégorie avec le nom concert en musique
-   */
-  public function lutilisateurRenommeLaCategorieAvecLeNomConcertEnMusique()
-  {
-    throw new PendingException();
-  }
-
-  /**
-   * @Then l'ancienne catégorie concert prend le nom musique
-   */
-  public function lancienneCategorieConcertPrendLeNomMusique()
-  {
-    throw new PendingException();
-  }
-
-  /**
-   * @Given la liste de catégories contient cuisine
-   */
-  public function laListeDeCategoriesContientCuisine()
-  {
-    throw new PendingException();
-  }
-
-  /**
-   * @When l'utilisateur supprime la catégorie cuisine
-   */
-  public function lutilisateurSupprimeLaCategorieCuisine()
-  {
-    throw new PendingException();
-  }
-
-  /**
-   * @Then la catégorie cuisine disparaît
-   */
-  public function laCategorieCuisineDisparait()
-  {
-    throw new PendingException();
-  }
-
-  /**
-   * @Given la liste de catégories contient téléphone
-   */
-  public function laListeDeCategoriesContientTelephone()
-  {
-    throw new PendingException();
-  }
-
-  /**
-   * @When l'utilisateur supprime la catégorie téléphone
-   */
-  public function lutilisateurSupprimeLaCategorieTelephone()
-  {
-    throw new PendingException();
-  }
-
-  /**
-   * @Then la catégorie téléphone disparaît
-   */
-  public function laCategorieTelephoneDisparait()
-  {
-    throw new PendingException();
-  }
-
-  /**
-   * @Given la liste de catégories contient jeux vidéos
-   */
-  public function laListeDeCategoriesContientJeuxVideos()
-  {
-    throw new PendingException();
-  }
-
-  /**
-   * @When l'utilisateur supprime la catégorie jeux vidéos
-   */
-  public function lutilisateurSupprimeLaCategorieJeuxVideos()
-  {
-    throw new PendingException();
-  }
-
-  /**
-   * @Then la catégorie jeux vidéos disparaît
-   */
-  public function laCategorieJeuxVideosDisparait()
+  public function laCategorieDisparait($arg1)
   {
     throw new PendingException();
   }
