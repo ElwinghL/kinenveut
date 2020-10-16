@@ -27,9 +27,4 @@ $user = isset($data['user']) ? $data['user'] : new UserModel();
       </div>
     </form>
   </div>
-  <div class="row">
-    <div class="col-md-12">
-      <small><a href="#">Modifier le mot de passe</a></small>
-    </div>
-  </div>
 </div>
