@@ -48,6 +48,8 @@ $categoryList = $data['categoryList'];
             </li>
           <?php endforeach; ?>
         </ul>
+      <?php else: ?>
+          <i>Aucune catégorie à afficher.</i>
       <?php endif; ?>
     </div>
   </div>

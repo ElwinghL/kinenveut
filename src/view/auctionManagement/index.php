@@ -42,6 +42,8 @@ $auctions = $data['auctions'];
           </li>
         <?php endforeach; ?>
       </ul>
+    <?php else: ?>
+        <i>Toutes les demandes d'enchère ont été traitées.</i>
     <?php endif; ?>
   </div>
 </div>

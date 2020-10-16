@@ -118,9 +118,9 @@
     <?php else: ?>
     <i>
         <?php if ($pageUser): ?>
-            Créez une enchère pour la voir ici
+            Créez une enchère pour la voir ici.
         <?php else: ?>
-            L'utilisateur n'a pas encore créé d'enchère
+            Aucune enchère à afficher.
         <?php endif; ?>
     </i>
     <?php endif;?>
