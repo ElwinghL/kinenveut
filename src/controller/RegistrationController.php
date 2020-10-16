@@ -23,8 +23,8 @@ class RegistrationController extends Controller
       $errors['lastName'] = 'Le nom n\'est pas valide';
     }
     if (!(preg_match('#^(\d{4})-(\d{2})-(\d{2})$#', $values['birthDate'], $matches)
-      && checkdate($matches[2], $matches[3], $matches[1])
-      && DateTime::createFromFormat('d/m/Y', $values['birthDate']) < (new DateTime()))) {
+      && checkdate($matches[2], $matches[3], $matches[1]))
+      || new DateTime($values['birthDate']) >= new DateTime()) {
       $errors['birthDate'] = 'La date de naissance n\'est pas valide';
     }
     if ($values['email'] === false) {
