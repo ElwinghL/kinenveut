@@ -176,6 +176,40 @@ class AuctionAccessStateDaoTest extends TestCase
    * @test
    * @covers AuctionAccessStateDaoImpl
    */
+  public function cancelAuctionAccessStateByUserIdTest() : void
+  {
+    //First step : Insert a new Auction
+    $auctionId = $this->auctionDao->insertAuction($this->auctionTest);
+
+    //Second step : Insert a new AAS
+    $auctionAccessStateId = $this->auctionAccessStateDao->insertAuctionAccessState($auctionId, self::BIDDER_ID);
+
+    //Third step : Accept the Inserted Auction
+    $localAuctionTest = $this->auctionTest
+                          ->setId($auctionId)
+                          ->setAuctionState(1);
+    $auctionIsUpdated = $this->auctionDao->updateAuctionState($localAuctionTest);
+
+    //Forth step : Cancel all the AAS for the user
+    $this->assertTrue($this->auctionAccessStateDao->cancelAuctionAccessStateByUserId(self::BIDDER_ID));
+
+    //Fifth step : Select last inserted AAS
+    $auctionAccessStateSelected = $this->auctionAccessStateDao->selectAuctionAccessStateByAuctionIdAndBidderId($auctionId, self::BIDDER_ID);
+
+    $this->assertNotNull($auctionAccessStateSelected);
+    $this->assertSame(2, $auctionAccessStateSelected->getStateId());
+
+    //Delete inserted Auction & AAS
+    $this->auctionAccessStateDao->deleteAuctionAccessStateById($auctionAccessStateId);
+    $this->auctionDao->deleteAuctionById($auctionId);
+
+    $this->assertTrue($this->auctionAccessStateDao->cancelAuctionAccessStateByUserId(self::BIDDER_ID));
+  }
+
+  /**
+   * @test
+   * @covers AuctionAccessStateDaoImpl
+   */
   public function selectAuctionAccessStateByAuctionIdAndBidderIdTest(): void
   {
     $auctionId = $this->auctionDao->insertAuction($this->auctionTest);

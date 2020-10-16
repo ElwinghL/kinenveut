@@ -8,6 +8,10 @@ interface IAuctionDao
 
   public function updateAuctionState(AuctionModel $auction): bool;
 
+  public function updateAllAuctionCategoryId(int $categoryId) : bool;
+
+  public function cancelOnlineAuctionsBySellerId(int $sellerId) : bool;
+
   public function deleteAuctionById(int $auctionId): bool;
 
   public function selectAuctionByAuctionId(int $auctionId): ?AuctionModel;

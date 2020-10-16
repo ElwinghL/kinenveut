@@ -23,6 +23,9 @@ class CategoryBoImpl implements ICategoryBo
     $categoryDao = App_DaoFactory::getFactory()->getCategoryDao();
     $success = $categoryDao->deleteCategoryById($categoryId);
 
+    $auctionDao = App_DaoFactory::getFactory()->getAuctionDao();
+    $auctionsAreUpdated = $auctionDao->updateAllAuctionCategoryId($categoryId);
+
     return $success;
   }
 

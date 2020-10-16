@@ -61,6 +61,26 @@ class AuctionAccessStateDaoImpl implements IAuctionAccessStateDao
     return $success;
   }
 
+  public function cancelAuctionAccessStateByUserId(int $userId) : bool
+  {
+    $success = null;
+    $request = 'UPDATE AuctionAccessState aas
+                    INNER JOIN Auction AS a ON aas.auctionId = a.id
+                    SET aas.stateId = 2
+                    WHERE (aas.bidderId = :bidderId OR a.sellerId = :sellerId)
+                    AND a.auctionState = 1
+                    AND DATE_ADD(a.startDate,interval a.duration day) > NOW()';
+
+    try {
+      $query = db()->prepare($request);
+      $success = $query->execute(['sellerId' => $userId, 'bidderId' => $userId]);
+    } catch (PDOException $Exception) {
+      throw new BDDException($Exception->getMessage(), $Exception->getCode());
+    }
+
+    return $success;
+  }
+
   public function selectAuctionAccessStateByAuctionIdAndBidderId(int $auctionId, int $bidderId): ?AuctionAccessStateModel
   {
     $auctionAccessStateSelected = null;

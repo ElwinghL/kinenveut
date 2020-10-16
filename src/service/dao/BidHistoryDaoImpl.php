@@ -30,4 +30,23 @@ class BidHistoryDaoImpl implements IBidHistoryDao
 
     return $success;
   }
+
+  public function deleteCurrentBidsByBidderId(int $bidderId) : bool
+  {
+    $success = false;
+    $request = 'DELETE bh
+                FROM BidHistory bh
+                INNER JOIN Auction a ON a.id = bh.objectId
+                WHERE bidderId=:bidderId
+                AND DATE_ADD(a.startDate,interval a.duration day) > NOW()';
+
+    try {
+      $query = db()->prepare($request);
+      $success = $query->execute(['bidderId'=>$bidderId]);
+    } catch (PDOException $Exception) {
+      throw new BDDException($Exception->getMessage(), $Exception->getCode());
+    }
+
+    return $success;
+  }
 }

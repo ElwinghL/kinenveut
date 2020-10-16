@@ -169,6 +169,78 @@ class AuctionDaoTest extends TestCase
    * @test
    * @covers AuctionDaoImpl
    */
+  public function updateAllAuctionCategoryIdTest() : void
+  {
+    //First step : Insert a category
+    App_DaoFactory::setFactory(new App_DaoFactory());
+    $categoryDao = App_DaoFactory::getFactory()->getCategoryDao();
+    $category = new CategoryModel();
+    $category->setName('CategoryTest');
+    $categoryId = $categoryDao->insertCategory($category);
+
+    //Second step : Insert an Auction
+    $localAuctionTest = $this->auctionTest
+                            ->setCategoryId($categoryId);
+
+    $auctionId = $this->auctionDao->insertAuction($localAuctionTest);
+
+    //Third step : Select inserted Auction to check the CategoryId
+    $auctionInserted = $this->auctionDao->selectAuctionByAuctionId($auctionId);
+
+    $this->assertSame($categoryId, $auctionInserted->getCategoryId());
+
+    //Fourth step : Update all auction Categories using this last inserted categoryId
+    $this->assertTrue($this->auctionDao->updateAllAuctionCategoryId($categoryId));
+    $auctionUpdated = $this->auctionDao->selectAuctionByAuctionId($auctionId);
+
+    $this->isNull($auctionUpdated);
+
+    //Fifth step : Get last inserted Auction to check the categoryId
+    $auctionInserted = $this->auctionDao->selectAuctionByAuctionId($auctionId);
+
+    $this->assertSame(1, $auctionInserted->getCategoryId());
+
+    //Last step : Delete inserted Category and Auction
+    $categoryDao->deleteCategoryById($categoryId);
+    $this->auctionDao->deleteAuctionById($auctionId);
+  }
+
+  /**
+   * @test
+   * @covers AuctionDaoImpl
+   */
+  public function cancelOnlineAuctionsBySellerIdTest() : void
+  {
+    $onlineAuctionState = 1;
+
+    //First step : Insert a new Auction
+    $auctionId = $this->auctionDao->insertAuction($this->auctionTest);
+
+    //Second step : Accept the Inserted Auction
+    $localAuctionTest = $this->auctionTest
+                            ->setId($auctionId)
+                            ->setAuctionState($onlineAuctionState);
+    $auctionIsUpdated = $this->auctionDao->updateAuctionState($localAuctionTest);
+
+    //Third step : Select inserted Auction to check the CategoryId
+    $auctionInserted = $this->auctionDao->selectAuctionByAuctionId($auctionId);
+    $this->assertSame($onlineAuctionState, $auctionInserted->getAuctionState());
+
+    //Fourth step : Cancel online auctions
+    $this->assertTrue($this->auctionDao->cancelOnlineAuctionsBySellerId($auctionInserted->getSellerId()));
+
+    //Fifth step : Get last inserted Auction to check the categoryId
+    $auctionInserted = $this->auctionDao->selectAuctionByAuctionId($auctionId);
+    $this->assertSame(2, $auctionInserted->getAuctionState());
+
+    //Last step : Delete inserted Category and Auction
+    $this->auctionDao->deleteAuctionById($auctionId);
+  }
+
+  /**
+   * @test
+   * @covers AuctionDaoImpl
+   */
   public function deleteAuctionTest(): void
   {
     $auctionId = $this->auctionDao->insertAuction($this->auctionTest);

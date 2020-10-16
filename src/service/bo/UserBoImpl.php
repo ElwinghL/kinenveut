@@ -64,6 +64,19 @@ class UserBoImpl implements IUserBo
     $userDao = App_DaoFactory::getFactory()->getUserDao();
     $success = $userDao->updateUser($user);
 
+    if ($user->getIsAuthorised() == 6) {
+      $userId = $user->getId();
+
+      $auctionAccessStateDao = App_DaoFactory::getFactory()->getAuctionAccessStateDao();
+      $aasAreUpdated = $auctionAccessStateDao->cancelAuctionAccessStateByUserId($userId);
+
+      $bidHistoryDao = App_DaoFactory::getFactory()->getBidHistoryDao();
+      $bhAreUpdated = $bidHistoryDao->deleteCurrentBidsByBidderId($userId);
+
+      $auctionDao = App_DaoFactory::getFactory()->getAuctionDao();
+      $auctionsAreUpdated = $auctionDao->cancelOnlineAuctionsBySellerId($userId);
+    }
+
     return $success;
   }
 

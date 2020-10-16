@@ -51,6 +51,8 @@ $allUsers = $data['allUsers']
     <?php endif; ?>
   </div>
 
+    <br/>
+
   <h2>
     Membres déjà inscrits
   </h2>
