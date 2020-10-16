@@ -1,0 +1,53 @@
+<?php
+
+use Behat\Behat\Tester\Exception\PendingException;
+use Behat\Behat\Context\Context;
+
+/**
+ * Defines application features from the specific context.
+ */
+class tc287Context implements Context
+{
+  /**
+   * Initializes context.
+   *
+   * Every scenario gets its own context instance.
+   * You can also pass arbitrary arguments to the
+   * context constructor through behat.yml.
+   */
+  public function __construct()
+  {
+  }
+
+  /**
+   * @When l'utilisateur choisi un autre utilisateur à inviter
+   */
+  public function lutilisateurChoisiUnAutreUtilisateurAInviter()
+  {
+    throw new PendingException();
+  }
+
+  /**
+   * @When il clique sur le bouton inviter
+   */
+  public function ilCliqueSurLeBoutonInviter()
+  {
+    throw new PendingException();
+  }
+
+  /**
+   * @Then cet utilisateur reçoit une invitation
+   */
+  public function cetUtilisateurRecoitUneInvitation()
+  {
+    throw new PendingException();
+  }
+
+  /**
+   * @Then il est ajouté à la liste d'utilisateurs autorisé
+   */
+  public function ilEstAjouteALaListeDutilisateursAutorise()
+  {
+    throw new PendingException();
+  }
+}
