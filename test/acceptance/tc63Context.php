@@ -20,9 +20,9 @@ class tc63Context implements Context
   }
 
   /**
-   * @When les données de l'enchère sont invalides
+   * @When l'utilisateur valide son enchère avec les champs invalides (prix de départ, pris de réserve)
    */
-  public function lesDonneesDeLenchereSontInvalides()
+  public function lutilisateurValideSonEnchereAvecLesChampsInvalidesPrixDeDepartPrisDeReserve()
   {
     throw new PendingException();
   }

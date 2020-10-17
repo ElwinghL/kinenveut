@@ -72,6 +72,20 @@ class tc133Context implements Context
    */
   public function lutilisateurRecoitUnMessageDerreurApproprie()
   {
-    throw new PendingException();
+    $session = Universe::getUniverse()->getSession();
+
+    if ($session->getStatusCode() !== 200) {
+      throw new Exception('status code is not 200');
+    }
+    if ($session->getCurrentUrl() !== 'http://localhost/kinenveut/?r=registration/register') {
+      throw new Exception(' url is not "http://localhost/kinenveut/?r=registration/register"');
+    }
+
+    if ($session->getPage()->find(
+      'css',
+      '.invalid-feedback.d-block'
+    )->getText() != 'L\'adresse mail est déjà utilisée par un autre utilisateur') {
+      throw new Exception('There is not an error');
+    }
   }
 }
