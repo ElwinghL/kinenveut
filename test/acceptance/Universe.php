@@ -5,6 +5,7 @@ class Universe
   private static $_instance;
   private static $session;
   private $user;
+  private $canDelete;
 
   public static function getUniverse(): Universe
   {
@@ -37,5 +38,15 @@ class Universe
     $this->user = $user;
 
     return $this;
+  }
+
+  public function setCanDelete(?array $canDelete):void
+  {
+    $this->canDelete = $canDelete;
+  }
+
+  public function getCanDelete() : ?array
+  {
+    return $this->canDelete;
   }
 }

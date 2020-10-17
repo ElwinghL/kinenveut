@@ -18,6 +18,18 @@ class tc30Context implements Context
   {
   }
 
+  public function __destruct()
+  {
+    $canDelete = Universe::getUniverse()->getCanDelete();
+    if (isset($canDelete['user'])) {
+      $userDao = App_DaoFactory::getFactory()->getUserDao();
+      $user = $userDao->selectUserByEmail(Universe::getUniverse()->getUser()->getEmail());
+      $userDao->deleteUser($user->getId());
+      unset($canDelete['user']);
+      Universe::getUniverse()->setCanDelete($canDelete);
+    }
+  }
+
   /**
    * @Given L'utilisateur est sur la page de création de compte.
    */
@@ -59,11 +71,11 @@ class tc30Context implements Context
     $session->getPage()->find(
       'css',
       'input[name="lastName"]'
-    )->setValue($user->getPassword());
+    )->setValue($user->getLastName());
     $session->getPage()->find(
       'css',
       'input[name="birthDate"]'
-    )->setValue($user->getPassword());
+    )->setValue($user->getBirthDate()->format('d/m/Y'));
     $session->getPage()->find(
       'css',
       'input[name="email"]'
@@ -73,10 +85,7 @@ class tc30Context implements Context
       'input[name="password"]'
     )->setValue($user->getPassword());
 
-    $session->getPage()->find(
-      'css',
-      'input[type="submit"]'
-    )->click();
+    Universe::getUniverse()->setCanDelete(['user'=>true]);
   }
 
   /**
@@ -89,7 +98,7 @@ class tc30Context implements Context
       throw new Exception('status code is not 200');
     }
     if ($session->getCurrentUrl() !== 'http://localhost/kinenveut/?r=login') {
-      throw new Exception('url is not "http://localhost/kinenveut/?r=login"');
+      throw new Exception($session->getCurrentUrl() . ' url is not "http://localhost/kinenveut/?r=login"');
     }
   }
 }

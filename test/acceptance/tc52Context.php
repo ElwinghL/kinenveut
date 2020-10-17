@@ -20,17 +20,17 @@ class tc52Context implements Context
   }
 
   /**
-   * @When l'utilisateur valide son enchère
+   * @Given l'utilisateur est sur la page de création d'enchère
    */
-  public function lutilisateurValideSonEnchere()
+  public function lutilisateurEstSurLaPageDeCreationDenchere()
   {
     throw new PendingException();
   }
 
   /**
-   * @When les données de l'enchère sont valides
+   * @When l'utilisateur valide son enchère avec les champs valides (prix de départ, pris de réserve)
    */
-  public function lesDonneesDeLenchereSontValides()
+  public function lutilisateurValideSonEnchereAvecLesChampsValidesPrixDeDepartPrisDeReserve()
   {
     throw new PendingException();
   }

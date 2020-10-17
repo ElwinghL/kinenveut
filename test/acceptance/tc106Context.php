@@ -26,11 +26,11 @@ class tc106Context implements Context
   {
     $user = new UserModel();
     $user
-    ->setFirstName('Francis')
-    ->setLastName('Dupont')
-    ->setBirthDate(DateTime::createFromFormat('d/m/Y', '22/12/1999'))
-    ->setEmail('francis.duponnt@gmail.com')
-    ->setPassword('password');
+      ->setFirstName('Francis')
+      ->setLastName('Dupont')
+      ->setBirthDate(DateTime::createFromFormat('d/m/Y', '22/12/1999'))
+      ->setEmail('francis.dupont@gmail.com')
+      ->setPassword('password');
 
     Universe::getUniverse()->setUser($user);
   }

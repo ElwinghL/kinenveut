@@ -21,7 +21,7 @@ function parameters(): array
   return $parameters;
 }
 
-function setParameters($newParameters): void
+function setParameters(?array $newParameters): void
 {
   global $parameters;
   $parameters = $newParameters;

@@ -2,7 +2,11 @@
 
 use Behat\Behat\Context\Context;
 
+$dotenv = Dotenv\Dotenv::createImmutable('.');
+$dotenv->load();
+include_once 'src/db.php';
 include_once 'src/tools.php';
+
 /**
  * Defines application features from the specific context.
  */
