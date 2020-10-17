@@ -10,7 +10,7 @@ $auctions = $data['auctions'];
   <div class="col-md
     -12">
     <?php if (sizeof($auctions) > 0) : ?>
-      <ul class="list-group">
+      <ul id="waitingList" class="list-group">
         <?php foreach ($auctions as $auction) : ?>
           <li id="auction_<?php echo $auction->getId(); ?>" class="<?php echo 'list-group-item float privacy' . $auction->getPrivacyId(); ?>">
 
