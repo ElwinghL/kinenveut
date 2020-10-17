@@ -9,17 +9,25 @@ use Behat\Behat\Context\Context;
 class tc108Context implements Context
 {
   /**
-   * @Given L'utilisateur possède un compte dans la base
+   * @Given L'utilisateur est sur la page de connexion
    */
-  public function lutilisateurPossedeUnCompteDansLaBase()
+  public function lutilisateurEstSurLaPageDeConnexion()
   {
     throw new PendingException();
   }
 
   /**
-   * @Given L'utilisateur entre son adresse mail et mot de passe dans la page de login
+   * @Given L'utilisateur entre son adresse mail
    */
-  public function lutilisateurEntreSonAdresseMailEtMotDePasseDansLaPageDeLogin()
+  public function lutilisateurEntreSonAdresseMail()
+  {
+    throw new PendingException();
+  }
+
+  /**
+   * @Given L'utilisateur entre son mot de passe
+   */
+  public function lutilisateurEntreSonMotDePasse()
   {
     throw new PendingException();
   }
@@ -49,14 +57,6 @@ class tc108Context implements Context
   }
 
   /**
-   * @Given L'utilisateur entre son mot de passe
-   */
-  public function lutilisateurEntreSonMotDePasse()
-  {
-    throw new PendingException();
-  }
-
-  /**
    * @When L'utilisateur clique sur le bouton :arg1
    */
   public function lutilisateurCliqueSurLeBouton($arg1)
@@ -73,25 +73,9 @@ class tc108Context implements Context
   }
 
   /**
-   * @Given L'utilisateur entre son adresse mail
-   */
-  public function lutilisateurEntreSonAdresseMail()
-  {
-    throw new PendingException();
-  }
-
-  /**
    * @Given L'utilisateur se trompe de mot de passe
    */
   public function lutilisateurSeTrompeDeMotDePasse()
-  {
-    throw new PendingException();
-  }
-
-  /**
-   * @Given L'utilisateur ne possède pas de compte dans la base
-   */
-  public function lutilisateurNePossedePasDeCompteDansLaBase()
   {
     throw new PendingException();
   }

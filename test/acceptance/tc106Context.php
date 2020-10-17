@@ -9,9 +9,9 @@ use Behat\Behat\Context\Context;
 class tc106Context implements Context
 {
   /**
-   * @Given L'utilisateur est connecté
+   * @Given L'utilisateur est normal
    */
-  public function lutilisateurEstConnecte()
+  public function lutilisateurEstNormal()
   {
     throw new PendingException();
   }

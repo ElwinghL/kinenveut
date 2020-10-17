@@ -118,6 +118,14 @@ class tc104Context implements Context
   }
 
   /**
+   * @Given L'utilisateur est connecté
+   */
+  public function lutilisateurEstConnecte()
+  {
+    throw new PendingException();
+  }
+
+  /**
    * @Given la liste de catégories est vide
    */
   public function laListeDeCategoriesEstVide()

@@ -9,15 +9,7 @@ use Behat\Behat\Context\Context;
 class tc30Context implements Context
 {
   /**
-   * @Given L'utilisateur n'a pas de compte.
-   */
-  public function lutilisateurNaPasDeCompte()
-  {
-    throw new PendingException();
-  }
-
-  /**
-   * @When L'utilisateur est sur la page de création de compte.
+   * @Given L'utilisateur est sur la page de création de compte.
    */
   public function lutilisateurEstSurLaPageDeCreationDeCompte()
   {
