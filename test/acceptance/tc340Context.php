@@ -9,14 +9,6 @@ use Behat\Behat\Context\Context;
 class tc340Context implements Context
 {
   /**
-   * @Given l'utilisateur connecté sur le site
-   */
-  public function lutilisateurConnecteSurLeSite()
-  {
-    throw new PendingException();
-  }
-
-  /**
    * @When l'utilisateur arrive sur la page d'une enchère
    */
   public function lutilisateurArriveSurLaPageDuneEnchere()
