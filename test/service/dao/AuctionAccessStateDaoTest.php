@@ -36,7 +36,8 @@ class AuctionAccessStateDaoTest extends TestCase
       ['updateStateIdByAuctionIdAndBidderId', 3, 0, 0, 0],
       ['selectAuctionAccessStateByAuctionIdAndBidderId', 2, 0, 0, null],
       ['selectAllAuctionAccessStateBySellerIdAndStateId', 2, 0, 0, null],
-      ['selectNumberOfAuctionAccessStateBySellerId', 1, 0, null, null]
+      ['selectNumberOfAuctionAccessStateBySellerId', 1, 0, null, null],
+      ['cancelAuctionAccessStateByUserId', 1, 0, null, null]
     ];
   }
 

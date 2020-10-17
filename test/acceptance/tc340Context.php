@@ -9,11 +9,14 @@ use Behat\Behat\Context\Context;
 class tc340Context implements Context
 {
   /**
-   * @Given l'utilisateur connecté sur le site
+   * Initializes context.
+   *
+   * Every scenario gets its own context instance.
+   * You can also pass arbitrary arguments to the
+   * context constructor through behat.yml.
    */
-  public function lutilisateurConnecteSurLeSite()
+  public function __construct()
   {
-    throw new PendingException();
   }
 
   /**

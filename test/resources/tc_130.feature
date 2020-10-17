@@ -3,7 +3,7 @@ Fonctionnalité: Suppression d'une catégorie
   
   Plan du Scénario: Mise à jour des catégories
     Etant donné l'utilisateur est un administrateur
-    Et l'utilisateur se connecte
+    Et L'utilisateur est connecté
     Et l'utilisateur consulte les catégories d'enchères
     Et la liste de catégories contient "<nom>"
     Quand l'utilisateur supprime la catégorie "<nom>"
@@ -16,7 +16,7 @@ Fonctionnalité: Suppression d'une catégorie
   
   Scénario: Suppression de la catégorie par défaut
     Etant donné l'utilisateur est un administrateur
-    Et l'utilisateur se connecte
+    Et L'utilisateur est connecté
     Et l'utilisateur consulte les catégories d'enchères
     Quand l'utilisateur veut supprimer la catégorie par défaut
     Alors la suppression ne fonctionne pas

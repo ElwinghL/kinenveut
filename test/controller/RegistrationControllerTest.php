@@ -26,7 +26,7 @@ class RegistrationControllerTest extends TestCase
    */
   public function registerTest()
   {
-    setParameters(['firstName' => 'Jean', 'lastName' => 'Claude', 'birthDate' => '2000-05-05', 'email' => 'jean@claude.fr', 'password' => 'password']);
+    setParameters(['firstName' => 'Jean', 'lastName' => 'Claude', 'birthDate' => '20/05/2000', 'email' => 'jean@claude.fr', 'password' => 'password']);
 
     $registrationController = new RegistrationController();
     $expectedAnswer = 42;

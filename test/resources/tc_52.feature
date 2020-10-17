@@ -2,7 +2,8 @@
 Fonctionnalité: Créer une enchère
   
   Scénario: Création d'une enchère
-    Etant donnée L'utilisateur est connecté.
+    Etant donné L'utilisateur est normal
+    Et L'utilisateur est connecté
     Et l'utilisateur est sur la page de création d'enchère
     Quand l'utilisateur valide son enchère
     Et les données de l'enchère sont valides

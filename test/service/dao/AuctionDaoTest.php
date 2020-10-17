@@ -35,7 +35,9 @@ class AuctionDaoTest extends TestCase
       ['selectAllAuctionsBySellerId', 1, 0],
       ['selectAuctionByAuctionId', 1, 0],
       ['selectAcceptedConfidentialAuctionsByBidderId', 1, 0],
-      ['selectAllAuctionsByBidderId', 1, 0]
+      ['selectAllAuctionsByBidderId', 1, 0],
+      ['updateAllAuctionCategoryId', 1, 0, ],
+      ['cancelOnlineAuctionsBySellerId', 1, 0]
     ];
   }
 

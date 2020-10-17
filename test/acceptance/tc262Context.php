@@ -9,6 +9,17 @@ use Behat\Behat\Context\Context;
 class tc262Context implements Context
 {
   /**
+   * Initializes context.
+   *
+   * Every scenario gets its own context instance.
+   * You can also pass arbitrary arguments to the
+   * context constructor through behat.yml.
+   */
+  public function __construct()
+  {
+  }
+
+  /**
    * @When L'utilisateur clique sur le pseudo d'un utilisateur2.
    */
   public function lutilisateurCliqueSurLePseudoDunUtilisateur()

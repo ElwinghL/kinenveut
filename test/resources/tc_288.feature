@@ -2,7 +2,8 @@
 Fonctionnalité: Supprimer une enchère
   
   Scénario: Supprimer une enchère
-    Etant donnée L'utilisateur est connecté.
+    Etant donné L'utilisateur est normal
+    Et L'utilisateur est connecté
     Et l'utilisateur est sur la page de gestion de ses enchères
     Et l'utilisateur est un administrateur de l'enchère ciblée
     Quand l'utilisateur clique sur le bouton de suppression d'une enchère

@@ -1,6 +1,5 @@
 <?php
 
-use Behat\Behat\Tester\Exception\PendingException;
 use Behat\Behat\Context\Context;
 
 /**
@@ -9,67 +8,29 @@ use Behat\Behat\Context\Context;
 class tc108Context implements Context
 {
   /**
-   * @Given L'utilisateur possède un compte dans la base
+   * Initializes context.
+   *
+   * Every scenario gets its own context instance.
+   * You can also pass arbitrary arguments to the
+   * context constructor through behat.yml.
    */
-  public function lutilisateurPossedeUnCompteDansLaBase()
+  public function __construct()
   {
-    throw new PendingException();
   }
 
   /**
-   * @Given L'utilisateur entre son adresse mail et mot de passe dans la page de login
+   * @Given L'utilisateur est sur la page de connexion
    */
-  public function lutilisateurEntreSonAdresseMailEtMotDePasseDansLaPageDeLogin()
+  public function lutilisateurEstSurLaPageDeConnexion()
   {
-    throw new PendingException();
-  }
-
-  /**
-   * @When Clique sur le bouton :arg1
-   */
-  public function cliqueSurLeBouton($arg1)
-  {
-    throw new PendingException();
-  }
-
-  /**
-   * @Then L'utilisateur est identifié sur le site
-   */
-  public function lutilisateurEstIdentifieSurLeSite()
-  {
-    throw new PendingException();
-  }
-
-  /**
-   * @Given L'utilisateur se trompe d'adresse mail
-   */
-  public function lutilisateurSeTrompeDadresseMail()
-  {
-    throw new PendingException();
-  }
-
-  /**
-   * @Given L'utilisateur entre son mot de passe
-   */
-  public function lutilisateurEntreSonMotDePasse()
-  {
-    throw new PendingException();
-  }
-
-  /**
-   * @When L'utilisateur clique sur le bouton :arg1
-   */
-  public function lutilisateurCliqueSurLeBouton($arg1)
-  {
-    throw new PendingException();
-  }
-
-  /**
-   * @Then L'utilisateur reçoit un message d'erreur approprié
-   */
-  public function lutilisateurRecoitUnMessageDerreurApproprie()
-  {
-    throw new PendingException();
+    $session = Universe::getUniverse()->getSession();
+    $session->visit('http://localhost/kinenveut/');
+    if ($session->getStatusCode() !== 200) {
+      throw new Exception('status code is not 200');
+    }
+    if ($session->getCurrentUrl() !== 'http://localhost/kinenveut/?r=login') {
+      throw new Exception('url is not "http://localhost/kinenveut/?r=login"');
+    }
   }
 
   /**
@@ -77,7 +38,84 @@ class tc108Context implements Context
    */
   public function lutilisateurEntreSonAdresseMail()
   {
-    throw new PendingException();
+    $session = Universe::getUniverse()->getSession();
+    $user = Universe::getUniverse()->getUser();
+    $session->getPage()->find(
+      'css',
+      'input[name="email"]'
+    )->setValue($user->getEmail());
+  }
+
+  /**
+   * @Given L'utilisateur entre son mot de passe
+   */
+  public function lutilisateurEntreSonMotDePasse()
+  {
+    $session = Universe::getUniverse()->getSession();
+    $user = Universe::getUniverse()->getUser();
+    $session->getPage()->find(
+      'css',
+      'input[name="password"]'
+    )->setValue($user->getPassword());
+  }
+
+  /**
+   * @When L'utilisateur valide le formulaire
+   */
+  public function lutilisateurValideLeFormulaire()
+  {
+    $session = Universe::getUniverse()->getSession();
+    $session->getPage()->find(
+      'css',
+      'input[type="submit"]'
+    )->click();
+  }
+
+  /**
+   * @Then L'utilisateur est identifié sur le site
+   */
+  public function lutilisateurEstIdentifieSurLeSite()
+  {
+    $session = Universe::getUniverse()->getSession();
+    if ($session->getStatusCode() !== 200) {
+      throw new Exception('status code is not 200');
+    }
+    if ($session->getCurrentUrl() !== 'http://localhost/kinenveut/?r=home') {
+      throw new Exception('url is not "http://localhost/kinenveut/?r=home"');
+    }
+  }
+
+  /**
+   * @Given L'utilisateur se trompe d'adresse mail
+   */
+  public function lutilisateurSeTrompeDadresseMail()
+  {
+    $session = Universe::getUniverse()->getSession();
+    $user = Universe::getUniverse()->getUser();
+    $session->getPage()->find(
+      'css',
+      'input[name="email"]'
+    )->setValue($user->getEmail() . 'z');
+  }
+
+  /**
+   * @Then L'utilisateur reçoit un message d'erreur approprié
+   */
+  public function lutilisateurRecoitUnMessageDerreurApproprie()
+  {
+    $session = Universe::getUniverse()->getSession();
+    if ($session->getStatusCode() !== 200) {
+      throw new Exception('status code is not 200');
+    }
+    if ($session->getCurrentUrl() !== 'http://localhost/kinenveut/?r=login/login') {
+      throw new Exception('url is not "http://localhost/kinenveut/?r=login/login"');
+    }
+    if ($session->getPage()->find(
+      'css',
+      '.invalid-feedback.d-block'
+    )->getText() != 'Identifiants incorrects') {
+      throw new Exception('There is not an error');
+    }
   }
 
   /**
@@ -85,14 +123,11 @@ class tc108Context implements Context
    */
   public function lutilisateurSeTrompeDeMotDePasse()
   {
-    throw new PendingException();
-  }
-
-  /**
-   * @Given L'utilisateur ne possède pas de compte dans la base
-   */
-  public function lutilisateurNePossedePasDeCompteDansLaBase()
-  {
-    throw new PendingException();
+    $session = Universe::getUniverse()->getSession();
+    $user = Universe::getUniverse()->getUser();
+    $session->getPage()->find(
+      'css',
+      'input[name="password"]'
+    )->setValue($user->getPassword() . 'z');
   }
 }

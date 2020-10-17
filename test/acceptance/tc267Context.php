@@ -6,7 +6,7 @@ use Behat\Behat\Context\Context;
 /**
  * Defines application features from the specific context.
  */
-class tc280Context implements Context
+class tc267Context implements Context
 {
   /**
    * Initializes context.
@@ -20,17 +20,25 @@ class tc280Context implements Context
   }
 
   /**
-   * @When l'utilisateur choisit une visibilité
+   * @Given L'utilisateur est sur la page de mise à jour de profile
    */
-  public function lutilisateurChoisitUneVisibilite()
+  public function lutilisateurEstSurLaPageDeMiseAJourDeProfile()
   {
     throw new PendingException();
   }
 
   /**
-   * @Then le résultat de sa recherche est affiché
+   * @Given L'utilisateur a entré la valeur :arg1 dans le champ :arg2
    */
-  public function leResultatDeSaRechercheEstAffiche()
+  public function lutilisateurAEntreLaValeurDansLeChamp($arg1, $arg2)
+  {
+    throw new PendingException();
+  }
+
+  /**
+   * @Then Le champ :arg1 du profile contient la valeur :arg2
+   */
+  public function leChampDuProfileContientLaValeur($arg1, $arg2)
   {
     throw new PendingException();
   }

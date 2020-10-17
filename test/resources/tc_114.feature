@@ -2,9 +2,10 @@
 Fonctionnalité: Vente privée
   
   Scénario: Recherche d'une vente privée
-    Etant donnée L'utilisateur est connecté.
+    Etant donné L'utilisateur est normal
+    Et L'utilisateur est connecté
     Et L'utilisateur est sur la page de recherche
     Et l'utilisateur est enregistré sur le site
     Quand l'utilisateur recherche une vente privée existant dans la base de données
-    Et il clique sur le bouton rechercher
+    Et L'utilisateur clique sur le bouton rechercher
     Alors il trouve cette enchère
