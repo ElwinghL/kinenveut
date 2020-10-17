@@ -47,13 +47,12 @@ class tc104Context implements Context
 
     /*Check if the user is well initialized*/
     $user = Universe::getUniverse()->getUser();
-    if($user == null){
-        throw new Exception('The user has not been correctly intialized');
-    }
-    else{
-        if($user->getEmail() == null){
-            throw new Exception('The user has no email');
-        }
+    if ($user == null) {
+      throw new Exception('The user has not been correctly intialized');
+    } else {
+      if ($user->getEmail() == null) {
+        throw new Exception('The user has no email');
+      }
     }
 
     /*Check if the user already suscribed*/
@@ -61,139 +60,137 @@ class tc104Context implements Context
     $userFromDB = $userDao->selectUserByEmail($user->getEmail());
 
     /*If the user doesn't exist, let's create him !*/
-    if ($userFromDB == null)
-    {
-        /*Go to suscribe page*/
-        $session->getPage()->find(
-            'css',
-            'a[href="?r=registration"]'
-        )->click();
+    if ($userFromDB == null) {
+      /*Go to suscribe page*/
+      $session->getPage()->find(
+        'css',
+        'a[href="?r=registration"]'
+      )->click();
 
-        if ($session->getStatusCode() !== 200) {
-            throw new Exception('status code is not 200');
-        }
-        if ($session->getCurrentUrl() !== 'http://localhost/kinenveut/?r=registration') {
-            throw new Exception('url is not "http://localhost/kinenveut/?r=registration"');
-        }
+      if ($session->getStatusCode() !== 200) {
+        throw new Exception('status code is not 200');
+      }
+      if ($session->getCurrentUrl() !== 'http://localhost/kinenveut/?r=registration') {
+        throw new Exception('url is not "http://localhost/kinenveut/?r=registration"');
+      }
 
-        /*Fill the form*/
-        $session->getPage()->find(
-            'css',
-            'input[name="firstName"]'
-        )->setValue($user->getFirstName());
-        $session->getPage()->find(
-            'css',
-            'input[name="lastName"]'
-        )->setValue($user->getLastName());
-        $session->getPage()->find(
-            'css',
-            'input[name="birthDate"]'
-        )->setValue($user->getBirthDate()->format('d/m/Y'));
-        $session->getPage()->find(
-            'css',
-            'input[name="email"]'
-        )->setValue($user->getEmail());
-        $session->getPage()->find(
-            'css',
-            'input[name="password"]'
-        )->setValue($user->getPassword());
+      /*Fill the form*/
+      $session->getPage()->find(
+        'css',
+        'input[name="firstName"]'
+      )->setValue($user->getFirstName());
+      $session->getPage()->find(
+        'css',
+        'input[name="lastName"]'
+      )->setValue($user->getLastName());
+      $session->getPage()->find(
+        'css',
+        'input[name="birthDate"]'
+      )->setValue($user->getBirthDate()->format('d/m/Y'));
+      $session->getPage()->find(
+        'css',
+        'input[name="email"]'
+      )->setValue($user->getEmail());
+      $session->getPage()->find(
+        'css',
+        'input[name="password"]'
+      )->setValue($user->getPassword());
 
-        /*Click on suscribe*/
-        $session->getPage()->find(
-            'css',
-            'input[type="submit"]'
-        )->click();
+      /*Click on suscribe*/
+      $session->getPage()->find(
+        'css',
+        'input[type="submit"]'
+      )->click();
 
-        //The user is redirect to the login page
+      //The user is redirect to the login page
 
-        if ($session->getStatusCode() !== 200) {
-            throw new Exception('status code is not 200');
-        }
-        if ($session->getCurrentUrl() !== 'http://localhost/kinenveut/?r=login') {
-            throw new Exception('url is not "http://localhost/kinenveut/?r=login"');
-        }
+      if ($session->getStatusCode() !== 200) {
+        throw new Exception('status code is not 200');
+      }
+      if ($session->getCurrentUrl() !== 'http://localhost/kinenveut/?r=login') {
+        throw new Exception('url is not "http://localhost/kinenveut/?r=login"');
+      }
 
-        /*So now, the administrator has to accept him !*/
+      /*So now, the administrator has to accept him !*/
 
+      /*Disconnect*/
+      //todo : find a way to click on the disconnect button
+      $session->visit('http://localhost/kinenveut/?r=logout');
 
-        /*Disconnect*/
-        //todo : find a way to click on the disconnect button
-        $session->visit('http://localhost/kinenveut/?r=logout');
+      //The user is redirect to the login page
 
-        //The user is redirect to the login page
+      if ($session->getStatusCode() !== 200) {
+        throw new Exception('status code is not 200');
+      }
+      if ($session->getCurrentUrl() !== 'http://localhost/kinenveut/?r=login') {
+        throw new Exception('url is not "http://localhost/kinenveut/?r=login"');
+      }
 
-        if ($session->getStatusCode() !== 200) {
-            throw new Exception('status code is not 200');
-        }
-        if ($session->getCurrentUrl() !== 'http://localhost/kinenveut/?r=login') {
-            throw new Exception('url is not "http://localhost/kinenveut/?r=login"');
-        }
+      /*Connection as Admin*/
+      $userAdmin = new UserModel();
+      $userAdmin->setEmail('admin@kinenveut.fr');
+      $userAdmin->setPassword('password');
 
-        /*Connection as Admin*/
-        $userAdmin = new UserModel();
-        $userAdmin->setEmail('admin@kinenveut.fr');
-        $userAdmin->setPassword('password');
+      //Mail
+      $session->getPage()->find(
+        'css',
+        'input[name="email"]'
+      )->setValue($userAdmin->getEmail());
+      //Password
+      $session->getPage()->find(
+        'css',
+        'input[name="password"]'
+      )->setValue($userAdmin->getPassword());
 
-        //Mail
-        $session->getPage()->find(
-            'css',
-            'input[name="email"]'
-        )->setValue($userAdmin->getEmail());
-        //Password
-        $session->getPage()->find(
-            'css',
-            'input[name="password"]'
-        )->setValue($userAdmin->getPassword());
+      /*Click to connect*/
+      $session->getPage()->find(
+        'css',
+        'input[type="submit"]'
+      )->click();
 
-        /*Click to connect*/
-        $session->getPage()->find(
-            'css',
-            'input[type="submit"]'
-        )->click();
+      if ($session->getStatusCode() !== 200) {
+        throw new Exception('status code is not 200');
+      }
+      if ($session->getCurrentUrl() !== 'http://localhost/kinenveut/?r=home') {
+        throw new Exception('url is not "http://localhost/kinenveut/?r=home"');
+      }
 
-        if ($session->getStatusCode() !== 200) {
-            throw new Exception('status code is not 200');
-        }
-        if ($session->getCurrentUrl() !== 'http://localhost/kinenveut/?r=home') {
-            throw new Exception('url is not "http://localhost/kinenveut/?r=home"');
-        }
+      /*Go to the user managment page*/
+      $url = 'http://localhost/kinenveut/?r=userManagement';
+      $session->visit($url);
+      if ($session->getStatusCode() !== 200) {
+        throw new Exception('status code is not 200');
+      }
+      if ($session->getCurrentUrl() !== $url) {
+        throw new Exception('url is not ' . $url);
+      }
 
-        /*Go to the user managment page*/
-        $url = 'http://localhost/kinenveut/?r=userManagement';
-        $session->visit($url);
-        if ($session->getStatusCode() !== 200) {
-            throw new Exception('status code is not 200');
-        }
-        if ($session->getCurrentUrl() !== $url) {
-            throw new Exception('url is not '.$url);
-        }
+      /*Click to accept the prevent created user*/
+      $userFromDB = $userDao->selectUserByEmail($user->getEmail());
+      $user->setId($userFromDB->getId());
+      $href = '?r=userManagement/validate&id=' . $user->getId();
+      $session->getPage()->find(
+        'css',
+        'a[href="' . $href . '"]'
+      )->click();
 
-        /*Click to accept the prevent created user*/
-        $userFromDB = $userDao->selectUserByEmail($user->getEmail());
-        $user->setId($userFromDB->getId());
-        $href = '?r=userManagement/validate&id='.$user->getId();
-        $session->getPage()->find(
-            'css',
-            'a[href="'.$href.'"]'
-        )->click();
+      $url = 'http://localhost/kinenveut/?r=userManagement/validate&id=' . $user->getId();
+      if ($session->getCurrentUrl() !== $url) {
+        throw new Exception($session->getCurrentUrl() . 'url is not "' . $url . '"');
+      }
 
-        $url = 'http://localhost/kinenveut/?r=userManagement/validate&id='.$user->getId();
-        if ($session->getCurrentUrl() !== $url) {
-            throw new Exception($session->getCurrentUrl().'url is not "'.$url.'"');
-        }
+      /*Disconnect*/
+      //todo : find a way to click on the disconnect button
+      $session->visit('http://localhost/kinenveut/?r=logout');
 
-        /*Disconnect*/
-        //todo : find a way to click on the disconnect button
-        $session->visit('http://localhost/kinenveut/?r=logout');
+      //The user is redirect to the login page
 
-        //The user is redirect to the login page
-
-        if ($session->getStatusCode() !== 200) {
-            throw new Exception('status code is not 200');
-        }
-        if ($session->getCurrentUrl() !== 'http://localhost/kinenveut/?r=login') {
-            throw new Exception('url is not "http://localhost/kinenveut/?r=login"');
-        }
+      if ($session->getStatusCode() !== 200) {
+        throw new Exception('status code is not 200');
+      }
+      if ($session->getCurrentUrl() !== 'http://localhost/kinenveut/?r=login') {
+        throw new Exception('url is not "http://localhost/kinenveut/?r=login"');
+      }
     }
 
     $session->getPage()->find(

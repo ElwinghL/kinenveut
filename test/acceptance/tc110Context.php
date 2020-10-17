@@ -24,7 +24,16 @@ class tc110Context implements Context
    */
   public function lutilisateurEstSurLaPageDeRecherche()
   {
-    throw new PendingException();
+    $session = Universe::getUniverse()->getSession();
+    $url = 'http://localhost/kinenveut/?r=home';
+    $session->visit($url);
+
+    if ($session->getStatusCode() !== 200) {
+      throw new Exception('status code is not 200');
+    }
+    if ($session->getCurrentUrl() !== $url) {
+      throw new Exception('url is not "' . $url . '"');
+    }
   }
 
   /**
@@ -40,7 +49,11 @@ class tc110Context implements Context
    */
   public function lutilisateurCliqueSurLeBoutonRechercher()
   {
-    throw new PendingException();
+    $session = Universe::getUniverse()->getSession();
+    $session->getPage()->find(
+      'css',
+      'input[type="submit"]'
+    )->click();
   }
 
   /**
