@@ -1,6 +1,5 @@
 <?php
 
-use Behat\Behat\Tester\Exception\PendingException;
 use Behat\Behat\Context\Context;
 
 /**
@@ -24,6 +23,11 @@ class tc32Context implements Context
    */
   public function lutilisateurChoisisUneCategorie()
   {
-    throw new PendingException();
+    $session = Universe::getUniverse()->getSession();
+
+    $session->getPage()->find(
+      'css',
+      '#categoryId'
+    )->selectOption(1);
   }
 }

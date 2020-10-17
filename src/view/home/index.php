@@ -16,7 +16,7 @@ $searchInput = isset($data['searchInput']) ? $data['searchInput'] : '';
       <div class="col-md-6">
         <div class="form-group">
           <label for="category">Catégories</label>
-          <select id="category" name="categoryType" class="form-control">
+          <select id="categoryId" name="categoryType" class="form-control">
             <option value="-1">Toutes les catégories</option>
             <?php if (sizeof($categoryList) > 0) : ?>
               <?php foreach ($categoryList as $oneCategory) : ?>
@@ -33,7 +33,7 @@ $searchInput = isset($data['searchInput']) ? $data['searchInput'] : '';
       <div class="col-md-6">
         <div class="form-group">
           <label for="privacy">Types d'offres</label>
-          <select id="category" name="offerType" class="form-control">
+          <select id="privacyId" name="offerType" class="form-control">
             <option value="-1" <?php if ($selectedOfferType == -1) {
   echo 'selected';
 } ?>>Tous les types d'offres</option>
@@ -54,9 +54,7 @@ $searchInput = isset($data['searchInput']) ? $data['searchInput'] : '';
       <div class="input-group col-md-12">
         <input name="searchInput" type="text" class="search-query form-control" value="<?php echo $searchInput ?>" placeholder="Smartphone, enceinte connectée, PS4..." />
         <span class="input-group-btn">
-          <button class="btn btn-danger search-button-custom" type="submit" name="searchButton">
-            Rechercher
-          </button>
+          <input class="btn btn-danger search-button-custom" type="submit" name="searchButton" value="Rechercher"/>
         </span>
       </div>
     </div>
@@ -73,7 +71,6 @@ $searchInput = isset($data['searchInput']) ? $data['searchInput'] : '';
             <div class="thumbnail text-center">
                 <div style="text-align: right;">
                     <?php include 'src/view/common/privacyBadge.php';?>
-                    &nbsp;
                 </div>
               <h4 class="text-danger auction-title-custom"> <?php echo $auction->getName(); ?> </h4>
               <p>Expiration : <?php echo dateTimeFormat($auction->getEndDate()); ?></p>
