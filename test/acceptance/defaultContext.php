@@ -23,5 +23,7 @@ class defaultContext implements Context
   {
     Universe::getUniverse()->getSession()->restart();
     Universe::getUniverse()->setUser(null);
+    Universe::getUniverse()->setUser2(null);
+    Universe::getUniverse()->setAuction(null);
   }
 }

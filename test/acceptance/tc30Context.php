@@ -21,11 +21,23 @@ class tc30Context implements Context
   public function __destruct()
   {
     $canDelete = Universe::getUniverse()->getCanDelete();
+    $userDao = App_DaoFactory::getFactory()->getUserDao();
     if (isset($canDelete['user'])) {
-      $userDao = App_DaoFactory::getFactory()->getUserDao();
       $user = $userDao->selectUserByEmail(Universe::getUniverse()->getUser()->getEmail());
-      $userDao->deleteUser($user->getId());
+      $isAdmin = $user->getIsAdmin();
+      if ($isAdmin == false) {
+        $userDao->deleteUser($user->getId());
+      }
       unset($canDelete['user']);
+      Universe::getUniverse()->setCanDelete($canDelete);
+    }
+    if (isset($canDelete['user2'])) {
+      $user2 = $userDao->selectUserByEmail(Universe::getUniverse()->getUser2()->getEmail());
+      $isAdmin2 = $user2->getIsAdmin();
+      if ($isAdmin2 == false) {
+        $userDao->deleteUser($user2->getId());
+      }
+      unset($canDelete['user2']);
       Universe::getUniverse()->setCanDelete($canDelete);
     }
   }
