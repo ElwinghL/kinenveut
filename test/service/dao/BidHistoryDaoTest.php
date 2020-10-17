@@ -11,6 +11,17 @@ class BidHistoryDaoTest extends TestCase
 {
   private $dbTampon;
 
+  const AUCTION_ID = 1;
+  const SELLER_ID = 1;
+  const PRIVACY_ID = 1;
+  const CATEGORY_ID = 1;
+  const STATE_ID = 0;
+  const NAME = 'Object Test';
+  const DESCRIPTION = 'descr';
+  const BASE_PRICE = 3;
+  const RESERVE_PRICE = 10;
+  const DURATION = 7;
+
   const PRICE = 42;
   const DATE = '2020-10-01';
   const BIDDER_ID = 1;
@@ -105,5 +116,61 @@ class BidHistoryDaoTest extends TestCase
 
     $this->assertTrue($success);
     $this->assertTrue($this->bidHistoryDao->deleteBidById(-1));
+  }
+
+  /**
+   * @test
+   * @covers BidHistoryDaoImpl
+   */
+  public function deleteCurrentBidsByBidderIdTest() : void
+  {
+    //First step : insert a user
+    App_DaoFactory::setFactory(new App_DaoFactory());
+    $userDao = App_DaoFactory::getFactory()->getUserDao();
+    $userTest = new UserModel();
+    $userTest
+          ->setFirstName('Francis')
+          ->setLastName('Dupont')
+          ->setBirthDate(new DateTime('1970-01-13'))
+          ->setEmail('francis@kinenveut.fr')
+          ->setPassword('password');
+    $userId = $userDao->insertUser($userTest);
+
+    App_DaoFactory::setFactory(new App_DaoFactory());
+    $this->auctionAccessStateDao = App_DaoFactory::getFactory()->getAuctionAccessStateDao();
+    $this->auctionDao = App_DaoFactory::getFactory()->getAuctionDao();
+    $this->auctionTest = new AuctionModel();
+    $this->auctionTest
+            ->setName(self::NAME)
+            ->setDescription(self::DESCRIPTION)
+            ->setBasePrice(self::BASE_PRICE)
+            ->setReservePrice(self::RESERVE_PRICE)
+            ->setDuration(self::DURATION)
+            ->setSellerId(self::SELLER_ID)
+            ->setPrivacyId(self::PRIVACY_ID)
+            ->setCategoryId(self::CATEGORY_ID);
+
+    //First step : Insert a new Auction
+    $auctionId = $this->auctionDao->insertAuction($this->auctionTest);
+
+    //Second step : Accept the Inserted Auction
+    $localAuctionTest = $this->auctionTest
+                          ->setId($auctionId)
+                          ->setAuctionState(1);
+    $auctionIsUpdated = $this->auctionDao->updateAuctionState($localAuctionTest);
+
+    //Third step : Insert a BidHistory
+    $bidHistoryId = $this->bidHistoryDao->insertBid($this->bidHistory);
+
+    //Fourth step : Delete every online bids for one user
+    $success = $this->bidHistoryDao->deleteCurrentBidsByBidderId(self::BIDDER_ID);
+
+    //Delete inserted Auction & BidHistory & User
+    $this->bidHistoryDao->deleteBidById($bidHistoryId);
+    $this->auctionDao->deleteAuctionById($auctionId);
+    $userDao->deleteUser($userId);
+
+    $this->assertTrue($success);
+    $this->assertTrue($this->bidHistoryDao->deleteCurrentBidsByBidderId(-1));
   }
 }

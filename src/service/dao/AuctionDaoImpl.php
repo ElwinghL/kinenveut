@@ -60,6 +60,42 @@ class AuctionDaoImpl implements IAuctionDao
     return $success;
   }
 
+  public function updateAllAuctionCategoryId(int $categoryId) : bool
+  {
+    $success = null;
+    $request = 'UPDATE Auction
+                    SET categoryId = 1
+                    WHERE categoryId = :categoryId';
+
+    try {
+      $query = db()->prepare($request);
+      $success = $query->execute(['categoryId' => $categoryId]);
+    } catch (PDOException $Exception) {
+      throw new BDDException($Exception->getMessage(), $Exception->getCode());
+    }
+
+    return $success;
+  }
+
+  public function cancelOnlineAuctionsBySellerId(int $sellerId) : bool
+  {
+    $success = null;
+    $request = 'UPDATE Auction
+                    SET auctionState = 2
+                    WHERE sellerId = :sellerId
+                    AND auctionState = 1
+                    AND DATE_ADD(Auction.startDate,interval Auction.duration day) > NOW()';
+
+    try {
+      $query = db()->prepare($request);
+      $success = $query->execute(['sellerId' => $sellerId]);
+    } catch (PDOException $Exception) {
+      throw new BDDException($Exception->getMessage(), $Exception->getCode());
+    }
+
+    return $success;
+  }
+
   public function selectAuctionByAuctionId(int $auctionId): ?AuctionModel
   {
     $oneAuction = null;
