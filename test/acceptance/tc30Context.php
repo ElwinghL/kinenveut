@@ -24,20 +24,13 @@ class tc30Context implements Context
     $userDao = App_DaoFactory::getFactory()->getUserDao();
     if (isset($canDelete['user'])) {
       $user = $userDao->selectUserByEmail(Universe::getUniverse()->getUser()->getEmail());
-      $isAdmin = $user->getIsAdmin();
-      if ($isAdmin == false) {
-        $userDao->deleteUser($user->getId());
+      if ($user != null) {
+        $isAdmin = $user->getIsAdmin();
+        if ($isAdmin == false) {
+          $userDao->deleteUser($user->getId());
+        }
       }
       unset($canDelete['user']);
-      Universe::getUniverse()->setCanDelete($canDelete);
-    }
-    if (isset($canDelete['user2'])) {
-      $user2 = $userDao->selectUserByEmail(Universe::getUniverse()->getUser2()->getEmail());
-      $isAdmin2 = $user2->getIsAdmin();
-      if ($isAdmin2 == false) {
-        $userDao->deleteUser($user2->getId());
-      }
-      unset($canDelete['user2']);
       Universe::getUniverse()->setCanDelete($canDelete);
     }
   }
@@ -96,8 +89,6 @@ class tc30Context implements Context
       'css',
       'input[name="password"]'
     )->setValue($user->getPassword());
-
-    Universe::getUniverse()->setCanDelete(['user'=>true]);
   }
 
   /**
@@ -110,7 +101,8 @@ class tc30Context implements Context
       throw new Exception('status code is not 200');
     }
     if ($session->getCurrentUrl() !== 'http://localhost/kinenveut/?r=login') {
-      throw new Exception($session->getCurrentUrl() . ' url is not "http://localhost/kinenveut/?r=login"');
+      throw new Exception(' url is not "http://localhost/kinenveut/?r=login"');
     }
+    Universe::getUniverse()->setCanDelete(['user'=>true]);
   }
 }
