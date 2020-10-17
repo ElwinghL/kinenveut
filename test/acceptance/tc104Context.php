@@ -3,13 +3,68 @@
 use Behat\Behat\Tester\Exception\PendingException;
 use Behat\Behat\Context\Context;
 
-include_once 'src/tools.php';
-
 /**
  * Defines application features from the specific context.
  */
 class tc104Context implements Context
 {
+  /**
+   * Initializes context.
+   *
+   * Every scenario gets its own context instance.
+   * You can also pass arbitrary arguments to the
+   * context constructor through behat.yml.
+   */
+  public function __construct()
+  {
+  }
+
+  /**
+   * @Given l'utilisateur est un administrateur
+   */
+  public function lutilisateurEstUnAdministrateur()
+  {
+    $user = new UserModel();
+    $user->setEmail('admin@kinenveut.fr');
+    $user->setPassword('password');
+    Universe::getUniverse()->setUser($user);
+  }
+
+  /**
+   * @Given L'utilisateur est connecté
+   */
+  public function lutilisateurEstConnecte()
+  {
+    $session = Universe::getUniverse()->getSession();
+    $user = Universe::getUniverse()->getUser();
+    $session->visit('http://localhost/kinenveut/');
+    if ($session->getStatusCode() !== 200) {
+      throw new Exception('status code is not 200');
+    }
+    if ($session->getCurrentUrl() !== 'http://localhost/kinenveut/?r=login') {
+      throw new Exception('url is not "http://localhost/kinenveut/?r=login"');
+    }
+    $session->getPage()->find(
+      'css',
+      'input[name="email"]'
+    )->setValue($user->getEmail());
+    $session->getPage()->find(
+      'css',
+      'input[name="password"]'
+    )->setValue($user->getPassword());
+    $session->getPage()->find(
+      'css',
+      'input[type="submit"]'
+    )->click();
+
+    if ($session->getStatusCode() !== 200) {
+      throw new Exception('status code is not 200');
+    }
+    if ($session->getCurrentUrl() !== 'http://localhost/kinenveut/?r=home') {
+      throw new Exception('url is not "http://localhost/kinenveut/?r=home"');
+    }
+  }
+
   /**
    * @Given l'utilisateur consulte les catégories d'enchères
    */
@@ -23,6 +78,14 @@ class tc104Context implements Context
     if ($session->getCurrentUrl() !== 'http://localhost/kinenveut/?r=categorie') {
       throw new Exception('url is not "http://localhost/kinenveut/?r=categorie"');
     }
+  }
+
+  /**
+   * @Given la liste de catégories est vide
+   */
+  public function laListeDeCategoriesEstVide()
+  {
+    throw new PendingException();
   }
 
   /**
@@ -69,68 +132,6 @@ class tc104Context implements Context
     )->getText() != $arg1) {
       throw new Exception('category was not found');
     }
-  }
-
-  /**
-   * @Given l'utilisateur est un administrateur
-   */
-  public function lutilisateurEstUnAdministrateur()
-  {
-    $user = new UserModel();
-    $user->setEmail('admin@kinenveut.fr');
-    $user->setPassword('password');
-    Universe::getUniverse()->setUser($user);
-  }
-
-  /**
-   * @Given l'utilisateur se connecte
-   */
-  public function lutilisateurSeConnecte()
-  {
-    $session = Universe::getUniverse()->getSession();
-    $user = Universe::getUniverse()->getUser();
-    $session->visit('http://localhost/kinenveut/');
-    if ($session->getStatusCode() !== 200) {
-      throw new Exception('status code is not 200');
-    }
-    if ($session->getCurrentUrl() !== 'http://localhost/kinenveut/?r=login') {
-      throw new Exception('url is not "http://localhost/kinenveut/?r=login"');
-    }
-    $session->getPage()->find(
-      'css',
-      'input[name="email"]'
-    )->setValue($user->getEmail());
-    $session->getPage()->find(
-      'css',
-      'input[name="password"]'
-    )->setValue($user->getPassword());
-    $session->getPage()->find(
-      'css',
-      'input[name="connection"]'
-    )->click();
-
-    if ($session->getStatusCode() !== 200) {
-      throw new Exception('status code is not 200');
-    }
-    if ($session->getCurrentUrl() !== 'http://localhost/kinenveut/?r=home') {
-      throw new Exception('url is not "http://localhost/kinenveut/?r=home"');
-    }
-  }
-
-  /**
-   * @Given L'utilisateur est connecté
-   */
-  public function lutilisateurEstConnecte()
-  {
-    throw new PendingException();
-  }
-
-  /**
-   * @Given la liste de catégories est vide
-   */
-  public function laListeDeCategoriesEstVide()
-  {
-    throw new PendingException();
   }
 
   /**

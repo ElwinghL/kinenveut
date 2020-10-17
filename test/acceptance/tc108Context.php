@@ -1,6 +1,5 @@
 <?php
 
-use Behat\Behat\Tester\Exception\PendingException;
 use Behat\Behat\Context\Context;
 
 /**
@@ -9,11 +8,29 @@ use Behat\Behat\Context\Context;
 class tc108Context implements Context
 {
   /**
+   * Initializes context.
+   *
+   * Every scenario gets its own context instance.
+   * You can also pass arbitrary arguments to the
+   * context constructor through behat.yml.
+   */
+  public function __construct()
+  {
+  }
+
+  /**
    * @Given L'utilisateur est sur la page de connexion
    */
   public function lutilisateurEstSurLaPageDeConnexion()
   {
-    throw new PendingException();
+    $session = Universe::getUniverse()->getSession();
+    $session->visit('http://localhost/kinenveut/');
+    if ($session->getStatusCode() !== 200) {
+      throw new Exception('status code is not 200');
+    }
+    if ($session->getCurrentUrl() !== 'http://localhost/kinenveut/?r=login') {
+      throw new Exception('url is not "http://localhost/kinenveut/?r=login"');
+    }
   }
 
   /**
@@ -21,7 +38,12 @@ class tc108Context implements Context
    */
   public function lutilisateurEntreSonAdresseMail()
   {
-    throw new PendingException();
+    $session = Universe::getUniverse()->getSession();
+    $user = Universe::getUniverse()->getUser();
+    $session->getPage()->find(
+      'css',
+      'input[name="email"]'
+    )->setValue($user->getEmail());
   }
 
   /**
@@ -29,15 +51,24 @@ class tc108Context implements Context
    */
   public function lutilisateurEntreSonMotDePasse()
   {
-    throw new PendingException();
+    $session = Universe::getUniverse()->getSession();
+    $user = Universe::getUniverse()->getUser();
+    $session->getPage()->find(
+      'css',
+      'input[name="password"]'
+    )->setValue($user->getPassword());
   }
 
   /**
-   * @When Clique sur le bouton :arg1
+   * @When L'utilisateur valide le formulaire
    */
-  public function cliqueSurLeBouton($arg1)
+  public function lutilisateurValideLeFormulaire()
   {
-    throw new PendingException();
+    $session = Universe::getUniverse()->getSession();
+    $session->getPage()->find(
+      'css',
+      'input[type="submit"]'
+    )->click();
   }
 
   /**
@@ -45,7 +76,13 @@ class tc108Context implements Context
    */
   public function lutilisateurEstIdentifieSurLeSite()
   {
-    throw new PendingException();
+    $session = Universe::getUniverse()->getSession();
+    if ($session->getStatusCode() !== 200) {
+      throw new Exception('status code is not 200');
+    }
+    if ($session->getCurrentUrl() !== 'http://localhost/kinenveut/?r=home') {
+      throw new Exception('url is not "http://localhost/kinenveut/?r=home"');
+    }
   }
 
   /**
@@ -53,15 +90,12 @@ class tc108Context implements Context
    */
   public function lutilisateurSeTrompeDadresseMail()
   {
-    throw new PendingException();
-  }
-
-  /**
-   * @When L'utilisateur clique sur le bouton :arg1
-   */
-  public function lutilisateurCliqueSurLeBouton($arg1)
-  {
-    throw new PendingException();
+    $session = Universe::getUniverse()->getSession();
+    $user = Universe::getUniverse()->getUser();
+    $session->getPage()->find(
+      'css',
+      'input[name="email"]'
+    )->setValue($user->getEmail() . 'z');
   }
 
   /**
@@ -69,7 +103,19 @@ class tc108Context implements Context
    */
   public function lutilisateurRecoitUnMessageDerreurApproprie()
   {
-    throw new PendingException();
+    $session = Universe::getUniverse()->getSession();
+    if ($session->getStatusCode() !== 200) {
+      throw new Exception('status code is not 200');
+    }
+    if ($session->getCurrentUrl() !== 'http://localhost/kinenveut/?r=login/login') {
+      throw new Exception('url is not "http://localhost/kinenveut/?r=login/login"');
+    }
+    if ($session->getPage()->find(
+      'css',
+      '.invalid-feedback.d-block'
+    )->getText() != 'Identifiants incorrects') {
+      throw new Exception('There is not an error');
+    }
   }
 
   /**
@@ -77,6 +123,11 @@ class tc108Context implements Context
    */
   public function lutilisateurSeTrompeDeMotDePasse()
   {
-    throw new PendingException();
+    $session = Universe::getUniverse()->getSession();
+    $user = Universe::getUniverse()->getUser();
+    $session->getPage()->find(
+      'css',
+      'input[name="password"]'
+    )->setValue($user->getPassword() . 'z');
   }
 }

@@ -9,11 +9,14 @@ use Behat\Behat\Context\Context;
 class tc54Context implements Context
 {
   /**
-   * @When L'utilisateur clique sur le bouton supprimer son compte
+   * Initializes context.
+   *
+   * Every scenario gets its own context instance.
+   * You can also pass arbitrary arguments to the
+   * context constructor through behat.yml.
    */
-  public function lutilisateurCliqueSurLeBoutonSupprimerSonCompte()
+  public function __construct()
   {
-    throw new PendingException();
   }
 
   /**

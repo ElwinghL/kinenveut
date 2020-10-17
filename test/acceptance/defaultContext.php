@@ -2,6 +2,7 @@
 
 use Behat\Behat\Context\Context;
 
+include_once 'src/tools.php';
 /**
  * Defines application features from the specific context.
  */

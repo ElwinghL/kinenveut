@@ -1,6 +1,5 @@
 <?php
 
-use Behat\Behat\Tester\Exception\PendingException;
 use Behat\Behat\Context\Context;
 
 /**
@@ -9,11 +8,41 @@ use Behat\Behat\Context\Context;
 class tc30Context implements Context
 {
   /**
+   * Initializes context.
+   *
+   * Every scenario gets its own context instance.
+   * You can also pass arbitrary arguments to the
+   * context constructor through behat.yml.
+   */
+  public function __construct()
+  {
+  }
+
+  /**
    * @Given L'utilisateur est sur la page de création de compte.
    */
   public function lutilisateurEstSurLaPageDeCreationDeCompte()
   {
-    throw new PendingException();
+    $session = Universe::getUniverse()->getSession();
+    $session->visit('http://localhost/kinenveut/');
+    if ($session->getStatusCode() !== 200) {
+      throw new Exception('status code is not 200');
+    }
+    if ($session->getCurrentUrl() !== 'http://localhost/kinenveut/?r=login') {
+      throw new Exception('url is not "http://localhost/kinenveut/?r=login"');
+    }
+
+    $session->getPage()->find(
+      'css',
+      'a[href="?r=registration"]'
+    )->click();
+
+    if ($session->getStatusCode() !== 200) {
+      throw new Exception('status code is not 200');
+    }
+    if ($session->getCurrentUrl() !== 'http://localhost/kinenveut/?r=registration') {
+      throw new Exception('url is not "http://localhost/kinenveut/?r=registration"');
+    }
   }
 
   /**
@@ -21,15 +50,33 @@ class tc30Context implements Context
    */
   public function lutilisateurRenseigneLesChampsDeSaisies()
   {
-    throw new PendingException();
-  }
+    $session = Universe::getUniverse()->getSession();
+    $user = Universe::getUniverse()->getUser();
+    $session->getPage()->find(
+      'css',
+      'input[name="firstName"]'
+    )->setValue($user->getFirstName());
+    $session->getPage()->find(
+      'css',
+      'input[name="lastName"]'
+    )->setValue($user->getPassword());
+    $session->getPage()->find(
+      'css',
+      'input[name="birthDate"]'
+    )->setValue($user->getPassword());
+    $session->getPage()->find(
+      'css',
+      'input[name="email"]'
+    )->setValue($user->getEmail());
+    $session->getPage()->find(
+      'css',
+      'input[name="password"]'
+    )->setValue($user->getPassword());
 
-  /**
-   * @When L'utilisateur valide son inscription.
-   */
-  public function lutilisateurValideSonInscription()
-  {
-    throw new PendingException();
+    $session->getPage()->find(
+      'css',
+      'input[type="submit"]'
+    )->click();
   }
 
   /**
@@ -37,6 +84,12 @@ class tc30Context implements Context
    */
   public function leCompteDeLutilisateurEstEnregistre()
   {
-    throw new PendingException();
+    $session = Universe::getUniverse()->getSession();
+    if ($session->getStatusCode() !== 200) {
+      throw new Exception('status code is not 200');
+    }
+    if ($session->getCurrentUrl() !== 'http://localhost/kinenveut/?r=login') {
+      throw new Exception('url is not "http://localhost/kinenveut/?r=login"');
+    }
   }
 }

@@ -9,6 +9,17 @@ use Behat\Behat\Context\Context;
 class tc158Context implements Context
 {
   /**
+   * Initializes context.
+   *
+   * Every scenario gets its own context instance.
+   * You can also pass arbitrary arguments to the
+   * context constructor through behat.yml.
+   */
+  public function __construct()
+  {
+  }
+
+  /**
    * @Given l'utilisateur consulte les users
    */
   public function lutilisateurConsulteLesUsers()
@@ -24,9 +35,9 @@ class tc158Context implements Context
   }
 
   /**
-   * @Given la liste des users contient Auréchou
+   * @Given la liste des users contient :arg1
    */
-  public function laListeDesUsersContientAurechou()
+  public function laListeDesUsersContient($arg1)
   {
     $session = Universe::getUniverse()->getSession();
 
@@ -40,17 +51,9 @@ class tc158Context implements Context
     if ($session->getPage()->find(
       'css',
       '.list-group-item'
-    )->getText() != 'Auréchou') {
+    )->getText() != $arg1) {
       throw new Exception('user was not found');
     }
-  }
-
-  /**
-   * @Given la liste des users contient :arg1
-   */
-  public function laListeDesUsersContient($arg1)
-  {
-    throw new PendingException();
   }
 
   /**

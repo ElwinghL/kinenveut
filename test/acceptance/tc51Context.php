@@ -8,18 +8,14 @@ use Behat\Behat\Context\Context;
 class tc51Context implements Context
 {
   /**
-   * @When l'utilisateur consulte la liste des enchères
+   * Initializes context.
+   *
+   * Every scenario gets its own context instance.
+   * You can also pass arbitrary arguments to the
+   * context constructor through behat.yml.
    */
-  public function lutilisateurConsulteLaListeDesEncheres()
+  public function __construct()
   {
-    $session = Universe::getUniverse()->getSession();
-    $session->visit('http://localhost/kinenveut/?r=auctionManagement');
-    if ($session->getStatusCode() !== 200) {
-      throw new Exception('status code is not 200');
-    }
-    if ($session->getCurrentUrl() !== 'http://localhost/kinenveut/?r=auctionManagement') {
-      throw new Exception('url is not "http://localhost/kinenveut/?r=auctionManagement"');
-    }
   }
 
   /**

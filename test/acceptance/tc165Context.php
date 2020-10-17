@@ -9,6 +9,17 @@ use Behat\Behat\Context\Context;
 class tc165Context implements Context
 {
   /**
+   * Initializes context.
+   *
+   * Every scenario gets its own context instance.
+   * You can also pass arbitrary arguments to the
+   * context constructor through behat.yml.
+   */
+  public function __construct()
+  {
+  }
+
+  /**
    * @Given L'utilisateur à effectué des achats et\/ou des ventes.
    */
   public function lutilisateurAEffectueDesAchatsEtOuDesVentes()
