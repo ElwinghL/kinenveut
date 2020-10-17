@@ -1,6 +1,5 @@
 <?php
 
-use Behat\Behat\Tester\Exception\PendingException;
 use Behat\Behat\Context\Context;
 
 /**
@@ -24,6 +23,12 @@ class tc71Context implements Context
    */
   public function lutilisateurTapeLeNomDeSonObjetDansLaBarreDeRecherche()
   {
-    throw new PendingException();
+    $session = Universe::getUniverse()->getSession();
+    $auction = Universe::getUniverse()->getAuction();
+
+    $session->getPage()->find(
+      'css',
+      'input[name="searchInput"]'
+    )->setValue($auction->getName());
   }
 }
