@@ -6,5 +6,5 @@ Fonctionnalité: Recherche d'une enchère par visibilité
     Et L'utilisateur est connecté
     Et L'utilisateur est sur la page de recherche
     Quand l'utilisateur choisit une visibilité
-    Et il clique sur le bouton rechercher
+    Et L'utilisateur clique sur le bouton rechercher
     Alors le résultat de sa recherche est affiché

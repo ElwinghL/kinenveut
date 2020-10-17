@@ -6,5 +6,5 @@ Fonctionnalité: Recherche d'une enchère par type
     Et L'utilisateur est connecté
     Et L'utilisateur est sur la page de recherche
     Quand l'utilisateur choisis une catégorie
-    Et il clique sur le bouton rechercher
+    Et L'utilisateur valide le formulaire
     Alors le résultat de sa recherche est affiché
