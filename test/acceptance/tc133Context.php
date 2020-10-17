@@ -19,12 +19,36 @@ class tc133Context implements Context
   {
   }
 
+  public function __destruct()
+  {
+    $canDelete = Universe::getUniverse()->getCanDelete();
+    $userDao = App_DaoFactory::getFactory()->getUserDao();
+    if (isset($canDelete['user'])) {
+      $user = $userDao->selectUserByEmail(Universe::getUniverse()->getUser()->getEmail());
+      if ($user != null) {
+        $isAdmin = $user->getIsAdmin();
+        if ($isAdmin == false) {
+          $userDao->deleteUser($user->getId());
+        }
+      }
+      unset($canDelete['user']);
+      Universe::getUniverse()->setCanDelete($canDelete);
+    }
+  }
+
   /**
    * @Given L'utilisateur n'est pas connecté
    */
   public function lutilisateurNestPasConnecte()
   {
-    throw new PendingException();
+    $session = Universe::getUniverse()->getSession();
+    $session->visit('http://localhost/kinenveut/');
+    if ($session->getStatusCode() !== 200) {
+      throw new Exception('status code is not 200');
+    }
+    if ($session->getCurrentUrl() !== 'http://localhost/kinenveut/?r=login') {
+      throw new Exception('url is not "http://localhost/kinenveut/?r=login"');
+    }
   }
 
   /**
@@ -32,7 +56,68 @@ class tc133Context implements Context
    */
   public function lutilisateurAUnCompteDansLaBase()
   {
-    throw new PendingException();
+    $session = Universe::getUniverse()->getSession();
+
+    /*Create a new user*/
+    $localUser = new UserModel();
+    $localUser
+          ->setFirstName('Capucine')
+          ->setLastName('Dupont')
+          ->setBirthDate(DateTime::createFromFormat('d/m/Y', '01/06/1995'))
+          ->setEmail('capucine.dupont@kinenveut.fr')
+          ->setPassword('password');
+
+    Universe::getUniverse()->setUser($localUser);
+
+    /*Go to suscribe page*/
+    $session->getPage()->find(
+      'css',
+      'a[href="?r=registration"]'
+    )->click();
+
+    if ($session->getStatusCode() !== 200) {
+      throw new Exception('status code is not 200');
+    }
+    if ($session->getCurrentUrl() !== 'http://localhost/kinenveut/?r=registration') {
+      throw new Exception('url is not "http://localhost/kinenveut/?r=registration"');
+    }
+
+    /*Fill the form*/
+    $session->getPage()->find(
+      'css',
+      'input[name="firstName"]'
+    )->setValue($localUser->getFirstName());
+    $session->getPage()->find(
+      'css',
+      'input[name="lastName"]'
+    )->setValue($localUser->getLastName());
+    $session->getPage()->find(
+      'css',
+      'input[name="birthDate"]'
+    )->setValue($localUser->getBirthDate()->format('d/m/Y'));
+    $session->getPage()->find(
+      'css',
+      'input[name="email"]'
+    )->setValue($localUser->getEmail());
+    $session->getPage()->find(
+      'css',
+      'input[name="password"]'
+    )->setValue($localUser->getPassword());
+
+    /*Click on suscribe*/
+    $session->getPage()->find(
+      'css',
+      'input[type="submit"]'
+    )->click();
+
+    //The user is redirect to the login page
+
+    if ($session->getStatusCode() !== 200) {
+      throw new Exception('status code is not 200');
+    }
+    if ($session->getCurrentUrl() !== 'http://localhost/kinenveut/?r=login') {
+      throw new Exception('url is not "http://localhost/kinenveut/?r=login"');
+    }
   }
 
   /**
@@ -40,7 +125,14 @@ class tc133Context implements Context
    */
   public function lutilisateurAEntreSonAdresseMail()
   {
-    throw new PendingException();
+    $session = Universe::getUniverse()->getSession();
+    $user = Universe::getUniverse()->getUser();
+
+    /*Fill the form*/
+    $session->getPage()->find(
+      'css',
+      'input[name="email"]'
+    )->setValue($user->getEmail());
   }
 
   /**
@@ -48,7 +140,12 @@ class tc133Context implements Context
    */
   public function lutilisateurAOublieSonMotDePasse()
   {
-    throw new PendingException();
+    //Non testable (on est pas dans la tête de l'utilisateur)
+    $session = Universe::getUniverse()->getSession();
+    $session->getPage()->find(
+      'css',
+      'input[name="password"]'
+    )->setValue('');
   }
 
   /**
@@ -56,6 +153,8 @@ class tc133Context implements Context
    */
   public function lutilisateurRecoitUnEmailAvecLaPossibiliteDeRecupererLaccesASonCompte()
   {
+    Universe::getUniverse()->setCanDelete(['user'=>true]);
+    //Non testable
     throw new PendingException();
   }
 
@@ -64,7 +163,23 @@ class tc133Context implements Context
    */
   public function lutilisateurNaPasDeCompteDansLaBase()
   {
-    throw new PendingException();
+    /*Create a new user*/
+    $localUser = new UserModel();
+    $localUser
+          ->setFirstName('Capucine')
+          ->setLastName('Dupont')
+          ->setBirthDate(DateTime::createFromFormat('d/m/Y', '01/06/1995'))
+          ->setEmail('capucine.dupont@kinenveut.fr')
+          ->setPassword('password');
+
+    Universe::getUniverse()->setUser($localUser);
+
+    $userDao = App_DaoFactory::getFactory()->getUserDao();
+    $user = $userDao->selectUserByEmail(Universe::getUniverse()->getUser()->getEmail());
+
+    if ($user != null) {
+      throw new Exception('The user already exists');
+    }
   }
 
   /**
@@ -72,13 +187,16 @@ class tc133Context implements Context
    */
   public function lutilisateurRecoitUnMessageDerreurApproprie()
   {
+    //Todo : ATTENTION, cette foncition est utilisée à plusieurs endroits à tord
+    Universe::getUniverse()->setCanDelete(['user'=>true]);
+    throw new PendingException();
     $session = Universe::getUniverse()->getSession();
 
     if ($session->getStatusCode() !== 200) {
       throw new Exception('status code is not 200');
     }
-    if ($session->getCurrentUrl() !== 'http://localhost/kinenveut/?r=registration/register') {
-      throw new Exception(' url is not "http://localhost/kinenveut/?r=registration/register"');
+    if ($session->getCurrentUrl() !== 'http://localhost/kinenveut/?r=registration') {
+      throw new Exception(' url is not "http://localhost/kinenveut/?r=registration"');
     }
 
     if ($session->getPage()->find(

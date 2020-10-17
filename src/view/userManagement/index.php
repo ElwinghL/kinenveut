@@ -11,7 +11,7 @@ $allUsers = $data['allUsers']
   <div class="col-md
     -12">
     <?php if (sizeof($users) > 0) : ?>
-      <ul class="list-group">
+      <ul id="waitingList" class="list-group">
         <?php foreach ($users as $user) : ?>
           <li id="user_<?php echo $user->getId(); ?>" class="list-group-item float">
 
