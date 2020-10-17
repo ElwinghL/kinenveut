@@ -3,7 +3,7 @@ Fonctionnalité: Bannissement d'un utilisateur
   
   Plan du Scénario: suppression d'un utilisateur
     Etant donné l'utilisateur est un administrateur
-    Et l'utilisateur se connecte
+    Et L'utilisateur est connecté
     Et l'utilisateur consulte les users
     Et la liste des users contient "<nom>"
     Quand l'admin bannit "<nom>"
@@ -16,7 +16,7 @@ Fonctionnalité: Bannissement d'un utilisateur
     
   Scénario:
     Etant donné l'utilisateur est un administrateur
-    Et l'utilisateur se connecte
+    Et L'utilisateur est connecté
     Etant donné l'utilisateur toto a une enchère
     Quand l'admin bannit toto
     Alors les offres de toto sont supprimées

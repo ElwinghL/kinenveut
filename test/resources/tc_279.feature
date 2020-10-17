@@ -2,7 +2,8 @@
 Fonctionnalité: Vente confidentielle
   
   Scénario: Recherche d'une vente confidentielle
-    Etant donnée L'utilisateur est connecté.
+    Etant donné L'utilisateur est normal
+    Et L'utilisateur est connecté
     Et L'utilisateur est sur la page de recherche
     Et l'utilisateur est enregistré sur le site
     Et l'utilisateur a été invité à cette enchère

@@ -2,7 +2,8 @@
 Fonctionnalité: Enchérir avec un montant exact
   
   Scénario: Enchérir à une enchère
-    Etant donnée L'utilisateur est connecté.
+    Etant donné L'utilisateur est normal
+    Et L'utilisateur est connecté
     Et l'utilisateur est sur la page d'une enchère
     Et l'utilisateur peut participer à l'enchère
     Et l'utilisateur a entré au préalable le montant de l'enchère

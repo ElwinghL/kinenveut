@@ -2,7 +2,8 @@
 Fonctionnalité: Recherche d'une enchère par type
   
   Scénario: Recherche d'une enchère par type
-    Etant donnée L'utilisateur est connecté.
+    Etant donné L'utilisateur est normal
+    Et L'utilisateur est connecté
     Et L'utilisateur est sur la page de recherche
     Quand l'utilisateur choisis une catégorie
     Et il clique sur le bouton rechercher
