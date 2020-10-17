@@ -59,7 +59,8 @@ class BidHistoryDaoTest extends TestCase
   {
     return [
       ['insertBid', 1, new BidModel()],
-      ['deleteBidById', 1, 0]
+      ['deleteBidById', 1, 0],
+      ['deleteCurrentBidsByBidderId', 1, 0]
     ];
   }
 

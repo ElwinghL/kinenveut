@@ -143,13 +143,23 @@ class UserBoTest extends TestCase
             ->setLastName('Dupont')
             ->setBirthDate(new DateTime('2000-01-13'))
             ->setEmail('Francis.Dupont@gmail.com')
-            ->setIsAdmin('false');
+            ->setIsAdmin('false')
+            ->setIsAuthorised(6);
     $userBo = App_BoFactory::getFactory()->getUserBo();
     $userDaoImpMock = $this->createPartialMock(UserDaoImpl::class, ['updateUser']);
     $userDaoImpMock->method('updateUser')->willReturn(true);
+    $auctionAccessStateDaoImplMock = $this->createPartialMock(AuctionAccessStateDaoImpl::class, ['cancelAuctionAccessStateByUserId']);
+    $auctionAccessStateDaoImplMock->method('cancelAuctionAccessStateByUserId')->willReturn(true);
+    $bidHistoryDaoImplMock = $this->createPartialMock(BidHistoryDaoImpl::class, ['deleteCurrentBidsByBidderId']);
+    $bidHistoryDaoImplMock->method('deleteCurrentBidsByBidderId')->willReturn(true);
+    $auctionDaoImplMock = $this->createPartialMock(AuctionDaoImpl::class, ['cancelOnlineAuctionsBySellerId']);
+    $auctionDaoImplMock->method('cancelOnlineAuctionsBySellerId')->willReturn(true);
 
-    $app_DaoFactoryMock = $this->createPartialMock(App_DaoFactory::class, ['getUserDao']);
+    $app_DaoFactoryMock = $this->createPartialMock(App_DaoFactory::class, ['getUserDao', 'getAuctionAccessStateDao', 'getBidHistoryDao', 'getAuctionDao']);
     $app_DaoFactoryMock->method('getUserDao')->willReturn($userDaoImpMock);
+    $app_DaoFactoryMock->method('getAuctionAccessStateDao')->willReturn($auctionAccessStateDaoImplMock);
+    $app_DaoFactoryMock->method('getBidHistoryDao')->willReturn($bidHistoryDaoImplMock);
+    $app_DaoFactoryMock->method('getAuctionDao')->willReturn($auctionDaoImplMock);
     App_DaoFactory::setFactory($app_DaoFactoryMock);
 
     $success = $userBo->updateUser($user);
