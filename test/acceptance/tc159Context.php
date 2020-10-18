@@ -17,41 +17,29 @@ class tc159Context implements Context
   public function __construct()
   {
     $auction = new AuctionModel();
-    $auction->setName('Banana')->setBasePrice(0)->setReservePrice(0)->setDuration(7)->setSellerId(1)->setPrivacyId(0)->setCategoryId(1);
+    $auction
+        ->setName('Banana')
+        ->setBasePrice(0)
+        ->setReservePrice(0)
+        ->setDuration(7)
+        ->setSellerId(1)
+        ->setPrivacyId(0)
+        ->setCategoryId(1);
+
     $auctionDao = App_DaoFactory::getFactory()->getAuctionDao();
     $auctionId = $auctionDao->insertAuction($auction);
-    $auction->setId($auctionId)->setAuctionState(1);
+    $auction
+        ->setId($auctionId)
+        ->setAuctionState(1);
     $auctionDao->updateAuctionState($auction);
-    Universe::getUniverse()->setAuctionId($auctionId);
+
+    Universe::getUniverse()->setAuction($auction);
   }
 
   public function __destruct()
   {
-    $canDelete = Universe::getUniverse()->getCanDelete();
-    if (isset($canDelete['auctions'])) {
-      $auctionDao = App_DaoFactory::getFactory()->getAuctionDao();
-      $userDao = App_DaoFactory::getFactory()->getUserDao();
-      $user = $userDao->selectUserByEmail(Universe::getUniverse()->getUser()->getEmail());
-      if ($user != null) {
-        $userAuctions = $auctionDao->selectAllAuctionsBySellerId($user->getId());
-        foreach ($userAuctions as $auction) {
-          $auctionDao->deleteAuctionById($auction->getId());
-        }
-      }
-      unset($canDelete['auctions']);
-    }
-    if (isset($canDelete['user'])) {
-      $userDao = App_DaoFactory::getFactory()->getUserDao();
-      $user = $userDao->selectUserByEmail(Universe::getUniverse()->getUser()->getEmail());
-      if ($user != null) {
-        $isAdmin = $user->getIsAdmin();
-        if ($isAdmin == false) {
-          $userDao->deleteUser($user->getId());
-        }
-      }
-      unset($canDelete['user']);
-    }
-    Universe::getUniverse()->setCanDelete($canDelete);
+    deleteAuctionUniverse();
+    deleteUserUniverse();
   }
 
   /**
@@ -61,15 +49,28 @@ class tc159Context implements Context
   {
     $session = Universe::getUniverse()->getSession();
 
-    $url = 'http://localhost/kinenveut/?r=bid/index&auctionId=' . Universe::getUniverse()->getAuctionId();
-    $session->visit($url);
+    $auction = new AuctionModel();
+    $auction
+      ->setName('Banana')
+      ->setBasePrice(0)
+      ->setReservePrice(0)
+      ->setDuration(7)
+      ->setSellerId(1)
+      ->setPrivacyId(0)
+      ->setCategoryId(1);
 
-    if ($session->getStatusCode() !== 200) {
-      throw new Exception('status code is not 200');
-    }
-    if ($session->getCurrentUrl() !== $url) {
-      throw new Exception('url is not ' . $url);
-    }
+    $auctionDao = App_DaoFactory::getFactory()->getAuctionDao();
+    $auctionId = $auctionDao->insertAuction($auction);
+    $auction
+      ->setId($auctionId)
+      ->setAuctionState(1);
+    $auctionDao->updateAuctionState($auction);
+
+    Universe::getUniverse()->setAuction($auction);
+
+    $url = 'http://localhost/kinenveut/?r=bid/index&auctionId=' . $auction->getId();
+    $session->visit($url);
+    checkUrl($session, $url);
   }
 
   /**
@@ -157,6 +158,7 @@ class tc159Context implements Context
       throw new Exception('bid is not valid');
     };
 
-    Universe::getUniverse()->setCanDelete(['user'=>true, 'auctions'=>true]);
+    $sellers = [Universe::getUniverse()->getUser()];
+    Universe::getUniverse()->setCanDelete(['user'=>true, 'auctions'=>$sellers]);
   }
 }

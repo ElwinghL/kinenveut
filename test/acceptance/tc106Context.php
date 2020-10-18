@@ -85,6 +85,7 @@ class tc106Context implements Context
       throw new Exception('auction was not found');
     }
 
-    Universe::getUniverse()->setCanDelete(['user'=>true, 'auctions'=>true]);
+    $sellers = [Universe::getUniverse()->getUser()];
+    Universe::getUniverse()->setCanDelete(['user'=>true, 'auctions'=>$sellers]);
   }
 }

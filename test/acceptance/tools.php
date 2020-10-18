@@ -322,16 +322,23 @@ function deleteUser3Universe()
 
 function deleteAuctionUniverse()
 {
-  if (isset($canDelete['auctions'])) {
-    $auctionDao = App_DaoFactory::getFactory()->getAuctionDao();
-    $userDao = App_DaoFactory::getFactory()->getUserDao();
+  $auction = Universe::getUniverse()->getAuction();
 
-    $user = $userDao->selectUserByEmail(Universe::getUniverse()->getUser()->getEmail());
+  if (isset($canDelete['auctions']) && $auction != null) {
+    $sellers = $canDelete['auctions'];
+    foreach ($sellers as $seller) {
+      $auctionDao = App_DaoFactory::getFactory()->getAuctionDao();
+      $userDao = App_DaoFactory::getFactory()->getUserDao();
 
-    if ($user != null) {
-      $userAuctions = $auctionDao->selectAllAuctionsBySellerId($user->getId());
-      foreach ($userAuctions as $auction) {
-        $auctionDao->deleteAuctionById($auction->getId());
+      $user = $userDao->selectUserByEmail($seller->getEmail());
+
+      if ($user != null) {
+        $userAuctions = $auctionDao->selectAllAuctionsBySellerId($user->getId());
+        foreach ($userAuctions as $oneAuction) {
+          if ($auction->getName() == $oneAuction->getName()) {
+            $auctionDao->deleteAuctionById($auction->getId());
+          }
+        }
       }
     }
     unset($canDelete['auctions']);
