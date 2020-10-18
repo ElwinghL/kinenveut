@@ -18,7 +18,7 @@
               <a id="menuAccount" class="dropdown-item" href="?r=account&userId=<?= isset($_SESSION['userId']) ? $_SESSION['userId'] : '1'; ?>">Mon compte</a>
               <a id="menuSells" class="dropdown-item" href="?r=auction/sells/&userId=<?= isset($_SESSION['userId']) ? $_SESSION['userId'] : '1'; ?>">Mes ventes</a>
               <a id="menuBids" class="dropdown-item" href="?r=auction/bids&userId=<?= isset($_SESSION['userId']) ? $_SESSION['userId'] : '1'; ?>">Mes enchères</a>
-              <a class="dropdown-item" href="?r=accessRequest/index&userId=<?= isset($_SESSION['userId']) ? $_SESSION['userId'] : '1'; ?>">Demandes <?php if (isset($nbDemandes)) : ?><span class="badge <?=($nbDemandes > 0) ? 'badge-danger' : 'badge-secondary';?> badge-pill"><?= $nbDemandes; ?></span><?php endif; ?></a>
+              <a id="menuRequest" class="dropdown-item" href="?r=accessRequest/index&userId=<?= isset($_SESSION['userId']) ? $_SESSION['userId'] : '1'; ?>">Demandes <?php if (isset($nbDemandes)) : ?><span class="badge <?=($nbDemandes > 0) ? 'badge-danger' : 'badge-secondary';?> badge-pill"><?= $nbDemandes; ?></span><?php endif; ?></a>
               <?php if (isset($_SESSION['isAdmin']) && $_SESSION['isAdmin'] == 1) : ?>
                 <div class="dropdown-divider"></div>
                 <a id="menuUserManagement" class="dropdown-item" href="?r=userManagement">Gestion des utilisateurs</a>

@@ -11,6 +11,17 @@ function checkUrl($session, $expectedUrl)
   }
 }
 
+function checkUrlPartial($session, $expectedUrl)
+{
+  $currentUrl = $session->getCurrentUrl();
+  if ($session->getStatusCode() !== 200) {
+    throw new Exception('status code is not 200');
+  }
+  if (!strpos($currentUrl, $expectedUrl)) {
+    throw new Exception('The current url "' . $currentUrl . '" do not contain "' . $expectedUrl . '"');
+  }
+}
+
 /*Visit pages / Click on button*/
 
 function visitCreateAuction($session)
@@ -91,6 +102,21 @@ function visitRegistrationPage($session)
 
   $url = 'http://localhost/kinenveut/?r=registration';
   checkUrl($session, $url);
+}
+
+function visitRequestPage($session)
+{
+  $session->getPage()->find(
+    'css',
+    '#dropdownMenuButton'
+  )->click();
+  $session->getPage()->find(
+    'css',
+    '#menuRequest'
+  )->click();
+
+  $url = '?r=accessRequest';
+  checkUrlPartial($session, $url);
 }
 
 /*Suscribe & Connection functions*/
@@ -207,6 +233,24 @@ function deleteUser2Universe()
       }
     }
     unset($canDelete['user2']);
+    Universe::getUniverse()->setCanDelete($canDelete);
+  }
+}
+
+function deleteUser3Universe()
+{
+  $canDelete = Universe::getUniverse()->getCanDelete();
+  $userDao = App_DaoFactory::getFactory()->getUserDao();
+
+  if (isset($canDelete['user23'])) {
+    $user3 = $userDao->selectUserByEmail(Universe::getUniverse()->getUser3()->getEmail());
+    if ($user3 != null) {
+      $isAdmin2 = $user3->getIsAdmin();
+      if ($isAdmin2 == false) {
+        $userDao->deleteUser($user3->getId());
+      }
+    }
+    unset($canDelete['user3']);
     Universe::getUniverse()->setCanDelete($canDelete);
   }
 }
