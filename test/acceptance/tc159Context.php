@@ -142,9 +142,14 @@ class tc159Context implements Context
 
     if ($session->getPage()->find(
       'css',
-      '#bid-button'
-    ) == null) {
-      throw new Exception('user cannot bid');
+      'h3'
+    ) != null) {
+      if ($session->getPage()->find(
+        'css',
+        '#bid-button'
+      ) == null) {
+        throw new Exception('user cannot bid');
+      }
     }
   }
 
@@ -184,7 +189,7 @@ class tc159Context implements Context
     if ($session->getPage()->find(
       'css',
       'h2'
-    )->getText() != 'Objet test123 - 42€') {
+    )->getText() != Universe::getUniverse()->getAuction()->getName().' - 42€') {
       throw new Exception('bid is not valid');
     };
   }
