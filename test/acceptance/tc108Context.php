@@ -1,6 +1,7 @@
 <?php
 
 use Behat\Behat\Context\Context;
+include_once 'test/acceptance/tools.php';
 
 /**
  * Defines application features from the specific context.
@@ -24,13 +25,10 @@ class tc108Context implements Context
   public function lutilisateurEstSurLaPageDeConnexion()
   {
     $session = Universe::getUniverse()->getSession();
+
     $session->visit('http://localhost/kinenveut/');
-    if ($session->getStatusCode() !== 200) {
-      throw new Exception('status code is not 200');
-    }
-    if ($session->getCurrentUrl() !== 'http://localhost/kinenveut/?r=login') {
-      throw new Exception('url is not "http://localhost/kinenveut/?r=login"');
-    }
+    $url = 'http://localhost/kinenveut/?r=login';
+    checkUrl($session, $url);
   }
 
   /**
@@ -77,12 +75,9 @@ class tc108Context implements Context
   public function lutilisateurEstIdentifieSurLeSite()
   {
     $session = Universe::getUniverse()->getSession();
-    if ($session->getStatusCode() !== 200) {
-      throw new Exception('status code is not 200');
-    }
-    if ($session->getCurrentUrl() !== 'http://localhost/kinenveut/?r=home') {
-      throw new Exception('url is not "http://localhost/kinenveut/?r=home"');
-    }
+
+    $url = 'http://localhost/kinenveut/?r=home';
+    checkUrl($session, $url);
   }
 
   /**
@@ -104,12 +99,10 @@ class tc108Context implements Context
   public function lutilisateurRecoitUnMessageDerreurApproprie()
   {
     $session = Universe::getUniverse()->getSession();
-    if ($session->getStatusCode() !== 200) {
-      throw new Exception('status code is not 200');
-    }
-    if ($session->getCurrentUrl() !== 'http://localhost/kinenveut/?r=login/login') {
-      throw new Exception('url is not "http://localhost/kinenveut/?r=login/login"');
-    }
+
+    $url = 'http://localhost/kinenveut/?r=login/login';
+    checkUrl($session, $url);
+
     if ($session->getPage()->find(
       'css',
       '.invalid-feedback.d-block'
