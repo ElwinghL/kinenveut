@@ -60,9 +60,9 @@ class tc52Context implements Context
   }
 
   /**
-   * @When l'utilisateur valide son enchère avec les champs valides (prix de départ, pris de réserve)
+   * @When l'utilisateur valide son enchère avec les champs valides
    */
-  public function lutilisateurValideSonEnchereAvecLesChampsValidesPrixDeDepartPrisDeReserve()
+  public function lutilisateurValideSonEnchereAvecLesChampsValides()
   {
     $session = Universe::getUniverse()->getSession();
     $session->getPage()->find(
