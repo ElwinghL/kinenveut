@@ -1,7 +1,7 @@
 <?php
 
 use Behat\Behat\Context\Context;
-
+include_once "tools.php";
 /**
  * Defines application features from the specific context.
  */
@@ -54,13 +54,8 @@ class tc51Context implements Context
   {
     $session = Universe::getUniverse()->getSession();
 
-    $session->visit('http://localhost/kinenveut/?r=auction/create');
-    if ($session->getStatusCode() !== 200) {
-      throw new Exception('status code is not 200');
-    }
-    if ($session->getCurrentUrl() !== 'http://localhost/kinenveut/?r=auction/create') {
-      throw new Exception('url is not "http://localhost/kinenveut/?r=auction/create"');
-    }
+    visitCreateAuction($session);
+    
     $session->getPage()->find(
       'css',
       'input[name="name"]'
@@ -70,13 +65,8 @@ class tc51Context implements Context
       'input[name="createAuction"]'
     )->click();
 
-    $session->visit('http://localhost/kinenveut/?r=auctionManagement');
-    if ($session->getStatusCode() !== 200) {
-      throw new Exception('status code is not 200');
-    }
-    if ($session->getCurrentUrl() !== 'http://localhost/kinenveut/?r=auctionManagement') {
-      throw new Exception('url is not "http://localhost/kinenveut/?r=auctionManagement"');
-    }
+    visitAuctionManagement($session);
+
     if ($session->getPage()->find(
       'css',
       'h2'
@@ -98,13 +88,8 @@ class tc51Context implements Context
   {
     $session = Universe::getUniverse()->getSession();
 
-    $session->visit('http://localhost/kinenveut/?r=auction/create');
-    if ($session->getStatusCode() !== 200) {
-      throw new Exception('status code is not 200');
-    }
-    if ($session->getCurrentUrl() !== 'http://localhost/kinenveut/?r=auction/create') {
-      throw new Exception('url is not "http://localhost/kinenveut/?r=auction/create"');
-    }
+    visitCreateAuction($session);
+
     $session->getPage()->find(
       'css',
       'input[name="name"]'
@@ -118,13 +103,8 @@ class tc51Context implements Context
       'input[name="createAuction"]'
     )->click();
 
-    $session->visit('http://localhost/kinenveut/?r=auctionManagement');
-    if ($session->getStatusCode() !== 200) {
-      throw new Exception('status code is not 200');
-    }
-    if ($session->getCurrentUrl() !== 'http://localhost/kinenveut/?r=auctionManagement') {
-      throw new Exception('url is not "http://localhost/kinenveut/?r=auctionManagement"');
-    }
+    visitAuctionManagement($session);
+
     if ($session->getPage()->find(
       'css',
       'h2'
@@ -146,13 +126,8 @@ class tc51Context implements Context
   {
     $session = Universe::getUniverse()->getSession();
 
-    $session->visit('http://localhost/kinenveut/?r=auction/create');
-    if ($session->getStatusCode() !== 200) {
-      throw new Exception('status code is not 200');
-    }
-    if ($session->getCurrentUrl() !== 'http://localhost/kinenveut/?r=auction/create') {
-      throw new Exception('url is not "http://localhost/kinenveut/?r=auction/create"');
-    }
+    visitCreateAuction($session);
+
     $session->getPage()->find(
       'css',
       'input[name="name"]'
@@ -166,13 +141,8 @@ class tc51Context implements Context
       'input[name="createAuction"]'
     )->click();
 
-    $session->visit('http://localhost/kinenveut/?r=auctionManagement');
-    if ($session->getStatusCode() !== 200) {
-      throw new Exception('status code is not 200');
-    }
-    if ($session->getCurrentUrl() !== 'http://localhost/kinenveut/?r=auctionManagement') {
-      throw new Exception('url is not "http://localhost/kinenveut/?r=auctionManagement"');
-    }
+    visitAuctionManagement($session);
+
     if ($session->getPage()->find(
       'css',
       'h2'

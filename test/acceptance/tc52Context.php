@@ -1,7 +1,7 @@
 <?php
 
-use Behat\Behat\Tester\Exception\PendingException;
 use Behat\Behat\Context\Context;
+include_once "tools.php";
 
 /**
  * Defines application features from the specific context.
@@ -54,20 +54,8 @@ class tc52Context implements Context
   public function lutilisateurEstSurLaPageDeCreationDenchere()
   {
     $session = Universe::getUniverse()->getSession();
-    $session->getPage()->find(
-      'css',
-      '#dropdownMenuButton'
-    )->click();
-    $session->getPage()->find(
-      'css',
-      '#menuCreateAuction'
-    )->click();
-    if ($session->getStatusCode() !== 200) {
-      throw new Exception('status code is not 200');
-    }
-    if ($session->getCurrentUrl() !== 'http://localhost/kinenveut/?r=auction/create') {
-      throw new Exception('url is not "http://localhost/kinenveut/?r=auction/create"');
-    }
+    
+    visitCreateAuction($session);
   }
 
   /**
