@@ -2,6 +2,8 @@
 
 use Behat\Behat\Context\Context;
 
+include_once 'test/acceptance/tools.php';
+
 /**
  * Defines application features from the specific context.
  */
@@ -20,19 +22,7 @@ class tc280Context implements Context
 
   public function __destruct()
   {
-    $canDelete = Universe::getUniverse()->getCanDelete();
-    $userDao = App_DaoFactory::getFactory()->getUserDao();
-    if (isset($canDelete['user'])) {
-      $user = $userDao->selectUserByEmail(Universe::getUniverse()->getUser()->getEmail());
-      if ($user != null) {
-        $isAdmin = $user->getIsAdmin();
-        if ($isAdmin == false) {
-          $userDao->deleteUser($user->getId());
-        }
-      }
-      unset($canDelete['user']);
-      Universe::getUniverse()->setCanDelete($canDelete);
-    }
+    deleteUserUniverse();
   }
 
   /**
@@ -57,12 +47,7 @@ class tc280Context implements Context
     $session = Universe::getUniverse()->getSession();
 
     $url = 'http://localhost/kinenveut/?r=home/search';
-    if ($session->getStatusCode() !== 200) {
-      throw new Exception('status code is not 200');
-    }
-    if ($session->getCurrentUrl() !== $url) {
-      throw new Exception('url is not "' . $url . '"');
-    }
+    checkUrl($session, $url);
 
     if ($session->getPage()->find(
       'css',

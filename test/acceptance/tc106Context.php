@@ -1,6 +1,5 @@
 <?php
 
-use Behat\Behat\Tester\Exception\PendingException;
 use Behat\Behat\Context\Context;
 
 /**
@@ -72,7 +71,7 @@ class tc106Context implements Context
     $session = Universe::getUniverse()->getSession();
 
     visitCreateAuction($session);
-    
+
     $session->getPage()->find(
       'css',
       'input[name="name"]'
@@ -106,7 +105,7 @@ class tc106Context implements Context
     )->getText() != 'Chaussette sale') {
       throw new Exception('auction was not found');
     }
-    
+
     Universe::getUniverse()->setCanDelete(['user'=>true, 'auctions'=>true]);
   }
 }

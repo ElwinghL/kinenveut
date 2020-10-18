@@ -1,7 +1,8 @@
 <?php
 
 use Behat\Behat\Context\Context;
-include_once "tools.php";
+
+include_once 'tools.php';
 /**
  * Defines application features from the specific context.
  */
@@ -55,7 +56,7 @@ class tc51Context implements Context
     $session = Universe::getUniverse()->getSession();
 
     visitCreateAuction($session);
-    
+
     $session->getPage()->find(
       'css',
       'input[name="name"]'

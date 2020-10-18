@@ -2,6 +2,8 @@
 
 use Behat\Behat\Context\Context;
 
+include_once 'test/acceptance/tools.php';
+
 /**
  * Defines application features from the specific context.
  */
@@ -20,19 +22,7 @@ class tc154Context implements Context
 
   public function __destruct()
   {
-    $canDelete = Universe::getUniverse()->getCanDelete();
-    $userDao = App_DaoFactory::getFactory()->getUserDao();
-    if (isset($canDelete['user2'])) {
-      $user2 = $userDao->selectUserByEmail(Universe::getUniverse()->getUser2()->getEmail());
-      if ($user2 != null) {
-        $isAdmin2 = $user2->getIsAdmin();
-        if ($isAdmin2 == false) {
-          $userDao->deleteUser($user2->getId());
-        }
-      }
-      unset($canDelete['user2']);
-      Universe::getUniverse()->setCanDelete($canDelete);
-    }
+    deleteUser2Universe();
   }
 
   /**
@@ -43,18 +33,7 @@ class tc154Context implements Context
     $session = Universe::getUniverse()->getSession();
     $user = Universe::getUniverse()->getUser();
 
-    /*Disconnect*/
-    //todo : find a way to click on the disconnect button
-    $session->visit('http://localhost/kinenveut/?r=logout');
-
-    //The user is redirect to the login page
-
-    if ($session->getStatusCode() !== 200) {
-      throw new Exception('status code is not 200');
-    }
-    if ($session->getCurrentUrl() !== 'http://localhost/kinenveut/?r=login') {
-      throw new Exception('url is not "http://localhost/kinenveut/?r=login"');
-    }
+    disconnect($session);
 
     /*Create a new user*/
     $localUser = new UserModel();
@@ -67,80 +46,10 @@ class tc154Context implements Context
 
     Universe::getUniverse()->setUser2($localUser);
 
-    /*Go to suscribe page*/
-    $session->getPage()->find(
-      'css',
-      'a[href="?r=registration"]'
-    )->click();
+    visitRegistrationPage($session);
 
-    if ($session->getStatusCode() !== 200) {
-      throw new Exception('status code is not 200');
-    }
-    if ($session->getCurrentUrl() !== 'http://localhost/kinenveut/?r=registration') {
-      throw new Exception('url is not "http://localhost/kinenveut/?r=registration"');
-    }
-
-    /*Fill the form*/
-    $session->getPage()->find(
-      'css',
-      'input[name="firstName"]'
-    )->setValue($localUser->getFirstName());
-    $session->getPage()->find(
-      'css',
-      'input[name="lastName"]'
-    )->setValue($localUser->getLastName());
-    $session->getPage()->find(
-      'css',
-      'input[name="birthDate"]'
-    )->setValue($localUser->getBirthDate()->format('d/m/Y'));
-    $session->getPage()->find(
-      'css',
-      'input[name="email"]'
-    )->setValue($localUser->getEmail());
-    $session->getPage()->find(
-      'css',
-      'input[name="password"]'
-    )->setValue($localUser->getPassword());
-
-    /*Click on suscribe*/
-    $session->getPage()->find(
-      'css',
-      'input[type="submit"]'
-    )->click();
-
-    //The user is redirect to the login page
-
-    if ($session->getStatusCode() !== 200) {
-      throw new Exception('status code is not 200');
-    }
-    if ($session->getCurrentUrl() !== 'http://localhost/kinenveut/?r=login') {
-      throw new Exception('url is not "http://localhost/kinenveut/?r=login"');
-    }
-
-    /*Fill the form*/
-    $session->getPage()->find(
-      'css',
-      'input[name="email"]'
-    )->setValue($user->getEmail());
-    $session->getPage()->find(
-      'css',
-      'input[name="password"]'
-    )->setValue($user->getPassword());
-
-    /*Click to connect*/
-    $session->getPage()->find(
-      'css',
-      'input[type="submit"]'
-    )->click();
-
-    //The user is redirect to the home page
-
-    if ($session->getStatusCode() !== 200) {
-      throw new Exception('status code is not 200');
-    }
-    if ($session->getCurrentUrl() !== 'http://localhost/kinenveut/?r=home') {
-      throw new Exception('url is not "http://localhost/kinenveut/?r=home"');
-    }
+    suscribe($session, Universe::getUniverse()->getUser2());
+    connect($session, Universe::getUniverse()->getUser());
   }
 
   /**
@@ -149,15 +58,7 @@ class tc154Context implements Context
   public function lutilisateurConsulteLaListeDesUtilisateursEnAttenteDinscription()
   {
     $session = Universe::getUniverse()->getSession();
-
-    /*Go to the page to create an auction*/
-    $session->visit('http://localhost/kinenveut/?r=userManagement');
-    if ($session->getStatusCode() !== 200) {
-      throw new Exception('status code is not 200');
-    }
-    if ($session->getCurrentUrl() !== 'http://localhost/kinenveut/?r=userManagement') {
-      throw new Exception('url is not "http://localhost/kinenveut/?r=userManagement"');
-    }
+    visitUserManagment($session);
   }
 
   /**
