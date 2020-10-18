@@ -9,21 +9,21 @@
       <div class="row">
         <div class="col-md-6">
           <div class="dropdown">
-            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <a class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               Menu
-            </button>
+            </a>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <a class="dropdown-item" href="?r=auction/create">Vendre</a>
+              <a id="menuCreateAuction" class="dropdown-item" href="?r=auction/create">Vendre</a>
               <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="?r=account&userId=<?= isset($_SESSION['userId']) ? $_SESSION['userId'] : '1'; ?>">Mon compte</a>
-              <a class="dropdown-item" href="?r=auction/sells/&userId=<?= isset($_SESSION['userId']) ? $_SESSION['userId'] : '1'; ?>">Mes ventes</a>
-              <a class="dropdown-item" href="?r=auction/bids&userId=<?= isset($_SESSION['userId']) ? $_SESSION['userId'] : '1'; ?>">Mes enchères</a>
+              <a id="menuAccount" class="dropdown-item" href="?r=account&userId=<?= isset($_SESSION['userId']) ? $_SESSION['userId'] : '1'; ?>">Mon compte</a>
+              <a id="menuSells" class="dropdown-item" href="?r=auction/sells/&userId=<?= isset($_SESSION['userId']) ? $_SESSION['userId'] : '1'; ?>">Mes ventes</a>
+              <a id="menuBids" class="dropdown-item" href="?r=auction/bids&userId=<?= isset($_SESSION['userId']) ? $_SESSION['userId'] : '1'; ?>">Mes enchères</a>
               <a class="dropdown-item" href="?r=accessRequest/index&userId=<?= isset($_SESSION['userId']) ? $_SESSION['userId'] : '1'; ?>">Demandes <?php if (isset($nbDemandes)) : ?><span class="badge <?=($nbDemandes > 0) ? 'badge-danger' : 'badge-secondary';?> badge-pill"><?= $nbDemandes; ?></span><?php endif; ?></a>
               <?php if (isset($_SESSION['isAdmin']) && $_SESSION['isAdmin'] == 1) : ?>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="?r=userManagement">Gestion des utilisateurs</a>
-                <a class="dropdown-item" href="?r=auctionManagement">Gestion des enchères</a>
-                <a class="dropdown-item" href="?r=categorie">Gestion des catégories</a>
+                <a id="menuUserManagement" class="dropdown-item" href="?r=userManagement">Gestion des utilisateurs</a>
+                <a id="menuAuctionManagement" class="dropdown-item" href="?r=auctionManagement">Gestion des enchères</a>
+                <a id="menuCategoryManagement" class="dropdown-item" href="?r=categorie">Gestion des catégories</a>
               <?php endif; ?>
             </div>
           </div>
