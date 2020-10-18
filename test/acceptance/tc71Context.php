@@ -38,6 +38,67 @@ class tc71Context implements Context
    */
   public function lutilisateurPossedeAuMoinsUneEnchere()
   {
-    throw new PendingException();
+      $session = Universe::getUniverse()->getSession();
+      $user = Universe::getUniverse()->getUser();
+      $auction = new AuctionModel();
+
+      if($user->getId() == null or $user->getId() < 1)
+      {
+          $userDao = App_DaoFactory::getFactory()->getUserDao();
+          $user = $userDao->selectUserByEmail(Universe::getUniverse()->getUser()->getEmail());
+          Universe::getUniverse()->getUser()->setId($user->getId());
+      }
+
+      $auction
+          ->setName('Objet test')
+          ->setDescription('Ceci est une enchère insérée lors de tests.')
+          ->setBasePrice(3)
+          ->setReservePrice(7)
+          ->setDuration(7)
+          ->setSellerId($user->getId())
+          ->setPrivacyId(0)
+          ->setCategoryId(1)
+          ->setStartDate(new DateTime());
+
+      Universe::getUniverse()->setAuction($auction);
+
+      visitCreateAuction($session);
+
+      createAuction($session, $auction);
+
+      disconnect($session);
+
+      /*Connection as Admin*/
+      $userAdmin = new UserModel();
+      $userAdmin
+          ->setEmail('admin@kinenveut.fr')
+          ->setPassword('password');
+
+      Universe::getUniverse()->setUser2($userAdmin);
+
+      connect($session, $userAdmin);
+
+      visitAuctionManagement($session);
+
+      /*
+      $auctionDao = App_DaoFactory::getFactory()->getAuctionDao();
+      $userAuctions = $auctionDao->selectAllAuctionsBySellerId($user->getId());
+      if(count($userAuctions) == 1)
+      {
+         $auction->setId($userAuctions[0]->getId());
+      }
+      else
+      {
+          throw new Exception('A problem happenned while create an auction');
+      }*/
+
+      /*Click to accept the prevent created auction
+      $url = 'http://localhost/kinenveut/?r=auctionManagement/validate&id=' . $auction->getId();
+      $session->visit($url);
+      checkUrl($session, $url);*/
+
+      disconnect($session);
+
+      connect($session, $user);
   }
 }
