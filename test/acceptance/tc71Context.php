@@ -78,6 +78,7 @@ class tc71Context implements Context
 
     visitAuctionManagement($session);
 
+      //Todo : use the name to find the button :)
     $auctionDao = App_DaoFactory::getFactory()->getAuctionDao();
     $userAuctions = $auctionDao->selectAllAuctionsBySellerId($user->getId());
 
