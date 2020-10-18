@@ -183,13 +183,11 @@ class tc133Context implements Context
   }
 
   /**
-   * @Then L'utilisateur reçoit un message d'erreur approprié.
-   */
-  public function lutilisateurRecoitUnMessageDerreurApproprie()
+     * @Then L'utilisateur reçoit un message lui indiquant qu'aucune adresse mail ne corresponds à l'adresse mail saisie
+     */
+  public function lutilisateurRecoitUnMessageLuiIndiquantQuaucuneAdresseMailNeCorrespondsALadresseMailSaisie()
   {
-    //Todo : ATTENTION, cette foncition est utilisée à plusieurs endroits à tord
     Universe::getUniverse()->setCanDelete(['user'=>true]);
-    throw new PendingException();
     $session = Universe::getUniverse()->getSession();
 
     if ($session->getStatusCode() !== 200) {

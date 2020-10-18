@@ -1,5 +1,6 @@
 <?php
 
+use Behat\Behat\Tester\Exception\PendingException;
 use Behat\Behat\Context\Context;
 
 /**
@@ -30,5 +31,13 @@ class tc71Context implements Context
       'css',
       'input[name="searchInput"]'
     )->setValue($auction->getName());
+  }
+
+  /**
+   * @Given L'utilisateur possède au moins une enchère
+   */
+  public function lutilisateurPossedeAuMoinsUneEnchere()
+  {
+    throw new PendingException();
   }
 }

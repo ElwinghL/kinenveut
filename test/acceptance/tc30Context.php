@@ -1,5 +1,6 @@
 <?php
 
+use Behat\Behat\Tester\Exception\PendingException;
 use Behat\Behat\Context\Context;
 
 /**
@@ -104,5 +105,21 @@ class tc30Context implements Context
       throw new Exception(' url is not "http://localhost/kinenveut/?r=login"');
     }
     Universe::getUniverse()->setCanDelete(['user'=>true]);
+  }
+
+  /**
+     * @Given l'utilisateur est déjà inscrit
+     */
+  public function lutilisateurEstDejaInscrit()
+  {
+    throw new PendingException();
+  }
+
+  /**
+   * @Then L'utilisateur reçoit un message d'erreur lui indiquant que l'adresse mail qu'il a saisie est déjà utilisée
+   */
+  public function lutilisateurRecoitUnMessageDerreurLuiIndiquantQueLadresseMailQuilASaisieEstDejaUtilisee()
+  {
+    throw new PendingException();
   }
 }

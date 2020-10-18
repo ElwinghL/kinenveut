@@ -28,14 +28,6 @@ class tc339Context implements Context
   }
 
   /**
-   * @Given l'utilisateur est un inscrit sur le site
-   */
-  public function lutilisateurEstUnInscritSurLeSite()
-  {
-    throw new PendingException();
-  }
-
-  /**
    * @When l'utilisateur clique sur le bouton d'inscription à une enchère privée
    */
   public function lutilisateurCliqueSurLeBoutonDinscriptionAUneEncherePrivee()
