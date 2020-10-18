@@ -46,7 +46,7 @@ class tc110Context implements Context
     $user = Universe::getUniverse()->getUser();
     $auction = new AuctionModel();
 
-    if ($user->getId() == null or $user->getId() < 1) {
+    if ($user->getId() == null || $user->getId() < 1) {
       $userDao = App_DaoFactory::getFactory()->getUserDao();
       $user = $userDao->selectUserByEmail(Universe::getUniverse()->getUser()->getEmail());
       Universe::getUniverse()->getUser()->setId($user->getId());

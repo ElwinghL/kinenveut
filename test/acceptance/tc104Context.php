@@ -79,6 +79,7 @@ class tc104Context implements Context
 
       visitUserManagment($session);
 
+      //Todo : search by name
       /*Click to accept the prevent created user*/
       $userFromDB = $userDao->selectUserByEmail($user->getEmail());
       $user->setId($userFromDB->getId());
@@ -89,9 +90,7 @@ class tc104Context implements Context
       )->click();
 
       $url = 'http://localhost/kinenveut/?r=userManagement/validate&id=' . $user->getId();
-      if ($session->getCurrentUrl() !== $url) {
-        throw new Exception($session->getCurrentUrl() . 'url is not "' . $url . '"');
-      }
+      checkUrl($session, $url);
 
       disconnect($session);
     }

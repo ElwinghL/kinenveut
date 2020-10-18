@@ -6,6 +6,7 @@ class Universe
   private static $session;
   private $user;
   private $user2;
+  private $user3;
   private $auction;
   private $auctionId;
   private $canDelete;
@@ -51,6 +52,18 @@ class Universe
   public function setUser2(?UserModel $user2) : Universe
   {
     $this->user2 = $user2;
+
+    return $this;
+  }
+
+  public function getUser3() : ?UserModel
+  {
+    return $this->user3;
+  }
+
+  public function setUser3(?UserModel $user) : Universe
+  {
+    $this->user3 = $user;
 
     return $this;
   }
