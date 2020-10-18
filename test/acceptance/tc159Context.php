@@ -16,24 +16,6 @@ class tc159Context implements Context
    */
   public function __construct()
   {
-    $auction = new AuctionModel();
-    $auction
-        ->setName('Banana')
-        ->setBasePrice(0)
-        ->setReservePrice(0)
-        ->setDuration(7)
-        ->setSellerId(1)
-        ->setPrivacyId(0)
-        ->setCategoryId(1);
-
-    $auctionDao = App_DaoFactory::getFactory()->getAuctionDao();
-    $auctionId = $auctionDao->insertAuction($auction);
-    $auction
-        ->setId($auctionId)
-        ->setAuctionState(1);
-    $auctionDao->updateAuctionState($auction);
-
-    Universe::getUniverse()->setAuction($auction);
   }
 
   public function __destruct()
