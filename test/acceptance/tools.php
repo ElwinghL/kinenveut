@@ -39,16 +39,38 @@ function visitSells($session)
     '#menuSells'
   )->click();
 
-  $userDao = App_DaoFactory::getFactory()->getUserDao();
-  $user = $userDao->selectUserByEmail(Universe::getUniverse()->getUser()->getEmail());
-  $expectedUrl = 'http://localhost/kinenveut/?r=auction/sells/&userId=' . $user->getId();
+  $user = Universe::getUniverse()->getUser();
 
-  if ($session->getStatusCode() !== 200) {
-    throw new Exception('status code is not 200');
+  if ($user->getId() == null || $user->getId() <= 1) {
+    $userDao = App_DaoFactory::getFactory()->getUserDao();
+    $userFromDb = $userDao->selectUserByEmail($user->getEmail());
+    Universe::getUniverse()->getUser()->setId($userFromDb->getId());
+    $user->setId($userFromDb->getId());
   }
-  if ($session->getCurrentUrl() !== $expectedUrl) {
-    throw new Exception('url is not ' . $expectedUrl);
+  $expectedUrl = 'http://localhost/kinenveut/?r=auction/sells/&userId=' . $user->getId();
+  checkUrl($session, $expectedUrl);
+}
+
+function visitBids($session)
+{
+  $session->getPage()->find(
+    'css',
+    '#dropdownMenuButton'
+  )->click();
+  $session->getPage()->find(
+    'css',
+    '#menuBids'
+  )->click();
+
+  $user = Universe::getUniverse()->getUser();
+  if ($user->getId() == null || $user->getId() <= 1) {
+    $userDao = App_DaoFactory::getFactory()->getUserDao();
+    $userFromDb = $userDao->selectUserByEmail($user->getEmail());
+    Universe::getUniverse()->getUser()->setId($userFromDb->getId());
+    $user->setId($userFromDb->getId());
   }
+  $expectedUrl = 'http://localhost/kinenveut/?r=auction/bids&userId=' . $user->getId();
+  checkUrl($session, $expectedUrl);
 }
 
 function visitAuctionManagement($session)
@@ -276,6 +298,24 @@ function deleteUser2Universe()
       }
     }
     unset($canDelete['user2']);
+    Universe::getUniverse()->setCanDelete($canDelete);
+  }
+}
+
+function deleteUser3Universe()
+{
+  $canDelete = Universe::getUniverse()->getCanDelete();
+  $userDao = App_DaoFactory::getFactory()->getUserDao();
+
+  if (isset($canDelete['user3'])) {
+    $user3 = $userDao->selectUserByEmail(Universe::getUniverse()->getUser3()->getEmail());
+    if ($user3 != null) {
+      $isAdmin = $user3->getIsAdmin();
+      if ($isAdmin == false) {
+        $userDao->deleteUser($user3->getId());
+      }
+    }
+    unset($canDelete['user3']);
     Universe::getUniverse()->setCanDelete($canDelete);
   }
 }
