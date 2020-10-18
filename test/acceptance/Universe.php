@@ -7,6 +7,7 @@ class Universe
   private $user;
   private $user2;
   private $auction;
+  private $auctionId;
   private $canDelete;
 
   public static function getUniverse(): Universe
@@ -62,6 +63,18 @@ class Universe
   public function setAuction(?AuctionModel $auction) : Universe
   {
     $this->auction = $auction;
+
+    return $this;
+  }
+
+  public function getAuctionId() : ?int
+  {
+    return $this->auctionId;
+  }
+
+  public function setAuctionId(?int $auctionId) : Universe
+  {
+    $this->auctionId = $auctionId;
 
     return $this;
   }

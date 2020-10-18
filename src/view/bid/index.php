@@ -82,7 +82,7 @@
                           <input class="form-control" name="bidPrice" type="number" id="bidPrice" value="" min="<?php echo ($auction->getBasePrice() == $minPrice && $bestBid->getBidPrice() != $minPrice) ? $minPrice : $minPrice + 1; ?>" placeholder="<?=$minPrice?>" step="1" />
                           <div class="input-group-prepend">
                               <div class="input-group-btn">
-                                  <input class="btn btn-warning" name="makeabid" type="submit" value="Enchérir" />
+                                  <input id="bid-button" class="btn btn-warning" name="makeabid" type="submit" value="Enchérir" />
                               </div>
                           </div>
                       </div>
@@ -97,7 +97,7 @@
               <?php if ($auctionAccessState->getStateId() !== null && $auctionAccessState->getStateId() == 0) : ?>
                 <a class="btn btn-secondary" href="?r=bid/cancelAuctionAccessRequest&auctionId=<?= parameters()['auctionId']; ?>">Annuler ma demande</a>
               <?php elseif ($auctionAccessState->getStateId() == null || $auctionAccessState->getStateId() == 2) : ?>
-                <a class="btn btn-primary" href="?r=bid/makeAuctionAccessRequest&auctionId=<?= parameters()['auctionId']; ?>">Demander à participer à l'enchère</a>
+                <a id="access-request-button" class="btn btn-primary" href="?r=bid/makeAuctionAccessRequest&auctionId=<?= parameters()['auctionId']; ?>">Demander à participer à l'enchère</a>
               <?php elseif ($auctionAccessState->getStateId() == 5):?>
                   <i>Vous n'êtes pas autorisé à participer à cette enchère</i>
               <?php else:?>
