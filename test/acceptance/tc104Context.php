@@ -20,14 +20,16 @@ class tc104Context implements Context
   public function __construct()
   {
   }
-//Todo : trouver un moyen de récupérer l'id d'un élément d'une liste en connaissant seulement le titre (contenu de la div)
+
+  //Todo : trouver un moyen de récupérer l'id d'un élément d'une liste en connaissant seulement le titre (contenu de la div)
+
   /**
    * @Given l'utilisateur est un administrateur
    */
   public function lutilisateurEstUnAdministrateur()
   {
     $userAdmin = new UserModel();
-      $userAdmin
+    $userAdmin
         ->setEmail('admin@kinenveut.fr')
         ->setPassword('password');
     Universe::getUniverse()->setUser($userAdmin);
@@ -179,18 +181,18 @@ class tc104Context implements Context
    */
   public function laListeDeCategoriesContient($arg1)
   {
-      $session = Universe::getUniverse()->getSession();
+    $session = Universe::getUniverse()->getSession();
 
-      $url = 'http://localhost/kinenveut/?r=categorie';
-      $session->visit($url);
-      checkUrl($session, $url);
+    $url = 'http://localhost/kinenveut/?r=categorie';
+    $session->visit($url);
+    checkUrl($session, $url);
 
-      if ($session->getPage()->find(
-              'css',
-              '.list-group-item'
-          )->getText() != $arg1) {
-          throw new Exception('category was not found');
-      }
+    if ($session->getPage()->find(
+      'css',
+      '.list-group-item'
+    )->getText() != $arg1) {
+      throw new Exception('category was not found');
+    }
   }
 
   /**

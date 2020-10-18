@@ -68,32 +68,32 @@ function visitAuctionManagement($session)
 
 function visitUserManagment($session)
 {
-    $session->getPage()->find(
-        'css',
-        '#dropdownMenuButton'
-    )->click();
-    $session->getPage()->find(
-        'css',
-        '#menuUserManagement'
-    )->click();
+  $session->getPage()->find(
+    'css',
+    '#dropdownMenuButton'
+  )->click();
+  $session->getPage()->find(
+    'css',
+    '#menuUserManagement'
+  )->click();
 
-    $url = 'http://localhost/kinenveut/?r=userManagement';
-    checkUrl($session, $url);
+  $url = 'http://localhost/kinenveut/?r=userManagement';
+  checkUrl($session, $url);
 }
 
 function visitCategoriesManagment($session)
 {
-    $session->getPage()->find(
-        'css',
-        '#dropdownMenuButton'
-    )->click();
-    $session->getPage()->find(
-        'css',
-        '#menuCategoryManagement'
-    )->click();
+  $session->getPage()->find(
+    'css',
+    '#dropdownMenuButton'
+  )->click();
+  $session->getPage()->find(
+    'css',
+    '#menuCategoryManagement'
+  )->click();
 
-    $url = 'http://localhost/kinenveut/?r=category';
-    checkUrl($session, $url);
+  $url = 'http://localhost/kinenveut/?r=category';
+  checkUrl($session, $url);
 }
 
 function visitRegistrationPage($session)
