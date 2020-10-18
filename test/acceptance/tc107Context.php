@@ -1,6 +1,5 @@
 <?php
 
-use Behat\Behat\Tester\Exception\PendingException;
 use Behat\Behat\Context\Context;
 
 include_once 'tools.php';
@@ -20,25 +19,14 @@ class tc107Context implements Context
   public function __construct()
   {
   }
-  
-  public function __destruct()
+
+  /**
+   * @AfterScenario
+   */
+  public function cleanDB()
   {
-    
     deleteUser2Universe();
-    $canDelete = Universe::getUniverse()->getCanDelete();
-    if (isset($canDelete['auctions'])) {
-      $auctionDao = App_DaoFactory::getFactory()->getAuctionDao();
-      $userDao = App_DaoFactory::getFactory()->getUserDao();
-      $user = $userDao->selectUserByEmail(Universe::getUniverse()->getUser()->getEmail());
-      if ($user != null) {
-        $userAuctions = $auctionDao->selectAllAuctionsBySellerId($user->getId());
-        foreach ($userAuctions as $auction) {
-          $auctionDao->deleteAuctionById($auction->getId());
-        }
-      }
-      unset($canDelete['auctions']);
-    }
-    Universe::getUniverse()->setCanDelete($canDelete);
+    deleteAuctionUniverse();
   }
 
   /**
@@ -74,7 +62,7 @@ class tc107Context implements Context
       ->setFirstName('Un')
       ->setLastName('User')
       ->setBirthDate(DateTime::createFromFormat('d/m/Y', '01/06/1995'))
-      ->setEmail('ok.user@kinenveut.fr')
+      ->setEmail('un.user@kinenveut.fr')
       ->setPassword('password');
 
     Universe::getUniverse()->setUser2($unUser);
@@ -167,19 +155,19 @@ class tc107Context implements Context
     if ($session->getPage()->findById('forbidedAuctionAccess')->getText() != 'Vous n\'êtes pas autorisé à participer à cette enchère') {
       throw new Exception("L'utilisateur n'est pas refusé");
     }
+    $this->cleanDB();
   }
 
   /**
    * @Then ne peut pas participer à cette enchère privée
    */
   public function nePeutPasParticiperACetteEncherePrivee()
-  { 
+  {
     $session = Universe::getUniverse()->getSession();
     if ($session->getPage()->findById('makeabid') != null) {
       throw new Exception("L'utilisateur peut participer");
     }
     disconnect($session);
-
   }
 
   /**
@@ -217,6 +205,7 @@ class tc107Context implements Context
     if ($session->getPage()->findById('forbidedAuctionAccess') == null) {
       throw new Exception("L'utilisateur n'est pas accepté");
     }
+    $this->cleanDB();
   }
 
   /**
