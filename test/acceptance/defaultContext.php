@@ -22,6 +22,11 @@ class defaultContext implements Context
   public function __construct()
   {
     Universe::getUniverse()->getSession()->restart();
+  }
+
+  public function __destruct()
+  {
+    
     Universe::getUniverse()->setUser(null);
     Universe::getUniverse()->setUser2(null);
     Universe::getUniverse()->setUser3(null);
