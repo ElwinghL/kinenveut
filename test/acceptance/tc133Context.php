@@ -3,6 +3,8 @@
 use Behat\Behat\Tester\Exception\PendingException;
 use Behat\Behat\Context\Context;
 
+include_once 'test/acceptance/tools.php';
+
 /**
  * Defines application features from the specific context.
  */
@@ -21,19 +23,7 @@ class tc133Context implements Context
 
   public function __destruct()
   {
-    $canDelete = Universe::getUniverse()->getCanDelete();
-    $userDao = App_DaoFactory::getFactory()->getUserDao();
-    if (isset($canDelete['user'])) {
-      $user = $userDao->selectUserByEmail(Universe::getUniverse()->getUser()->getEmail());
-      if ($user != null) {
-        $isAdmin = $user->getIsAdmin();
-        if ($isAdmin == false) {
-          $userDao->deleteUser($user->getId());
-        }
-      }
-      unset($canDelete['user']);
-      Universe::getUniverse()->setCanDelete($canDelete);
-    }
+    deleteUserUniverse();
   }
 
   /**
@@ -42,13 +32,11 @@ class tc133Context implements Context
   public function lutilisateurNestPasConnecte()
   {
     $session = Universe::getUniverse()->getSession();
+
     $session->visit('http://localhost/kinenveut/');
-    if ($session->getStatusCode() !== 200) {
-      throw new Exception('status code is not 200');
-    }
-    if ($session->getCurrentUrl() !== 'http://localhost/kinenveut/?r=login') {
-      throw new Exception('url is not "http://localhost/kinenveut/?r=login"');
-    }
+
+    $url = 'http://localhost/kinenveut/?r=login';
+    checkUrl($session, $url);
   }
 
   /**
@@ -69,55 +57,9 @@ class tc133Context implements Context
 
     Universe::getUniverse()->setUser($localUser);
 
-    /*Go to suscribe page*/
-    $session->getPage()->find(
-      'css',
-      'a[href="?r=registration"]'
-    )->click();
+    visitRegistrationPage($session);
 
-    if ($session->getStatusCode() !== 200) {
-      throw new Exception('status code is not 200');
-    }
-    if ($session->getCurrentUrl() !== 'http://localhost/kinenveut/?r=registration') {
-      throw new Exception('url is not "http://localhost/kinenveut/?r=registration"');
-    }
-
-    /*Fill the form*/
-    $session->getPage()->find(
-      'css',
-      'input[name="firstName"]'
-    )->setValue($localUser->getFirstName());
-    $session->getPage()->find(
-      'css',
-      'input[name="lastName"]'
-    )->setValue($localUser->getLastName());
-    $session->getPage()->find(
-      'css',
-      'input[name="birthDate"]'
-    )->setValue($localUser->getBirthDate()->format('d/m/Y'));
-    $session->getPage()->find(
-      'css',
-      'input[name="email"]'
-    )->setValue($localUser->getEmail());
-    $session->getPage()->find(
-      'css',
-      'input[name="password"]'
-    )->setValue($localUser->getPassword());
-
-    /*Click on suscribe*/
-    $session->getPage()->find(
-      'css',
-      'input[type="submit"]'
-    )->click();
-
-    //The user is redirect to the login page
-
-    if ($session->getStatusCode() !== 200) {
-      throw new Exception('status code is not 200');
-    }
-    if ($session->getCurrentUrl() !== 'http://localhost/kinenveut/?r=login') {
-      throw new Exception('url is not "http://localhost/kinenveut/?r=login"');
-    }
+    suscribe($session, $localUser);
   }
 
   /**
@@ -146,6 +88,11 @@ class tc133Context implements Context
       'css',
       'input[name="password"]'
     )->setValue('');
+
+    $session->getPage()->find(
+      'css',
+      'input[type="submit"]'
+    )->click();
   }
 
   /**
@@ -190,18 +137,20 @@ class tc133Context implements Context
     Universe::getUniverse()->setCanDelete(['user'=>true]);
     $session = Universe::getUniverse()->getSession();
 
-    if ($session->getStatusCode() !== 200) {
-      throw new Exception('status code is not 200');
-    }
-    if ($session->getCurrentUrl() !== 'http://localhost/kinenveut/?r=registration') {
-      throw new Exception(' url is not "http://localhost/kinenveut/?r=registration"');
-    }
+    $url = 'http://localhost/kinenveut/?r=login/login';
+    checkUrl($session, $url);
 
     if ($session->getPage()->find(
       'css',
       '.invalid-feedback.d-block'
-    )->getText() != 'L\'adresse mail est déjà utilisée par un autre utilisateur') {
-      throw new Exception('There is not an error');
+    ) == false) {
+      throw new Exception('The error div is missing');
+    }
+    if ($session->getPage()->find(
+      'css',
+      '.invalid-feedback.d-block'
+    )->getText() != 'Identifiants incorrects') {
+      throw new Exception('There is returned error is not the expected one');
     }
   }
 }
