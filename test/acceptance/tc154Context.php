@@ -1,5 +1,6 @@
 <?php
 
+include_once 'test/acceptance/tools.php';
 use Behat\Behat\Context\Context;
 
 /**
@@ -43,18 +44,7 @@ class tc154Context implements Context
     $session = Universe::getUniverse()->getSession();
     $user = Universe::getUniverse()->getUser();
 
-    /*Disconnect*/
-    //todo : find a way to click on the disconnect button
-    $session->visit('http://localhost/kinenveut/?r=logout');
-
-    //The user is redirect to the login page
-
-    if ($session->getStatusCode() !== 200) {
-      throw new Exception('status code is not 200');
-    }
-    if ($session->getCurrentUrl() !== 'http://localhost/kinenveut/?r=login') {
-      throw new Exception('url is not "http://localhost/kinenveut/?r=login"');
-    }
+    disconnect($session);
 
     /*Create a new user*/
     $localUser = new UserModel();
@@ -67,80 +57,10 @@ class tc154Context implements Context
 
     Universe::getUniverse()->setUser2($localUser);
 
-    /*Go to suscribe page*/
-    $session->getPage()->find(
-      'css',
-      'a[href="?r=registration"]'
-    )->click();
+    visitRegistrationPage($session);
 
-    if ($session->getStatusCode() !== 200) {
-      throw new Exception('status code is not 200');
-    }
-    if ($session->getCurrentUrl() !== 'http://localhost/kinenveut/?r=registration') {
-      throw new Exception('url is not "http://localhost/kinenveut/?r=registration"');
-    }
-
-    /*Fill the form*/
-    $session->getPage()->find(
-      'css',
-      'input[name="firstName"]'
-    )->setValue($localUser->getFirstName());
-    $session->getPage()->find(
-      'css',
-      'input[name="lastName"]'
-    )->setValue($localUser->getLastName());
-    $session->getPage()->find(
-      'css',
-      'input[name="birthDate"]'
-    )->setValue($localUser->getBirthDate()->format('d/m/Y'));
-    $session->getPage()->find(
-      'css',
-      'input[name="email"]'
-    )->setValue($localUser->getEmail());
-    $session->getPage()->find(
-      'css',
-      'input[name="password"]'
-    )->setValue($localUser->getPassword());
-
-    /*Click on suscribe*/
-    $session->getPage()->find(
-      'css',
-      'input[type="submit"]'
-    )->click();
-
-    //The user is redirect to the login page
-
-    if ($session->getStatusCode() !== 200) {
-      throw new Exception('status code is not 200');
-    }
-    if ($session->getCurrentUrl() !== 'http://localhost/kinenveut/?r=login') {
-      throw new Exception('url is not "http://localhost/kinenveut/?r=login"');
-    }
-
-    /*Fill the form*/
-    $session->getPage()->find(
-      'css',
-      'input[name="email"]'
-    )->setValue($user->getEmail());
-    $session->getPage()->find(
-      'css',
-      'input[name="password"]'
-    )->setValue($user->getPassword());
-
-    /*Click to connect*/
-    $session->getPage()->find(
-      'css',
-      'input[type="submit"]'
-    )->click();
-
-    //The user is redirect to the home page
-
-    if ($session->getStatusCode() !== 200) {
-      throw new Exception('status code is not 200');
-    }
-    if ($session->getCurrentUrl() !== 'http://localhost/kinenveut/?r=home') {
-      throw new Exception('url is not "http://localhost/kinenveut/?r=home"');
-    }
+    suscribe($session, Universe::getUniverse()->getUser2());
+    connect($session, Universe::getUniverse()->getUser());
   }
 
   /**

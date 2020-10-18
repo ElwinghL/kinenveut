@@ -1,7 +1,8 @@
 <?php
 
 use Behat\Behat\Context\Context;
-include_once "tools.php";
+
+include_once 'tools.php';
 
 /**
  * Defines application features from the specific context.
@@ -54,7 +55,7 @@ class tc52Context implements Context
   public function lutilisateurEstSurLaPageDeCreationDenchere()
   {
     $session = Universe::getUniverse()->getSession();
-    
+
     visitCreateAuction($session);
   }
 
