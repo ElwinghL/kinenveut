@@ -1,7 +1,8 @@
 <?php
 
-include_once 'test/acceptance/tools.php';
 use Behat\Behat\Context\Context;
+
+include_once 'test/acceptance/tools.php';
 
 /**
  * Defines application features from the specific context.
@@ -57,15 +58,7 @@ class tc154Context implements Context
   public function lutilisateurConsulteLaListeDesUtilisateursEnAttenteDinscription()
   {
     $session = Universe::getUniverse()->getSession();
-
-    /*Go to the page to create an auction*/
-    $session->visit('http://localhost/kinenveut/?r=userManagement');
-    if ($session->getStatusCode() !== 200) {
-      throw new Exception('status code is not 200');
-    }
-    if ($session->getCurrentUrl() !== 'http://localhost/kinenveut/?r=userManagement') {
-      throw new Exception('url is not "http://localhost/kinenveut/?r=userManagement"');
-    }
+    visitUserManagment($session);
   }
 
   /**
