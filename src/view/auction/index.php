@@ -37,7 +37,7 @@
                             <li id="category_<?php echo $auction->getId(); ?>" class="list-group-item float">
 
                                 <div class="col-md-5 mr-0 float-left">
-                                    <a href="<?='?r=bid/index&auctionId=' . $auction->getId()?>">
+                                    <a class="auction-name" href="<?='?r=bid/index&auctionId=' . $auction->getId()?>">
                                         <?=$auction->getName();?>
                                     </a>
                                 </div>

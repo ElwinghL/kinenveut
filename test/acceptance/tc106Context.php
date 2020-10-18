@@ -19,6 +19,35 @@ class tc106Context implements Context
   {
   }
 
+  public function __destruct()
+  {
+    $canDelete = Universe::getUniverse()->getCanDelete();
+    if (isset($canDelete['auctions'])) {
+      $auctionDao = App_DaoFactory::getFactory()->getAuctionDao();
+      $userDao = App_DaoFactory::getFactory()->getUserDao();
+      $user = $userDao->selectUserByEmail(Universe::getUniverse()->getUser()->getEmail());
+      if ($user != null) {
+        $userAuctions = $auctionDao->selectAllAuctionsBySellerId($user->getId());
+        foreach ($userAuctions as $auction) {
+          $auctionDao->deleteAuctionById($auction->getId());
+        }
+      }
+      unset($canDelete['auctions']);
+    }
+    if (isset($canDelete['user'])) {
+      $userDao = App_DaoFactory::getFactory()->getUserDao();
+      $user = $userDao->selectUserByEmail(Universe::getUniverse()->getUser()->getEmail());
+      if ($user != null) {
+        $isAdmin = $user->getIsAdmin();
+        if ($isAdmin == false) {
+          $userDao->deleteUser($user->getId());
+        }
+      }
+      unset($canDelete['user']);
+    }
+    Universe::getUniverse()->setCanDelete($canDelete);
+  }
+
   /**
    * @Given L'utilisateur est normal
    */
@@ -40,7 +69,18 @@ class tc106Context implements Context
    */
   public function lutilisateurAPosteDesEncheres()
   {
-    throw new PendingException();
+    $session = Universe::getUniverse()->getSession();
+
+    visitCreateAuction($session);
+    
+    $session->getPage()->find(
+      'css',
+      'input[name="name"]'
+    )->setValue('Chaussette sale');
+    $session->getPage()->find(
+      'css',
+      'input[name="createAuction"]'
+    )->click();
   }
 
   /**
@@ -48,7 +88,9 @@ class tc106Context implements Context
    */
   public function lutilisateurConsulteSesEncheres()
   {
-    throw new PendingException();
+    $session = Universe::getUniverse()->getSession();
+
+    visitSells($session);
   }
 
   /**
@@ -56,6 +98,15 @@ class tc106Context implements Context
    */
   public function lutilisateurVoitToutesLesEncheresQuilAPoste()
   {
-    throw new PendingException();
+    $session = Universe::getUniverse()->getSession();
+
+    if ($session->getPage()->find(
+      'css',
+      '.auction-name'
+    )->getText() != 'Chaussette sale') {
+      throw new Exception('auction was not found');
+    }
+    
+    Universe::getUniverse()->setCanDelete(['user'=>true, 'auctions'=>true]);
   }
 }
