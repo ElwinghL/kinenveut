@@ -21,19 +21,7 @@ class tc154Context implements Context
 
   public function __destruct()
   {
-    $canDelete = Universe::getUniverse()->getCanDelete();
-    $userDao = App_DaoFactory::getFactory()->getUserDao();
-    if (isset($canDelete['user2'])) {
-      $user2 = $userDao->selectUserByEmail(Universe::getUniverse()->getUser2()->getEmail());
-      if ($user2 != null) {
-        $isAdmin2 = $user2->getIsAdmin();
-        if ($isAdmin2 == false) {
-          $userDao->deleteUser($user2->getId());
-        }
-      }
-      unset($canDelete['user2']);
-      Universe::getUniverse()->setCanDelete($canDelete);
-    }
+    deleteUser2Universe();
   }
 
   /**

@@ -177,7 +177,9 @@ function disconnect($session)
 
 function deleteUserUniverse()
 {
+  $canDelete = Universe::getUniverse()->getCanDelete();
   $userDao = App_DaoFactory::getFactory()->getUserDao();
+
   if (isset($canDelete['user'])) {
     $user = $userDao->selectUserByEmail(Universe::getUniverse()->getUser()->getEmail());
     if ($user != null) {
@@ -193,7 +195,9 @@ function deleteUserUniverse()
 
 function deleteUser2Universe()
 {
+  $canDelete = Universe::getUniverse()->getCanDelete();
   $userDao = App_DaoFactory::getFactory()->getUserDao();
+
   if (isset($canDelete['user2'])) {
     $user2 = $userDao->selectUserByEmail(Universe::getUniverse()->getUser2()->getEmail());
     if ($user2 != null) {
