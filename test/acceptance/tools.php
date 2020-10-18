@@ -93,7 +93,7 @@ function visitRegistrationPage($session)
   checkUrl($session, $url);
 }
 
-/*Suscribe & Connection functions*/
+/*Subscribe & Connection functions*/
 
 function suscribe($session, UserModel $localUser)
 {
@@ -173,6 +173,61 @@ function disconnect($session)
   checkUrl($session, $url);
 }
 
+/*Add values to DB*/
+
+function createAuction($session, $auction)
+{
+    $url = 'http://localhost/kinenveut/?r=auction/create';
+    checkUrl($session, $url);
+
+    /*Full the form to create an auction*/
+    //Object name
+    $session->getPage()->find(
+        'css',
+        'input[name="name"]'
+    )->setValue($auction->getName());
+    //Base Price
+    $session->getPage()->find(
+        'css',
+        '#basePrice'
+    )->setValue($auction->getBasePrice());
+    //Reserve Price
+    $session->getPage()->find(
+        'css',
+        '#reservePrice'
+    )->setValue($auction->getReservePrice());
+    //Category
+    $session->getPage()->find(
+        'css',
+        '#categoryId'
+    )->selectOption($auction->getCategoryId());
+    //Duration
+    $session->getPage()->find(
+        'css',
+        '#duration'
+    )->setValue($auction->getDuration());
+    //Privacy
+    $session->getPage()->find(
+        'css',
+        '#privacyId'
+    )->selectOption($auction->getPrivacyId());
+    //Description
+    $session->getPage()->find(
+        'css',
+        '#description'
+    )->selectOption($auction->getDescription());
+
+    /*Submit the form*/
+    //Submit
+    $session->getPage()->find(
+        'css',
+        'input[type="submit"]'
+    )->click();
+
+    $url = 'http://localhost/kinenveut/?r=home';
+    checkUrl($session, $url);
+}
+
 /*Delete Universe elements functions*/
 
 function deleteUserUniverse()
@@ -209,4 +264,22 @@ function deleteUser2Universe()
     unset($canDelete['user2']);
     Universe::getUniverse()->setCanDelete($canDelete);
   }
+}
+
+function deleteAuctionUniverse()
+{
+    if (isset($canDelete['auctions'])) {
+        $auctionDao = App_DaoFactory::getFactory()->getAuctionDao();
+        $userDao = App_DaoFactory::getFactory()->getUserDao();
+
+        $user = $userDao->selectUserByEmail(Universe::getUniverse()->getUser()->getEmail());
+
+        if ($user != null) {
+            $userAuctions = $auctionDao->selectAllAuctionsBySellerId($user->getId());
+            foreach ($userAuctions as $auction) {
+                $auctionDao->deleteAuctionById($auction->getId());
+            }
+        }
+        unset($canDelete['auctions']);
+    }
 }
