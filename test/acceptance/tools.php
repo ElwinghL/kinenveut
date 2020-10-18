@@ -215,7 +215,7 @@ function createAuction($session, $auction)
     $session->getPage()->find(
         'css',
         '#description'
-    )->selectOption($auction->getDescription());
+    )->setValue($auction->getDescription());
 
     /*Submit the form*/
     //Submit
