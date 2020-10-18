@@ -22,6 +22,7 @@ class tc110Context implements Context
 
   public function __destruct()
   {
+    deleteAuctionUniverse();
     deleteUser2Universe();
   }
 
@@ -140,6 +141,8 @@ class tc110Context implements Context
     )->getText() != $auction->getName()) {
       throw new Exception('auction was not found');
     }
-    Universe::getUniverse()->setCanDelete(['user' => true, 'auction' => true]);
+
+    $sellers = [Universe::getUniverse()->getUser()];
+    Universe::getUniverse()->setCanDelete(['user' => true, 'auction' => $sellers]);
   }
 }
