@@ -1,6 +1,5 @@
 <?php
 
-use Behat\Behat\Tester\Exception\PendingException;
 use Behat\Behat\Context\Context;
 
 /**
@@ -38,18 +37,18 @@ class tc71Context implements Context
    */
   public function lutilisateurPossedeAuMoinsUneEnchere()
   {
-      $session = Universe::getUniverse()->getSession();
+    $session = Universe::getUniverse()->getSession();
+    $user = Universe::getUniverse()->getUser();
+    $auction = new AuctionModel();
+
+    if ($user->getId() == null or $user->getId() < 1) {
+      $userDao = App_DaoFactory::getFactory()->getUserDao();
+      $user = $userDao->selectUserByEmail(Universe::getUniverse()->getUser()->getEmail());
+      Universe::getUniverse()->getUser()->setId($user->getId());
       $user = Universe::getUniverse()->getUser();
-      $auction = new AuctionModel();
+    }
 
-      if($user->getId() == null or $user->getId() < 1)
-      {
-          $userDao = App_DaoFactory::getFactory()->getUserDao();
-          $user = $userDao->selectUserByEmail(Universe::getUniverse()->getUser()->getEmail());
-          Universe::getUniverse()->getUser()->setId($user->getId());
-      }
-
-      $auction
+    $auction
           ->setName('Objet test')
           ->setDescription('Ceci est une enchère insérée lors de tests.')
           ->setBasePrice(3)
@@ -60,45 +59,41 @@ class tc71Context implements Context
           ->setCategoryId(1)
           ->setStartDate(new DateTime());
 
-      Universe::getUniverse()->setAuction($auction);
+    Universe::getUniverse()->setAuction($auction);
 
-      visitCreateAuction($session);
+    visitCreateAuction($session);
+    createAuction($session, $auction);
 
-      createAuction($session, $auction);
+    disconnect($session);
 
-      disconnect($session);
-
-      /*Connection as Admin*/
-      $userAdmin = new UserModel();
-      $userAdmin
+    /*Connection as Admin*/
+    $userAdmin = new UserModel();
+    $userAdmin
           ->setEmail('admin@kinenveut.fr')
           ->setPassword('password');
 
-      Universe::getUniverse()->setUser2($userAdmin);
+    Universe::getUniverse()->setUser2($userAdmin);
 
-      connect($session, $userAdmin);
+    connect($session, $userAdmin);
 
-      visitAuctionManagement($session);
+    visitAuctionManagement($session);
 
-      /*
-      $auctionDao = App_DaoFactory::getFactory()->getAuctionDao();
-      $userAuctions = $auctionDao->selectAllAuctionsBySellerId($user->getId());
-      if(count($userAuctions) == 1)
-      {
-         $auction->setId($userAuctions[0]->getId());
-      }
-      else
-      {
-          throw new Exception('A problem happenned while create an auction');
-      }*/
+    $auctionDao = App_DaoFactory::getFactory()->getAuctionDao();
+    $userAuctions = $auctionDao->selectAllAuctionsBySellerId($user->getId());
 
-      /*Click to accept the prevent created auction
-      $url = 'http://localhost/kinenveut/?r=auctionManagement/validate&id=' . $auction->getId();
-      $session->visit($url);
-      checkUrl($session, $url);*/
+    if (count($userAuctions) == 1) {
+      $auction->setId($userAuctions[0]->getId());
+    } else {
+      throw new Exception('A problem happenned while create an auction');
+    }
 
-      disconnect($session);
+    /*Click to accept the prevent created auction*/
+    $url = 'http://localhost/kinenveut/?r=auctionManagement/validate&id=' . $auction->getId();
+    $session->visit($url);
+    checkUrl($session, $url);
 
-      connect($session, $user);
+    disconnect($session);
+
+    connect($session, $user);
   }
 }
