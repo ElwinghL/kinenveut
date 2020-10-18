@@ -114,7 +114,7 @@ function visitCategoriesManagment($session)
     '#menuCategoryManagement'
   )->click();
 
-  $url = 'http://localhost/kinenveut/?r=category';
+  $url = 'http://localhost/kinenveut/?r=categorie';
   checkUrl($session, $url);
 }
 
