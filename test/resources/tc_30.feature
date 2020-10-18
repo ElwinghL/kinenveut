@@ -10,7 +10,8 @@ Fonctionnalité: Creer un compte
   
   Scénario: Echec adresse mail déjà enregistrer
     Etant donné L'utilisateur est normal
+    Et l'utilisateur est déjà inscrit
     Et L'utilisateur est sur la page de création de compte.
     Quand L'utilisateur renseigne les champs de saisies.
     Et L'utilisateur valide le formulaire
-    Alors L'utilisateur reçoit un message d'erreur approprié.
+    Alors L'utilisateur reçoit un message d'erreur lui indiquant que l'adresse mail qu'il a saisie est déjà utilisée

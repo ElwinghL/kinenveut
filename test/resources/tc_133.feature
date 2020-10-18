@@ -13,4 +13,4 @@ Fonctionnalité: Récupérer le mot de passe
     Et L'utilisateur n'a pas de compte dans la base
     Et L'utilisateur a entré son adresse mail.
     Quand L'utilisateur a oublié son mot de passe
-    Alors L'utilisateur reçoit un message d'erreur approprié.
+    Alors L'utilisateur reçoit un message lui indiquant qu'aucune adresse mail ne corresponds à l'adresse mail saisie
