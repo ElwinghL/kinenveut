@@ -36,9 +36,9 @@ class tc63Context implements Context
   }
 
   /**
-   * @When l'utilisateur valide son enchère avec les champs invalides (prix de départ, pris de réserve)
+   * @When l'utilisateur valide son enchère avec les champs invalides
    */
-  public function lutilisateurValideSonEnchereAvecLesChampsInvalidesPrixDeDepartPrisDeReserve()
+  public function lutilisateurValideSonEnchereAvecLesChampsInvalides()
   {
     $session = Universe::getUniverse()->getSession();
     $session->getPage()->find(
