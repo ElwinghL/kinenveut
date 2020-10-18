@@ -106,5 +106,7 @@ class tc106Context implements Context
     )->getText() != 'Chaussette sale') {
       throw new Exception('auction was not found');
     }
+    
+    Universe::getUniverse()->setCanDelete(['user'=>true, 'auctions'=>true]);
   }
 }
