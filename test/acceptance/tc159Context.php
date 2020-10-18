@@ -17,6 +17,42 @@ class tc159Context implements Context
    */
   public function __construct()
   {
+    $auction = new AuctionModel();
+    $auction->setName("Banana")->setBasePrice(0)->setReservePrice(0)->setDuration(7)->setSellerId(1)->setPrivacyId(0)->setCategoryId(1);
+    $auctionDao = App_DaoFactory::getFactory()->getAuctionDao();
+    $auctionId = $auctionDao->insertAuction($auction);
+    $auction->setId($auctionId)->setAuctionState(1);
+    $auctionDao->updateAuctionState($auction);
+    Universe::getUniverse()->setAuctionId($auctionId);
+  }
+
+  public function __destruct()
+  {
+    $canDelete = Universe::getUniverse()->getCanDelete();
+    if (isset($canDelete['auctions'])) {
+      $auctionDao = App_DaoFactory::getFactory()->getAuctionDao();
+      $userDao = App_DaoFactory::getFactory()->getUserDao();
+      $user = $userDao->selectUserByEmail(Universe::getUniverse()->getUser()->getEmail());
+      if ($user != null) {
+        $userAuctions = $auctionDao->selectAllAuctionsBySellerId($user->getId());
+        foreach ($userAuctions as $auction) {
+          $auctionDao->deleteAuctionById($auction->getId());
+        }
+      }
+      unset($canDelete['auctions']);
+    }
+    if (isset($canDelete['user'])) {
+      $userDao = App_DaoFactory::getFactory()->getUserDao();
+      $user = $userDao->selectUserByEmail(Universe::getUniverse()->getUser()->getEmail());
+      if ($user != null) {
+        $isAdmin = $user->getIsAdmin();
+        if ($isAdmin == false) {
+          $userDao->deleteUser($user->getId());
+        }
+      }
+      unset($canDelete['user']);
+    }
+    Universe::getUniverse()->setCanDelete($canDelete);
   }
 
   /**
@@ -24,7 +60,17 @@ class tc159Context implements Context
    */
   public function lutilisateurEstSurLaPageDuneEnchere()
   {
-    throw new PendingException();
+    $session = Universe::getUniverse()->getSession();
+
+    $url = 'http://localhost/kinenveut/?r=bid/index&auctionId='.Universe::getUniverse()->getAuctionId();
+    $session->visit($url);
+
+    if ($session->getStatusCode() !== 200) {
+      throw new Exception('status code is not 200');
+    }
+    if ($session->getCurrentUrl() !== $url) {
+      throw new Exception('url is not '.$url);
+    }
   }
 
   /**
@@ -32,7 +78,14 @@ class tc159Context implements Context
    */
   public function lutilisateurPeutParticiperALenchere()
   {
-    throw new PendingException();
+    $session = Universe::getUniverse()->getSession();
+
+    if ($session->getPage()->find(
+      'css',
+      '#bid-button'
+    ) == null) {
+      throw new Exception('user cannot bid');
+    }
   }
 
   /**
@@ -40,7 +93,12 @@ class tc159Context implements Context
    */
   public function lutilisateurAEntreAuPrealableLeMontantDeLenchere()
   {
-    throw new PendingException();
+    $session = Universe::getUniverse()->getSession();
+    
+    $session->getPage()->find(
+      'css',
+      'input[name="bidPrice"]'
+    )->setValue(42);
   }
 
   /**
@@ -48,7 +106,12 @@ class tc159Context implements Context
    */
   public function lutilisateurCliqueSurLeBoutonDenchere()
   {
-    throw new PendingException();
+    $session = Universe::getUniverse()->getSession();
+    
+    $session->getPage()->find(
+      'css',
+      '#bid-button'
+    )->click();
   }
 
   /**
@@ -56,7 +119,14 @@ class tc159Context implements Context
    */
   public function lenchereEstOuverte()
   {
-    throw new PendingException();
+    $session = Universe::getUniverse()->getSession();
+    
+    if ($session->getPage()->find(
+      'css',
+      'h2'
+    )->getText() != "Banana - 42€") {
+      throw new Exception('bid is not valid');
+    };
   }
 
   /**
@@ -64,7 +134,14 @@ class tc159Context implements Context
    */
   public function lutilisateurAChoisiUnMontantValide()
   {
-    throw new PendingException();
+    $session = Universe::getUniverse()->getSession();
+    
+    if ($session->getPage()->find(
+      'css',
+      'h2'
+    )->getText() != "Banana - 42€") {
+      throw new Exception('bid is not valid');
+    };
   }
 
   /**
@@ -72,6 +149,15 @@ class tc159Context implements Context
    */
   public function lutilisateurEncheritDuMontantChoisi()
   {
-    throw new PendingException();
+    $session = Universe::getUniverse()->getSession();
+    
+    if ($session->getPage()->find(
+      'css',
+      'h2'
+    )->getText() != "Banana - 42€") {
+      throw new Exception('bid is not valid');
+    };
+
+    Universe::getUniverse()->setCanDelete(['user'=>true, 'auctions'=>true]);
   }
 }
