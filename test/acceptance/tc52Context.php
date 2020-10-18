@@ -24,7 +24,21 @@ class tc52Context implements Context
    */
   public function lutilisateurEstSurLaPageDeCreationDenchere()
   {
-    throw new PendingException();
+    $session = Universe::getUniverse()->getSession();
+    $session->getPage()->find(
+      'css',
+      '#dropdownMenuButton'
+    )->click();
+    $session->getPage()->find(
+      'css',
+      '#menuCreateAuction'
+    )->click();
+    if ($session->getStatusCode() !== 200) {
+      throw new Exception('status code is not 200');
+    }
+    if ($session->getCurrentUrl() !== 'http://localhost/kinenveut/?r=auction/create') {
+      throw new Exception('url is not "http://localhost/kinenveut/?r=auction/create"');
+    }
   }
 
   /**
@@ -32,7 +46,15 @@ class tc52Context implements Context
    */
   public function lutilisateurValideSonEnchereAvecLesChampsValidesPrixDeDepartPrisDeReserve()
   {
-    throw new PendingException();
+    $session = Universe::getUniverse()->getSession();
+    $session->getPage()->find(
+      'css',
+      'input[name="name"]'
+    )->setValue('Chaussette');
+    $session->getPage()->find(
+      'css',
+      'input[name="createAuction"]'
+    )->click();
   }
 
   /**
