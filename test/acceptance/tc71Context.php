@@ -80,7 +80,7 @@ class tc71Context implements Context
     /*Click to accept the prevent created auction*/
     $url = 'http://localhost/kinenveut/?r=auctionManagement/validate&id=' . $auction->getId();
     $session->visit($url);
-    checkUrl($session, $url);
+    checkUrl($url);
 
     disconnect($session);
 

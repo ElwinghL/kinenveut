@@ -10,11 +10,6 @@ include_once 'test/acceptance/tools.php';
  */
 class tc133Context implements Context
 {
-  public function __destruct()
-  {
-    deleteUserUniverse();
-  }
-
   /**
    * @Given L'utilisateur n'est pas connecté
    */
@@ -24,8 +19,7 @@ class tc133Context implements Context
 
     $session->visit('http://localhost/kinenveut/');
 
-    $url = 'http://localhost/kinenveut/?r=login';
-    checkUrl($session, $url);
+    checkUrl('http://localhost/kinenveut/?r=login');
   }
 
   /**
@@ -89,9 +83,9 @@ class tc133Context implements Context
    */
   public function lutilisateurRecoitUnEmailAvecLaPossibiliteDeRecupererLaccesASonCompte()
   {
-    Universe::getUniverse()->setCanDelete(['user'=>true]);
+    Universe::getUniverse()->setToDelete(['users' => [Universe::getUniverse()->getUser()]]);
     //Non testable
-    throw new PendingException();
+    // throw new PendingException();
   }
 
   /**
@@ -123,11 +117,11 @@ class tc133Context implements Context
      */
   public function lutilisateurRecoitUnMessageLuiIndiquantQuaucuneAdresseMailNeCorrespondsALadresseMailSaisie()
   {
-    Universe::getUniverse()->setCanDelete(['user'=>true]);
+    Universe::getUniverse()->setToDelete(['users' => [Universe::getUniverse()->getUser()]]);
     $session = Universe::getUniverse()->getSession();
 
     $url = 'http://localhost/kinenveut/?r=login/login';
-    checkUrl($session, $url);
+    checkUrl($url);
 
     if ($session->getPage()->find(
       'css',

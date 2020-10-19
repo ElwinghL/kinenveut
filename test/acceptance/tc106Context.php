@@ -9,12 +9,6 @@ include_once 'test/acceptance/tools.php';
  */
 class tc106Context implements Context
 {
-  public function __destruct()
-  {
-    deleteAuctionUniverse();
-    deleteUserUniverse();
-  }
-
   /**
    * @Given L'utilisateur est normal
    */
@@ -74,7 +68,6 @@ class tc106Context implements Context
       throw new Exception('auction was not found');
     }
 
-    $sellers = [Universe::getUniverse()->getUser()];
-    Universe::getUniverse()->setCanDelete(['user'=>true, 'auctions'=>$sellers]);
+    Universe::getUniverse()->setToDelete(['users' => [Universe::getUniverse()->getUser()]]);
   }
 }

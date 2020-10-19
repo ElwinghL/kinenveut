@@ -9,13 +9,6 @@ include_once 'test/acceptance/tools.php';
  */
 class tc280Context implements Context
 {
-  public function __destruct()
-  {
-    deleteAuctionUniverse();
-    deleteUserUniverse();
-    deleteUser2Universe();
-  }
-
   /**
    * @When l'utilisateur choisit une visibilité
    */
@@ -38,7 +31,7 @@ class tc280Context implements Context
     $session = Universe::getUniverse()->getSession();
 
     $url = 'http://localhost/kinenveut/?r=home/search';
-    checkUrl($session, $url);
+    checkUrl($url);
 
     if ($session->getPage()->find(
       'css',
@@ -47,7 +40,6 @@ class tc280Context implements Context
       throw new Exception('The auction list was not found');
     }
 
-    $sellers = [Universe::getUniverse()->getUser()];
-    Universe::getUniverse()->setCanDelete(['user' => true, 'auction' => $sellers]);
+    Universe::getUniverse()->setToDelete(['users' => [Universe::getUniverse()->getUser()]]);
   }
 }

@@ -33,8 +33,7 @@ class tc104Context implements Context
     $session = Universe::getUniverse()->getSession();
 
     $session->visit('http://localhost/kinenveut/');
-    $url = 'http://localhost/kinenveut/?r=login';
-    checkUrl($session, $url);
+    checkUrl('http://localhost/kinenveut/?r=login');
 
     /*Check if the user is well initialized*/
     $user = Universe::getUniverse()->getUser();
@@ -79,7 +78,7 @@ class tc104Context implements Context
       )->click();
 
       $url = 'http://localhost/kinenveut/?r=userManagement/validate&id=' . $user->getId();
-      checkUrl($session, $url);
+      checkUrl($url);
 
       disconnect($session);
     }
@@ -104,8 +103,7 @@ class tc104Context implements Context
   public function laListeDeCategoriesEstVide()
   {
     //Non testable car on ne peut pas vider la liste pour les tests :)
-    /*Universe::getUniverse()->setCanDelete(['user' => true]);
-    throw new PendingException();*/
+    // throw new PendingException();
   }
 
   /**
@@ -117,7 +115,7 @@ class tc104Context implements Context
 
     $url = 'http://localhost/kinenveut/?r=categorie/update_page';
     $session->visit($url);
-    checkUrl($session, $url);
+    checkUrl($url);
 
     $session->getPage()->find(
       'css',
@@ -138,7 +136,7 @@ class tc104Context implements Context
 
     $url = 'http://localhost/kinenveut/?r=categorie';
     $session->visit($url);
-    checkUrl($session, $url);
+    checkUrl($url);
 
     if ($session->getPage()->find(
       'css',
@@ -173,7 +171,7 @@ class tc104Context implements Context
 
     $url = 'http://localhost/kinenveut/?r=categorie';
     $session->visit($url);
-    checkUrl($session, $url);
+    checkUrl($url);
 
     if ($session->getPage()->find(
       'css',

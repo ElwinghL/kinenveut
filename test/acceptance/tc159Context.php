@@ -8,30 +8,6 @@ use Behat\Behat\Context\Context;
 class tc159Context implements Context
 {
   /**
-   * Initializes context.
-   *
-   * Every scenario gets its own context instance.
-   * You can also pass arbitrary arguments to the
-   * context constructor through behat.yml.
-   */
-  public function __construct()
-  {
-    $auction = new AuctionModel();
-    $auction->setName('Banana')->setBasePrice(0)->setReservePrice(0)->setDuration(7)->setSellerId(1)->setPrivacyId(0)->setCategoryId(1);
-    $auctionDao = App_DaoFactory::getFactory()->getAuctionDao();
-    $auctionId = $auctionDao->insertAuction($auction);
-    $auction->setId($auctionId)->setAuctionState(1);
-    $auctionDao->updateAuctionState($auction);
-    Universe::getUniverse()->getAuction()->setId($auctionId);
-  }
-
-  public function __destruct()
-  {
-    deleteAuctionUniverse();
-    deleteUserUniverse();
-  }
-
-  /**
    * @Given l'utilisateur est sur la page d'une enchère
    */
   public function lutilisateurEstSurLaPageDuneEnchere()
@@ -84,7 +60,7 @@ class tc159Context implements Context
     )->click();
 
     $url = 'http://localhost/kinenveut/?r=userManagement/validate&id=' . $user2->getId();
-    checkUrl($session, $url);
+    checkUrl($url);
 
     disconnect($session);
     connect($session, $user2);
@@ -128,7 +104,7 @@ class tc159Context implements Context
     /*Click to accept the prevent created auction*/
     $url = 'http://localhost/kinenveut/?r=auctionManagement/validate&id=' . $auction->getId();
     $session->visit($url);
-    checkUrl($session, $url);
+    checkUrl($url);
 
     disconnect($session);
 
@@ -137,7 +113,7 @@ class tc159Context implements Context
 
     $url = 'http://localhost/kinenveut/?r=bid/index&auctionId=' . $auction->getId();
     $session->visit($url);
-    checkUrl($session, $url);
+    checkUrl($url);
   }
 
   /**
@@ -230,7 +206,6 @@ class tc159Context implements Context
       throw new Exception('bid is not valid');
     };
 
-    $sellers = [Universe::getUniverse()->getUser()];
-    Universe::getUniverse()->setCanDelete(['user'=>true, 'user2'=>true, 'auctions'=>$sellers]);
+    Universe::getUniverse()->setToDelete(['users' => [Universe::getUniverse()->getUser(), Universe::getUniverse()->getUser2()]]);
   }
 }

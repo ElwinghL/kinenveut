@@ -8,12 +8,6 @@ include_once 'tools.php';
  */
 class tc51Context implements Context
 {
-  public function __destruct()
-  {
-    deleteAuctionUniverse();
-    deleteUserUniverse();
-  }
-
   /**
    * @Then la liste des enchères publiques est visible
    */
@@ -123,7 +117,6 @@ class tc51Context implements Context
       throw new Exception('confidential auction was not found');
     }
 
-    $sellers = [Universe::getUniverse()->getUser()];
-    Universe::getUniverse()->setCanDelete(['user'=>true, 'auctions'=>$sellers]);
+    Universe::getUniverse()->setToDelete(['users' => [Universe::getUniverse()->getUser()]]);
   }
 }

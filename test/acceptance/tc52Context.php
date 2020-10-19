@@ -10,23 +10,6 @@ include_once 'tools.php';
 class tc52Context implements Context
 {
   /**
-   * Initializes context.
-   *
-   * Every scenario gets its own context instance.
-   * You can also pass arbitrary arguments to the
-   * context constructor through behat.yml.
-   */
-  public function __construct()
-  {
-  }
-
-  public function __destruct()
-  {
-    deleteAuctionUniverse();
-    deleteUserUniverse();
-  }
-
-  /**
    * @Given l'utilisateur est sur la page de création d'enchère
    */
   public function lutilisateurEstSurLaPageDeCreationDenchere()
@@ -57,15 +40,7 @@ class tc52Context implements Context
    */
   public function uneEnchereEstCreee()
   {
-    $session = Universe::getUniverse()->getSession();
-    if ($session->getStatusCode() !== 200) {
-      throw new Exception('status code is not 200');
-    }
-    if ($session->getCurrentUrl() !== 'http://localhost/kinenveut/?r=home') {
-      throw new Exception('url is not "http://localhost/kinenveut/?r=home"');
-    }
-
-    $sellers = [Universe::getUniverse()->getUser()];
-    Universe::getUniverse()->setCanDelete(['user'=>true, 'auctions'=>$sellers]);
+    checkUrl('http://localhost/kinenveut/?r=home');
+    Universe::getUniverse()->setToDelete(['users' => [Universe::getUniverse()->getUser()]]);
   }
 }

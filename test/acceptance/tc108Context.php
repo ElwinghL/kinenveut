@@ -17,8 +17,7 @@ class tc108Context implements Context
     $session = Universe::getUniverse()->getSession();
 
     $session->visit('http://localhost/kinenveut/');
-    $url = 'http://localhost/kinenveut/?r=login';
-    checkUrl($session, $url);
+    checkUrl('http://localhost/kinenveut/?r=login');
   }
 
   /**
@@ -67,7 +66,7 @@ class tc108Context implements Context
     $session = Universe::getUniverse()->getSession();
 
     $url = 'http://localhost/kinenveut/?r=home';
-    checkUrl($session, $url);
+    checkUrl($url);
   }
 
   /**
@@ -91,7 +90,7 @@ class tc108Context implements Context
     $session = Universe::getUniverse()->getSession();
 
     $url = 'http://localhost/kinenveut/?r=login/login';
-    checkUrl($session, $url);
+    checkUrl($url);
 
     if ($session->getPage()->find(
       'css',

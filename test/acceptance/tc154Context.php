@@ -9,11 +9,6 @@ include_once 'test/acceptance/tools.php';
  */
 class tc154Context implements Context
 {
-  public function __destruct()
-  {
-    deleteUser2Universe();
-  }
-
   /**
    * @Given il existe un ou plusieurs membres en attente de validation d'inscription
    */
@@ -70,6 +65,6 @@ class tc154Context implements Context
       throw new Exception('The waiting list is empty');
     }
 
-    Universe::getUniverse()->setCanDelete(['user2' => true]);
+    Universe::getUniverse()->setToDelete(['users' => [Universe::getUniverse()->getUser2()]]);
   }
 }

@@ -10,32 +10,6 @@ include_once 'tools.php';
 class tc107Context implements Context
 {
   /**
-   * Initializes context.
-   *
-   * Every scenario gets its own context instance.
-   * You can also pass arbitrary arguments to the
-   * context constructor through behat.yml.
-   */
-  public function __construct()
-  {
-    $this->cleanDB();
-  }
-
-  public function __destruct()
-  {
-    $this->cleanDB();
-  }
-
-  /**
-   * @AfterScenario
-   */
-  public function cleanDB()
-  {
-    deleteUser2Universe();
-    deleteAuctionUniverse();
-  }
-
-  /**
    * @Given l'utilisateur est un administrateur de l'enchère
    */
   public function lutilisateurEstUnAdministrateurDeLenchere()
@@ -121,7 +95,7 @@ class tc107Context implements Context
       throw new Exception('Demande non validée');
     }
     disconnect($session);
-    Universe::getUniverse()->setCanDelete(['user2' => true, 'auction' => true]);
+    Universe::getUniverse()->setToDelete(['users' => [Universe::getUniverse()->getUser2()]]);
   }
 
   /**

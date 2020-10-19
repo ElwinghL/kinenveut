@@ -7,14 +7,6 @@ use Behat\Behat\Context\Context;
  */
 class tc137Context implements Context
 {
-  public function __destruct()
-  {
-    deleteAuctionUniverse();
-    deleteUserUniverse();
-    deleteUser2Universe();
-    deleteUser3Universe();
-  }
-
   /**
    * @Given l'utilisateur participe à des enchères.
    */
@@ -67,7 +59,7 @@ class tc137Context implements Context
     )->click();
 
     $url = 'http://localhost/kinenveut/?r=userManagement/validate&id=' . $user2->getId();
-    checkUrl($session, $url);
+    checkUrl($url);
 
     disconnect($session);
     connect($session, $user2);
@@ -111,7 +103,7 @@ class tc137Context implements Context
     /*Click to accept the prevent created auction*/
     $url = 'http://localhost/kinenveut/?r=auctionManagement/validate&id=' . $auction->getId();
     $session->visit($url);
-    checkUrl($session, $url);
+    checkUrl($url);
 
     disconnect($session);
 
@@ -133,7 +125,7 @@ class tc137Context implements Context
     )->click();*/
     $url = 'http://localhost/kinenveut/?r=bid/index&auctionId=' . $auction->getId();
     $session->visit($url);
-    checkUrl($session, $url);
+    checkUrl($url);
 
     $session->getPage()->find(
       'css',
@@ -174,7 +166,6 @@ class tc137Context implements Context
     ) == false) {
       throw new Exception('The auction list is empty');
     }
-
-    Universe::getUniverse()->setCanDelete(['user' => true, 'user2' => true, 'user3' => true, 'auction'=>true]);
+    Universe::getUniverse()->setToDelete(['users' => [Universe::getUniverse()->getUser(), Universe::getUniverse()->getUser2(), Universe::getUniverse()->getUser3()]]);
   }
 }
