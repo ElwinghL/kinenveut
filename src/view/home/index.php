@@ -64,7 +64,7 @@ $searchInput = isset($data['searchInput']) ? $data['searchInput'] : '';
 <div class="container auctions-list-custom">
   <div class="row">
     <!-- BEGIN PRODUCTS -->
-    <?php if (isset($auctionList)) : ?>
+    <?php if (isset($auctionList) && sizeof($auctionList) > 0) : ?>
       <?php foreach ($auctionList as $auction) : ?>
         <div class="col-md-3 col-sm-6">
           <a class="auction-custom card card-product" href=<?php echo '?r=bid/index&auctionId=' . $auction->getId() ?>>

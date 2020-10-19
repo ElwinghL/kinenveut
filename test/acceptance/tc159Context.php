@@ -14,18 +14,6 @@ class tc159Context implements Context
   {
     $session = Universe::getUniverse()->getSession();
     $currentUser = Universe::getUniverse()->getUser();
-    $user2 = new UserModel();
-    $userAdmin = new UserModel();
-    $auction = new AuctionModel();
-
-    $session = Universe::getUniverse()->getSession();
-    $userAdmin
-          ->setEmail('admin@kinenveut.fr')
-          ->setPassword('password');
-
-    Universe::getUniverse()->setUser3($userAdmin);
-
-    disconnect($session);
 
     /*Create a new user*/
     $user2 = new UserModel();
@@ -35,40 +23,10 @@ class tc159Context implements Context
           ->setBirthDate(DateTime::createFromFormat('d/m/Y', '01/06/1995'))
           ->setEmail('capucine.dupont@kinenveut.fr')
           ->setPassword('password');
-
     Universe::getUniverse()->setUser2($user2);
 
-    visitRegistrationPage($session);
-    suscribe($session, $user2);
-    if ($user2->getId() == null || $user2->getId() < 1) {
-      $userDao = App_DaoFactory::getFactory()->getUserDao();
-      $userFromDB = $userDao->selectUserByEmail($user2->getEmail());
-      Universe::getUniverse()->getUser2()->setId($userFromDB->getId());
-      $user2 = Universe::getUniverse()->getUser2();
-    }
-
-    /*Connection as Admin*/
-    connect($session, $userAdmin);
-    visitUserManagment($session);
-
-    //Todo : search by name
-    /*Click to accept the prevent created user*/
-    $href = '?r=userManagement/validate&id=' . $user2->getId();
-    $session->getPage()->find(
-      'css',
-      'a[href="' . $href . '"]'
-    )->click();
-
-    $url = 'http://localhost/kinenveut/?r=userManagement/validate&id=' . $user2->getId();
-    checkUrl($url);
-
-    disconnect($session);
-    connect($session, $user2);
-
     /*Create a new auction*/
-
-    visitCreateAuction($session);
-
+    $auction = new AuctionModel();
     $auction
           ->setName('Objet test123')
           ->setDescription('Ceci est une enchère insérée lors de tests.')
@@ -79,34 +37,21 @@ class tc159Context implements Context
           ->setPrivacyId(0)
           ->setCategoryId(1)
           ->setStartDate(new DateTime());
-
     Universe::getUniverse()->setAuction($auction);
 
-    createAuction($session, $auction);
-
     disconnect($session);
 
-    /*Connection as Admin*/
-    connect($session, $userAdmin);
-
-    visitAuctionManagement($session);
-
-    //Todo : use the name to find the button :)
-    $auctionDao = App_DaoFactory::getFactory()->getAuctionDao();
-    $userAuctions = $auctionDao->selectAllAuctionsBySellerId($user2->getId());
-
-    if (count($userAuctions) == 1) {
-      $auction->setId($userAuctions[0]->getId());
-    } else {
-      throw new Exception('A problem happenned while create an auction');
+    $userId = subscribeAndValidateAUser($user2);
+    if ($userId != null && $userId > 0) {
+      Universe::getUniverse()->getUser2()->setId($userId);
     }
 
-    /*Click to accept the prevent created auction*/
-    $url = 'http://localhost/kinenveut/?r=auctionManagement/validate&id=' . $auction->getId();
-    $session->visit($url);
-    checkUrl($url);
-
-    disconnect($session);
+    connect($session, $user2);
+    visitCreateAuction($session);
+    $auctionId = createAuctionForUser($auction, $user2);
+    if ($auctionId != null && $auctionId > 0) {
+      Universe::getUniverse()->getAuction()->setId($auctionId);
+    }
 
     /*Now connect the user who will participate to the auction*/
     connect($session, $currentUser);
@@ -129,7 +74,7 @@ class tc159Context implements Context
     ) != null) {
       if ($session->getPage()->find(
         'css',
-        '#bid-button'
+        '#makeabid'
       ) == null) {
         throw new Exception('user cannot bid');
       }
@@ -158,7 +103,7 @@ class tc159Context implements Context
 
     $session->getPage()->find(
       'css',
-      '#bid-button'
+      '#makeabid'
     )->click();
   }
 
