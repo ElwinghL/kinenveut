@@ -18,6 +18,12 @@ class tc107Context implements Context
    */
   public function __construct()
   {
+    $this->cleanDB();
+  }
+
+  public function __destruct()
+  {
+    $this->cleanDB();
   }
 
   /**
@@ -155,7 +161,6 @@ class tc107Context implements Context
     if ($session->getPage()->findById('forbidedAuctionAccess')->getText() != 'Vous n\'êtes pas autorisé à participer à cette enchère') {
       throw new Exception("L'utilisateur n'est pas refusé");
     }
-    $this->cleanDB();
   }
 
   /**
@@ -205,7 +210,6 @@ class tc107Context implements Context
     if ($session->getPage()->findById('forbidedAuctionAccess') == null) {
       throw new Exception("L'utilisateur n'est pas accepté");
     }
-    $this->cleanDB();
   }
 
   /**
