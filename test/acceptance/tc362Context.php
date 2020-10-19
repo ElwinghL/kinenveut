@@ -19,6 +19,10 @@ class tc362Context implements Context
   {
   }
 
+  public function __destruct()
+  {
+  }
+
   /**
    * @Given une demande d'inscription est présente
    */
