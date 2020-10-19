@@ -22,9 +22,9 @@ class tc280Context implements Context
 
   public function __destruct()
   {
+    deleteAuctionUniverse();
     deleteUserUniverse();
     deleteUser2Universe();
-    deleteAuctionUniverse();
   }
 
   /**
@@ -58,6 +58,7 @@ class tc280Context implements Context
       throw new Exception('The auction list was not found');
     }
 
-    Universe::getUniverse()->setCanDelete(['user' => true, 'auction' => true]);
+    $sellers = [Universe::getUniverse()->getUser()];
+    Universe::getUniverse()->setCanDelete(['user' => true, 'auction' => $sellers]);
   }
 }

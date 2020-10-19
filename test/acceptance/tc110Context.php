@@ -1,7 +1,8 @@
 <?php
 
-use Behat\Behat\Tester\Exception\PendingException;
 use Behat\Behat\Context\Context;
+
+include_once 'test/acceptance/tools.php';
 
 /**
  * Defines application features from the specific context.
@@ -19,6 +20,12 @@ class tc110Context implements Context
   {
   }
 
+  public function __destruct()
+  {
+    deleteAuctionUniverse();
+    deleteUser2Universe();
+  }
+
   /**
    * @Given L'utilisateur est sur la page de recherche
    */
@@ -27,13 +34,7 @@ class tc110Context implements Context
     $session = Universe::getUniverse()->getSession();
     $url = 'http://localhost/kinenveut/?r=home';
     $session->visit($url);
-
-    if ($session->getStatusCode() !== 200) {
-      throw new Exception('status code is not 200');
-    }
-    if ($session->getCurrentUrl() !== $url) {
-      throw new Exception('url is not "' . $url . '"');
-    }
+    checkUrl($session, $url);
   }
 
   /**
@@ -41,7 +42,76 @@ class tc110Context implements Context
    */
   public function lutilisateurRechercheUneVentePubliqueExistantDansLaBaseDeDonnee()
   {
-    throw new PendingException();
+    /*Let's add an auction to the current user, as seen in tc71*/
+    $session = Universe::getUniverse()->getSession();
+    $user = Universe::getUniverse()->getUser();
+    $auction = new AuctionModel();
+
+    if ($user->getId() == null || $user->getId() < 1) {
+      $userDao = App_DaoFactory::getFactory()->getUserDao();
+      $user = $userDao->selectUserByEmail(Universe::getUniverse()->getUser()->getEmail());
+      Universe::getUniverse()->getUser()->setId($user->getId());
+      $user = Universe::getUniverse()->getUser();
+    }
+
+    $auction
+          ->setName('Objet test')
+          ->setDescription('Ceci est une enchère insérée lors de tests.')
+          ->setBasePrice(3)
+          ->setReservePrice(7)
+          ->setDuration(7)
+          ->setSellerId($user->getId())
+          ->setPrivacyId(0)
+          ->setCategoryId(1)
+          ->setStartDate(new DateTime());
+
+    Universe::getUniverse()->setAuction($auction);
+
+    visitCreateAuction($session);
+    createAuction($session, $auction);
+
+    disconnect($session);
+
+    /*Connection as Admin*/
+    $userAdmin = new UserModel();
+    $userAdmin
+          ->setEmail('admin@kinenveut.fr')
+          ->setPassword('password');
+
+    Universe::getUniverse()->setUser2($userAdmin);
+
+    connect($session, $userAdmin);
+
+    visitAuctionManagement($session);
+
+    $auctionDao = App_DaoFactory::getFactory()->getAuctionDao();
+    $userAuctions = $auctionDao->selectAllAuctionsBySellerId($user->getId());
+
+    if (count($userAuctions) == 1) {
+      $auction->setId($userAuctions[0]->getId());
+    } else {
+      throw new Exception('A problem happenned while create an auction');
+    }
+
+    /*Click to accept the prevent created auction*/
+    $url = 'http://localhost/kinenveut/?r=auctionManagement/validate&id=' . $auction->getId();
+    $session->visit($url);
+    checkUrl($session, $url);
+
+    disconnect($session);
+
+    connect($session, $user);
+
+    /*Ok, great ! Now the user can search is own auction*/
+
+    $session->getPage()->find(
+      'css',
+      'input[name="searchInput"]'
+    )->setValue($auction->getName());
+    $session->getPage()->find(
+      'css',
+      '#privacyId'
+    )->selectOption(0);
   }
 
   /**
@@ -61,6 +131,18 @@ class tc110Context implements Context
    */
   public function ilTrouveCetteEnchere()
   {
-    throw new PendingException();
+    $session = Universe::getUniverse()->getSession();
+    $user = Universe::getUniverse()->getUser();
+    $auction = Universe::getUniverse()->getAuction();
+
+    if ($session->getPage()->find(
+      'css',
+      '.auction-title-custom'
+    )->getText() != $auction->getName()) {
+      throw new Exception('auction was not found');
+    }
+
+    $sellers = [Universe::getUniverse()->getUser()];
+    Universe::getUniverse()->setCanDelete(['user' => true, 'auction' => $sellers]);
   }
 }

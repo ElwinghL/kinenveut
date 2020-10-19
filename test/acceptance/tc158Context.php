@@ -3,6 +3,7 @@
 use Behat\Behat\Tester\Exception\PendingException;
 use Behat\Behat\Context\Context;
 
+include_once 'test/acceptance/tools.php';
 /**
  * Defines application features from the specific context.
  */
@@ -25,13 +26,8 @@ class tc158Context implements Context
   public function lutilisateurConsulteLesUsers()
   {
     $session = Universe::getUniverse()->getSession();
-    $session->visit('http://localhost/kinenveut/?r=userManagement');
-    if ($session->getStatusCode() !== 200) {
-      throw new Exception('status code is not 200');
-    }
-    if ($session->getCurrentUrl() !== 'http://localhost/kinenveut/?r=userManagement') {
-      throw new Exception('url is not "http://localhost/kinenveut/?r=userManagement"');
-    }
+
+    visitUserManagment($session);
   }
 
   /**
@@ -41,13 +37,8 @@ class tc158Context implements Context
   {
     $session = Universe::getUniverse()->getSession();
 
-    $session->visit('http://localhost/kinenveut/?r=userManagement');
-    if ($session->getStatusCode() !== 200) {
-      throw new Exception('status code is not 200');
-    }
-    if ($session->getCurrentUrl() !== 'http://localhost/kinenveut/?r=userManagement') {
-      throw new Exception('url is not "http://localhost/kinenveut/?r=userManagement"');
-    }
+    visitUserManagment($session);
+
     if ($session->getPage()->find(
       'css',
       '.list-group-item'
@@ -61,6 +52,7 @@ class tc158Context implements Context
    */
   public function ladminBannit($arg1)
   {
+    $url = 'http://localhost/kinenveut/?r=account/index&userId=' . $user->getId();
     throw new PendingException();
   }
 
