@@ -53,8 +53,8 @@ function visitSells($session)
   $user = Universe::getUniverse()->getUser();
 
   if ($user->getId() == null || $user->getId() <= 1) {
-    $userDao = App_DaoFactory::getFactory()->getUserDao();
-    $userFromDb = $userDao->selectUserByEmail($user->getEmail());
+    $userBo = App_BoFactory::getFactory()->getUserBo();
+    $userFromDb = $userBo->selectUserByEmail($user->getEmail());
     Universe::getUniverse()->getUser()->setId($userFromDb->getId());
     $user->setId($userFromDb->getId());
   }
@@ -75,8 +75,8 @@ function visitBids($session)
 
   $user = Universe::getUniverse()->getUser();
   if ($user->getId() == null || $user->getId() <= 1) {
-    $userDao = App_DaoFactory::getFactory()->getUserDao();
-    $userFromDb = $userDao->selectUserByEmail($user->getEmail());
+    $userBo = App_BoFactory::getFactory()->getUserBo();
+    $userFromDb = $userBo->selectUserByEmail($user->getEmail());
     Universe::getUniverse()->getUser()->setId($userFromDb->getId());
     $user->setId($userFromDb->getId());
   }
@@ -296,13 +296,13 @@ function createAuction($session, $auction)
 function deleteUserUniverse()
 {
   $canDelete = Universe::getUniverse()->getCanDelete();
-  $userDao = App_DaoFactory::getFactory()->getUserDao();
+  $userBo = App_BoFactory::getFactory()->getUserBo();
   if (isset($canDelete['user'])) {
-    $user = $userDao->selectUserByEmail(Universe::getUniverse()->getUser()->getEmail());
+    $user = $userBo->selectUserByEmail(Universe::getUniverse()->getUser()->getEmail());
     if ($user != null) {
       $isAdmin = $user->getIsAdmin();
       if ($isAdmin == false) {
-        $userDao->deleteUser($user->getId());
+        $userBo->deleteUser($user->getId());
       }
     }
     unset($canDelete['user']);
@@ -313,14 +313,14 @@ function deleteUserUniverse()
 function deleteUser2Universe()
 {
   $canDelete = Universe::getUniverse()->getCanDelete();
-  $userDao = App_DaoFactory::getFactory()->getUserDao();
+  $userBo = App_BoFactory::getFactory()->getUserBo();
 
   if (isset($canDelete['user2'])) {
-    $user2 = $userDao->selectUserByEmail(Universe::getUniverse()->getUser2()->getEmail());
+    $user2 = $userBo->selectUserByEmail(Universe::getUniverse()->getUser2()->getEmail());
     if ($user2 != null) {
       $isAdmin2 = $user2->getIsAdmin();
       if ($isAdmin2 == false) {
-        $userDao->deleteUser($user2->getId());
+        $userBo->deleteUser($user2->getId());
       }
     }
     unset($canDelete['user2']);
@@ -331,14 +331,14 @@ function deleteUser2Universe()
 function deleteUser3Universe()
 {
   $canDelete = Universe::getUniverse()->getCanDelete();
-  $userDao = App_DaoFactory::getFactory()->getUserDao();
+  $userBo = App_BoFactory::getFactory()->getUserBo();
 
   if (isset($canDelete['user3'])) {
-    $user3 = $userDao->selectUserByEmail(Universe::getUniverse()->getUser3()->getEmail());
+    $user3 = $userBo->selectUserByEmail(Universe::getUniverse()->getUser3()->getEmail());
     if ($user3 != null) {
       $isAdmin = $user3->getIsAdmin();
       if ($isAdmin == false) {
-        $userDao->deleteUser($user3->getId());
+        $userBo->deleteUser($user3->getId());
       }
     }
     unset($canDelete['user3']);
@@ -353,20 +353,103 @@ function deleteAuctionUniverse()
   if (isset($canDelete['auctions']) && $auction != null) {
     $sellers = $canDelete['auctions'];
     foreach ($sellers as $seller) {
-      $auctionDao = App_DaoFactory::getFactory()->getAuctionDao();
-      $userDao = App_DaoFactory::getFactory()->getUserDao();
+      $auctionBo = App_BoFactory::getFactory()->getAuctionBo();
+      $userBo = App_BoFactory::getFactory()->getUserBo();
 
-      $user = $userDao->selectUserByEmail($seller->getEmail());
+      $user = $userBo->selectUserByEmail($seller->getEmail());
 
       if ($user != null) {
-        $userAuctions = $auctionDao->selectAllAuctionsBySellerId($user->getId());
+        $userAuctions = $auctionBo->selectAllAuctionsBySellerId($user->getId());
         foreach ($userAuctions as $oneAuction) {
           if ($auction->getName() == $oneAuction->getName()) {
-            $auctionDao->deleteAuctionById($auction->getId());
+            $auctionBo->deleteAuctionById($auction->getId());
           }
         }
       }
     }
     unset($canDelete['auctions']);
   }
+}
+
+
+/*Big functions*/
+
+function subscribeAndValidateAUser(UserModel $user) : ?int
+{
+    $session = Universe::getUniverse()->getSession();
+
+    $userAdmin = new UserModel();
+    $userAdmin
+        ->setEmail('admin@kinenveut.fr')
+        ->setPassword('password');
+
+    visitRegistrationPage($session);
+    suscribe($session, $user);
+
+    if ($user->getId() == null || $user->getId() < 1)
+    {
+        $userBo = App_BoFactory::getFactory()->getUserBo();
+        $userFromDB = $userBo->selectUserByEmail($user->getEmail());
+        $user->setId($userFromDB->getId());
+    }
+
+    /*Connection as Admin*/
+    connect($session, $userAdmin);
+    visitUserManagment($session);
+
+    //Todo : search by name
+    /*Click to accept the prevent created user*/
+    $href = '?r=userManagement/validate&id=' . $user->getId();
+    $session->getPage()->find(
+        'css',
+        'a[href="' . $href . '"]'
+    )->click();
+
+    $url = 'http://localhost/kinenveut/?r=userManagement/validate&id=' . $user->getId();
+    checkUrl($session, $url);
+
+    disconnect($session);
+
+    return $user->getId();
+}
+
+function createAuctionForUser(AuctionModel $auction, UserModel $user) : ?int
+{
+    /*Be careful, you are supposed to be connected with $user*/
+
+    $session = Universe::getUniverse()->getSession();
+
+    $userAdmin = new UserModel();
+    $userAdmin
+        ->setEmail('admin@kinenveut.fr')
+        ->setPassword('password');
+
+    visitCreateAuction($session);
+    createAuction($session, $auction);
+
+    disconnect($session);
+    /*Connection as Admin*/
+    connect($session, $userAdmin);
+    visitAuctionManagement($session);
+
+    //Todo : use the name to find the button :)
+    $auctionBo = App_BoFactory::getFactory()->getAuctionBo();
+    $userAuctions = $auctionBo->selectAllAuctionsBySellerId($user->getId());
+
+    if (count($userAuctions) == 1) {
+        $auctionId = $userAuctions[0]->getId();
+        $auction->setId($auctionId);
+    } else {
+        //here you must search for the auction using name and description :)
+        throw new Exception('A problem happenned while create an auction (the user can\'t have more than 1 auction for now');
+    }
+
+    /*Click to accept the prevent created auction*/
+    $url = 'http://localhost/kinenveut/?r=auctionManagement/validate&id=' . $auction->getId();
+    $session->visit($url);
+    checkUrl($session, $url);
+
+    disconnect($session);
+
+    return $auction->getId();
 }

@@ -52,7 +52,7 @@ class tc158Context implements Context
    */
   public function ladminBannit($arg1)
   {
-    $url = 'http://localhost/kinenveut/?r=account/index&userId=' . $user->getId();
+    //$url = 'http://localhost/kinenveut/?r=account/index&userId=' . $user->getId();
     throw new PendingException();
   }
 
