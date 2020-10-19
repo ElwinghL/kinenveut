@@ -1,6 +1,5 @@
 <?php
 
-use Behat\Behat\Tester\Exception\PendingException;
 use Behat\Behat\Context\Context;
 
 /**
@@ -43,24 +42,14 @@ class tc30Context implements Context
   {
     $session = Universe::getUniverse()->getSession();
     $session->visit('http://localhost/kinenveut/');
-    if ($session->getStatusCode() !== 200) {
-      throw new Exception('status code is not 200');
-    }
-    if ($session->getCurrentUrl() !== 'http://localhost/kinenveut/?r=login') {
-      throw new Exception('url is not "http://localhost/kinenveut/?r=login"');
-    }
+    checkUrl($session, 'http://localhost/kinenveut/?r=login');
 
     $session->getPage()->find(
       'css',
       'a[href="?r=registration"]'
     )->click();
 
-    if ($session->getStatusCode() !== 200) {
-      throw new Exception('status code is not 200');
-    }
-    if ($session->getCurrentUrl() !== 'http://localhost/kinenveut/?r=registration') {
-      throw new Exception('url is not "http://localhost/kinenveut/?r=registration"');
-    }
+    checkUrl($session, 'http://localhost/kinenveut/?r=registration');
   }
 
   /**
@@ -98,40 +87,28 @@ class tc30Context implements Context
   public function leCompteDeLutilisateurEstEnregistre()
   {
     $session = Universe::getUniverse()->getSession();
-    if ($session->getStatusCode() !== 200) {
-      throw new Exception('status code is not 200');
-    }
-    if ($session->getCurrentUrl() !== 'http://localhost/kinenveut/?r=login') {
-      throw new Exception(' url is not "http://localhost/kinenveut/?r=login"');
-    }
-    Universe::getUniverse()->setCanDelete(['user'=>true]);
+
+    checkUrl($session, 'http://localhost/kinenveut/?r=login');
+
+    Universe::getUniverse()->setCanDelete(['user' => true]);
   }
 
   /**
-     * @Given l'utilisateur est déjà inscrit
-     */
+   * @Given l'utilisateur est déjà inscrit
+   */
   public function lutilisateurEstDejaInscrit()
   {
     $session = Universe::getUniverse()->getSession();
     $session->visit('http://localhost/kinenveut/');
-    if ($session->getStatusCode() !== 200) {
-      throw new Exception('status code is not 200');
-    }
-    if ($session->getCurrentUrl() !== 'http://localhost/kinenveut/?r=login') {
-      throw new Exception('url is not "http://localhost/kinenveut/?r=login"');
-    }
+
+    checkUrl($session, 'http://localhost/kinenveut/?r=login');
 
     $session->getPage()->find(
       'css',
       'a[href="?r=registration"]'
     )->click();
 
-    if ($session->getStatusCode() !== 200) {
-      throw new Exception('status code is not 200');
-    }
-    if ($session->getCurrentUrl() !== 'http://localhost/kinenveut/?r=registration') {
-      throw new Exception('url is not "http://localhost/kinenveut/?r=registration"');
-    }
+    checkUrl($session, 'http://localhost/kinenveut/?r=registration');
 
     $session = Universe::getUniverse()->getSession();
     $user = Universe::getUniverse()->getUser();
@@ -162,7 +139,7 @@ class tc30Context implements Context
       'input[type="submit"]'
     )->click();
 
-    Universe::getUniverse()->setCanDelete(['user'=>true]);
+    Universe::getUniverse()->setCanDelete(['user' => true]);
   }
 
   /**
@@ -171,12 +148,9 @@ class tc30Context implements Context
   public function lutilisateurRecoitUnMessageDerreurLuiIndiquantQueLadresseMailQuilASaisieEstDejaUtilisee()
   {
     $session = Universe::getUniverse()->getSession();
-    if ($session->getStatusCode() !== 200) {
-      throw new Exception('status code is not 200');
-    }
-    if ($session->getCurrentUrl() !== 'http://localhost/kinenveut/?r=registration/register') {
-      throw new Exception('url is not "http://localhost/kinenveut/?r=registration/register"');
-    }
+
+    checkUrl($session, 'http://localhost/kinenveut/?r=registration/register');
+
     if ($session->getPage()->find(
       'css',
       '.invalid-feedback.d-block'
