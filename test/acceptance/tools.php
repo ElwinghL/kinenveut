@@ -11,6 +11,17 @@ function checkUrl($session, $expectedUrl)
   }
 }
 
+function checkUrlPartial($session, $expectedUrl)
+{
+  $currentUrl = $session->getCurrentUrl();
+  if ($session->getStatusCode() !== 200) {
+    throw new Exception('status code is not 200');
+  }
+  if (!strpos($currentUrl, $expectedUrl)) {
+    throw new Exception('The current url "' . $currentUrl . '" do not contain "' . $expectedUrl . '"');
+  }
+}
+
 /*Visit pages / Click on button*/
 
 function visitCreateAuction($session)
@@ -130,7 +141,22 @@ function visitRegistrationPage($session)
   checkUrl($session, $url);
 }
 
-/*Subscribe & Connection functions*/
+function visitRequestPage($session)
+{
+  $session->getPage()->find(
+    'css',
+    '#dropdownMenuButton'
+  )->click();
+  $session->getPage()->find(
+    'css',
+    '#menuRequest'
+  )->click();
+
+  $url = '?r=accessRequest';
+  checkUrlPartial($session, $url);
+}
+
+/*Suscribe & Connection functions*/
 
 function suscribe($session, UserModel $localUser)
 {
