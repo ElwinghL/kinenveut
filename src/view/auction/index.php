@@ -30,7 +30,7 @@
             <div class="col-md-12">
                 <?php if (sizeof($auctionList) > 0) : ?>
                     <!--Auction List-->
-                    <ul class="list-group">
+                    <ul id="auctionList" class="list-group">
                         <?php foreach ($auctionList as $auction) : ?>
 
                             <!--One Auction-->
