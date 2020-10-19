@@ -16,6 +16,13 @@ class tc159Context implements Context
    */
   public function __construct()
   {
+    $auction = new AuctionModel();
+    $auction->setName('Banana')->setBasePrice(0)->setReservePrice(0)->setDuration(7)->setSellerId(1)->setPrivacyId(0)->setCategoryId(1);
+    $auctionDao = App_DaoFactory::getFactory()->getAuctionDao();
+    $auctionId = $auctionDao->insertAuction($auction);
+    $auction->setId($auctionId)->setAuctionState(1);
+    $auctionDao->updateAuctionState($auction);
+    Universe::getUniverse()->setAuctionId($auctionId);
   }
 
   public function __destruct()
@@ -29,64 +36,64 @@ class tc159Context implements Context
    */
   public function lutilisateurEstSurLaPageDuneEnchere()
   {
-      $session = Universe::getUniverse()->getSession();
-      $currentUser = Universe::getUniverse()->getUser();
-      $user2 = new UserModel();
-      $userAdmin = new UserModel();
-      $auction = new AuctionModel();
+    $session = Universe::getUniverse()->getSession();
+    $currentUser = Universe::getUniverse()->getUser();
+    $user2 = new UserModel();
+    $userAdmin = new UserModel();
+    $auction = new AuctionModel();
 
-      $session = Universe::getUniverse()->getSession();
-      $userAdmin
+    $session = Universe::getUniverse()->getSession();
+    $userAdmin
           ->setEmail('admin@kinenveut.fr')
           ->setPassword('password');
 
-      Universe::getUniverse()->setUser3($userAdmin);
+    Universe::getUniverse()->setUser3($userAdmin);
 
-      disconnect($session);
+    disconnect($session);
 
-      /*Create a new user*/
-      $user2 = new UserModel();
-      $user2
+    /*Create a new user*/
+    $user2 = new UserModel();
+    $user2
           ->setFirstName('Capucine')
           ->setLastName('Dupont')
           ->setBirthDate(DateTime::createFromFormat('d/m/Y', '01/06/1995'))
           ->setEmail('capucine.dupont@kinenveut.fr')
           ->setPassword('password');
 
-      Universe::getUniverse()->setUser2($user2);
+    Universe::getUniverse()->setUser2($user2);
 
-      visitRegistrationPage($session);
-      suscribe($session, $user2);
-      if ($user2->getId() == null || $user2->getId() < 1) {
-          $userDao = App_DaoFactory::getFactory()->getUserDao();
-          $userFromDB = $userDao->selectUserByEmail($user2->getEmail());
-          Universe::getUniverse()->getUser2()->setId($userFromDB->getId());
-          $user2 = Universe::getUniverse()->getUser2();
-      }
+    visitRegistrationPage($session);
+    suscribe($session, $user2);
+    if ($user2->getId() == null || $user2->getId() < 1) {
+      $userDao = App_DaoFactory::getFactory()->getUserDao();
+      $userFromDB = $userDao->selectUserByEmail($user2->getEmail());
+      Universe::getUniverse()->getUser2()->setId($userFromDB->getId());
+      $user2 = Universe::getUniverse()->getUser2();
+    }
 
-      /*Connection as Admin*/
-      connect($session, $userAdmin);
-      visitUserManagment($session);
+    /*Connection as Admin*/
+    connect($session, $userAdmin);
+    visitUserManagment($session);
 
-      //Todo : search by name
-      /*Click to accept the prevent created user*/
-      $href = '?r=userManagement/validate&id=' . $user2->getId();
-      $session->getPage()->find(
-          'css',
-          'a[href="' . $href . '"]'
-      )->click();
+    //Todo : search by name
+    /*Click to accept the prevent created user*/
+    $href = '?r=userManagement/validate&id=' . $user2->getId();
+    $session->getPage()->find(
+      'css',
+      'a[href="' . $href . '"]'
+    )->click();
 
-      $url = 'http://localhost/kinenveut/?r=userManagement/validate&id=' . $user2->getId();
-      checkUrl($session, $url);
+    $url = 'http://localhost/kinenveut/?r=userManagement/validate&id=' . $user2->getId();
+    checkUrl($session, $url);
 
-      disconnect($session);
-      connect($session, $user2);
+    disconnect($session);
+    connect($session, $user2);
 
-      /*Create a new auction*/
+    /*Create a new auction*/
 
-      visitCreateAuction($session);
+    visitCreateAuction($session);
 
-      $auction
+    $auction
           ->setName('Objet test123')
           ->setDescription('Ceci est une enchère insérée lors de tests.')
           ->setBasePrice(3)
@@ -97,36 +104,36 @@ class tc159Context implements Context
           ->setCategoryId(1)
           ->setStartDate(new DateTime());
 
-      Universe::getUniverse()->setAuction($auction);
+    Universe::getUniverse()->setAuction($auction);
 
-      createAuction($session, $auction);
+    createAuction($session, $auction);
 
-      disconnect($session);
+    disconnect($session);
 
-      /*Connection as Admin*/
-      connect($session, $userAdmin);
+    /*Connection as Admin*/
+    connect($session, $userAdmin);
 
-      visitAuctionManagement($session);
+    visitAuctionManagement($session);
 
-      //Todo : use the name to find the button :)
-      $auctionDao = App_DaoFactory::getFactory()->getAuctionDao();
-      $userAuctions = $auctionDao->selectAllAuctionsBySellerId($user2->getId());
+    //Todo : use the name to find the button :)
+    $auctionDao = App_DaoFactory::getFactory()->getAuctionDao();
+    $userAuctions = $auctionDao->selectAllAuctionsBySellerId($user2->getId());
 
-      if (count($userAuctions) == 1) {
-          $auction->setId($userAuctions[0]->getId());
-      } else {
-          throw new Exception('A problem happenned while create an auction');
-      }
+    if (count($userAuctions) == 1) {
+      $auction->setId($userAuctions[0]->getId());
+    } else {
+      throw new Exception('A problem happenned while create an auction');
+    }
 
-      /*Click to accept the prevent created auction*/
-      $url = 'http://localhost/kinenveut/?r=auctionManagement/validate&id=' . $auction->getId();
-      $session->visit($url);
-      checkUrl($session, $url);
+    /*Click to accept the prevent created auction*/
+    $url = 'http://localhost/kinenveut/?r=auctionManagement/validate&id=' . $auction->getId();
+    $session->visit($url);
+    checkUrl($session, $url);
 
-      disconnect($session);
+    disconnect($session);
 
-      /*Now connect the user who will participate to the auction*/
-      connect($session, $currentUser);
+    /*Now connect the user who will participate to the auction*/
+    connect($session, $currentUser);
 
     $url = 'http://localhost/kinenveut/?r=bid/index&auctionId=' . $auction->getId();
     $session->visit($url);
@@ -224,6 +231,6 @@ class tc159Context implements Context
     };
 
     $sellers = [Universe::getUniverse()->getUser()];
-    Universe::getUniverse()->setCanDelete(['user'=>true,'user2'=>true, 'auctions'=>$sellers]);
+    Universe::getUniverse()->setCanDelete(['user'=>true, 'user2'=>true, 'auctions'=>$sellers]);
   }
 }
