@@ -45,14 +45,22 @@ class tc107Context implements Context
     //Création de l'enchère et validation
     visitCreateAuction($session);
 
+    $auction = new AuctionModel();
+    $auction
+      ->setName('auction_feature_107')
+      ->setId(666)
+      ->setPrivacyId(1);
+
+    Universe::getUniverse()->setAuction($auction);
+
     $session->getPage()->find(
       'css',
       'input[name="name"]'
-    )->setValue('auction_feature_107');
+    )->setValue($auction->getName());
     $session->getPage()->find(
       'css',
       '#privacyId'
-    )->selectOption(1);
+    )->selectOption($auction->getPrivacyId());
     $session->getPage()->find(
       'css',
       'input[name="createAuction"]'
@@ -113,6 +121,7 @@ class tc107Context implements Context
       throw new Exception('Demande non validée');
     }
     disconnect($session);
+    Universe::getUniverse()->setCanDelete(['user2' => true, 'auction' => true]);
   }
 
   /**
@@ -207,7 +216,7 @@ class tc107Context implements Context
     $auctionCard = $session->getPage()->find('css', '.card-product');
     $auctionCard->click();
     checkUrlPartial($session, 'kinenveut/?r=bid/index&auctionId=');
-    if ($session->getPage()->findById('forbidedAuctionAccess') == null) {
+    if ($session->getPage()->findById('forbidedAuctionAccess') != null) {
       throw new Exception("L'utilisateur n'est pas accepté");
     }
   }

@@ -29,7 +29,7 @@ class tc340Context implements Context
   {
     $auctionBo = App_BoFactory::getFactory()->getAuctionBo();
     $auction = Universe::getUniverse()->getAuction();
-    if($auction != null) {
+    if ($auction != null) {
       $auctionBo->deleteAuctionById($auction->getId());
     }
   }
