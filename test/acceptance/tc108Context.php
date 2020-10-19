@@ -10,17 +10,6 @@ include_once 'test/acceptance/tools.php';
 class tc108Context implements Context
 {
   /**
-   * Initializes context.
-   *
-   * Every scenario gets its own context instance.
-   * You can also pass arbitrary arguments to the
-   * context constructor through behat.yml.
-   */
-  public function __construct()
-  {
-  }
-
-  /**
    * @Given L'utilisateur est sur la page de connexion
    */
   public function lutilisateurEstSurLaPageDeConnexion()

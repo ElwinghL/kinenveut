@@ -9,17 +9,6 @@ use Behat\Behat\Context\Context;
 class tc160Context implements Context
 {
   /**
-   * Initializes context.
-   *
-   * Every scenario gets its own context instance.
-   * You can also pass arbitrary arguments to the
-   * context constructor through behat.yml.
-   */
-  public function __construct()
-  {
-  }
-
-  /**
    * @When l'utilisateur clique sur le bouton d'envoi de l'enchère
    */
   public function lutilisateurCliqueSurLeBoutonDenvoiDeLenchere()

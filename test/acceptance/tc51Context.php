@@ -8,17 +8,6 @@ include_once 'tools.php';
  */
 class tc51Context implements Context
 {
-  /**
-   * Initializes context.
-   *
-   * Every scenario gets its own context instance.
-   * You can also pass arbitrary arguments to the
-   * context constructor through behat.yml.
-   */
-  public function __construct()
-  {
-  }
-
   public function __destruct()
   {
     deleteAuctionUniverse();

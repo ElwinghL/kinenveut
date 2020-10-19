@@ -10,17 +10,6 @@ include_once 'test/acceptance/tools.php';
  */
 class tc104Context implements Context
 {
-  /**
-   * Initializes context.
-   *
-   * Every scenario gets its own context instance.
-   * You can also pass arbitrary arguments to the
-   * context constructor through behat.yml.
-   */
-  public function __construct()
-  {
-  }
-
   //Todo : trouver un moyen de récupérer l'id d'un élément d'une liste en connaissant seulement le titre (contenu de la div)
 
   /**

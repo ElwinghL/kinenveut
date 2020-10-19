@@ -7,32 +7,9 @@ use Behat\Behat\Context\Context;
  */
 class tc30Context implements Context
 {
-  /**
-   * Initializes context.
-   *
-   * Every scenario gets its own context instance.
-   * You can also pass arbitrary arguments to the
-   * context constructor through behat.yml.
-   */
-  public function __construct()
-  {
-  }
-
   public function __destruct()
   {
-    $canDelete = Universe::getUniverse()->getCanDelete();
-    $userDao = App_DaoFactory::getFactory()->getUserDao();
-    if (isset($canDelete['user'])) {
-      $user = $userDao->selectUserByEmail(Universe::getUniverse()->getUser()->getEmail());
-      if ($user != null) {
-        $isAdmin = $user->getIsAdmin();
-        if ($isAdmin == false) {
-          $userDao->deleteUser($user->getId());
-        }
-      }
-      unset($canDelete['user']);
-      Universe::getUniverse()->setCanDelete($canDelete);
-    }
+    deleteUserUniverse();
   }
 
   /**

@@ -10,17 +10,6 @@ include_once 'test/acceptance/tools.php';
 class tc266Context implements Context
 {
   /**
-   * Initializes context.
-   *
-   * Every scenario gets its own context instance.
-   * You can also pass arbitrary arguments to the
-   * context constructor through behat.yml.
-   */
-  public function __construct()
-  {
-  }
-
-  /**
    * @When l'utilisateur consulte la liste des enchères
    */
   public function lutilisateurConsulteLaListeDesEncheres()
