@@ -177,55 +177,55 @@ function disconnect($session)
 
 function createAuction($session, $auction)
 {
-    $url = 'http://localhost/kinenveut/?r=auction/create';
-    checkUrl($session, $url);
+  $url = 'http://localhost/kinenveut/?r=auction/create';
+  checkUrl($session, $url);
 
-    /*Full the form to create an auction*/
-    //Object name
-    $session->getPage()->find(
-        'css',
-        'input[name="name"]'
-    )->setValue($auction->getName());
-    //Base Price
-    $session->getPage()->find(
-        'css',
-        '#basePrice'
-    )->setValue($auction->getBasePrice());
-    //Reserve Price
-    $session->getPage()->find(
-        'css',
-        '#reservePrice'
-    )->setValue($auction->getReservePrice());
-    //Category
-    $session->getPage()->find(
-        'css',
-        '#categoryId'
-    )->selectOption($auction->getCategoryId());
-    //Duration
-    $session->getPage()->find(
-        'css',
-        '#duration'
-    )->setValue($auction->getDuration());
-    //Privacy
-    $session->getPage()->find(
-        'css',
-        '#privacyId'
-    )->selectOption($auction->getPrivacyId());
-    //Description
-    $session->getPage()->find(
-        'css',
-        '#description'
-    )->selectOption($auction->getDescription());
+  /*Full the form to create an auction*/
+  //Object name
+  $session->getPage()->find(
+    'css',
+    'input[name="name"]'
+  )->setValue($auction->getName());
+  //Base Price
+  $session->getPage()->find(
+    'css',
+    '#basePrice'
+  )->setValue($auction->getBasePrice());
+  //Reserve Price
+  $session->getPage()->find(
+    'css',
+    '#reservePrice'
+  )->setValue($auction->getReservePrice());
+  //Category
+  $session->getPage()->find(
+    'css',
+    '#categoryId'
+  )->selectOption($auction->getCategoryId());
+  //Duration
+  $session->getPage()->find(
+    'css',
+    '#duration'
+  )->setValue($auction->getDuration());
+  //Privacy
+  $session->getPage()->find(
+    'css',
+    '#privacyId'
+  )->selectOption($auction->getPrivacyId());
+  //Description
+  $session->getPage()->find(
+    'css',
+    '#description'
+  )->selectOption($auction->getDescription());
 
-    /*Submit the form*/
-    //Submit
-    $session->getPage()->find(
-        'css',
-        'input[type="submit"]'
-    )->click();
+  /*Submit the form*/
+  //Submit
+  $session->getPage()->find(
+    'css',
+    'input[type="submit"]'
+  )->click();
 
-    $url = 'http://localhost/kinenveut/?r=home';
-    checkUrl($session, $url);
+  $url = 'http://localhost/kinenveut/?r=home';
+  checkUrl($session, $url);
 }
 
 /*Delete Universe elements functions*/
@@ -268,18 +268,18 @@ function deleteUser2Universe()
 
 function deleteAuctionUniverse()
 {
-    if (isset($canDelete['auctions'])) {
-        $auctionDao = App_DaoFactory::getFactory()->getAuctionDao();
-        $userDao = App_DaoFactory::getFactory()->getUserDao();
+  if (isset($canDelete['auctions'])) {
+    $auctionDao = App_DaoFactory::getFactory()->getAuctionDao();
+    $userDao = App_DaoFactory::getFactory()->getUserDao();
 
-        $user = $userDao->selectUserByEmail(Universe::getUniverse()->getUser()->getEmail());
+    $user = $userDao->selectUserByEmail(Universe::getUniverse()->getUser()->getEmail());
 
-        if ($user != null) {
-            $userAuctions = $auctionDao->selectAllAuctionsBySellerId($user->getId());
-            foreach ($userAuctions as $auction) {
-                $auctionDao->deleteAuctionById($auction->getId());
-            }
-        }
-        unset($canDelete['auctions']);
+    if ($user != null) {
+      $userAuctions = $auctionDao->selectAllAuctionsBySellerId($user->getId());
+      foreach ($userAuctions as $auction) {
+        $auctionDao->deleteAuctionById($auction->getId());
+      }
     }
+    unset($canDelete['auctions']);
+  }
 }
