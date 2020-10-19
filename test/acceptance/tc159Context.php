@@ -22,7 +22,7 @@ class tc159Context implements Context
     $auctionId = $auctionDao->insertAuction($auction);
     $auction->setId($auctionId)->setAuctionState(1);
     $auctionDao->updateAuctionState($auction);
-    Universe::getUniverse()->setAuctionId($auctionId);
+    Universe::getUniverse()->getAuction()->setId($auctionId);
   }
 
   public function __destruct()
@@ -196,7 +196,7 @@ class tc159Context implements Context
     if ($session->getPage()->find(
       'css',
       'h2'
-    )->getText() != Universe::getUniverse()->getAuction()->getName().' - 42€') {
+    )->getText() != Universe::getUniverse()->getAuction()->getName() . ' - 42€') {
       throw new Exception('bid is not valid');
     };
   }
