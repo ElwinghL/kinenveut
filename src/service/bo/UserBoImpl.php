@@ -82,8 +82,30 @@ class UserBoImpl implements IUserBo
 
   public function deleteUser(int $userId): bool
   {
-    $userDao = App_DaoFactory::getFactory()->getUserDao();
-    $success = $userDao->deleteUser($userId);
+      if($userId != 1){
+          $userDao = App_DaoFactory::getFactory()->getUserDao();
+          $success = $userDao->deleteUser($userId);
+
+          $auctionAccessStateDao = App_DaoFactory::getFactory()->getAuctionAccessStateDao();
+          //todo : you must delete it all
+          $aasOnlineList = $auctionAccessStateDao->selectAllAuctionAccessStateBySellerIdAndStateId($userId, 1);
+          foreach($aasOnlineList as $oneAas)
+          {
+              $auctionAccessStateDao->deleteAuctionAccessStateById($oneAas->getId());
+          }
+          //$aasAreUpdated = $auctionAccessStateDao->cancelAuctionAccessStateByUserId($userId);
+
+          $bidHistoryDao = App_DaoFactory::getFactory()->getBidHistoryDao();
+          $bhAreUpdated = $bidHistoryDao->deleteCurrentBidsByBidderId($userId);
+
+          $auctionDao = App_DaoFactory::getFactory()->getAuctionDao();
+          $auctionsList = $auctionDao->selectAllAuctionsBySellerId($userId);
+          foreach($auctionsList as $oneAuction)
+          {
+              $auctionDao->deleteAuctionById($oneAuction->getId());
+          }
+          //$auctionsAreUpdated = $auctionDao->cancelOnlineAuctionsBySellerId($userId);
+      }
 
     return $success;
   }

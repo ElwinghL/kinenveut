@@ -10,10 +10,10 @@ class AuctionAccessStateBoImpl implements IAuctionAccessStateBo
     return $auctionId;
   }
 
-  public function deleteAuctionAccessStateById(int $categoryId): bool
+  public function deleteAuctionAccessStateById(int $aasId): bool
   {
     $auctionAccessStateDao = App_DaoFactory::getFactory()->getAuctionAccessStateDao();
-    $success = $auctionAccessStateDao->deleteAuctionAccessStateById($categoryId);
+    $success = $auctionAccessStateDao->deleteAuctionAccessStateById($aasId);
 
     return $success;
   }
