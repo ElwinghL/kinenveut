@@ -17,21 +17,10 @@ class tc362Context implements Context
    */
   public function __construct()
   {
-    /* Création de l'utilisateur à valider */
-    $user = new UserModel();
-    $user->setFirstName("Jean")->setLastName("Michou")->setEmail("jeanmi@gmail.com")->setPassword("password")->setBirthDate(new DateTime("2005-05-05"));
-    $userBo = App_BoFactory::getFactory()->getUserBo();
-    $userId = $userBo->insertUser($user);
-    $user->setPassword("password");
-    $user->setId($userId);
-    Universe::getUniverse()->setUser2($user);
   }
 
   public function __destruct()
   {
-    /* Suppression de l'utilisateur validé */
-    $userBo = App_BoFactory::getFactory()->getUserBo();
-    $userBo->deleteUser(Universe::getUniverse()->getUser2()->getId());
   }
 
   /**
@@ -39,14 +28,7 @@ class tc362Context implements Context
    */
   public function uneDemandeDinscriptionEstPresente()
   {
-    $session = Universe::getUniverse()->getSession();
-
-    if ($session->getPage()->find(
-      'css',
-      '.list-group-item'
-    )->getText() != "(En Attente) Jean Michou") {
-      throw new Exception('the user is not on the validation list');
-    }
+    throw new PendingException();
   }
 
   /**
@@ -54,19 +36,7 @@ class tc362Context implements Context
    */
   public function ladminValideLinscription()
   {
-    $session = Universe::getUniverse()->getSession();
-
-    $session->getPage()->find(
-      'css',
-      '.btn.btn-success'
-    )->click();
-
-    if ($session->getPage()->find(
-      'css',
-      '.list-group-item'
-    )->getText() == "(En Attente) Jean Michou") {
-      throw new Exception('the user was not accepted');
-    }
+    throw new PendingException();
   }
 
   /**
@@ -74,10 +44,6 @@ class tc362Context implements Context
    */
   public function linscriptionDeLutilisateurDevientEffective()
   {
-    $session = Universe::getUniverse()->getSession();
-
-    disconnect($session);
-
-    connect($session, Universe::getUniverse()->getUser2());
+    throw new PendingException();
   }
 }
