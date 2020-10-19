@@ -28,7 +28,10 @@ class tc340Context implements Context
   public function __destruct()
   {
     $auctionBo = App_BoFactory::getFactory()->getAuctionBo();
-    $auctionBo->deleteAuctionById(Universe::getUniverse()->getAuction()->getId());
+    $auction = Universe::getUniverse()->getAuction();
+    if($auction != null) {
+      $auctionBo->deleteAuctionById($auction->getId());
+    }
   }
 
   /**
