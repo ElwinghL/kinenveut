@@ -44,10 +44,12 @@ class defaultContext implements Context
       foreach ($toDelete['users'] as $user) {
         $user = $userDao->selectUserByEmail($user->getEmail());
         if ($user != null && !$user->getIsAdmin()) {
-          $userAuctions = $auctionDao->selectAllAuctionsBySellerId($user->getId());
-          foreach ($userAuctions as $oneAuction) {
-            if ($auction->getName() == $oneAuction->getName()) {
-              $auctionDao->deleteAuctionById($auction->getId());
+          if ($auction != null) {
+            $userAuctions = $auctionDao->selectAllAuctionsBySellerId($user->getId());
+            foreach ($userAuctions as $oneAuction) {
+              if ($auction->getName() == $oneAuction->getName()) {
+                $auctionDao->deleteAuctionById($auction->getId());
+              }
             }
           }
           $userDao->deleteUser($user->getId());

@@ -58,7 +58,7 @@ function visitSells($session)
     Universe::getUniverse()->getUser()->setId($userFromDb->getId());
     $user->setId($userFromDb->getId());
   }
-  checkUrl('http://localhost/kinenveut/?r=auction/sells/&userId=' . $user->getId(););
+  checkUrl('http://localhost/kinenveut/?r=auction/sells/&userId=' . $user->getId());
 }
 
 function visitBids($session)
