@@ -1,6 +1,6 @@
 # language: fr
 Fonctionnalité: Créer une enchère
-
+  
   Scénario: Création d'une enchère
     Etant donné L'utilisateur est normal
     Et L'utilisateur est connecté

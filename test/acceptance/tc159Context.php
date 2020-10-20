@@ -18,25 +18,25 @@ class tc159Context implements Context
     /*Create a new user*/
     $user2 = new UserModel();
     $user2
-          ->setFirstName('Capucine')
-          ->setLastName('Dupont')
-          ->setBirthDate(DateTime::createFromFormat('d/m/Y', '01/06/1995'))
-          ->setEmail('capucine.dupont@kinenveut.fr')
-          ->setPassword('password');
+      ->setFirstName('Capucine')
+      ->setLastName('Dupont')
+      ->setBirthDate(DateTime::createFromFormat('d/m/Y', '01/06/1995'))
+      ->setEmail('capucine.dupont@kinenveut.fr')
+      ->setPassword('password');
     Universe::getUniverse()->setUser2($user2);
 
     /*Create a new auction*/
     $auction = new AuctionModel();
     $auction
-          ->setName('Objet test123')
-          ->setDescription('Ceci est une enchère insérée lors de tests.')
-          ->setBasePrice(3)
-          ->setReservePrice(7)
-          ->setDuration(7)
-          ->setSellerId($user2->getId())
-          ->setPrivacyId(0)
-          ->setCategoryId(1)
-          ->setStartDate(new DateTime());
+      ->setName('Objet test123')
+      ->setDescription('Ceci est une enchère insérée lors de tests.')
+      ->setBasePrice(3)
+      ->setReservePrice(7)
+      ->setDuration(7)
+      ->setSellerId($user2->getId())
+      ->setPrivacyId(0)
+      ->setCategoryId(1)
+      ->setStartDate(new DateTime());
     Universe::getUniverse()->setAuction($auction);
 
     disconnect($session);
@@ -82,32 +82,6 @@ class tc159Context implements Context
   }
 
   /**
-   * @Given l'utilisateur a entré au préalable le montant de l'enchère
-   */
-  public function lutilisateurAEntreAuPrealableLeMontantDeLenchere()
-  {
-    $session = Universe::getUniverse()->getSession();
-
-    $session->getPage()->find(
-      'css',
-      'input[name="bidPrice"]'
-    )->setValue(42);
-  }
-
-  /**
-   * @When l'utilisateur clique sur le bouton d'enchère
-   */
-  public function lutilisateurCliqueSurLeBoutonDenchere()
-  {
-    $session = Universe::getUniverse()->getSession();
-
-    $session->getPage()->find(
-      'css',
-      '#makeabid'
-    )->click();
-  }
-
-  /**
    * @When l'enchère est ouverte
    */
   public function lenchereEstOuverte()
@@ -123,11 +97,16 @@ class tc159Context implements Context
   }
 
   /**
-   * @When l'utilisateur a choisi un montant valide
+   * @Given l'utilisateur a entré un montant valide
    */
-  public function lutilisateurAChoisiUnMontantValide()
+  public function lutilisateurAEntreUnMontantValide()
   {
     $session = Universe::getUniverse()->getSession();
+
+    $session->getPage()->find(
+      'css',
+      'input[name="bidPrice"]'
+    )->setValue(42);
 
     if ($session->getPage()->find(
       'css',
@@ -138,9 +117,28 @@ class tc159Context implements Context
   }
 
   /**
-   * @Then l'utilisateur enchérit du montant choisi
+   * @When l'utilisateur clique sur le bouton pour enchérir
    */
-  public function lutilisateurEncheritDuMontantChoisi()
+  public function lutilisateurCliqueSurLeBoutonPourEncherir()
+  {
+    $session = Universe::getUniverse()->getSession();
+
+    if ($session->getPage()->find(
+      'css',
+      '#makeabid'
+    ) == null) {
+      throw new Exception('user cannot bid');
+    }
+    $session->getPage()->find(
+      'css',
+      '#makeabid'
+    )->click();
+  }
+
+  /**
+   * @Then l'enchère de l'utilisateur est acceptée
+   */
+  public function lenchereDeLutilisateurEstAcceptee()
   {
     $session = Universe::getUniverse()->getSession();
 

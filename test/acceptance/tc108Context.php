@@ -1,5 +1,6 @@
 <?php
 
+use Behat\Behat\Tester\Exception\PendingException;
 use Behat\Behat\Context\Context;
 
 include_once 'test/acceptance/tools.php';
@@ -111,5 +112,13 @@ class tc108Context implements Context
       'css',
       'input[name="password"]'
     )->setValue($user->getPassword() . 'z');
+  }
+
+  /**
+     * @Given L'utilisateur possède un compte sur le site
+     */
+  public function lutilisateurPossedeUnCompteSurLeSite()
+  {
+    throw new PendingException();
   }
 }

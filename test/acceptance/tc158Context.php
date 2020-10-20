@@ -37,50 +37,25 @@ class tc158Context implements Context
   }
 
   /**
-   * @When l'admin bannit :arg1
+   * @When l'administrateur banni un utilisateur
    */
-  public function ladminBannit($arg1)
-  {
-    //$url = 'http://localhost/kinenveut/?r=account/index&userId=' . $user->getId();
-    throw new PendingException();
-  }
-
-  /**
-   * @Then l'utilisateur :arg1 est banni
-   */
-  public function lutilisateurEstBanni($arg1)
+  public function ladministrateurBanniUnUtilisateur()
   {
     throw new PendingException();
   }
 
   /**
-   * @Given l'utilisateur toto a une enchère
+   * @Then les offres en cours de l'utilisateur sont supprimées
    */
-  public function lutilisateurTotoAUneEnchere()
+  public function lesOffresEnCoursDeLutilisateurSontSupprimees()
   {
     throw new PendingException();
   }
 
   /**
-   * @When l'admin bannit toto
+   * @Then les enchères de l'utilisateur sont supprimées
    */
-  public function ladminBannitToto()
-  {
-    throw new PendingException();
-  }
-
-  /**
-   * @Then les offres de toto sont supprimées
-   */
-  public function lesOffresDeTotoSontSupprimees()
-  {
-    throw new PendingException();
-  }
-
-  /**
-   * @Then les enchères de toto sont supprimées
-   */
-  public function lesEncheresDeTotoSontSupprimees()
+  public function lesEncheresDeLutilisateurSontSupprimees()
   {
     throw new PendingException();
   }

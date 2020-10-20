@@ -61,24 +61,6 @@ class tc133Context implements Context
   }
 
   /**
-   * @When L'utilisateur a oublié son mot de passe
-   */
-  public function lutilisateurAOublieSonMotDePasse()
-  {
-    //Non testable (on est pas dans la tête de l'utilisateur)
-    $session = Universe::getUniverse()->getSession();
-    $session->getPage()->find(
-      'css',
-      'input[name="password"]'
-    )->setValue('');
-
-    $session->getPage()->find(
-      'css',
-      'input[type="submit"]'
-    )->click();
-  }
-
-  /**
    * @Then L'utilisateur recoit un email avec la possibilité de récupérer l'accès à son compte
    */
   public function lutilisateurRecoitUnEmailAvecLaPossibiliteDeRecupererLaccesASonCompte()
@@ -135,5 +117,21 @@ class tc133Context implements Context
     )->getText() != 'Identifiants incorrects') {
       throw new Exception('There is returned error is not the expected one');
     }
+  }
+
+  /**
+     * @When il clique sur oublie de mot de passe
+     */
+  public function ilCliqueSurOublieDeMotDePasse()
+  {
+    throw new PendingException();
+  }
+
+  /**
+   * @When il clique sur se connecter
+   */
+  public function ilCliqueSurSeConnecter()
+  {
+    throw new PendingException();
   }
 }

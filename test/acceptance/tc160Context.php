@@ -9,25 +9,6 @@ use Behat\Behat\Context\Context;
 class tc160Context implements Context
 {
   /**
-   * @When l'utilisateur clique sur le bouton d'envoi de l'enchère
-   */
-  public function lutilisateurCliqueSurLeBoutonDenvoiDeLenchere()
-  {
-    $session = Universe::getUniverse()->getSession();
-
-    if ($session->getPage()->find(
-      'css',
-      '#makeabid'
-    ) == null) {
-      throw new Exception('user cannot bid');
-    }
-    $session->getPage()->find(
-      'css',
-      '#makeabid'
-    )->click();
-  }
-
-  /**
    * @When l'enchère est fermée
    */
   public function lenchereEstFermee()
@@ -48,9 +29,9 @@ class tc160Context implements Context
   }
 
   /**
-   * @When l'utilisateur a choisi un montant invalide
-   */
-  public function lutilisateurAChoisiUnMontantInvalide()
+  * @Given l'utilisateur a entré un montant invalide
+  */
+  public function lutilisateurAEntreUnMontantInvalide()
   {
     //todo : vérifier que $seller != != bidder
     Universe::getUniverse()->setToDelete(['users' => [Universe::getUniverse()->getUser(), Universe::getUniverse()->getUser2()]]);

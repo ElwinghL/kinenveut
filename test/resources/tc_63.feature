@@ -1,6 +1,6 @@
 # language: fr
 Fonctionnalité: Création d'une enchère échec
-
+  
   Scénario: Création d'une enchère avec des données invalides
     Etant donné L'utilisateur est normal
     Et L'utilisateur est connecté
