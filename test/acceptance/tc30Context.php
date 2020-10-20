@@ -13,7 +13,7 @@ class tc30Context implements Context
   public function lutilisateurEstSurLaPageDeCreationDeCompte()
   {
     $session = Universe::getUniverse()->getSession();
-    $session->visit('kinenveut/');
+    $session->visit($_ENV['path'].'kinenveut/');
     checkUrl('kinenveut/?r=login');
 
     $session->getPage()->find(
@@ -59,7 +59,7 @@ class tc30Context implements Context
   public function leCompteDeLutilisateurEstEnregistre()
   {
     checkUrl('kinenveut/?r=login');
-    Universe::getUniverse()->setToDelete(['users' => [Universe::getUniverse()->getUser()]]);
+
   }
 
   /**
@@ -68,7 +68,7 @@ class tc30Context implements Context
   public function lutilisateurEstDejaInscrit()
   {
     $session = Universe::getUniverse()->getSession();
-    $session->visit('kinenveut/');
+    $session->visit($_ENV['path'].'kinenveut/');
 
     checkUrl('kinenveut/?r=login');
 
@@ -108,7 +108,7 @@ class tc30Context implements Context
       'input[type="submit"]'
     )->click();
 
-    Universe::getUniverse()->setToDelete(['users' => [Universe::getUniverse()->getUser()]]);
+
   }
 
   /**

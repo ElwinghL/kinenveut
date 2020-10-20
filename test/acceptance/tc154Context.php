@@ -65,6 +65,5 @@ class tc154Context implements Context
       throw new Exception('The waiting list is empty');
     }
 
-    Universe::getUniverse()->setToDelete(['users' => [Universe::getUniverse()->getUser2()]]);
   }
 }

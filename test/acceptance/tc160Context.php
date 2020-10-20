@@ -16,7 +16,7 @@ class tc160Context implements Context
     Universe::getUniverse()->getAuction()->setAuctionState(4);
 
     //Non testable : Un user ne peut pas entrer de montant si l'enchère est fermée
-    Universe::getUniverse()->setToDelete(['users' => [Universe::getUniverse()->getUser(), Universe::getUniverse()->getUser2()]]);
+
   }
 
   /**
@@ -25,7 +25,7 @@ class tc160Context implements Context
   public function unMessageDerreurEstAffiche()
   {
     //Non testable : Aucun message n'est affiché car la vérification se fait dans l'input
-    Universe::getUniverse()->setToDelete(['users' => [Universe::getUniverse()->getUser(), Universe::getUniverse()->getUser2()]]);
+
   }
 
   /**
@@ -34,9 +34,8 @@ class tc160Context implements Context
   public function lutilisateurAEntreUnMontantInvalide()
   {
     //todo : vérifier que $seller != != bidder
-    /*Universe::getUniverse()->setToDelete(['users' => [Universe::getUniverse()->getUser(), Universe::getUniverse()->getUser2()]]);
 
-    throw new PendingException();*/
+    /*throw new PendingException();*/
     $session = Universe::getUniverse()->getSession();
 
     $expectedUrl = 'kinenveut/?r=bid/index&auctionId=';

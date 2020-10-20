@@ -60,7 +60,7 @@ class tc159Context implements Context
     connect($session, $currentUser);
 
     $url = 'kinenveut/?r=bid/index&auctionId=' . $auction->getId();
-    $session->visit($url);
+    $session->visit($_ENV['path'].$url);
     checkUrl($url);
   }
 
@@ -160,6 +160,5 @@ class tc159Context implements Context
       throw new Exception('The auction title is not the expected one so the previous bid must not be valid');
     };
 
-    Universe::getUniverse()->setToDelete(['users' => [Universe::getUniverse()->getUser(), Universe::getUniverse()->getUser2()]]);
   }
 }

@@ -5,6 +5,7 @@ function checkUrl($expectedUrl)
   $expectedUrl = $_ENV['path'] . $expectedUrl;
   $session = Universe::getUniverse()->getSession();
   $currentUrl = $session->getCurrentUrl();
+
   if ($session->getStatusCode() !== 200) {
     throw new Exception('status code is not 200');
   }
@@ -17,6 +18,7 @@ function checkUrlPartial($session, $expectedUrl)
 {
   $expectedUrl = $_ENV['path'] . $expectedUrl;
   $currentUrl = $session->getCurrentUrl();
+
   if ($session->getStatusCode() !== 200) {
     throw new Exception('status code is not 200');
   }
@@ -240,7 +242,7 @@ function disconnect($session)
 {
   /*Disconnect*/
   //todo : find a way to click on the disconnect button
-  $session->visit('kinenveut/?r=logout');
+  $session->visit($_ENV['path'].'kinenveut/?r=logout');
 
   //The user is redirect to the login page
   checkUrl('kinenveut/?r=login');
@@ -376,7 +378,7 @@ function createAuctionForUser(AuctionModel $auction, UserModel $user) : ?int
 
   /*Click to accept the prevent created auction*/
   $url = 'kinenveut/?r=auctionManagement/validate&id=' . $auction->getId();
-  $session->visit($url);
+  $session->visit($_ENV['path'].$url);
   checkUrl($url);
 
   disconnect($session);

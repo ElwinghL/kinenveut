@@ -17,7 +17,7 @@ class tc133Context implements Context
   {
     $session = Universe::getUniverse()->getSession();
 
-    $session->visit('kinenveut/');
+    $session->visit($_ENV['path'].'kinenveut/');
 
     checkUrl('kinenveut/?r=login');
   }
@@ -43,7 +43,6 @@ class tc133Context implements Context
     visitRegistrationPage($session);
 
     suscribe($session, $localUser);
-    Universe::getUniverse()->setToDelete(['users' => [$localUser]]);
   }
 
   /**
@@ -66,7 +65,7 @@ class tc133Context implements Context
    */
   public function lutilisateurRecoitUnEmailAvecLaPossibiliteDeRecupererLaccesASonCompte()
   {
-    Universe::getUniverse()->setToDelete(['users' => [Universe::getUniverse()->getUser()]]);
+
     //Non testable
     // throw new PendingException();
   }
@@ -100,7 +99,7 @@ class tc133Context implements Context
      */
   public function lutilisateurRecoitUnMessageLuiIndiquantQuaucuneAdresseMailNeCorrespondsALadresseMailSaisie()
   {
-    Universe::getUniverse()->setToDelete(['users' => [Universe::getUniverse()->getUser()]]);
+
     $session = Universe::getUniverse()->getSession();
 
     $url = 'kinenveut/?r=login/login';

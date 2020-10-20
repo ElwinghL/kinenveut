@@ -33,6 +33,6 @@ class tc63Context implements Context
   public function lenchereNestPasCreee()
   {
     checkUrl('kinenveut/?r=auction/saveObjectAuction');
-    Universe::getUniverse()->setToDelete(['users' => [Universe::getUniverse()->getUser()]]);
+
   }
 }
