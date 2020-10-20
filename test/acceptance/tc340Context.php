@@ -26,11 +26,12 @@ class tc340Context implements Context
   public function lutilisateurVisualiseLesDonneesDeLaDerniereEnchereEffectuee()
   {
     $session = Universe::getUniverse()->getSession();
+    $auction = Universe::getUniverse()->getAuction();
 
     if ($session->getPage()->find(
       'css',
       'h2'
-    )->getText() != Universe::getUniverse()->getAuction()->getName() . ' - 42€') {
+    )->getText() != $auction->getName() . ' - '.$auction->getBestBid()->getBidPrice().'€') {
       throw new Exception('bid is not valid');
     };
   }
