@@ -1,6 +1,7 @@
 <?php
 
 use Behat\Behat\Context\Context;
+use Behat\Behat\Tester\Exception\PendingException;
 
 include_once 'tools.php';
 
@@ -14,6 +15,8 @@ class tc107Context implements Context
    */
   public function lutilisateurEstUnAdministrateurDeLenchere()
   {
+    //todo :corriger la suppression dans la bdd
+    throw new PendingException();
     $session = Universe::getUniverse()->getSession();
     $admin = Universe::getUniverse()->getUser();
     //Création de l'enchère et validation
