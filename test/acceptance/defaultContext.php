@@ -35,24 +35,24 @@ class defaultContext implements Context
 
   private function deleteUsersUniverse()
   {
-    $auctionDao = App_DaoFactory::getFactory()->getAuctionDao();
-    $userDao = App_DaoFactory::getFactory()->getUserDao();
+    $auctionBo = App_BoFactory::getFactory()->getAuctionBo();
+    $userBo = App_BoFactory::getFactory()->getUserBo();
     $toDelete = Universe::getUniverse()->getToDelete();
     $auction = Universe::getUniverse()->getAuction();
 
     if (isset($toDelete['users'])) {
       foreach ($toDelete['users'] as $user) {
-        $user = $userDao->selectUserByEmail($user->getEmail());
+        $user = $userBo->selectUserByEmail($user->getEmail());
         if ($user != null && !$user->getIsAdmin()) {
           if ($auction != null) {
-            $userAuctions = $auctionDao->selectAllAuctionsBySellerId($user->getId());
+            $userAuctions = $auctionBo->selectAllAuctionsBySellerId($user->getId());
             foreach ($userAuctions as $oneAuction) {
               if ($auction->getName() == $oneAuction->getName()) {
-                $auctionDao->deleteAuctionById($oneAuction->getId());
+                $auctionBo->deleteAuctionById($oneAuction->getId());
               }
             }
           }
-          $userDao->deleteUser($user->getId());
+          $userBo->deleteUser($user->getId());
         }
       }
       unset($toDelete['users']);
