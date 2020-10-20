@@ -34,20 +34,14 @@ class tc160Context implements Context
   public function lutilisateurAEntreUnMontantInvalide()
   {
     //todo : vérifier que $seller != != bidder
-    Universe::getUniverse()->setToDelete(['users' => [Universe::getUniverse()->getUser(), Universe::getUniverse()->getUser2()]]);
+    /*Universe::getUniverse()->setToDelete(['users' => [Universe::getUniverse()->getUser(), Universe::getUniverse()->getUser2()]]);
 
-    throw new PendingException();
+    throw new PendingException();*/
     $session = Universe::getUniverse()->getSession();
 
-    $expectedUrl = 'http://localhost/kinenveut/?r=bid&auctionId=';
+    $expectedUrl = 'http://localhost/kinenveut/?r=bid/index&auctionId=';
     checkUrlPartial($session, $expectedUrl);
 
-    if ($session->getPage()->find(
-      'css',
-      'input[name="bidPrice"]'
-    )) {
-      throw new Exception('The user is not authorized to bid !');
-    };
     $session->getPage()->find(
       'css',
       'input[name="bidPrice"]'

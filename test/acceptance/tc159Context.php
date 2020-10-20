@@ -53,6 +53,9 @@ class tc159Context implements Context
       Universe::getUniverse()->getAuction()->setId($auctionId);
     }
 
+    Universe::getUniverse()->getAuction()->setBestBid(new BidModel());
+    Universe::getUniverse()->getAuction()->getBestBid()->setBidPrice(Universe::getUniverse()->getAuction()->getBasePrice());
+
     /*Now connect the user who will participate to the auction*/
     connect($session, $currentUser);
 
@@ -79,6 +82,13 @@ class tc159Context implements Context
         throw new Exception('user cannot bid');
       }
     }
+
+    if ($session->getPage()->find(
+      'css',
+      'input[name="bidPrice"]'
+    ) == false) {
+      throw new Exception('The user is not authorized to bid !');
+    };
   }
 
   /**
@@ -91,7 +101,7 @@ class tc159Context implements Context
     if ($session->getPage()->find(
       'css',
       'h2'
-    )->getText() != Universe::getUniverse()->getAuction()->getName() . ' - 42€') {
+    )->getText() != Universe::getUniverse()->getAuction()->getName() . ' - ' . Universe::getUniverse()->getAuction()->getBestBid()->getBidPrice() . '€') {
       throw new Exception('bid is not valid');
     };
   }
@@ -102,18 +112,17 @@ class tc159Context implements Context
   public function lutilisateurAEntreUnMontantValide()
   {
     $session = Universe::getUniverse()->getSession();
+    $bidPrice = (Universe::getUniverse()->getAuction()->getBasePrice() + 1) * 2;
+    $auction = Universe::getUniverse()->getAuction();
 
     $session->getPage()->find(
       'css',
       'input[name="bidPrice"]'
-    )->setValue(42);
+    )->setValue($bidPrice);
 
-    if ($session->getPage()->find(
-      'css',
-      'h2'
-    )->getText() != 'Objet test123 - 42€') {
-      throw new Exception('bid is not valid');
-    };
+    //todo : check that there is not any errors :)
+
+    Universe::getUniverse()->getAuction()->getBestBid()->setBidPrice($bidPrice);
   }
 
   /**
@@ -141,12 +150,14 @@ class tc159Context implements Context
   public function lenchereDeLutilisateurEstAcceptee()
   {
     $session = Universe::getUniverse()->getSession();
+    $auction = Universe::getUniverse()->getAuction();
+    $bidPrice = $auction->getBestBid()->getBidPrice();
 
     if ($session->getPage()->find(
       'css',
       'h2'
-    )->getText() != 'Objet test123 - 42€') {
-      throw new Exception('bid is not valid');
+    )->getText() != $auction->getName() . ' - ' . $bidPrice . '€') {
+      throw new Exception('The auction title is not the expected one so the previous bid must not be valid');
     };
 
     Universe::getUniverse()->setToDelete(['users' => [Universe::getUniverse()->getUser(), Universe::getUniverse()->getUser2()]]);

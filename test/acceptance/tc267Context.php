@@ -13,7 +13,11 @@ class tc267Context implements Context
    */
   public function lutilisateurEstSurLaPageDeMiseAJourDeProfile()
   {
-    throw new PendingException();
+    $session = Universe::getUniverse()->getSession();
+    visitOwnAccountPage($session);
+
+    $url = '?r=account/edit&userId=' . Universe::getUniverse()->getUser()->getId();
+    checkUrl($url);
   }
 
   /**

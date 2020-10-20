@@ -18,12 +18,26 @@ function checkUrlPartial($session, $expectedUrl)
   if ($session->getStatusCode() !== 200) {
     throw new Exception('status code is not 200');
   }
-  if (!strpos($currentUrl, $expectedUrl)) {
+  if (strpos($currentUrl, $expectedUrl) === false) {
     throw new Exception('The current url "' . $currentUrl . '" do not contain "' . $expectedUrl . '"');
   }
 }
 
 /*Visit pages / Click on button*/
+
+function visitOwnAccountPage($session)
+{
+  $session->getPage()->find(
+    'css',
+    '#dropdownMenuButton'
+  )->click();
+  $session->getPage()->find(
+    'css',
+    '#menuAccount'
+  )->click();
+
+  checkUrlPartial('http://localhost/kinenveut/?r=account&userId=');
+}
 
 function visitCreateAuction($session)
 {

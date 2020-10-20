@@ -23,8 +23,10 @@ class tc266Context implements Context
    */
   public function laListeDesEncheresEstVisible()
   {
+    //todo : regarder où elle est utiliser pour savoir quel id / class on recherche :)
+    throw new PendingException();
     $session = Universe::getUniverse()->getSession();
-    if ($session->getPage()->find(
+    /*if ($session->getPage()->find(
       'css',
       '#waitingList'
     ) == false) {
@@ -36,6 +38,6 @@ class tc266Context implements Context
       '#waitingList li'
     ) == false) {
       throw new Exception('The waiting list is empty');
-    }
+    }*/
   }
 }
