@@ -63,10 +63,9 @@ class tc104Context implements Context
 
     /*If the user doesn't exist, let's create him !*/
     if ($userFromDB == null) {
-        $userId = subscribeAndValidateAUser($user);
-    }
-    else{
-        $userId = $userFromDB->getId();
+      $userId = subscribeAndValidateAUser($user);
+    } else {
+      $userId = $userFromDB->getId();
     }
 
     Universe::getUniverse()->getUser()->setId($userId);

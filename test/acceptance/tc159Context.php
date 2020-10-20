@@ -32,7 +32,6 @@ class tc159Context implements Context
     $session = Universe::getUniverse()->getSession();
     $currentUser = Universe::getUniverse()->getUser();
 
-
     /*Create a new user*/
     $user2 = new UserModel();
     $user2
@@ -41,11 +40,11 @@ class tc159Context implements Context
           ->setBirthDate(DateTime::createFromFormat('d/m/Y', '01/06/1995'))
           ->setEmail('capucine.dupont@kinenveut.fr')
           ->setPassword('password');
-      Universe::getUniverse()->setUser2($user2);
+    Universe::getUniverse()->setUser2($user2);
 
-      /*Create a new auction*/
-      $auction = new AuctionModel();
-      $auction
+    /*Create a new auction*/
+    $auction = new AuctionModel();
+    $auction
           ->setName('Objet test123')
           ->setDescription('Ceci est une enchère insérée lors de tests.')
           ->setBasePrice(3)
@@ -55,23 +54,20 @@ class tc159Context implements Context
           ->setPrivacyId(0)
           ->setCategoryId(1)
           ->setStartDate(new DateTime());
-      Universe::getUniverse()->setAuction($auction);
-
+    Universe::getUniverse()->setAuction($auction);
 
     disconnect($session);
 
-    $userId =  subscribeAndValidateAUser($user2);
-    if($userId != null && $userId>0)
-    {
-        Universe::getUniverse()->getUser2()->setId($userId);
+    $userId = subscribeAndValidateAUser($user2);
+    if ($userId != null && $userId > 0) {
+      Universe::getUniverse()->getUser2()->setId($userId);
     }
 
     connect($session, $user2);
     visitCreateAuction($session);
     $auctionId = createAuctionForUser($auction, $user2);
-    if($auctionId != null && $auctionId>0)
-    {
-        Universe::getUniverse()->getAuction()->setId($auctionId);
+    if ($auctionId != null && $auctionId > 0) {
+      Universe::getUniverse()->getAuction()->setId($auctionId);
     }
 
     /*Now connect the user who will participate to the auction*/
