@@ -119,10 +119,9 @@ class tc108Context implements Context
   public function lutilisateurPossedeUnCompteSurLeSite()
   {
     $session = Universe::getUniverse()->getSession();
-    $localUser = Universe::getUniverse()->getUser();
 
-    $session->visit('http://localhost/kinenveut/');
-    checkUrl('http://localhost/kinenveut/?r=login');
+    $session->visit('kinenveut/');
+    checkUrl('kinenveut/?r=login');
 
     /*Check if the user is well initialized*/
     $user = Universe::getUniverse()->getUser();

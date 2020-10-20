@@ -31,7 +31,7 @@ class tc340Context implements Context
     if ($session->getPage()->find(
       'css',
       'h2'
-    )->getText() != $auction->getName() . ' - '.$auction->getBestBid()->getBidPrice().'€') {
+    )->getText() != $auction->getName() . ' - ' . $auction->getBestBid()->getBidPrice() . '€') {
       throw new Exception('bid is not valid');
     };
   }
