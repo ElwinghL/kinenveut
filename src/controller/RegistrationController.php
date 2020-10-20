@@ -55,13 +55,13 @@ class RegistrationController extends Controller
 
     $user = new UserModel();
     $user
-      ->setFirstName(ucwords(strtolower($data['values']['firstName']), $delimiters = "- \t\r\n\f\v"))
-      ->setLastName(ucwords(strtolower($data['values']['lastName']), $delimiters = "- \t\r\n\f\v"))
+      ->setFirstName($data['values']['firstName'])
+      ->setLastName($data['values']['lastName'])
       ->setBirthDate(new DateTime($data['values']['birthDate']))
       ->setEmail($data['values']['email'])
       ->setPassword($data['values']['password'])
       ->setIsAuthorised(0);
-    $userId = $userBo->insertUser($user);
+    $userBo->insertUser($user);
 
     return ['redirect', '?r=login'];
   }
