@@ -16,14 +16,14 @@ class AuctionAccessStateDaoImpl implements IAuctionAccessStateDao
     return db()->lastInsertId();
   }
 
-  public function deleteAuctionAccessStateById(int $id): bool
+  public function deleteAuctionAccessStateById(int $aasId): bool
   {
     $success = null;
     $request = 'DELETE FROM AuctionAccessState WHERE id=?';
 
     try {
       $query = db()->prepare($request);
-      $success = $query->execute([$id]);
+      $success = $query->execute([$aasId]);
     } catch (PDOException $Exception) {
       throw new BDDException($Exception->getMessage(), $Exception->getCode());
     }
