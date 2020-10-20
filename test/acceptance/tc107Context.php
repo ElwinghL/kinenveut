@@ -95,7 +95,7 @@ class tc107Context implements Context
       throw new Exception('Demande non validée');
     }
     disconnect($session);
-    Universe::getUniverse()->setToDelete(['users' => [Universe::getUniverse()->getUser2()]]);
+
   }
 
   /**

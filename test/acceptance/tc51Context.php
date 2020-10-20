@@ -117,6 +117,5 @@ class tc51Context implements Context
       throw new Exception('confidential auction was not found');
     }
 
-    Universe::getUniverse()->setToDelete(['users' => [Universe::getUniverse()->getUser()]]);
   }
 }

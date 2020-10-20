@@ -8,7 +8,6 @@ class Universe
   private $user2;
   private $user3;
   private $auction;
-  private $toDelete;
 
   public static function getUniverse(): Universe
   {
@@ -77,15 +76,5 @@ class Universe
     $this->auction = $auction;
 
     return $this;
-  }
-
-  public function setToDelete(?array $toDelete):void
-  {
-    $this->toDelete = $toDelete;
-  }
-
-  public function getToDelete() : ?array
-  {
-    return $this->toDelete;
   }
 }

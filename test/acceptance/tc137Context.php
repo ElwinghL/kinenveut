@@ -102,7 +102,7 @@ class tc137Context implements Context
 
     /*Click to accept the prevent created auction*/
     $url = 'kinenveut/?r=auctionManagement/validate&id=' . $auction->getId();
-    $session->visit($url);
+    $session->visit($_ENV['path'].$url);
     checkUrl($url);
 
     disconnect($session);
@@ -119,12 +119,8 @@ class tc137Context implements Context
 
     /*Make a bid !*/
 
-    /*$session->getPage()->find(
-        'css',
-        'a[href="http://localhost/kinenveut/?r=bid/index&auctionId='.$auction->getId().'"]'
-    )->click();*/
     $url = 'kinenveut/?r=bid/index&auctionId=' . $auction->getId();
-    $session->visit($url);
+    $session->visit($_ENV['path'].$url);
     checkUrl($url);
 
     $session->getPage()->find(
@@ -166,6 +162,5 @@ class tc137Context implements Context
     ) == false) {
       throw new Exception('The auction list is empty');
     }
-    Universe::getUniverse()->setToDelete(['users' => [Universe::getUniverse()->getUser(), Universe::getUniverse()->getUser2(), Universe::getUniverse()->getUser3()]]);
   }
 }

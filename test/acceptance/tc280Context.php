@@ -40,6 +40,5 @@ class tc280Context implements Context
       throw new Exception('The auction list was not found');
     }
 
-    Universe::getUniverse()->setToDelete(['users' => [Universe::getUniverse()->getUser()]]);
   }
 }

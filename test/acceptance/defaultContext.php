@@ -37,11 +37,11 @@ class defaultContext implements Context
   {
     $auctionBo = App_BoFactory::getFactory()->getAuctionBo();
     $userBo = App_BoFactory::getFactory()->getUserBo();
-    $toDelete = Universe::getUniverse()->getToDelete();
     $auction = Universe::getUniverse()->getAuction();
 
-    if (isset($toDelete['users'])) {
-      foreach ($toDelete['users'] as $user) {
+    $users = [Universe::getUniverse()->getUser(), Universe::getUniverse()->getUser2(), Universe::getUniverse()->getUser3()];
+    foreach ($users as $user) {
+      if ($user != null) {
         $user = $userBo->selectUserByEmail($user->getEmail());
         if ($user != null && !$user->getIsAdmin()) {
           if ($auction != null) {
@@ -55,8 +55,6 @@ class defaultContext implements Context
           $userBo->deleteUser($user->getId());
         }
       }
-      unset($toDelete['users']);
-      Universe::getUniverse()->setToDelete($toDelete);
     }
   }
 }
