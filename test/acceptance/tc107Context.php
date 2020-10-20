@@ -89,7 +89,7 @@ class tc107Context implements Context
     }
     $auctionCard = $session->getPage()->find('css', '.card-product');
     $auctionCard->click();
-    checkUrlPartial($session, 'kinenveut/?r=bid/index&auctionId=');
+    checkUrlPartial($session, '/?r=bid/index&auctionId=');
     $session->getPage()->find('css', '#btnAuctionRequest')->click();
     if ($session->getPage()->find(
       'css',
@@ -117,7 +117,7 @@ class tc107Context implements Context
   public function lutilisateurCliqueSurLeBoutonDejectionDunePersonneAyantDemandeeAParticiperALenchere()
   {
     $session = Universe::getUniverse()->getSession();
-    $url = 'kinenveut/?r=accessRequest';
+    $url = '/?r=accessRequest';
     checkUrlPartial($session, $url);
     //TODO : Faire une séléction par ID
     $btnRefuse = $session->getPage()->find('css', '.btn-danger');
@@ -142,7 +142,7 @@ class tc107Context implements Context
     }
     $auctionCard = $session->getPage()->find('css', '.card-product');
     $auctionCard->click();
-    checkUrlPartial($session, 'kinenveut/?r=bid/index&auctionId=');
+    checkUrlPartial($session, '/?r=bid/index&auctionId=');
     if ($session->getPage()->findById('forbidedAuctionAccess')->getText() != 'Vous n\'êtes pas autorisé à participer à cette enchère') {
       throw new Exception("L'utilisateur n'est pas refusé");
     }
@@ -166,7 +166,7 @@ class tc107Context implements Context
   public function lutilisateurCliqueSurLeBoutonDacceptationDunePersonneAyantDemandeeAParticiperALenchere()
   {
     $session = Universe::getUniverse()->getSession();
-    $url = 'kinenveut/?r=accessRequest';
+    $url = '/?r=accessRequest';
     checkUrlPartial($session, $url);
     //TODO : Faire une séléction par ID
     $btnRefuse = $session->getPage()->find('css', '.btn-success');
@@ -191,7 +191,7 @@ class tc107Context implements Context
     }
     $auctionCard = $session->getPage()->find('css', '.card-product');
     $auctionCard->click();
-    checkUrlPartial($session, 'kinenveut/?r=bid/index&auctionId=');
+    checkUrlPartial($session, '/?r=bid/index&auctionId=');
     if ($session->getPage()->findById('forbidedAuctionAccess') != null) {
       throw new Exception("L'utilisateur n'est pas accepté");
     }

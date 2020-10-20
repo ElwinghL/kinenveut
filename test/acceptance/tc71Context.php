@@ -78,7 +78,7 @@ class tc71Context implements Context
     }
 
     /*Click to accept the prevent created auction*/
-    $url = 'kinenveut/?r=auctionManagement/validate&id=' . $auction->getId();
+    $url = '/?r=auctionManagement/validate&id=' . $auction->getId();
     visiteUrl($url);
 
     checkUrl($url);

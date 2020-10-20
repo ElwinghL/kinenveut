@@ -13,15 +13,15 @@ class tc30Context implements Context
   public function lutilisateurEstSurLaPageDeCreationDeCompte()
   {
     $session = Universe::getUniverse()->getSession();
-    visiteUrl('kinenveut/');
-    checkUrl('kinenveut/?r=login');
+    visiteUrl('/');
+    checkUrl('/?r=login');
 
     $session->getPage()->find(
       'css',
       'a[href="?r=registration"]'
     )->click();
 
-    checkUrl('kinenveut/?r=registration');
+    checkUrl('/?r=registration');
   }
 
   /**
@@ -58,7 +58,7 @@ class tc30Context implements Context
    */
   public function leCompteDeLutilisateurEstEnregistre()
   {
-    checkUrl('kinenveut/?r=login');
+    checkUrl('/?r=login');
   }
 
   /**
@@ -67,16 +67,16 @@ class tc30Context implements Context
   public function lutilisateurEstDejaInscrit()
   {
     $session = Universe::getUniverse()->getSession();
-    visiteUrl('kinenveut/');
+    visiteUrl('/');
 
-    checkUrl('kinenveut/?r=login');
+    checkUrl('/?r=login');
 
     $session->getPage()->find(
       'css',
       'a[href="?r=registration"]'
     )->click();
 
-    checkUrl('kinenveut/?r=registration');
+    checkUrl('/?r=registration');
 
     $session = Universe::getUniverse()->getSession();
     $user = Universe::getUniverse()->getUser();
@@ -115,7 +115,7 @@ class tc30Context implements Context
   {
     $session = Universe::getUniverse()->getSession();
 
-    checkUrl('kinenveut/?r=registration/register');
+    checkUrl('/?r=registration/register');
 
     if ($session->getPage()->find(
       'css',

@@ -14,10 +14,8 @@ class tc108Context implements Context
    */
   public function lutilisateurEstSurLaPageDeConnexion()
   {
-    $session = Universe::getUniverse()->getSession();
-
-    visiteUrl('kinenveut/');
-    checkUrl('kinenveut/?r=login');
+    visiteUrl('/');
+    checkUrl('/?r=login');
   }
 
   /**
@@ -63,9 +61,7 @@ class tc108Context implements Context
    */
   public function lutilisateurEstIdentifieSurLeSite()
   {
-    $session = Universe::getUniverse()->getSession();
-
-    $url = 'kinenveut/?r=home';
+    $url = '/?r=home';
     checkUrl($url);
   }
 
@@ -89,7 +85,7 @@ class tc108Context implements Context
   {
     $session = Universe::getUniverse()->getSession();
 
-    $url = 'kinenveut/?r=login/login';
+    $url = '/?r=login/login';
     checkUrl($url);
 
     if ($session->getPage()->find(
@@ -118,10 +114,8 @@ class tc108Context implements Context
      */
   public function lutilisateurPossedeUnCompteSurLeSite()
   {
-    $session = Universe::getUniverse()->getSession();
-
-    visiteUrl('kinenveut/');
-    checkUrl('kinenveut/?r=login');
+    visiteUrl('/');
+    checkUrl('/?r=login');
 
     /*Check if the user is well initialized*/
     $user = Universe::getUniverse()->getUser();

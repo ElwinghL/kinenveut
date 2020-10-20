@@ -12,9 +12,7 @@ class tc340Context implements Context
    */
   public function lutilisateurArriveSurLaPageDuneEnchere()
   {
-    $session = Universe::getUniverse()->getSession();
-
-    $url = 'kinenveut/?r=bid/index&auctionId=' . Universe::getUniverse()->getAuction()->getId();
+    $url = '/?r=bid/index&auctionId=' . Universe::getUniverse()->getAuction()->getId();
     visiteUrl($url);
 
     checkUrl($url);

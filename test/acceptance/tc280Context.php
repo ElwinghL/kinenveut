@@ -30,7 +30,7 @@ class tc280Context implements Context
     //Todo : Atention, on ne sait pas s'il existe ou non des enchères :)
     $session = Universe::getUniverse()->getSession();
 
-    $url = 'kinenveut/?r=home/search';
+    $url = '/?r=home/search';
     checkUrl($url);
 
     if ($session->getPage()->find(

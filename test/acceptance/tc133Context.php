@@ -15,11 +15,9 @@ class tc133Context implements Context
    */
   public function lutilisateurNestPasConnecte()
   {
-    $session = Universe::getUniverse()->getSession();
+    visiteUrl('/');
 
-    visiteUrl('kinenveut/');
-
-    checkUrl('kinenveut/?r=login');
+    checkUrl('/?r=login');
   }
 
   /**
@@ -100,7 +98,7 @@ class tc133Context implements Context
   {
     $session = Universe::getUniverse()->getSession();
 
-    $url = 'kinenveut/?r=login/login';
+    $url = '/?r=login/login';
     checkUrl($url);
 
     if ($session->getPage()->find(
