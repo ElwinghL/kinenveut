@@ -13,7 +13,7 @@ class tc30Context implements Context
   public function lutilisateurEstSurLaPageDeCreationDeCompte()
   {
     $session = Universe::getUniverse()->getSession();
-    $session->visit($_ENV['path'] . 'kinenveut/');
+    visiteUrl('kinenveut/');
     checkUrl('kinenveut/?r=login');
 
     $session->getPage()->find(
@@ -67,7 +67,7 @@ class tc30Context implements Context
   public function lutilisateurEstDejaInscrit()
   {
     $session = Universe::getUniverse()->getSession();
-    $session->visit($_ENV['path'] . 'kinenveut/');
+    visiteUrl('kinenveut/');
 
     checkUrl('kinenveut/?r=login');
 

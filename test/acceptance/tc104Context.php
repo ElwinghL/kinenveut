@@ -32,7 +32,7 @@ class tc104Context implements Context
     /*Try to go to home page. If you are redirect to login page then you're offline*/
     $session = Universe::getUniverse()->getSession();
 
-    $session->visit($_ENV['path'] . 'kinenveut/');
+    visiteUrl('kinenveut/');
     checkUrl('kinenveut/?r=login');
 
     /*Check if the user is well initialized*/
@@ -88,7 +88,7 @@ class tc104Context implements Context
     $session = Universe::getUniverse()->getSession();
 
     $url = 'kinenveut/?r=categorie/update_page';
-    $session->visit($_ENV['path'] . $url);
+    visiteUrl($url);
     checkUrl($url);
 
     $session->getPage()->find(
@@ -109,7 +109,7 @@ class tc104Context implements Context
     $session = Universe::getUniverse()->getSession();
 
     $url = 'kinenveut/?r=categorie';
-    $session->visit($_ENV['path'] . $url);
+    visiteUrl($url);
     checkUrl($url);
 
     if ($session->getPage()->find(
@@ -145,7 +145,7 @@ class tc104Context implements Context
     $session = Universe::getUniverse()->getSession();
 
     $url = 'kinenveut/?r=categorie';
-    $session->visit($_ENV['path'] . $url);
+    visiteUrl($url);
     checkUrl($url);
 
     if ($session->getPage()->find(

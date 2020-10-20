@@ -39,7 +39,7 @@ class tc159Context implements Context
       ->setStartDate(new DateTime());
     Universe::getUniverse()->setAuction($auction);
 
-    disconnect($session);
+    disconnect();
 
     $userId = subscribeAndValidateAUser($user2);
     if ($userId != null && $userId > 0) {
@@ -60,7 +60,7 @@ class tc159Context implements Context
     connect($session, $currentUser);
 
     $url = 'kinenveut/?r=bid/index&auctionId=' . $auction->getId();
-    $session->visit($_ENV['path'] . $url);
+    visiteUrl($url);
     checkUrl($url);
   }
 

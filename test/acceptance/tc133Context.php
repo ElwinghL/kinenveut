@@ -17,7 +17,7 @@ class tc133Context implements Context
   {
     $session = Universe::getUniverse()->getSession();
 
-    $session->visit($_ENV['path'] . 'kinenveut/');
+    visiteUrl('kinenveut/');
 
     checkUrl('kinenveut/?r=login');
   }

@@ -253,11 +253,11 @@ function connect($session, UserModel $user)
   checkUrl('kinenveut/?r=home');
 }
 
-function disconnect($session)
+function disconnect()
 {
   /*Disconnect*/
   //todo : find a way to click on the disconnect button
-  $session->visit($_ENV['path'] . 'kinenveut/?r=logout');
+  visiteUrl('kinenveut/?r=logout');
 
   //The user is redirect to the login page
   checkUrl('kinenveut/?r=login');
@@ -355,7 +355,7 @@ function subscribeAndValidateAUser(UserModel $user) : ?int
 
   checkUrl('kinenveut/?r=userManagement/validate&id=' . $user->getId());
 
-  disconnect($session);
+  disconnect();
 
   return $user->getId();
 }
@@ -374,7 +374,7 @@ function createAuctionForUser(AuctionModel $auction, UserModel $user) : ?int
   visitCreateAuction($session);
   createAuction($session, $auction);
 
-  disconnect($session);
+  disconnect();
   /*Connection as Admin*/
   connect($session, $userAdmin);
   visitAuctionManagement($session);
@@ -393,10 +393,16 @@ function createAuctionForUser(AuctionModel $auction, UserModel $user) : ?int
 
   /*Click to accept the prevent created auction*/
   $url = 'kinenveut/?r=auctionManagement/validate&id=' . $auction->getId();
-  $session->visit($_ENV['path'] . $url);
+  visiteUrl($url);
   checkUrl($url);
 
-  disconnect($session);
+  disconnect();
 
   return $auction->getId();
+}
+
+function visiteUrl($url)
+{
+  $session = Universe::getUniverse()->getSession();
+  $session->visit($_ENV['path'] . $url);
 }
