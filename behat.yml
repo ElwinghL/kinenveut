@@ -50,3 +50,8 @@ default:
       paths:
         features: test/resources
         bootstrap: test/acceptance
+        
+api:
+  extensions:
+    Behat\WebApiExtension\Extension:
+      base_url: http://m2gl.deptinfo-st.univ-fcomte.fr/~m2test6/preprod
