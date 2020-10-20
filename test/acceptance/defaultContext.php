@@ -48,7 +48,7 @@ class defaultContext implements Context
             $userAuctions = $auctionDao->selectAllAuctionsBySellerId($user->getId());
             foreach ($userAuctions as $oneAuction) {
               if ($auction->getName() == $oneAuction->getName()) {
-                $auctionDao->deleteAuctionById($auction->getId());
+                $auctionDao->deleteAuctionById($oneAuction->getId());
               }
             }
           }
