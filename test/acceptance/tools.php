@@ -29,6 +29,20 @@ function checkUrlPartial($session, $expectedUrl)
 
 /*Visit pages / Click on button*/
 
+function visiteUrl($url)
+{
+    $session = Universe::getUniverse()->getSession();
+    $session->visit($url);
+    if($session->getStatusCode() !== 200)
+    {
+        $session->visit($_ENV['path'] .$url);
+        if($session->getStatusCode() !== 200)
+        {
+            throw new Exception('Failed to access to the url, please, check the path variable');
+        }
+    }
+}
+
 function clickOnMenu($session)
 {
   $button = $session->getPage()->find(
@@ -402,8 +416,3 @@ function createAuctionForUser(AuctionModel $auction, UserModel $user) : ?int
   return $auction->getId();
 }
 
-function visiteUrl($url)
-{
-  $session = Universe::getUniverse()->getSession();
-  $session->visit($_ENV['path'] . $url);
-}
