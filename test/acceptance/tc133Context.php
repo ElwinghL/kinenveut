@@ -17,9 +17,9 @@ class tc133Context implements Context
   {
     $session = Universe::getUniverse()->getSession();
 
-    $session->visit('http://localhost/kinenveut/');
+    $session->visit('kinenveut/');
 
-    checkUrl('http://localhost/kinenveut/?r=login');
+    checkUrl('kinenveut/?r=login');
   }
 
   /**
@@ -103,7 +103,7 @@ class tc133Context implements Context
     Universe::getUniverse()->setToDelete(['users' => [Universe::getUniverse()->getUser()]]);
     $session = Universe::getUniverse()->getSession();
 
-    $url = 'http://localhost/kinenveut/?r=login/login';
+    $url = 'kinenveut/?r=login/login';
     checkUrl($url);
 
     if ($session->getPage()->find(

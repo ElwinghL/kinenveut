@@ -32,8 +32,8 @@ class tc104Context implements Context
     /*Try to go to home page. If you are redirect to login page then you're offline*/
     $session = Universe::getUniverse()->getSession();
 
-    $session->visit('http://localhost/kinenveut/');
-    checkUrl('http://localhost/kinenveut/?r=login');
+    $session->visit('kinenveut/');
+    checkUrl('kinenveut/?r=login');
 
     /*Check if the user is well initialized*/
     $user = Universe::getUniverse()->getUser();
@@ -87,7 +87,7 @@ class tc104Context implements Context
     throw new PendingException();
     $session = Universe::getUniverse()->getSession();
 
-    $url = 'http://localhost/kinenveut/?r=categorie/update_page';
+    $url = 'kinenveut/?r=categorie/update_page';
     $session->visit($url);
     checkUrl($url);
 
@@ -108,7 +108,7 @@ class tc104Context implements Context
   {
     $session = Universe::getUniverse()->getSession();
 
-    $url = 'http://localhost/kinenveut/?r=categorie';
+    $url = 'kinenveut/?r=categorie';
     $session->visit($url);
     checkUrl($url);
 
@@ -144,7 +144,7 @@ class tc104Context implements Context
     throw new PendingException();
     $session = Universe::getUniverse()->getSession();
 
-    $url = 'http://localhost/kinenveut/?r=categorie';
+    $url = 'kinenveut/?r=categorie';
     $session->visit($url);
     checkUrl($url);
 

@@ -39,7 +39,7 @@ class tc160Context implements Context
     throw new PendingException();*/
     $session = Universe::getUniverse()->getSession();
 
-    $expectedUrl = 'http://localhost/kinenveut/?r=bid/index&auctionId=';
+    $expectedUrl = 'kinenveut/?r=bid/index&auctionId=';
     checkUrlPartial($session, $expectedUrl);
 
     $session->getPage()->find(

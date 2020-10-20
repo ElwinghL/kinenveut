@@ -40,7 +40,7 @@ class tc52Context implements Context
    */
   public function uneEnchereEstCreee()
   {
-    checkUrl('http://localhost/kinenveut/?r=home');
+    checkUrl('kinenveut/?r=home');
     Universe::getUniverse()->setToDelete(['users' => [Universe::getUniverse()->getUser()]]);
   }
 }

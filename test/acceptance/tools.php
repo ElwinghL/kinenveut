@@ -2,6 +2,7 @@
 
 function checkUrl($expectedUrl)
 {
+  $expectedUrl = $_ENV['path'] . $expectedUrl;
   $session = Universe::getUniverse()->getSession();
   $currentUrl = $session->getCurrentUrl();
   if ($session->getStatusCode() !== 200) {
@@ -14,6 +15,7 @@ function checkUrl($expectedUrl)
 
 function checkUrlPartial($session, $expectedUrl)
 {
+  $expectedUrl = $_ENV['path'] . $expectedUrl;
   $currentUrl = $session->getCurrentUrl();
   if ($session->getStatusCode() !== 200) {
     throw new Exception('status code is not 200');
@@ -36,7 +38,7 @@ function visitOwnAccountPage($session)
     '#menuAccount'
   )->click();
 
-  checkUrlPartial($session, 'http://localhost/kinenveut/?r=account&userId=');
+  checkUrlPartial($session, 'kinenveut/?r=account&userId=');
 }
 
 function visitCreateAuction($session)
@@ -50,7 +52,7 @@ function visitCreateAuction($session)
     '#menuCreateAuction'
   )->click();
 
-  checkUrl('http://localhost/kinenveut/?r=auction/create');
+  checkUrl('kinenveut/?r=auction/create');
 }
 
 function visitSells($session)
@@ -72,7 +74,7 @@ function visitSells($session)
     Universe::getUniverse()->getUser()->setId($userFromDb->getId());
     $user->setId($userFromDb->getId());
   }
-  checkUrl('http://localhost/kinenveut/?r=auction/sells/&userId=' . $user->getId());
+  checkUrl('kinenveut/?r=auction/sells/&userId=' . $user->getId());
 }
 
 function visitBids($session)
@@ -93,7 +95,7 @@ function visitBids($session)
     Universe::getUniverse()->getUser()->setId($userFromDb->getId());
     $user->setId($userFromDb->getId());
   }
-  checkUrl('http://localhost/kinenveut/?r=auction/bids&userId=' . $user->getId());
+  checkUrl('kinenveut/?r=auction/bids&userId=' . $user->getId());
 }
 
 function visitAuctionManagement($session)
@@ -107,7 +109,7 @@ function visitAuctionManagement($session)
     '#menuAuctionManagement'
   )->click();
 
-  checkUrl('http://localhost/kinenveut/?r=auctionManagement');
+  checkUrl('kinenveut/?r=auctionManagement');
 }
 
 function visitUserManagment($session)
@@ -121,7 +123,7 @@ function visitUserManagment($session)
     '#menuUserManagement'
   )->click();
 
-  checkUrl('http://localhost/kinenveut/?r=userManagement');
+  checkUrl('kinenveut/?r=userManagement');
 }
 
 function visitCategoriesManagment($session)
@@ -135,7 +137,7 @@ function visitCategoriesManagment($session)
     '#menuCategoryManagement'
   )->click();
 
-  checkUrl('http://localhost/kinenveut/?r=categorie');
+  checkUrl('kinenveut/?r=categorie');
 }
 
 function visitRegistrationPage($session)
@@ -146,7 +148,7 @@ function visitRegistrationPage($session)
     'a[href="?r=registration"]'
   )->click();
 
-  checkUrl('http://localhost/kinenveut/?r=registration');
+  checkUrl('kinenveut/?r=registration');
 }
 
 function visitRequestPage($session)
@@ -160,15 +162,14 @@ function visitRequestPage($session)
     '#menuRequest'
   )->click();
 
-  $url = '?r=accessRequest';
-  checkUrlPartial($session, $url);
+  checkUrlPartial($session, 'kinenveut/?r=accessRequest');
 }
 
 /*Suscribe & Connection functions*/
 
 function suscribe($session, UserModel $localUser)
 {
-  checkUrl('http://localhost/kinenveut/?r=registration');
+  checkUrl('kinenveut/?r=registration');
 
   /*Fill the form*/
   $session->getPage()->find(
@@ -199,12 +200,12 @@ function suscribe($session, UserModel $localUser)
   )->click();
 
   //The user is redirect to the login page
-  checkUrl('http://localhost/kinenveut/?r=login');
+  checkUrl('kinenveut/?r=login');
 }
 
 function connect($session, UserModel $user)
 {
-  checkUrl('http://localhost/kinenveut/?r=login');
+  checkUrl('kinenveut/?r=login');
 
   /*Fill the form*/
   $session->getPage()->find(
@@ -223,24 +224,24 @@ function connect($session, UserModel $user)
   )->click();
 
   //The user is redirect to the home page
-  checkUrl('http://localhost/kinenveut/?r=home');
+  checkUrl('kinenveut/?r=home');
 }
 
 function disconnect($session)
 {
   /*Disconnect*/
   //todo : find a way to click on the disconnect button
-  $session->visit('http://localhost/kinenveut/?r=logout');
+  $session->visit('kinenveut/?r=logout');
 
   //The user is redirect to the login page
-  checkUrl('http://localhost/kinenveut/?r=login');
+  checkUrl('kinenveut/?r=login');
 }
 
 /*Add values to DB*/
 
 function createAuction($session, $auction)
 {
-  checkUrl('http://localhost/kinenveut/?r=auction/create');
+  checkUrl('kinenveut/?r=auction/create');
 
   /*Full the form to create an auction*/
   //Object name
@@ -286,7 +287,7 @@ function createAuction($session, $auction)
     'input[type="submit"]'
   )->click();
 
-  checkUrl('http://localhost/kinenveut/?r=home');
+  checkUrl('kinenveut/?r=home');
 }
 
 /*Big functions*/
@@ -321,7 +322,7 @@ function subscribeAndValidateAUser(UserModel $user) : ?int
     'a[href="' . $href . '"]'
   )->click();
 
-  checkUrl('http://localhost/kinenveut/?r=userManagement/validate&id=' . $user->getId());
+  checkUrl('kinenveut/?r=userManagement/validate&id=' . $user->getId());
 
   disconnect($session);
 
@@ -362,7 +363,7 @@ function createAuctionForUser(AuctionModel $auction, UserModel $user) : ?int
   }
 
   /*Click to accept the prevent created auction*/
-  $url = 'http://localhost/kinenveut/?r=auctionManagement/validate&id=' . $auction->getId();
+  $url = 'kinenveut/?r=auctionManagement/validate&id=' . $auction->getId();
   $session->visit($url);
   checkUrl($url);
 

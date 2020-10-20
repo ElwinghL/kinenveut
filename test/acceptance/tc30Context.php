@@ -13,15 +13,15 @@ class tc30Context implements Context
   public function lutilisateurEstSurLaPageDeCreationDeCompte()
   {
     $session = Universe::getUniverse()->getSession();
-    $session->visit('http://localhost/kinenveut/');
-    checkUrl('http://localhost/kinenveut/?r=login');
+    $session->visit('kinenveut/');
+    checkUrl('kinenveut/?r=login');
 
     $session->getPage()->find(
       'css',
       'a[href="?r=registration"]'
     )->click();
 
-    checkUrl('http://localhost/kinenveut/?r=registration');
+    checkUrl('kinenveut/?r=registration');
   }
 
   /**
@@ -58,7 +58,7 @@ class tc30Context implements Context
    */
   public function leCompteDeLutilisateurEstEnregistre()
   {
-    checkUrl('http://localhost/kinenveut/?r=login');
+    checkUrl('kinenveut/?r=login');
     Universe::getUniverse()->setToDelete(['users' => [Universe::getUniverse()->getUser()]]);
   }
 
@@ -68,16 +68,16 @@ class tc30Context implements Context
   public function lutilisateurEstDejaInscrit()
   {
     $session = Universe::getUniverse()->getSession();
-    $session->visit('http://localhost/kinenveut/');
+    $session->visit('kinenveut/');
 
-    checkUrl('http://localhost/kinenveut/?r=login');
+    checkUrl('kinenveut/?r=login');
 
     $session->getPage()->find(
       'css',
       'a[href="?r=registration"]'
     )->click();
 
-    checkUrl('http://localhost/kinenveut/?r=registration');
+    checkUrl('kinenveut/?r=registration');
 
     $session = Universe::getUniverse()->getSession();
     $user = Universe::getUniverse()->getUser();
@@ -118,7 +118,7 @@ class tc30Context implements Context
   {
     $session = Universe::getUniverse()->getSession();
 
-    checkUrl('http://localhost/kinenveut/?r=registration/register');
+    checkUrl('kinenveut/?r=registration/register');
 
     if ($session->getPage()->find(
       'css',

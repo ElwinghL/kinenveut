@@ -59,7 +59,7 @@ class tc159Context implements Context
     /*Now connect the user who will participate to the auction*/
     connect($session, $currentUser);
 
-    $url = 'http://localhost/kinenveut/?r=bid/index&auctionId=' . $auction->getId();
+    $url = 'kinenveut/?r=bid/index&auctionId=' . $auction->getId();
     $session->visit($url);
     checkUrl($url);
   }

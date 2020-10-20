@@ -32,7 +32,7 @@ class tc63Context implements Context
    */
   public function lenchereNestPasCreee()
   {
-    checkUrl('http://localhost/kinenveut/?r=auction/saveObjectAuction');
+    checkUrl('kinenveut/?r=auction/saveObjectAuction');
     Universe::getUniverse()->setToDelete(['users' => [Universe::getUniverse()->getUser()]]);
   }
 }

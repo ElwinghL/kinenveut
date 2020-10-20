@@ -115,7 +115,7 @@ class tc107Context implements Context
   public function lutilisateurCliqueSurLeBoutonDejectionDunePersonneAyantDemandeeAParticiperALenchere()
   {
     $session = Universe::getUniverse()->getSession();
-    $url = '?r=accessRequest';
+    $url = 'kinenveut/?r=accessRequest';
     checkUrlPartial($session, $url);
     //TODO : Faire une séléction par ID
     $btnRefuse = $session->getPage()->find('css', '.btn-danger');
@@ -164,7 +164,7 @@ class tc107Context implements Context
   public function lutilisateurCliqueSurLeBoutonDacceptationDunePersonneAyantDemandeeAParticiperALenchere()
   {
     $session = Universe::getUniverse()->getSession();
-    $url = '?r=accessRequest';
+    $url = 'kinenveut/?r=accessRequest';
     checkUrlPartial($session, $url);
     //TODO : Faire une séléction par ID
     $btnRefuse = $session->getPage()->find('css', '.btn-success');

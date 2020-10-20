@@ -16,7 +16,7 @@ class tc267Context implements Context
     $session = Universe::getUniverse()->getSession();
     visitOwnAccountPage($session);
 
-    $url = '?r=account/edit&userId=' . Universe::getUniverse()->getUser()->getId();
+    $url = 'kinenveut/?r=account&userId=' . Universe::getUniverse()->getUser()->getId();
     checkUrl($url);
   }
 
