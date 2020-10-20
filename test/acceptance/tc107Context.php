@@ -95,7 +95,6 @@ class tc107Context implements Context
       throw new Exception('Demande non validée');
     }
     disconnect($session);
-
   }
 
   /**

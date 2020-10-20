@@ -116,6 +116,5 @@ class tc51Context implements Context
     )->getText() != 'Chaussette') {
       throw new Exception('confidential auction was not found');
     }
-
   }
 }

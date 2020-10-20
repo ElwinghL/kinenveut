@@ -257,7 +257,7 @@ function disconnect($session)
 {
   /*Disconnect*/
   //todo : find a way to click on the disconnect button
-  $session->visit($_ENV['path'].'kinenveut/?r=logout');
+  $session->visit($_ENV['path'] . 'kinenveut/?r=logout');
 
   //The user is redirect to the login page
   checkUrl('kinenveut/?r=login');
@@ -393,7 +393,7 @@ function createAuctionForUser(AuctionModel $auction, UserModel $user) : ?int
 
   /*Click to accept the prevent created auction*/
   $url = 'kinenveut/?r=auctionManagement/validate&id=' . $auction->getId();
-  $session->visit($_ENV['path'].$url);
+  $session->visit($_ENV['path'] . $url);
   checkUrl($url);
 
   disconnect($session);

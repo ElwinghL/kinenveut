@@ -39,6 +39,5 @@ class tc280Context implements Context
     ) == false) {
       throw new Exception('The auction list was not found');
     }
-
   }
 }

@@ -60,7 +60,7 @@ class tc159Context implements Context
     connect($session, $currentUser);
 
     $url = 'kinenveut/?r=bid/index&auctionId=' . $auction->getId();
-    $session->visit($_ENV['path'].$url);
+    $session->visit($_ENV['path'] . $url);
     checkUrl($url);
   }
 
@@ -159,6 +159,5 @@ class tc159Context implements Context
     )->getText() != $auction->getName() . ' - ' . $bidPrice . '€') {
       throw new Exception('The auction title is not the expected one so the previous bid must not be valid');
     };
-
   }
 }

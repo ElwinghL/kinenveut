@@ -65,7 +65,7 @@ class tc114Context implements Context
 
     /*Click to accept the prevent created auction*/
     $url = 'kinenveut/?r=auctionManagement/validate&id=' . $auction->getId();
-    $session->visit($_ENV['path'].$url);
+    $session->visit($_ENV['path'] . $url);
     checkUrl($url);
 
     disconnect($session);

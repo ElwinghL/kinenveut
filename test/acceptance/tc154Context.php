@@ -64,6 +64,5 @@ class tc154Context implements Context
     ) == false) {
       throw new Exception('The waiting list is empty');
     }
-
   }
 }
