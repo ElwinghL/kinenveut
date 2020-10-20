@@ -63,39 +63,12 @@ class tc104Context implements Context
 
     /*If the user doesn't exist, let's create him !*/
     if ($userFromDB == null) {
-      visitRegistrationPage($session);
-
-      suscribe($session, $user);
-
-      /*So now, the administrator has to accept him !*/
-
-      /*Connection as Admin*/
-      $userAdmin = new UserModel();
-      $userAdmin
-          ->setEmail('admin@kinenveut.fr')
-          ->setPassword('password');
-
-      connect($session, $userAdmin);
-
-      visitUserManagment($session);
-
-      //Todo : search by name
-      /*Click to accept the prevent created user*/
-      $userFromDB = $userDao->selectUserByEmail($user->getEmail());
-      $user->setId($userFromDB->getId());
-      $href = '?r=userManagement/validate&id=' . $user->getId();
-      $session->getPage()->find(
-        'css',
-        'a[href="' . $href . '"]'
-      )->click();
-
-      $url = 'http://localhost/kinenveut/?r=userManagement/validate&id=' . $user->getId();
-      checkUrl($session, $url);
-
-      disconnect($session);
+      $userId = subscribeAndValidateAUser($user);
+    } else {
+      $userId = $userFromDB->getId();
     }
 
-    Universe::getUniverse()->getUser()->setId($userFromDB->getId());
+    Universe::getUniverse()->getUser()->setId($userId);
 
     connect($session, $user);
   }

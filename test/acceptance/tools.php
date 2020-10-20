@@ -371,85 +371,83 @@ function deleteAuctionUniverse()
   }
 }
 
-
 /*Big functions*/
 
 function subscribeAndValidateAUser(UserModel $user) : ?int
 {
-    $session = Universe::getUniverse()->getSession();
+  $session = Universe::getUniverse()->getSession();
 
-    $userAdmin = new UserModel();
-    $userAdmin
+  $userAdmin = new UserModel();
+  $userAdmin
         ->setEmail('admin@kinenveut.fr')
         ->setPassword('password');
 
-    visitRegistrationPage($session);
-    suscribe($session, $user);
+  visitRegistrationPage($session);
+  suscribe($session, $user);
 
-    if ($user->getId() == null || $user->getId() < 1)
-    {
-        $userBo = App_BoFactory::getFactory()->getUserBo();
-        $userFromDB = $userBo->selectUserByEmail($user->getEmail());
-        $user->setId($userFromDB->getId());
-    }
+  if ($user->getId() == null || $user->getId() < 1) {
+    $userBo = App_BoFactory::getFactory()->getUserBo();
+    $userFromDB = $userBo->selectUserByEmail($user->getEmail());
+    $user->setId($userFromDB->getId());
+  }
 
-    /*Connection as Admin*/
-    connect($session, $userAdmin);
-    visitUserManagment($session);
+  /*Connection as Admin*/
+  connect($session, $userAdmin);
+  visitUserManagment($session);
 
-    //Todo : search by name
-    /*Click to accept the prevent created user*/
-    $href = '?r=userManagement/validate&id=' . $user->getId();
-    $session->getPage()->find(
-        'css',
-        'a[href="' . $href . '"]'
-    )->click();
+  //Todo : search by name
+  /*Click to accept the prevent created user*/
+  $href = '?r=userManagement/validate&id=' . $user->getId();
+  $session->getPage()->find(
+    'css',
+    'a[href="' . $href . '"]'
+  )->click();
 
-    $url = 'http://localhost/kinenveut/?r=userManagement/validate&id=' . $user->getId();
-    checkUrl($session, $url);
+  $url = 'http://localhost/kinenveut/?r=userManagement/validate&id=' . $user->getId();
+  checkUrl($session, $url);
 
-    disconnect($session);
+  disconnect($session);
 
-    return $user->getId();
+  return $user->getId();
 }
 
 function createAuctionForUser(AuctionModel $auction, UserModel $user) : ?int
 {
-    /*Be careful, you are supposed to be connected with $user*/
+  /*Be careful, you are supposed to be connected with $user*/
 
-    $session = Universe::getUniverse()->getSession();
+  $session = Universe::getUniverse()->getSession();
 
-    $userAdmin = new UserModel();
-    $userAdmin
+  $userAdmin = new UserModel();
+  $userAdmin
         ->setEmail('admin@kinenveut.fr')
         ->setPassword('password');
 
-    visitCreateAuction($session);
-    createAuction($session, $auction);
+  visitCreateAuction($session);
+  createAuction($session, $auction);
 
-    disconnect($session);
-    /*Connection as Admin*/
-    connect($session, $userAdmin);
-    visitAuctionManagement($session);
+  disconnect($session);
+  /*Connection as Admin*/
+  connect($session, $userAdmin);
+  visitAuctionManagement($session);
 
-    //Todo : use the name to find the button :)
-    $auctionBo = App_BoFactory::getFactory()->getAuctionBo();
-    $userAuctions = $auctionBo->selectAllAuctionsBySellerId($user->getId());
+  //Todo : use the name to find the button :)
+  $auctionBo = App_BoFactory::getFactory()->getAuctionBo();
+  $userAuctions = $auctionBo->selectAllAuctionsBySellerId($user->getId());
 
-    if (count($userAuctions) == 1) {
-        $auctionId = $userAuctions[0]->getId();
-        $auction->setId($auctionId);
-    } else {
-        //here you must search for the auction using name and description :)
-        throw new Exception('A problem happenned while create an auction (the user can\'t have more than 1 auction for now');
-    }
+  if (count($userAuctions) == 1) {
+    $auctionId = $userAuctions[0]->getId();
+    $auction->setId($auctionId);
+  } else {
+    //here you must search for the auction using name and description :)
+    throw new Exception('A problem happenned while create an auction (the user can\'t have more than 1 auction for now');
+  }
 
-    /*Click to accept the prevent created auction*/
-    $url = 'http://localhost/kinenveut/?r=auctionManagement/validate&id=' . $auction->getId();
-    $session->visit($url);
-    checkUrl($session, $url);
+  /*Click to accept the prevent created auction*/
+  $url = 'http://localhost/kinenveut/?r=auctionManagement/validate&id=' . $auction->getId();
+  $session->visit($url);
+  checkUrl($session, $url);
 
-    disconnect($session);
+  disconnect($session);
 
-    return $auction->getId();
+  return $auction->getId();
 }
