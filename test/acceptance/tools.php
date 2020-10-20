@@ -66,7 +66,7 @@ function visitOwnAccountPage($session)
     '#menuAccount'
   )->click();
 
-  checkUrlPartial($session, 'kinenveut/?r=account&userId=');
+  checkUrlPartial($session, '/?r=account&userId=');
 }
 
 function visitCreateAuction($session)
@@ -82,7 +82,7 @@ function visitCreateAuction($session)
   }
   $button->click();
 
-  checkUrl('kinenveut/?r=auction/create');
+  checkUrl('/?r=auction/create');
 }
 
 function visitSells($session)
@@ -104,7 +104,7 @@ function visitSells($session)
     Universe::getUniverse()->getUser()->setId($userFromDb->getId());
     $user->setId($userFromDb->getId());
   }
-  checkUrl('kinenveut/?r=auction/sells/&userId=' . $user->getId());
+  checkUrl('/?r=auction/sells/&userId=' . $user->getId());
 }
 
 function visitBids($session)
@@ -125,7 +125,7 @@ function visitBids($session)
     Universe::getUniverse()->getUser()->setId($userFromDb->getId());
     $user->setId($userFromDb->getId());
   }
-  checkUrl('kinenveut/?r=auction/bids&userId=' . $user->getId());
+  checkUrl('/?r=auction/bids&userId=' . $user->getId());
 }
 
 function visitAuctionManagement($session)
@@ -139,7 +139,7 @@ function visitAuctionManagement($session)
     '#menuAuctionManagement'
   )->click();
 
-  checkUrl('kinenveut/?r=auctionManagement');
+  checkUrl('/?r=auctionManagement');
 }
 
 function visitUserManagment($session)
@@ -153,7 +153,7 @@ function visitUserManagment($session)
     '#menuUserManagement'
   )->click();
 
-  checkUrl('kinenveut/?r=userManagement');
+  checkUrl('/?r=userManagement');
 }
 
 function visitCategoriesManagment($session)
@@ -167,7 +167,7 @@ function visitCategoriesManagment($session)
     '#menuCategoryManagement'
   )->click();
 
-  checkUrl('kinenveut/?r=categorie');
+  checkUrl('/?r=categorie');
 }
 
 function visitRegistrationPage($session)
@@ -183,7 +183,7 @@ function visitRegistrationPage($session)
   }
   $button->click();
 
-  checkUrl('kinenveut/?r=registration');
+  checkUrl('/?r=registration');
 }
 
 function visitRequestPage($session)
@@ -197,14 +197,14 @@ function visitRequestPage($session)
     '#menuRequest'
   )->click();
 
-  checkUrlPartial($session, 'kinenveut/?r=accessRequest');
+  checkUrlPartial($session, '/?r=accessRequest');
 }
 
 /*Suscribe & Connection functions*/
 
 function suscribe($session, UserModel $localUser)
 {
-  checkUrl('kinenveut/?r=registration');
+  checkUrl('/?r=registration');
 
   /*Fill the form*/
   $session->getPage()->find(
@@ -239,12 +239,12 @@ function suscribe($session, UserModel $localUser)
   $button->click();
 
   //The user is redirect to the login page
-  checkUrl('kinenveut/?r=login');
+  checkUrl('/?r=login');
 }
 
 function connect($session, UserModel $user)
 {
-  checkUrl('kinenveut/?r=login');
+  checkUrl('/?r=login');
 
   /*Fill the form*/
   $session->getPage()->find(
@@ -263,24 +263,24 @@ function connect($session, UserModel $user)
   )->click();
 
   //The user is redirect to the home page
-  checkUrl('kinenveut/?r=home');
+  checkUrl('/?r=home');
 }
 
 function disconnect()
 {
   /*Disconnect*/
   //todo : find a way to click on the disconnect button
-  visiteUrl('kinenveut/?r=logout');
+  visiteUrl('/?r=logout');
 
   //The user is redirect to the login page
-  checkUrl('kinenveut/?r=login');
+  checkUrl('/?r=login');
 }
 
 /*Add values to DB*/
 
 function createAuction($session, $auction)
 {
-  checkUrl('kinenveut/?r=auction/create');
+  checkUrl('/?r=auction/create');
 
   /*Full the form to create an auction*/
   //Object name
@@ -326,7 +326,7 @@ function createAuction($session, $auction)
     'input[type="submit"]'
   )->click();
 
-  checkUrl('kinenveut/?r=home');
+  checkUrl('/?r=home');
 }
 
 /*Big functions*/
@@ -366,7 +366,7 @@ function subscribeAndValidateAUser(UserModel $user) : ?int
   }
   $button->click();
 
-  checkUrl('kinenveut/?r=userManagement/validate&id=' . $user->getId());
+  checkUrl('/?r=userManagement/validate&id=' . $user->getId());
 
   disconnect();
 
@@ -405,7 +405,7 @@ function createAuctionForUser(AuctionModel $auction, UserModel $user) : ?int
   }
 
   /*Click to accept the prevent created auction*/
-  $url = 'kinenveut/?r=auctionManagement/validate&id=' . $auction->getId();
+  $url = '/?r=auctionManagement/validate&id=' . $auction->getId();
   visiteUrl($url);
   checkUrl($url);
 

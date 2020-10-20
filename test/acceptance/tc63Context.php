@@ -32,6 +32,6 @@ class tc63Context implements Context
    */
   public function lenchereNestPasCreee()
   {
-    checkUrl('kinenveut/?r=auction/saveObjectAuction');
+    checkUrl('/?r=auction/saveObjectAuction');
   }
 }

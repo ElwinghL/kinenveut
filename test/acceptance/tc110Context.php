@@ -14,8 +14,7 @@ class tc110Context implements Context
    */
   public function lutilisateurEstSurLaPageDeRecherche()
   {
-    $session = Universe::getUniverse()->getSession();
-    $url = 'kinenveut/?r=home';
+    $url = '/?r=home';
     visiteUrl($url);
     checkUrl($url);
   }
@@ -77,7 +76,7 @@ class tc110Context implements Context
     }
 
     /*Click to accept the prevent created auction*/
-    $url = 'kinenveut/?r=auctionManagement/validate&id=' . $auction->getId();
+    $url = '/?r=auctionManagement/validate&id=' . $auction->getId();
     visiteUrl($url);
     checkUrl($url);
 

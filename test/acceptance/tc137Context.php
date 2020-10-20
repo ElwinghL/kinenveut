@@ -58,7 +58,7 @@ class tc137Context implements Context
       'a[href="' . $href . '"]'
     )->click();
 
-    $url = 'kinenveut/?r=userManagement/validate&id=' . $user2->getId();
+    $url = '/?r=userManagement/validate&id=' . $user2->getId();
     checkUrl($url);
 
     disconnect();
@@ -101,7 +101,7 @@ class tc137Context implements Context
     }
 
     /*Click to accept the prevent created auction*/
-    $url = 'kinenveut/?r=auctionManagement/validate&id=' . $auction->getId();
+    $url = '/?r=auctionManagement/validate&id=' . $auction->getId();
     visiteUrl($url);
     checkUrl($url);
 
@@ -119,7 +119,7 @@ class tc137Context implements Context
 
     /*Make a bid !*/
 
-    $url = 'kinenveut/?r=bid/index&auctionId=' . $auction->getId();
+    $url = '/?r=bid/index&auctionId=' . $auction->getId();
     visiteUrl($url);
     checkUrl($url);
 
