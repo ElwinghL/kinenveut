@@ -29,6 +29,19 @@ function checkUrlPartial($session, $expectedUrl)
 
 /*Visit pages / Click on button*/
 
+function clickOnMenu($session){
+    $button = $session->getPage()->find(
+        'css',
+        '#dropdownMenuButton'
+    );
+
+    if ($button == null) {
+        throw new Exception('The menu button you\'re searching doesn\'t exist');
+    }
+
+    $button->click();
+}
+
 function visitOwnAccountPage($session)
 {
   $session->getPage()->find(
@@ -45,14 +58,16 @@ function visitOwnAccountPage($session)
 
 function visitCreateAuction($session)
 {
-  $session->getPage()->find(
-    'css',
-    '#dropdownMenuButton'
-  )->click();
-  $session->getPage()->find(
-    'css',
-    '#menuCreateAuction'
-  )->click();
+    clickOnMenu($session);
+
+    $button = $session->getPage()->find(
+      'css',
+      '#menuCreateAuction'
+    );
+    if ($button == null) {
+        throw new Exception('The create auction button you\'re searching doesn\'t exist');
+    }
+    $button->click();
 
   checkUrl('kinenveut/?r=auction/create');
 }
