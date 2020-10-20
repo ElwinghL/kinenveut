@@ -133,6 +133,10 @@ class tc133Context implements Context
    */
   public function ilCliqueSurSeConnecter()
   {
-    throw new PendingException();
+    $session = Universe::getUniverse()->getSession();
+    $session->getPage()->find(
+      'css',
+      'input[type="submit"]'
+    )->click();
   }
 }

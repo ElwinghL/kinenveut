@@ -36,7 +36,7 @@ function visitOwnAccountPage($session)
     '#menuAccount'
   )->click();
 
-  checkUrlPartial('http://localhost/kinenveut/?r=account&userId=');
+  checkUrlPartial($session, 'http://localhost/kinenveut/?r=account&userId=');
 }
 
 function visitCreateAuction($session)
