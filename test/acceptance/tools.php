@@ -307,8 +307,7 @@ function subscribeAndValidateAUser(UserModel $user) : ?int
     'a[href="' . $href . '"]'
   )->click();
 
-  $url = 'http://localhost/kinenveut/?r=userManagement/validate&id=' . $user->getId();
-  checkUrl($session, $url);
+  checkUrl('http://localhost/kinenveut/?r=userManagement/validate&id=' . $user->getId());
 
   disconnect($session);
 
@@ -349,7 +348,7 @@ function createAuctionForUser(AuctionModel $auction, UserModel $user) : ?int
   /*Click to accept the prevent created auction*/
   $url = 'http://localhost/kinenveut/?r=auctionManagement/validate&id=' . $auction->getId();
   $session->visit($url);
-  checkUrl($session, $url);
+  checkUrl($url);
 
   disconnect($session);
 
