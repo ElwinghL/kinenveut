@@ -15,7 +15,7 @@ class tc340Context implements Context
     $session = Universe::getUniverse()->getSession();
 
     $url = 'kinenveut/?r=bid/index&auctionId=' . Universe::getUniverse()->getAuction()->getId();
-    $session->visit($_ENV['path'].$url);
+    visiteUrl($url);
 
     checkUrl($url);
   }

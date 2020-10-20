@@ -17,7 +17,7 @@ class tc133Context implements Context
   {
     $session = Universe::getUniverse()->getSession();
 
-    $session->visit($_ENV['path'].'kinenveut/');
+    visiteUrl('kinenveut/');
 
     checkUrl('kinenveut/?r=login');
   }
@@ -65,7 +65,6 @@ class tc133Context implements Context
    */
   public function lutilisateurRecoitUnEmailAvecLaPossibiliteDeRecupererLaccesASonCompte()
   {
-
     //Non testable
     // throw new PendingException();
   }
@@ -99,7 +98,6 @@ class tc133Context implements Context
      */
   public function lutilisateurRecoitUnMessageLuiIndiquantQuaucuneAdresseMailNeCorrespondsALadresseMailSaisie()
   {
-
     $session = Universe::getUniverse()->getSession();
 
     $url = 'kinenveut/?r=login/login';

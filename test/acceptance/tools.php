@@ -29,6 +29,32 @@ function checkUrlPartial($session, $expectedUrl)
 
 /*Visit pages / Click on button*/
 
+function visiteUrl($url)
+{
+  $session = Universe::getUniverse()->getSession();
+  $session->visit($url);
+  if ($session->getStatusCode() !== 200) {
+    $session->visit($_ENV['path'] . $url);
+    if ($session->getStatusCode() !== 200) {
+      throw new Exception('Failed to access to the url, please, check the path variable');
+    }
+  }
+}
+
+function clickOnMenu($session)
+{
+  $button = $session->getPage()->find(
+    'css',
+    '#dropdownMenuButton'
+  );
+
+  if ($button == null) {
+    throw new Exception('The menu button you\'re searching doesn\'t exist');
+  }
+
+  $button->click();
+}
+
 function visitOwnAccountPage($session)
 {
   $session->getPage()->find(
@@ -45,14 +71,16 @@ function visitOwnAccountPage($session)
 
 function visitCreateAuction($session)
 {
-  $session->getPage()->find(
-    'css',
-    '#dropdownMenuButton'
-  )->click();
-  $session->getPage()->find(
+  clickOnMenu($session);
+
+  $button = $session->getPage()->find(
     'css',
     '#menuCreateAuction'
-  )->click();
+  );
+  if ($button == null) {
+    throw new Exception('The create auction button you\'re searching doesn\'t exist');
+  }
+  $button->click();
 
   checkUrl('kinenveut/?r=auction/create');
 }
@@ -238,11 +266,11 @@ function connect($session, UserModel $user)
   checkUrl('kinenveut/?r=home');
 }
 
-function disconnect($session)
+function disconnect()
 {
   /*Disconnect*/
   //todo : find a way to click on the disconnect button
-  $session->visit($_ENV['path'].'kinenveut/?r=logout');
+  visiteUrl('kinenveut/?r=logout');
 
   //The user is redirect to the login page
   checkUrl('kinenveut/?r=login');
@@ -340,7 +368,7 @@ function subscribeAndValidateAUser(UserModel $user) : ?int
 
   checkUrl('kinenveut/?r=userManagement/validate&id=' . $user->getId());
 
-  disconnect($session);
+  disconnect();
 
   return $user->getId();
 }
@@ -359,7 +387,7 @@ function createAuctionForUser(AuctionModel $auction, UserModel $user) : ?int
   visitCreateAuction($session);
   createAuction($session, $auction);
 
-  disconnect($session);
+  disconnect();
   /*Connection as Admin*/
   connect($session, $userAdmin);
   visitAuctionManagement($session);
@@ -378,10 +406,10 @@ function createAuctionForUser(AuctionModel $auction, UserModel $user) : ?int
 
   /*Click to accept the prevent created auction*/
   $url = 'kinenveut/?r=auctionManagement/validate&id=' . $auction->getId();
-  $session->visit($_ENV['path'].$url);
+  visiteUrl($url);
   checkUrl($url);
 
-  disconnect($session);
+  disconnect();
 
   return $auction->getId();
 }

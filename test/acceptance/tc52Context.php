@@ -41,6 +41,5 @@ class tc52Context implements Context
   public function uneEnchereEstCreee()
   {
     checkUrl('kinenveut/?r=home');
-
   }
 }

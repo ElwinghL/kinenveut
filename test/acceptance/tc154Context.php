@@ -17,7 +17,7 @@ class tc154Context implements Context
     $session = Universe::getUniverse()->getSession();
     $user = Universe::getUniverse()->getUser();
 
-    disconnect($session);
+    disconnect();
 
     /*Create a new user*/
     $localUser = new UserModel();
@@ -64,6 +64,5 @@ class tc154Context implements Context
     ) == false) {
       throw new Exception('The waiting list is empty');
     }
-
   }
 }

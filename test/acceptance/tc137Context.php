@@ -24,7 +24,7 @@ class tc137Context implements Context
 
     Universe::getUniverse()->setUser3($userAdmin);
 
-    disconnect($session);
+    disconnect();
 
     /*Create a new user*/
     $user2 = new UserModel();
@@ -61,7 +61,7 @@ class tc137Context implements Context
     $url = 'kinenveut/?r=userManagement/validate&id=' . $user2->getId();
     checkUrl($url);
 
-    disconnect($session);
+    disconnect();
     connect($session, $user2);
 
     /*Create a new auction*/
@@ -83,7 +83,7 @@ class tc137Context implements Context
 
     createAuction($session, $auction);
 
-    disconnect($session);
+    disconnect();
 
     /*Connection as Admin*/
     connect($session, $userAdmin);
@@ -102,10 +102,10 @@ class tc137Context implements Context
 
     /*Click to accept the prevent created auction*/
     $url = 'kinenveut/?r=auctionManagement/validate&id=' . $auction->getId();
-    $session->visit($_ENV['path'].$url);
+    visiteUrl($url);
     checkUrl($url);
 
-    disconnect($session);
+    disconnect();
 
     /*Now connect the user who will participate to the auction*/
     connect($session, $currentUser);
@@ -120,7 +120,7 @@ class tc137Context implements Context
     /*Make a bid !*/
 
     $url = 'kinenveut/?r=bid/index&auctionId=' . $auction->getId();
-    $session->visit($_ENV['path'].$url);
+    visiteUrl($url);
     checkUrl($url);
 
     $session->getPage()->find(

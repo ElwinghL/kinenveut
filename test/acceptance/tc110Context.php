@@ -16,7 +16,7 @@ class tc110Context implements Context
   {
     $session = Universe::getUniverse()->getSession();
     $url = 'kinenveut/?r=home';
-    $session->visit($_ENV['path'].$url);
+    visiteUrl($url);
     checkUrl($url);
   }
 
@@ -53,7 +53,7 @@ class tc110Context implements Context
     visitCreateAuction($session);
     createAuction($session, $auction);
 
-    disconnect($session);
+    disconnect();
 
     /*Connection as Admin*/
     $userAdmin = new UserModel();
@@ -78,10 +78,10 @@ class tc110Context implements Context
 
     /*Click to accept the prevent created auction*/
     $url = 'kinenveut/?r=auctionManagement/validate&id=' . $auction->getId();
-    $session->visit($_ENV['path'].$url);
+    visiteUrl($url);
     checkUrl($url);
 
-    disconnect($session);
+    disconnect();
 
     connect($session, $user);
 
@@ -123,7 +123,5 @@ class tc110Context implements Context
     )->getText() != $auction->getName()) {
       throw new Exception('auction was not found');
     }
-
-
   }
 }

@@ -1,6 +1,7 @@
 <?php
 
 use Behat\Behat\Context\Context;
+use Behat\Behat\Tester\Exception\PendingException;
 
 include_once 'tools.php';
 
@@ -14,6 +15,8 @@ class tc107Context implements Context
    */
   public function lutilisateurEstUnAdministrateurDeLenchere()
   {
+    //todo :corriger la suppression dans la bdd
+    throw new PendingException();
     $session = Universe::getUniverse()->getSession();
     $admin = Universe::getUniverse()->getUser();
     //Création de l'enchère et validation
@@ -41,7 +44,7 @@ class tc107Context implements Context
     )->click();
 
     //Déconnexion
-    disconnect($session);
+    disconnect();
 
     //Création des users pour la suite
     /*Create a new user*/
@@ -73,7 +76,7 @@ class tc107Context implements Context
     $btnAccept->click();
 
     //Déconnexion
-    disconnect($session);
+    disconnect();
 
     //Connexion sur les autres compte
     connect($session, $unUser);
@@ -94,8 +97,7 @@ class tc107Context implements Context
     )->getText() != 'Annuler ma demande') {
       throw new Exception('Demande non validée');
     }
-    disconnect($session);
-
+    disconnect();
   }
 
   /**
@@ -120,7 +122,7 @@ class tc107Context implements Context
     //TODO : Faire une séléction par ID
     $btnRefuse = $session->getPage()->find('css', '.btn-danger');
     $btnRefuse->click();
-    disconnect($session);
+    disconnect();
   }
 
   /**
@@ -155,7 +157,7 @@ class tc107Context implements Context
     if ($session->getPage()->findById('makeabid') != null) {
       throw new Exception("L'utilisateur peut participer");
     }
-    disconnect($session);
+    disconnect();
   }
 
   /**
@@ -169,7 +171,7 @@ class tc107Context implements Context
     //TODO : Faire une séléction par ID
     $btnRefuse = $session->getPage()->find('css', '.btn-success');
     $btnRefuse->click();
-    disconnect($session);
+    disconnect();
   }
 
   /**

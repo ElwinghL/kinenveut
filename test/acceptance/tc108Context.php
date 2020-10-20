@@ -16,7 +16,7 @@ class tc108Context implements Context
   {
     $session = Universe::getUniverse()->getSession();
 
-    $session->visit($_ENV['path'].'kinenveut/');
+    visiteUrl('kinenveut/');
     checkUrl('kinenveut/?r=login');
   }
 
@@ -120,7 +120,7 @@ class tc108Context implements Context
   {
     $session = Universe::getUniverse()->getSession();
 
-    $session->visit($_ENV['path'].'kinenveut/');
+    visiteUrl('kinenveut/');
     checkUrl('kinenveut/?r=login');
 
     /*Check if the user is well initialized*/

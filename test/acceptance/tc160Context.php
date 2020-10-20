@@ -16,7 +16,6 @@ class tc160Context implements Context
     Universe::getUniverse()->getAuction()->setAuctionState(4);
 
     //Non testable : Un user ne peut pas entrer de montant si l'enchère est fermée
-
   }
 
   /**
@@ -25,7 +24,6 @@ class tc160Context implements Context
   public function unMessageDerreurEstAffiche()
   {
     //Non testable : Aucun message n'est affiché car la vérification se fait dans l'input
-
   }
 
   /**
