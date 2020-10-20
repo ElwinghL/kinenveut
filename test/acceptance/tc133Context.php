@@ -43,6 +43,7 @@ class tc133Context implements Context
     visitRegistrationPage($session);
 
     suscribe($session, $localUser);
+    Universe::getUniverse()->setToDelete(['users' => [$localUser]]);
   }
 
   /**
