@@ -1,7 +1,9 @@
 <?php
 
-function checkUrl($session, $expectedUrl)
+function checkUrl($expectedUrl)
 {
+  $expectedUrl = $_ENV['path'] . $expectedUrl;
+  $session = Universe::getUniverse()->getSession();
   $currentUrl = $session->getCurrentUrl();
   if ($session->getStatusCode() !== 200) {
     throw new Exception('status code is not 200');
@@ -13,16 +15,31 @@ function checkUrl($session, $expectedUrl)
 
 function checkUrlPartial($session, $expectedUrl)
 {
+  $expectedUrl = $_ENV['path'] . $expectedUrl;
   $currentUrl = $session->getCurrentUrl();
   if ($session->getStatusCode() !== 200) {
     throw new Exception('status code is not 200');
   }
-  if (!strpos($currentUrl, $expectedUrl)) {
+  if (strpos($currentUrl, $expectedUrl) === false) {
     throw new Exception('The current url "' . $currentUrl . '" do not contain "' . $expectedUrl . '"');
   }
 }
 
 /*Visit pages / Click on button*/
+
+function visitOwnAccountPage($session)
+{
+  $session->getPage()->find(
+    'css',
+    '#dropdownMenuButton'
+  )->click();
+  $session->getPage()->find(
+    'css',
+    '#menuAccount'
+  )->click();
+
+  checkUrlPartial($session, 'kinenveut/?r=account&userId=');
+}
 
 function visitCreateAuction($session)
 {
@@ -35,8 +52,7 @@ function visitCreateAuction($session)
     '#menuCreateAuction'
   )->click();
 
-  $url = 'http://localhost/kinenveut/?r=auction/create';
-  checkUrl($session, $url);
+  checkUrl('kinenveut/?r=auction/create');
 }
 
 function visitSells($session)
@@ -58,8 +74,7 @@ function visitSells($session)
     Universe::getUniverse()->getUser()->setId($userFromDb->getId());
     $user->setId($userFromDb->getId());
   }
-  $expectedUrl = 'http://localhost/kinenveut/?r=auction/sells/&userId=' . $user->getId();
-  checkUrl($session, $expectedUrl);
+  checkUrl('kinenveut/?r=auction/sells/&userId=' . $user->getId());
 }
 
 function visitBids($session)
@@ -80,8 +95,7 @@ function visitBids($session)
     Universe::getUniverse()->getUser()->setId($userFromDb->getId());
     $user->setId($userFromDb->getId());
   }
-  $expectedUrl = 'http://localhost/kinenveut/?r=auction/bids&userId=' . $user->getId();
-  checkUrl($session, $expectedUrl);
+  checkUrl('kinenveut/?r=auction/bids&userId=' . $user->getId());
 }
 
 function visitAuctionManagement($session)
@@ -95,8 +109,7 @@ function visitAuctionManagement($session)
     '#menuAuctionManagement'
   )->click();
 
-  $url = 'http://localhost/kinenveut/?r=auctionManagement';
-  checkUrl($session, $url);
+  checkUrl('kinenveut/?r=auctionManagement');
 }
 
 function visitUserManagment($session)
@@ -110,8 +123,7 @@ function visitUserManagment($session)
     '#menuUserManagement'
   )->click();
 
-  $url = 'http://localhost/kinenveut/?r=userManagement';
-  checkUrl($session, $url);
+  checkUrl('kinenveut/?r=userManagement');
 }
 
 function visitCategoriesManagment($session)
@@ -125,20 +137,23 @@ function visitCategoriesManagment($session)
     '#menuCategoryManagement'
   )->click();
 
-  $url = 'http://localhost/kinenveut/?r=categorie';
-  checkUrl($session, $url);
+  checkUrl('kinenveut/?r=categorie');
 }
 
 function visitRegistrationPage($session)
 {
   /*Go to suscribe page*/
-  $session->getPage()->find(
+  $button = $session->getPage()->find(
     'css',
     'a[href="?r=registration"]'
-  )->click();
+  );
 
-  $url = 'http://localhost/kinenveut/?r=registration';
-  checkUrl($session, $url);
+  if ($button == null) {
+    throw new Exception('The registration link you\'re searching doesn\'t exist');
+  }
+  $button->click();
+
+  checkUrl('kinenveut/?r=registration');
 }
 
 function visitRequestPage($session)
@@ -152,16 +167,14 @@ function visitRequestPage($session)
     '#menuRequest'
   )->click();
 
-  $url = '?r=accessRequest';
-  checkUrlPartial($session, $url);
+  checkUrlPartial($session, 'kinenveut/?r=accessRequest');
 }
 
 /*Suscribe & Connection functions*/
 
 function suscribe($session, UserModel $localUser)
 {
-  $url = 'http://localhost/kinenveut/?r=registration';
-  checkUrl($session, $url);
+  checkUrl('kinenveut/?r=registration');
 
   /*Fill the form*/
   $session->getPage()->find(
@@ -186,21 +199,22 @@ function suscribe($session, UserModel $localUser)
   )->setValue($localUser->getPassword());
 
   /*Click on suscribe*/
-  $session->getPage()->find(
+  $button = $session->getPage()->find(
     'css',
     'input[type="submit"]'
-  )->click();
+  );
+  if ($button == null) {
+    throw new Exception('There is no submit button on this page');
+  }
+  $button->click();
 
   //The user is redirect to the login page
-
-  $url = 'http://localhost/kinenveut/?r=login';
-  checkUrl($session, $url);
+  checkUrl('kinenveut/?r=login');
 }
 
 function connect($session, UserModel $user)
 {
-  $url = 'http://localhost/kinenveut/?r=login';
-  checkUrl($session, $url);
+  checkUrl('kinenveut/?r=login');
 
   /*Fill the form*/
   $session->getPage()->find(
@@ -219,29 +233,24 @@ function connect($session, UserModel $user)
   )->click();
 
   //The user is redirect to the home page
-
-  $url = 'http://localhost/kinenveut/?r=home';
-  checkUrl($session, $url);
+  checkUrl('kinenveut/?r=home');
 }
 
 function disconnect($session)
 {
   /*Disconnect*/
   //todo : find a way to click on the disconnect button
-  $session->visit('http://localhost/kinenveut/?r=logout');
+  $session->visit('kinenveut/?r=logout');
 
   //The user is redirect to the login page
-
-  $url = 'http://localhost/kinenveut/?r=login';
-  checkUrl($session, $url);
+  checkUrl('kinenveut/?r=login');
 }
 
 /*Add values to DB*/
 
 function createAuction($session, $auction)
 {
-  $url = 'http://localhost/kinenveut/?r=auction/create';
-  checkUrl($session, $url);
+  checkUrl('kinenveut/?r=auction/create');
 
   /*Full the form to create an auction*/
   //Object name
@@ -287,88 +296,7 @@ function createAuction($session, $auction)
     'input[type="submit"]'
   )->click();
 
-  $url = 'http://localhost/kinenveut/?r=home';
-  checkUrl($session, $url);
-}
-
-/*Delete Universe elements functions*/
-
-function deleteUserUniverse()
-{
-  $canDelete = Universe::getUniverse()->getCanDelete();
-  $userBo = App_BoFactory::getFactory()->getUserBo();
-  if (isset($canDelete['user'])) {
-    $user = $userBo->selectUserByEmail(Universe::getUniverse()->getUser()->getEmail());
-    if ($user != null) {
-      $isAdmin = $user->getIsAdmin();
-      if ($isAdmin == false) {
-        $userBo->deleteUser($user->getId());
-      }
-    }
-    unset($canDelete['user']);
-    Universe::getUniverse()->setCanDelete($canDelete);
-  }
-}
-
-function deleteUser2Universe()
-{
-  $canDelete = Universe::getUniverse()->getCanDelete();
-  $userBo = App_BoFactory::getFactory()->getUserBo();
-
-  if (isset($canDelete['user2'])) {
-    $user2 = $userBo->selectUserByEmail(Universe::getUniverse()->getUser2()->getEmail());
-    if ($user2 != null) {
-      $isAdmin2 = $user2->getIsAdmin();
-      if ($isAdmin2 == false) {
-        $userBo->deleteUser($user2->getId());
-      }
-    }
-    unset($canDelete['user2']);
-    Universe::getUniverse()->setCanDelete($canDelete);
-  }
-}
-
-function deleteUser3Universe()
-{
-  $canDelete = Universe::getUniverse()->getCanDelete();
-  $userBo = App_BoFactory::getFactory()->getUserBo();
-
-  if (isset($canDelete['user3'])) {
-    $user3 = $userBo->selectUserByEmail(Universe::getUniverse()->getUser3()->getEmail());
-    if ($user3 != null) {
-      $isAdmin = $user3->getIsAdmin();
-      if ($isAdmin == false) {
-        $userBo->deleteUser($user3->getId());
-      }
-    }
-    unset($canDelete['user3']);
-    Universe::getUniverse()->setCanDelete($canDelete);
-  }
-}
-
-function deleteAuctionUniverse()
-{
-  $auction = Universe::getUniverse()->getAuction();
-
-  if (isset($canDelete['auctions']) && $auction != null) {
-    $sellers = $canDelete['auctions'];
-    foreach ($sellers as $seller) {
-      $auctionBo = App_BoFactory::getFactory()->getAuctionBo();
-      $userBo = App_BoFactory::getFactory()->getUserBo();
-
-      $user = $userBo->selectUserByEmail($seller->getEmail());
-
-      if ($user != null) {
-        $userAuctions = $auctionBo->selectAllAuctionsBySellerId($user->getId());
-        foreach ($userAuctions as $oneAuction) {
-          if ($auction->getName() == $oneAuction->getName()) {
-            $auctionBo->deleteAuctionById($auction->getId());
-          }
-        }
-      }
-    }
-    unset($canDelete['auctions']);
-  }
+  checkUrl('kinenveut/?r=home');
 }
 
 /*Big functions*/
@@ -398,15 +326,21 @@ function subscribeAndValidateAUser(UserModel $user) : ?int
   //Todo : search by name
   /*Click to accept the prevent created user*/
   $href = '?r=userManagement/validate&id=' . $user->getId();
-  $session->getPage()->find(
+  $button = $session->getPage()->find(
     'css',
     'a[href="' . $href . '"]'
-  )->click();
+  );
 
-  $url = 'http://localhost/kinenveut/?r=userManagement/validate&id=' . $user->getId();
-  checkUrl($session, $url);
+  if ($button == null) {
+    throw new Exception('The link you\' searching doesn\'t exist');
+  }
+  $button->click();
+
+  checkUrl('kinenveut/?r=userManagement/validate&id=' . $user->getId());
 
   disconnect($session);
+
+  Universe::getUniverse()->setToDelete(['users' => [$user]]);
 
   return $user->getId();
 }
@@ -443,9 +377,9 @@ function createAuctionForUser(AuctionModel $auction, UserModel $user) : ?int
   }
 
   /*Click to accept the prevent created auction*/
-  $url = 'http://localhost/kinenveut/?r=auctionManagement/validate&id=' . $auction->getId();
+  $url = 'kinenveut/?r=auctionManagement/validate&id=' . $auction->getId();
   $session->visit($url);
-  checkUrl($session, $url);
+  checkUrl($url);
 
   disconnect($session);
 

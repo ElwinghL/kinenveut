@@ -10,23 +10,6 @@ include_once 'test/acceptance/tools.php';
 class tc106Context implements Context
 {
   /**
-   * Initializes context.
-   *
-   * Every scenario gets its own context instance.
-   * You can also pass arbitrary arguments to the
-   * context constructor through behat.yml.
-   */
-  public function __construct()
-  {
-  }
-
-  public function __destruct()
-  {
-    deleteAuctionUniverse();
-    deleteUserUniverse();
-  }
-
-  /**
    * @Given L'utilisateur est normal
    */
   public function lutilisateurEstNormal()
@@ -85,7 +68,6 @@ class tc106Context implements Context
       throw new Exception('auction was not found');
     }
 
-    $sellers = [Universe::getUniverse()->getUser()];
-    Universe::getUniverse()->setCanDelete(['user'=>true, 'auctions'=>$sellers]);
+    Universe::getUniverse()->setToDelete(['users' => [Universe::getUniverse()->getUser()]]);
   }
 }

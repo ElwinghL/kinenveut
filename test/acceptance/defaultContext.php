@@ -26,9 +26,37 @@ class defaultContext implements Context
 
   public function __destruct()
   {
+    $this->deleteUsersUniverse();
     Universe::getUniverse()->setUser(null);
     Universe::getUniverse()->setUser2(null);
     Universe::getUniverse()->setUser3(null);
     Universe::getUniverse()->setAuction(null);
+  }
+
+  private function deleteUsersUniverse()
+  {
+    $auctionBo = App_BoFactory::getFactory()->getAuctionBo();
+    $userBo = App_BoFactory::getFactory()->getUserBo();
+    $toDelete = Universe::getUniverse()->getToDelete();
+    $auction = Universe::getUniverse()->getAuction();
+
+    if (isset($toDelete['users'])) {
+      foreach ($toDelete['users'] as $user) {
+        $user = $userBo->selectUserByEmail($user->getEmail());
+        if ($user != null && !$user->getIsAdmin()) {
+          if ($auction != null) {
+            $userAuctions = $auctionBo->selectAllAuctionsBySellerId($user->getId());
+            foreach ($userAuctions as $oneAuction) {
+              if ($auction->getName() == $oneAuction->getName()) {
+                $auctionBo->deleteAuctionById($oneAuction->getId());
+              }
+            }
+          }
+          $userBo->deleteUser($user->getId());
+        }
+      }
+      unset($toDelete['users']);
+      Universe::getUniverse()->setToDelete($toDelete);
+    }
   }
 }

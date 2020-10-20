@@ -10,24 +10,6 @@ include_once 'test/acceptance/tools.php';
 class tc280Context implements Context
 {
   /**
-   * Initializes context.
-   *
-   * Every scenario gets its own context instance.
-   * You can also pass arbitrary arguments to the
-   * context constructor through behat.yml.
-   */
-  public function __construct()
-  {
-  }
-
-  public function __destruct()
-  {
-    deleteAuctionUniverse();
-    deleteUserUniverse();
-    deleteUser2Universe();
-  }
-
-  /**
    * @When l'utilisateur choisit une visibilité
    */
   public function lutilisateurChoisitUneVisibilite()
@@ -48,8 +30,8 @@ class tc280Context implements Context
     //Todo : Atention, on ne sait pas s'il existe ou non des enchères :)
     $session = Universe::getUniverse()->getSession();
 
-    $url = 'http://localhost/kinenveut/?r=home/search';
-    checkUrl($session, $url);
+    $url = 'kinenveut/?r=home/search';
+    checkUrl($url);
 
     if ($session->getPage()->find(
       'css',
@@ -58,7 +40,6 @@ class tc280Context implements Context
       throw new Exception('The auction list was not found');
     }
 
-    $sellers = [Universe::getUniverse()->getUser()];
-    Universe::getUniverse()->setCanDelete(['user' => true, 'auction' => $sellers]);
+    Universe::getUniverse()->setToDelete(['users' => [Universe::getUniverse()->getUser()]]);
   }
 }

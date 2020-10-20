@@ -9,23 +9,6 @@ include_once 'tools.php';
 class tc51Context implements Context
 {
   /**
-   * Initializes context.
-   *
-   * Every scenario gets its own context instance.
-   * You can also pass arbitrary arguments to the
-   * context constructor through behat.yml.
-   */
-  public function __construct()
-  {
-  }
-
-  public function __destruct()
-  {
-    deleteAuctionUniverse();
-    deleteUserUniverse();
-  }
-
-  /**
    * @Then la liste des enchères publiques est visible
    */
   public function laListeDesEncheresPubliquesEstVisible()
@@ -134,7 +117,6 @@ class tc51Context implements Context
       throw new Exception('confidential auction was not found');
     }
 
-    $sellers = [Universe::getUniverse()->getUser()];
-    Universe::getUniverse()->setCanDelete(['user'=>true, 'auctions'=>$sellers]);
+    Universe::getUniverse()->setToDelete(['users' => [Universe::getUniverse()->getUser()]]);
   }
 }

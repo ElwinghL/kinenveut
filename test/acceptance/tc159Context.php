@@ -8,23 +8,6 @@ use Behat\Behat\Context\Context;
 class tc159Context implements Context
 {
   /**
-   * Initializes context.
-   *
-   * Every scenario gets its own context instance.
-   * You can also pass arbitrary arguments to the
-   * context constructor through behat.yml.
-   */
-  public function __construct()
-  {
-  }
-
-  public function __destruct()
-  {
-    deleteAuctionUniverse();
-    deleteUserUniverse();
-  }
-
-  /**
    * @Given l'utilisateur est sur la page d'une enchère
    */
   public function lutilisateurEstSurLaPageDuneEnchere()
@@ -35,25 +18,25 @@ class tc159Context implements Context
     /*Create a new user*/
     $user2 = new UserModel();
     $user2
-          ->setFirstName('Capucine')
-          ->setLastName('Dupont')
-          ->setBirthDate(DateTime::createFromFormat('d/m/Y', '01/06/1995'))
-          ->setEmail('capucine.dupont@kinenveut.fr')
-          ->setPassword('password');
+      ->setFirstName('Capucine')
+      ->setLastName('Dupont')
+      ->setBirthDate(DateTime::createFromFormat('d/m/Y', '01/06/1995'))
+      ->setEmail('capucine.dupont@kinenveut.fr')
+      ->setPassword('password');
     Universe::getUniverse()->setUser2($user2);
 
     /*Create a new auction*/
     $auction = new AuctionModel();
     $auction
-          ->setName('Objet test123')
-          ->setDescription('Ceci est une enchère insérée lors de tests.')
-          ->setBasePrice(3)
-          ->setReservePrice(7)
-          ->setDuration(7)
-          ->setSellerId($user2->getId())
-          ->setPrivacyId(0)
-          ->setCategoryId(1)
-          ->setStartDate(new DateTime());
+      ->setName('Objet test123')
+      ->setDescription('Ceci est une enchère insérée lors de tests.')
+      ->setBasePrice(3)
+      ->setReservePrice(7)
+      ->setDuration(7)
+      ->setSellerId($user2->getId())
+      ->setPrivacyId(0)
+      ->setCategoryId(1)
+      ->setStartDate(new DateTime());
     Universe::getUniverse()->setAuction($auction);
 
     disconnect($session);
@@ -70,12 +53,15 @@ class tc159Context implements Context
       Universe::getUniverse()->getAuction()->setId($auctionId);
     }
 
+    Universe::getUniverse()->getAuction()->setBestBid(new BidModel());
+    Universe::getUniverse()->getAuction()->getBestBid()->setBidPrice(Universe::getUniverse()->getAuction()->getBasePrice());
+
     /*Now connect the user who will participate to the auction*/
     connect($session, $currentUser);
 
-    $url = 'http://localhost/kinenveut/?r=bid/index&auctionId=' . $auction->getId();
+    $url = 'kinenveut/?r=bid/index&auctionId=' . $auction->getId();
     $session->visit($url);
-    checkUrl($session, $url);
+    checkUrl($url);
   }
 
   /**
@@ -96,32 +82,13 @@ class tc159Context implements Context
         throw new Exception('user cannot bid');
       }
     }
-  }
 
-  /**
-   * @Given l'utilisateur a entré au préalable le montant de l'enchère
-   */
-  public function lutilisateurAEntreAuPrealableLeMontantDeLenchere()
-  {
-    $session = Universe::getUniverse()->getSession();
-
-    $session->getPage()->find(
+    if ($session->getPage()->find(
       'css',
       'input[name="bidPrice"]'
-    )->setValue(42);
-  }
-
-  /**
-   * @When l'utilisateur clique sur le bouton d'enchère
-   */
-  public function lutilisateurCliqueSurLeBoutonDenchere()
-  {
-    $session = Universe::getUniverse()->getSession();
-
-    $session->getPage()->find(
-      'css',
-      '#makeabid'
-    )->click();
+    ) == false) {
+      throw new Exception('The user is not authorized to bid !');
+    };
   }
 
   /**
@@ -134,41 +101,65 @@ class tc159Context implements Context
     if ($session->getPage()->find(
       'css',
       'h2'
-    )->getText() != Universe::getUniverse()->getAuction()->getName() . ' - 42€') {
+    )->getText() != Universe::getUniverse()->getAuction()->getName() . ' - ' . Universe::getUniverse()->getAuction()->getBestBid()->getBidPrice() . '€') {
       throw new Exception('bid is not valid');
     };
   }
 
   /**
-   * @When l'utilisateur a choisi un montant valide
+   * @Given l'utilisateur a entré un montant valide
    */
-  public function lutilisateurAChoisiUnMontantValide()
+  public function lutilisateurAEntreUnMontantValide()
   {
     $session = Universe::getUniverse()->getSession();
+    $bidPrice = (Universe::getUniverse()->getAuction()->getBasePrice() + 1) * 2;
+    $auction = Universe::getUniverse()->getAuction();
 
-    if ($session->getPage()->find(
+    $session->getPage()->find(
       'css',
-      'h2'
-    )->getText() != 'Objet test123 - 42€') {
-      throw new Exception('bid is not valid');
-    };
+      'input[name="bidPrice"]'
+    )->setValue($bidPrice);
+
+    //todo : check that there is not any errors :)
+
+    Universe::getUniverse()->getAuction()->getBestBid()->setBidPrice($bidPrice);
   }
 
   /**
-   * @Then l'utilisateur enchérit du montant choisi
+   * @When l'utilisateur clique sur le bouton pour enchérir
    */
-  public function lutilisateurEncheritDuMontantChoisi()
+  public function lutilisateurCliqueSurLeBoutonPourEncherir()
   {
     $session = Universe::getUniverse()->getSession();
 
     if ($session->getPage()->find(
       'css',
+      '#makeabid'
+    ) == null) {
+      throw new Exception('user cannot bid');
+    }
+    $session->getPage()->find(
+      'css',
+      '#makeabid'
+    )->click();
+  }
+
+  /**
+   * @Then l'enchère de l'utilisateur est acceptée
+   */
+  public function lenchereDeLutilisateurEstAcceptee()
+  {
+    $session = Universe::getUniverse()->getSession();
+    $auction = Universe::getUniverse()->getAuction();
+    $bidPrice = $auction->getBestBid()->getBidPrice();
+
+    if ($session->getPage()->find(
+      'css',
       'h2'
-    )->getText() != 'Objet test123 - 42€') {
-      throw new Exception('bid is not valid');
+    )->getText() != $auction->getName() . ' - ' . $bidPrice . '€') {
+      throw new Exception('The auction title is not the expected one so the previous bid must not be valid');
     };
 
-    $sellers = [Universe::getUniverse()->getUser()];
-    Universe::getUniverse()->setCanDelete(['user'=>true, 'user2'=>true, 'auctions'=>$sellers]);
+    Universe::getUniverse()->setToDelete(['users' => [Universe::getUniverse()->getUser(), Universe::getUniverse()->getUser2()]]);
   }
 }

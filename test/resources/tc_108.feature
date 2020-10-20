@@ -3,6 +3,7 @@ Fonctionnalité: Se connecter en tant que client
   
   Scénario: Se connecter
     Etant donné L'utilisateur est normal
+    Et L'utilisateur possède un compte sur le site
     Et L'utilisateur est sur la page de connexion
     Et L'utilisateur entre son adresse mail
     Et L'utilisateur entre son mot de passe
@@ -11,6 +12,7 @@ Fonctionnalité: Se connecter en tant que client
   
   Scénario: Echec connexion e-mail
     Etant donné L'utilisateur est normal
+    Et L'utilisateur possède un compte sur le site
     Et L'utilisateur est sur la page de connexion
     Et L'utilisateur se trompe d'adresse mail
     Et L'utilisateur entre son mot de passe
@@ -19,6 +21,7 @@ Fonctionnalité: Se connecter en tant que client
   
   Scénario: Echec connexion mot de passe
     Etant donné L'utilisateur est normal
+    Et L'utilisateur possède un compte sur le site
     Et L'utilisateur est sur la page de connexion
     Et L'utilisateur entre son adresse mail
     Et L'utilisateur se trompe de mot de passe

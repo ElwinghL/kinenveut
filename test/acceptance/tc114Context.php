@@ -1,6 +1,5 @@
 <?php
 
-use Behat\Behat\Tester\Exception\PendingException;
 use Behat\Behat\Context\Context;
 
 /**
@@ -8,26 +7,6 @@ use Behat\Behat\Context\Context;
  */
 class tc114Context implements Context
 {
-  /**
-   * Initializes context.
-   *
-   * Every scenario gets its own context instance.
-   * You can also pass arbitrary arguments to the
-   * context constructor through behat.yml.
-   */
-  public function __construct()
-  {
-  }
-
-  /**
-   * @Given l'utilisateur est enregistré sur le site
-   */
-  public function lutilisateurEstEnregistreSurLeSite()
-  {
-    //Todo : à supprimer car compris dans le "est connecté"
-    throw new PendingException();
-  }
-
   /**
    * @When l'utilisateur recherche une vente privée existant dans la base de données
    */
@@ -85,9 +64,9 @@ class tc114Context implements Context
     }
 
     /*Click to accept the prevent created auction*/
-    $url = 'http://localhost/kinenveut/?r=auctionManagement/validate&id=' . $auction->getId();
+    $url = 'kinenveut/?r=auctionManagement/validate&id=' . $auction->getId();
     $session->visit($url);
-    checkUrl($session, $url);
+    checkUrl($url);
 
     disconnect($session);
 

@@ -8,48 +8,20 @@ use Behat\Behat\Context\Context;
 class tc30Context implements Context
 {
   /**
-   * Initializes context.
-   *
-   * Every scenario gets its own context instance.
-   * You can also pass arbitrary arguments to the
-   * context constructor through behat.yml.
-   */
-  public function __construct()
-  {
-  }
-
-  public function __destruct()
-  {
-    $canDelete = Universe::getUniverse()->getCanDelete();
-    $userDao = App_DaoFactory::getFactory()->getUserDao();
-    if (isset($canDelete['user'])) {
-      $user = $userDao->selectUserByEmail(Universe::getUniverse()->getUser()->getEmail());
-      if ($user != null) {
-        $isAdmin = $user->getIsAdmin();
-        if ($isAdmin == false) {
-          $userDao->deleteUser($user->getId());
-        }
-      }
-      unset($canDelete['user']);
-      Universe::getUniverse()->setCanDelete($canDelete);
-    }
-  }
-
-  /**
    * @Given L'utilisateur est sur la page de création de compte.
    */
   public function lutilisateurEstSurLaPageDeCreationDeCompte()
   {
     $session = Universe::getUniverse()->getSession();
-    $session->visit('http://localhost/kinenveut/');
-    checkUrl($session, 'http://localhost/kinenveut/?r=login');
+    $session->visit('kinenveut/');
+    checkUrl('kinenveut/?r=login');
 
     $session->getPage()->find(
       'css',
       'a[href="?r=registration"]'
     )->click();
 
-    checkUrl($session, 'http://localhost/kinenveut/?r=registration');
+    checkUrl('kinenveut/?r=registration');
   }
 
   /**
@@ -86,11 +58,8 @@ class tc30Context implements Context
    */
   public function leCompteDeLutilisateurEstEnregistre()
   {
-    $session = Universe::getUniverse()->getSession();
-
-    checkUrl($session, 'http://localhost/kinenveut/?r=login');
-
-    Universe::getUniverse()->setCanDelete(['user' => true]);
+    checkUrl('kinenveut/?r=login');
+    Universe::getUniverse()->setToDelete(['users' => [Universe::getUniverse()->getUser()]]);
   }
 
   /**
@@ -99,16 +68,16 @@ class tc30Context implements Context
   public function lutilisateurEstDejaInscrit()
   {
     $session = Universe::getUniverse()->getSession();
-    $session->visit('http://localhost/kinenveut/');
+    $session->visit('kinenveut/');
 
-    checkUrl($session, 'http://localhost/kinenveut/?r=login');
+    checkUrl('kinenveut/?r=login');
 
     $session->getPage()->find(
       'css',
       'a[href="?r=registration"]'
     )->click();
 
-    checkUrl($session, 'http://localhost/kinenveut/?r=registration');
+    checkUrl('kinenveut/?r=registration');
 
     $session = Universe::getUniverse()->getSession();
     $user = Universe::getUniverse()->getUser();
@@ -139,7 +108,7 @@ class tc30Context implements Context
       'input[type="submit"]'
     )->click();
 
-    Universe::getUniverse()->setCanDelete(['user' => true]);
+    Universe::getUniverse()->setToDelete(['users' => [Universe::getUniverse()->getUser()]]);
   }
 
   /**
@@ -149,7 +118,7 @@ class tc30Context implements Context
   {
     $session = Universe::getUniverse()->getSession();
 
-    checkUrl($session, 'http://localhost/kinenveut/?r=registration/register');
+    checkUrl('kinenveut/?r=registration/register');
 
     if ($session->getPage()->find(
       'css',

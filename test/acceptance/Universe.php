@@ -8,7 +8,7 @@ class Universe
   private $user2;
   private $user3;
   private $auction;
-  private $canDelete;
+  private $toDelete;
 
   public static function getUniverse(): Universe
   {
@@ -79,13 +79,13 @@ class Universe
     return $this;
   }
 
-  public function setCanDelete(?array $canDelete):void
+  public function setToDelete(?array $toDelete):void
   {
-    $this->canDelete = $canDelete;
+    $this->toDelete = $toDelete;
   }
 
-  public function getCanDelete() : ?array
+  public function getToDelete() : ?array
   {
-    return $this->canDelete;
+    return $this->toDelete;
   }
 }

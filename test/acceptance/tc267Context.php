@@ -9,22 +9,15 @@ use Behat\Behat\Context\Context;
 class tc267Context implements Context
 {
   /**
-   * Initializes context.
-   *
-   * Every scenario gets its own context instance.
-   * You can also pass arbitrary arguments to the
-   * context constructor through behat.yml.
-   */
-  public function __construct()
-  {
-  }
-
-  /**
    * @Given L'utilisateur est sur la page de mise à jour de profile
    */
   public function lutilisateurEstSurLaPageDeMiseAJourDeProfile()
   {
-    throw new PendingException();
+    $session = Universe::getUniverse()->getSession();
+    visitOwnAccountPage($session);
+
+    $url = 'kinenveut/?r=account&userId=' . Universe::getUniverse()->getUser()->getId();
+    checkUrl($url);
   }
 
   /**

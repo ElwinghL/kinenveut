@@ -10,31 +10,14 @@ include_once 'test/acceptance/tools.php';
 class tc110Context implements Context
 {
   /**
-   * Initializes context.
-   *
-   * Every scenario gets its own context instance.
-   * You can also pass arbitrary arguments to the
-   * context constructor through behat.yml.
-   */
-  public function __construct()
-  {
-  }
-
-  public function __destruct()
-  {
-    deleteAuctionUniverse();
-    deleteUser2Universe();
-  }
-
-  /**
    * @Given L'utilisateur est sur la page de recherche
    */
   public function lutilisateurEstSurLaPageDeRecherche()
   {
     $session = Universe::getUniverse()->getSession();
-    $url = 'http://localhost/kinenveut/?r=home';
+    $url = 'kinenveut/?r=home';
     $session->visit($url);
-    checkUrl($session, $url);
+    checkUrl($url);
   }
 
   /**
@@ -94,9 +77,9 @@ class tc110Context implements Context
     }
 
     /*Click to accept the prevent created auction*/
-    $url = 'http://localhost/kinenveut/?r=auctionManagement/validate&id=' . $auction->getId();
+    $url = 'kinenveut/?r=auctionManagement/validate&id=' . $auction->getId();
     $session->visit($url);
-    checkUrl($session, $url);
+    checkUrl($url);
 
     disconnect($session);
 
@@ -132,7 +115,6 @@ class tc110Context implements Context
   public function ilTrouveCetteEnchere()
   {
     $session = Universe::getUniverse()->getSession();
-    $user = Universe::getUniverse()->getUser();
     $auction = Universe::getUniverse()->getAuction();
 
     if ($session->getPage()->find(
@@ -142,7 +124,6 @@ class tc110Context implements Context
       throw new Exception('auction was not found');
     }
 
-    $sellers = [Universe::getUniverse()->getUser()];
-    Universe::getUniverse()->setCanDelete(['user' => true, 'auction' => $sellers]);
+    Universe::getUniverse()->setToDelete(['users' => [Universe::getUniverse()->getUser()]]);
   }
 }

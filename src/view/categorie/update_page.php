@@ -22,7 +22,7 @@
   echo $data['category']['name'];
 } ?>">
         </div>
-        <button type="submit" name="createCategory" class="btn btn-primary">Enregistrer</button>
+        <input type="submit" name="createCategory" class="btn btn-primary" value="Enregistrer"/>
       </form>
     </div>
   </div>

@@ -11,32 +11,15 @@ include_once 'test/acceptance/tools.php';
 class tc133Context implements Context
 {
   /**
-   * Initializes context.
-   *
-   * Every scenario gets its own context instance.
-   * You can also pass arbitrary arguments to the
-   * context constructor through behat.yml.
-   */
-  public function __construct()
-  {
-  }
-
-  public function __destruct()
-  {
-    deleteUserUniverse();
-  }
-
-  /**
    * @Given L'utilisateur n'est pas connecté
    */
   public function lutilisateurNestPasConnecte()
   {
     $session = Universe::getUniverse()->getSession();
 
-    $session->visit('http://localhost/kinenveut/');
+    $session->visit('kinenveut/');
 
-    $url = 'http://localhost/kinenveut/?r=login';
-    checkUrl($session, $url);
+    checkUrl('kinenveut/?r=login');
   }
 
   /**
@@ -60,6 +43,7 @@ class tc133Context implements Context
     visitRegistrationPage($session);
 
     suscribe($session, $localUser);
+    Universe::getUniverse()->setToDelete(['users' => [$localUser]]);
   }
 
   /**
@@ -78,31 +62,13 @@ class tc133Context implements Context
   }
 
   /**
-   * @When L'utilisateur a oublié son mot de passe
-   */
-  public function lutilisateurAOublieSonMotDePasse()
-  {
-    //Non testable (on est pas dans la tête de l'utilisateur)
-    $session = Universe::getUniverse()->getSession();
-    $session->getPage()->find(
-      'css',
-      'input[name="password"]'
-    )->setValue('');
-
-    $session->getPage()->find(
-      'css',
-      'input[type="submit"]'
-    )->click();
-  }
-
-  /**
    * @Then L'utilisateur recoit un email avec la possibilité de récupérer l'accès à son compte
    */
   public function lutilisateurRecoitUnEmailAvecLaPossibiliteDeRecupererLaccesASonCompte()
   {
-    Universe::getUniverse()->setCanDelete(['user'=>true]);
+    Universe::getUniverse()->setToDelete(['users' => [Universe::getUniverse()->getUser()]]);
     //Non testable
-    throw new PendingException();
+    // throw new PendingException();
   }
 
   /**
@@ -134,11 +100,11 @@ class tc133Context implements Context
      */
   public function lutilisateurRecoitUnMessageLuiIndiquantQuaucuneAdresseMailNeCorrespondsALadresseMailSaisie()
   {
-    Universe::getUniverse()->setCanDelete(['user'=>true]);
+    Universe::getUniverse()->setToDelete(['users' => [Universe::getUniverse()->getUser()]]);
     $session = Universe::getUniverse()->getSession();
 
-    $url = 'http://localhost/kinenveut/?r=login/login';
-    checkUrl($session, $url);
+    $url = 'kinenveut/?r=login/login';
+    checkUrl($url);
 
     if ($session->getPage()->find(
       'css',
@@ -152,5 +118,25 @@ class tc133Context implements Context
     )->getText() != 'Identifiants incorrects') {
       throw new Exception('There is returned error is not the expected one');
     }
+  }
+
+  /**
+     * @When il clique sur oublie de mot de passe
+     */
+  public function ilCliqueSurOublieDeMotDePasse()
+  {
+    throw new PendingException();
+  }
+
+  /**
+   * @When il clique sur se connecter
+   */
+  public function ilCliqueSurSeConnecter()
+  {
+    $session = Universe::getUniverse()->getSession();
+    $session->getPage()->find(
+      'css',
+      'input[type="submit"]'
+    )->click();
   }
 }

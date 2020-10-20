@@ -9,17 +9,6 @@ use Behat\Behat\Context\Context;
 class tc130Context implements Context
 {
   /**
-   * Initializes context.
-   *
-   * Every scenario gets its own context instance.
-   * You can also pass arbitrary arguments to the
-   * context constructor through behat.yml.
-   */
-  public function __construct()
-  {
-  }
-
-  /**
    * @Then les enchères avec la catégorie :arg1 sont remis à la catégorie par défaut
    */
   public function lesEncheresAvecLaCategorieSontRemisALaCategorieParDefaut($arg1)

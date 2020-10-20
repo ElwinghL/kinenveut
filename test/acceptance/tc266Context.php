@@ -1,5 +1,6 @@
 <?php
 
+use Behat\Behat\Tester\Exception\PendingException;
 use Behat\Behat\Context\Context;
 
 include_once 'test/acceptance/tools.php';
@@ -9,17 +10,6 @@ include_once 'test/acceptance/tools.php';
  */
 class tc266Context implements Context
 {
-  /**
-   * Initializes context.
-   *
-   * Every scenario gets its own context instance.
-   * You can also pass arbitrary arguments to the
-   * context constructor through behat.yml.
-   */
-  public function __construct()
-  {
-  }
-
   /**
    * @When l'utilisateur consulte la liste des enchères
    */
@@ -34,8 +24,10 @@ class tc266Context implements Context
    */
   public function laListeDesEncheresEstVisible()
   {
+    //todo : regarder où elle est utiliser pour savoir quel id / class on recherche :)
+    throw new PendingException();
     $session = Universe::getUniverse()->getSession();
-    if ($session->getPage()->find(
+    /*if ($session->getPage()->find(
       'css',
       '#waitingList'
     ) == false) {
@@ -47,6 +39,6 @@ class tc266Context implements Context
       '#waitingList li'
     ) == false) {
       throw new Exception('The waiting list is empty');
-    }
+    }*/
   }
 }

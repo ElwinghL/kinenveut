@@ -10,17 +10,6 @@ include_once 'test/acceptance/tools.php';
  */
 class tc104Context implements Context
 {
-  /**
-   * Initializes context.
-   *
-   * Every scenario gets its own context instance.
-   * You can also pass arbitrary arguments to the
-   * context constructor through behat.yml.
-   */
-  public function __construct()
-  {
-  }
-
   //Todo : trouver un moyen de récupérer l'id d'un élément d'une liste en connaissant seulement le titre (contenu de la div)
 
   /**
@@ -43,9 +32,8 @@ class tc104Context implements Context
     /*Try to go to home page. If you are redirect to login page then you're offline*/
     $session = Universe::getUniverse()->getSession();
 
-    $session->visit('http://localhost/kinenveut/');
-    $url = 'http://localhost/kinenveut/?r=login';
-    checkUrl($session, $url);
+    $session->visit('kinenveut/');
+    checkUrl('kinenveut/?r=login');
 
     /*Check if the user is well initialized*/
     $user = Universe::getUniverse()->getUser();
@@ -88,8 +76,7 @@ class tc104Context implements Context
   public function laListeDeCategoriesEstVide()
   {
     //Non testable car on ne peut pas vider la liste pour les tests :)
-    /*Universe::getUniverse()->setCanDelete(['user' => true]);
-    throw new PendingException();*/
+    // throw new PendingException();
   }
 
   /**
@@ -97,11 +84,12 @@ class tc104Context implements Context
    */
   public function lutilisateurAjouteUneCategorieAvecLeNom($arg1)
   {
+    throw new PendingException();
     $session = Universe::getUniverse()->getSession();
 
-    $url = 'http://localhost/kinenveut/?r=categorie/update_page';
+    $url = 'kinenveut/?r=categorie/update_page';
     $session->visit($url);
-    checkUrl($session, $url);
+    checkUrl($url);
 
     $session->getPage()->find(
       'css',
@@ -120,9 +108,9 @@ class tc104Context implements Context
   {
     $session = Universe::getUniverse()->getSession();
 
-    $url = 'http://localhost/kinenveut/?r=categorie';
+    $url = 'kinenveut/?r=categorie';
     $session->visit($url);
-    checkUrl($session, $url);
+    checkUrl($url);
 
     if ($session->getPage()->find(
       'css',
@@ -153,11 +141,12 @@ class tc104Context implements Context
    */
   public function laListeDeCategoriesContient($arg1)
   {
+    throw new PendingException();
     $session = Universe::getUniverse()->getSession();
 
-    $url = 'http://localhost/kinenveut/?r=categorie';
+    $url = 'kinenveut/?r=categorie';
     $session->visit($url);
-    checkUrl($session, $url);
+    checkUrl($url);
 
     if ($session->getPage()->find(
       'css',

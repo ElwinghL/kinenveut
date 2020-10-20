@@ -10,26 +10,14 @@ include_once 'test/acceptance/tools.php';
 class tc108Context implements Context
 {
   /**
-   * Initializes context.
-   *
-   * Every scenario gets its own context instance.
-   * You can also pass arbitrary arguments to the
-   * context constructor through behat.yml.
-   */
-  public function __construct()
-  {
-  }
-
-  /**
    * @Given L'utilisateur est sur la page de connexion
    */
   public function lutilisateurEstSurLaPageDeConnexion()
   {
     $session = Universe::getUniverse()->getSession();
 
-    $session->visit('http://localhost/kinenveut/');
-    $url = 'http://localhost/kinenveut/?r=login';
-    checkUrl($session, $url);
+    $session->visit('kinenveut/');
+    checkUrl('kinenveut/?r=login');
   }
 
   /**
@@ -77,8 +65,8 @@ class tc108Context implements Context
   {
     $session = Universe::getUniverse()->getSession();
 
-    $url = 'http://localhost/kinenveut/?r=home';
-    checkUrl($session, $url);
+    $url = 'kinenveut/?r=home';
+    checkUrl($url);
   }
 
   /**
@@ -101,8 +89,8 @@ class tc108Context implements Context
   {
     $session = Universe::getUniverse()->getSession();
 
-    $url = 'http://localhost/kinenveut/?r=login/login';
-    checkUrl($session, $url);
+    $url = 'kinenveut/?r=login/login';
+    checkUrl($url);
 
     if ($session->getPage()->find(
       'css',
@@ -123,5 +111,38 @@ class tc108Context implements Context
       'css',
       'input[name="password"]'
     )->setValue($user->getPassword() . 'z');
+  }
+
+  /**
+     * @Given L'utilisateur possède un compte sur le site
+     */
+  public function lutilisateurPossedeUnCompteSurLeSite()
+  {
+    $session = Universe::getUniverse()->getSession();
+
+    $session->visit('kinenveut/');
+    checkUrl('kinenveut/?r=login');
+
+    /*Check if the user is well initialized*/
+    $user = Universe::getUniverse()->getUser();
+    if ($user == null) {
+      throw new Exception('The user has not been correctly intialized');
+    } else {
+      if ($user->getEmail() == null) {
+        throw new Exception('The user has no email');
+      }
+    }
+    /*Check if the user already suscribed*/
+    $userDao = App_DaoFactory::getFactory()->getUserDao();
+    $userFromDB = $userDao->selectUserByEmail($user->getEmail());
+
+    /*If the user doesn't exist, let's create him !*/
+    if ($userFromDB == null) {
+      $userId = subscribeAndValidateAUser($user);
+    } else {
+      $userId = $userFromDB->getId();
+    }
+
+    Universe::getUniverse()->getUser()->setId($userId);
   }
 }

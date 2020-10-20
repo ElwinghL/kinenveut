@@ -10,22 +10,6 @@ include_once 'test/acceptance/tools.php';
 class tc154Context implements Context
 {
   /**
-   * Initializes context.
-   *
-   * Every scenario gets its own context instance.
-   * You can also pass arbitrary arguments to the
-   * context constructor through behat.yml.
-   */
-  public function __construct()
-  {
-  }
-
-  public function __destruct()
-  {
-    deleteUser2Universe();
-  }
-
-  /**
    * @Given il existe un ou plusieurs membres en attente de validation d'inscription
    */
   public function ilExisteUnOuPlusieursMembresEnAttenteDeValidationDinscription()
@@ -81,6 +65,6 @@ class tc154Context implements Context
       throw new Exception('The waiting list is empty');
     }
 
-    Universe::getUniverse()->setCanDelete(['user2' => true]);
+    Universe::getUniverse()->setToDelete(['users' => [Universe::getUniverse()->getUser2()]]);
   }
 }
