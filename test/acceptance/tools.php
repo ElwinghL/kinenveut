@@ -141,10 +141,15 @@ function visitCategoriesManagment($session)
 function visitRegistrationPage($session)
 {
   /*Go to suscribe page*/
-  $session->getPage()->find(
+  $button = $session->getPage()->find(
     'css',
     'a[href="?r=registration"]'
-  )->click();
+  );
+
+  if ($button == null) {
+    throw new Exception('The registration link you\'re searching doesn\'t exist');
+  }
+  $button->click();
 
   checkUrl('http://localhost/kinenveut/?r=registration');
 }
@@ -193,10 +198,14 @@ function suscribe($session, UserModel $localUser)
   )->setValue($localUser->getPassword());
 
   /*Click on suscribe*/
-  $session->getPage()->find(
+  $button = $session->getPage()->find(
     'css',
     'input[type="submit"]'
-  )->click();
+  );
+  if ($button == null) {
+    throw new Exception('There is no submit button on this page');
+  }
+  $button->click();
 
   //The user is redirect to the login page
   checkUrl('http://localhost/kinenveut/?r=login');
@@ -316,10 +325,15 @@ function subscribeAndValidateAUser(UserModel $user) : ?int
   //Todo : search by name
   /*Click to accept the prevent created user*/
   $href = '?r=userManagement/validate&id=' . $user->getId();
-  $session->getPage()->find(
+  $button = $session->getPage()->find(
     'css',
     'a[href="' . $href . '"]'
-  )->click();
+  );
+
+  if ($button == null) {
+    throw new Exception('The link you\' searching doesn\'t exist');
+  }
+  $button->click();
 
   checkUrl('http://localhost/kinenveut/?r=userManagement/validate&id=' . $user->getId());
 

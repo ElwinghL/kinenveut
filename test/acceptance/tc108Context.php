@@ -1,6 +1,5 @@
 <?php
 
-use Behat\Behat\Tester\Exception\PendingException;
 use Behat\Behat\Context\Context;
 
 include_once 'test/acceptance/tools.php';
@@ -119,6 +118,32 @@ class tc108Context implements Context
      */
   public function lutilisateurPossedeUnCompteSurLeSite()
   {
-    throw new PendingException();
+    $session = Universe::getUniverse()->getSession();
+    $localUser = Universe::getUniverse()->getUser();
+
+    $session->visit('http://localhost/kinenveut/');
+    checkUrl('http://localhost/kinenveut/?r=login');
+
+    /*Check if the user is well initialized*/
+    $user = Universe::getUniverse()->getUser();
+    if ($user == null) {
+      throw new Exception('The user has not been correctly intialized');
+    } else {
+      if ($user->getEmail() == null) {
+        throw new Exception('The user has no email');
+      }
+    }
+    /*Check if the user already suscribed*/
+    $userDao = App_DaoFactory::getFactory()->getUserDao();
+    $userFromDB = $userDao->selectUserByEmail($user->getEmail());
+
+    /*If the user doesn't exist, let's create him !*/
+    if ($userFromDB == null) {
+      $userId = subscribeAndValidateAUser($user);
+    } else {
+      $userId = $userFromDB->getId();
+    }
+
+    Universe::getUniverse()->getUser()->setId($userId);
   }
 }
