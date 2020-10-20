@@ -31,16 +31,14 @@ function checkUrlPartial($session, $expectedUrl)
 
 function visiteUrl($url)
 {
-    $session = Universe::getUniverse()->getSession();
-    $session->visit($url);
-    if($session->getStatusCode() !== 200)
-    {
-        $session->visit($_ENV['path'] .$url);
-        if($session->getStatusCode() !== 200)
-        {
-            throw new Exception('Failed to access to the url, please, check the path variable');
-        }
+  $session = Universe::getUniverse()->getSession();
+  $session->visit($url);
+  if ($session->getStatusCode() !== 200) {
+    $session->visit($_ENV['path'] . $url);
+    if ($session->getStatusCode() !== 200) {
+      throw new Exception('Failed to access to the url, please, check the path variable');
     }
+  }
 }
 
 function clickOnMenu($session)
@@ -415,4 +413,3 @@ function createAuctionForUser(AuctionModel $auction, UserModel $user) : ?int
 
   return $auction->getId();
 }
-
