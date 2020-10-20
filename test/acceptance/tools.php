@@ -311,6 +311,8 @@ function subscribeAndValidateAUser(UserModel $user) : ?int
 
   disconnect($session);
 
+  Universe::getUniverse()->setToDelete(['users' => [$user]]);
+
   return $user->getId();
 }
 

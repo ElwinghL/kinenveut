@@ -35,8 +35,7 @@ class tc160Context implements Context
     Universe::getUniverse()->getAuction()->setAuctionState(4);
 
     //Non testable : Un user ne peut pas entrer de montant si l'enchère est fermée
-    $sellers = [Universe::getUniverse()->getUser()];
-    Universe::getUniverse()->setCanDelete(['user'=>true, 'user2'=>true, 'auctions'=>$sellers]);
+    Universe::getUniverse()->setToDelete(['users' => [Universe::getUniverse()->getUser(), Universe::getUniverse()->getUser2()]]);
   }
 
   /**
@@ -45,22 +44,7 @@ class tc160Context implements Context
   public function unMessageDerreurEstAffiche()
   {
     //Non testable : Aucun message n'est affiché car la vérification se fait dans l'input
-    $sellers = [Universe::getUniverse()->getUser()];
-    Universe::getUniverse()->setCanDelete(['user'=>true, 'user2'=>true, 'auctions'=>$sellers]);
-
-    //todo : ce test ne répond pas au titre car il n'existe pas d'affichage d'erreur
-
-    throw new PendingException();
-    /*
-    $session = Universe::getUniverse()->getSession();
-    $auction = Universe::getUniverse()->getAuction();
-    $minPrice = ($auction->getBasePrice());
-    if ($session->getPage()->find(
-            'css',
-            'h2'
-        )->getText() != $auction->getName() . ' - '.$minPrice.'€') {
-        throw new Exception('The bid was accepted or is not the first one on this auction');
-    };*/
+    Universe::getUniverse()->setToDelete(['users' => [Universe::getUniverse()->getUser(), Universe::getUniverse()->getUser2()]]);
   }
 
   /**
@@ -69,9 +53,7 @@ class tc160Context implements Context
   public function lutilisateurAChoisiUnMontantInvalide()
   {
     //todo : vérifier que $seller != != bidder
-
-    $sellers = [Universe::getUniverse()->getUser()];
-    Universe::getUniverse()->setCanDelete(['user'=>true, 'user2'=>true, 'auctions'=>$sellers]);
+    Universe::getUniverse()->setToDelete(['users' => [Universe::getUniverse()->getUser(), Universe::getUniverse()->getUser2()]]);
 
     throw new PendingException();
     $session = Universe::getUniverse()->getSession();
