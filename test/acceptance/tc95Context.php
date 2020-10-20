@@ -13,13 +13,7 @@ class tc95Context implements Context
   public function lutilisateurConsulteLaListeDeCategories()
   {
     $session = Universe::getUniverse()->getSession();
-    $session->visit($_ENV['adresse'] . '?r=auctionManagement');
-    if ($session->getStatusCode() !== 200) {
-      throw new Exception('status code is not 200');
-    }
-    if ($session->getCurrentUrl() !== $_ENV['adresse'] . '?r=auctionManagement') {
-      throw new Exception('url is not ' . $_ENV['adresse'] . '?r=auctionManagement"');
-    }
+    visitAuctionManagement($session);
   }
 
   /**
@@ -28,7 +22,6 @@ class tc95Context implements Context
   public function laListeDesCategoriesEstVisible()
   {
     $session = Universe::getUniverse()->getSession();
-
     if ($session->getPage()->find(
       'css',
       'h2'
