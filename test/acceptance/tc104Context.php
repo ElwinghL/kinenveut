@@ -84,6 +84,7 @@ class tc104Context implements Context
    */
   public function lutilisateurAjouteUneCategorieAvecLeNom($arg1)
   {
+    throw new PendingException();
     $session = Universe::getUniverse()->getSession();
 
     $url = 'http://localhost/kinenveut/?r=categorie/update_page';
@@ -140,6 +141,7 @@ class tc104Context implements Context
    */
   public function laListeDeCategoriesContient($arg1)
   {
+    throw new PendingException();
     $session = Universe::getUniverse()->getSession();
 
     $url = 'http://localhost/kinenveut/?r=categorie';
